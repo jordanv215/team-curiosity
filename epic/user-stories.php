@@ -10,9 +10,10 @@
 		</header>
 		<main>
 			<ul>
-				<li>As a user, I'm interested in the <em>Curiosity</em> project, but I find that NASA's website is cumbersome and hard to navigate.</li>
-				<li>I just finished watching the latest episode of <em>Cosmos</em>, and I am interested in learning more about the rover's activity on Mars. Where can I go to find this information in one simple location?</li>
-				<li>I am a 6th grade student doing a Science Fair project on the planets of our Solar System and how the weather varies on each. The Nasa website probably has this information, but I can't seem to find it.</li>
+				<li>As a user who just finished watching Cosmos, I'm interested in the <em>Curiosity</em> project, but I find that NASA's website is cumbersome and hard to navigate.</li>
+				<li>I am a 6th grade student doing a Science Fair project on Planetary weather, and want to learn more about Mars</li>
+				<li>I am a billionaire with huge ties in the private space industry, and I'm looking to hire a group of web developers for creation of an app.</li>
+				<li>I'm a 25 year old game developer creating a FPS on Mars, and need to know the terrain and weather</li>
 			</ul>
 		</main>
 	</body>
