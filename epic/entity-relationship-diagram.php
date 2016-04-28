@@ -5,6 +5,6 @@
 		<title>ERD</title>
 	</head>
 	<body>
-		<object type="image/svg" data="entity-relationship-diagram.php">erd</object>
+		<object type="image/svg+xml" data="entity-relationship-diagram.php"></object>
 	</body>
 </html> 
