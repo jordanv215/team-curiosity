@@ -9,10 +9,9 @@
 			<h1>Lalit Datta</h1>
 		</header>
 		<main>
-			<p>Lalit Datta: 25 years old, works as a game designer. He just has promoted to a project manager of a new game design. It is going to be a top relating to "Mars". He needs to create a concept for the game, and is looking for information of the geography and weather on Mars in order to make game as realistic as possible.
+			<p>Lalit Datta: 35 year old game designer working at a very well known game development company. Recently, Lalit was  promoted to project manager on a FPS/RPG set on the surface of Mars. He needs to create a concept for the game, and is looking for information on the geography and weather on Mars in order to make the game as realistic as possible.
 			<h4>Use Case</h4>
-			 <p></p>
+			 <p>As Lalit searched through Google Images for pictures of Mars' surface, he came across one specific picture that caught his attention. After clicking the image of a sandstorm on Mars, he decided adding extreme weather into the game would improve the player experience and add a new level of immersion and survival to the game. Wanting to learn more about the sand storms, he went to the image source, which led to Deep Dive <em>Curiosity</em> site.</p>
 		</main>
-		
-		</body>
+	</body>
 </html>
