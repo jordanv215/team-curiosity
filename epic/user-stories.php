@@ -10,7 +10,7 @@
 		</header>
 		<main>
 			<ul>
-				<li>As a user who just finished watching Cosmos I'm interested in the <em>Curiosity</em> project, but I find that NASA's website is cumbersome and hard to navigate.</li>
+				<li>As a user who just finished watching Cosmos, I'm interested in the <em>Curiosity</em> project, but I find that NASA's website is cumbersome and hard to navigate.</li>
 				<li>I am a student doing a Science Fair project on Planetary weather, and want to learn more about Mars</li>
 				<li>I am creating a blog about Mars, and need images from an easy to access database on a daily basis</li>
 				<li>I'm very interested in NASA's projects, and want an easy way to get news about <em>Curiosity</em></li>
