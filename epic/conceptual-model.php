@@ -31,6 +31,24 @@
 				<li>source</li>
 				<li>article date</li>
 			</ul>
+			<h1>Relations</h1>
+			<h3>User</h3>
+			<ul>
+				<li>user may favorite image</li>
+				<li>user may favorite article</li>
+				<li>user may comment on article</li>
+				<li>user may comment on image</li>
+			</ul>
+			<h3>Image</h3>
+			<ul>
+				<li>image may be favorited</li>
+				<li>image may be commented on</li>
+			</ul>
+			<h3>News</h3>
+			<ul>
+				<li>article may be favorited</li>
+				<li>article may be commented on</li>
+			</ul>
 		</main>
 	</body>
 </html>
