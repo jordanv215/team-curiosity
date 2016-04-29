@@ -49,14 +49,31 @@
 				<li>article may be favorited - leads to favoriteArticle</li>
 				<li>article may be commented on - leads to commentArticle</li>
 			</ul>
-			<h2>Weak Entities</h2>
+			<h1>Weak Entities</h1>
 			<h3>commentImage</h3>
 			<ul>
-					<li>imageId</li>
-					<li>userId</li>
-					<li>dateTime</li>
+				<li>imageId</li>
+				<li>userId</li>
+				<li>dateTime</li>
 			</ul>
-
+			<h3>favoriteImage</h3>
+			<ul>
+				<li>imageId</li>
+				<li>userId</li>
+				<li>dateTime</li>
+			</ul>
+			<h3>favoriteArticle</h3>
+			<ul>
+				<li>articleId</li>
+				<li>userId</li>
+				<li>dateTime</li>
+			</ul>
+			<h3>commentArticle</h3>
+			<ul>
+				<li>articleId</li>
+				<li>userId</li>
+				<li>dateTime</li>
+			</ul>
 		</main>
 	</body>
 </html>
