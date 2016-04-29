@@ -11,25 +11,25 @@
 		<main>
 			<p>This app will initially load a splash page containing a highlight feed of the most recent images and article headlines. A bar across the page will display essential weather info, clickable to show the full set of current data. The main page will also contain a simplified menu offering direct access to images and articles.<br>
 			The images page will contain an option to view the featured images. It will be searchable by sol, Earth date, and camera. The articles page will be searchable by source and keywords.</p>
-			<h2>User</h2>
+			<h2>user</h2>
 			<ul>
 				<li>social media login</li>
 				<li>userID</li>
 			</ul>
-			<h2>Images</h2>
+			<h2>image</h2>
 			<ul>
-				<li>title of image</li>
-				<li>Image ID</li>
-				<li>image description</li>
-				<li>camera used</li>
-				<li>Earth date picture was taken on</li>
-				<li>sol (Mars day) date picture was taken on</li>
+				<li>imageTitle</li>
+				<li>imageId</li>
+				<li>imageDescription</li>
+				<li>imageCamera (camera that took the picture)</li>
+				<li>earthDate (day that picture was taken)</li>
+				<li>sol (Mars day the picture was taken on)</li>
 			</ul>
-			<h2>News</h2>
+			<h2>newsArticle</h2>
 			<ul>
-				<li>article ID</li>
-				<li>source</li>
-				<li>article date</li>
+				<li>articleId</li>
+				<li>articleSource</li>
+				<li>articleDate</li>
 			</ul>
 			<h1>Relations</h1>
 			<h2>User</h2>
