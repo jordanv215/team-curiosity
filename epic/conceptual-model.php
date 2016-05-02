@@ -42,7 +42,7 @@
 				<li>newsArticleDate</li>
 				<li>newsArticleSynopsis</li>
 				<li>newsArticleUrl</li>
-			</ul><br>
+			</ul>
 			<h3>commentImage</h3>
 			<ul>
 				<li>commentImageId</li>
