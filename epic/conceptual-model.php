@@ -15,41 +15,41 @@
 			<h3>loginSource</h3>
 			<ul>
 				<li>loginSourceId</li>
-				<li>loginSourceProvider</li>
 				<li>loginSourceApiKey</li>
+				<li>loginSourceProvider</li>
 			</ul>
 			<h3>user</h3>
 			<ul>
 				<li>userId</li>
+				<li>userEmail</li>
 				<li>userLoginId</li>
 				<li>userName</li>
-				<li>userEmail</li>
 			</ul>
 			<h3>image</h3>
 			<ul>
 				<li>imageId</li>
-				<li>imageTitle</li>
-				<li>imageDescription</li>
 				<li>imageCamera</li>
+				<li>imageDescription</li>
 				<li>imageEarthDate</li>
-				<li>imageSol</li>
-				<li>imageType</li>
 				<li>imagePath</li>
+				<li>imageSol</li>
+				<li>imageTitle</li>
+				<li>imageType</li>
 			</ul>
 			<h3>newsArticle</h3>
 			<ul>
 				<li>newsArticleId</li>
-				<li>newsArticleUrl</li>
 				<li>newsArticleDate</li>
 				<li>newsArticleSynopsis</li>
+				<li>newsArticleUrl</li>
 			</ul><br>
 			<h3>commentImage</h3>
 			<ul>
 				<li>commentImageId</li>
-				<li>commentImageUserId</li>
-				<li>commentImageImageId</li>
-				<li>commentImageDateTime</li>
 				<li>commentImageContent</li>
+				<li>commentImageDateTime</li>
+				<li>commentImageImageId</li>
+				<li>commentImageUserId</li>
 			</ul>
 			<h3>favoriteImage</h3>
 			<ul>
@@ -66,12 +66,16 @@
 			<h3>commentNewsArticle</h3>
 			<ul>
 				<li>commentNewsArticleId</li>
-				<li>commentNewsArticleUserId</li>
-				<li>commentNewsArticleNewsArticleId</li>
-				<li>commentNewsArticleDateTime</li>
 				<li>commentNewsArticleContent</li>
+				<li>commentNewsArticleDateTime</li>
+				<li>commentNewsArticleNewsArticleId</li>
+				<li>commentNewsArticleUserId</li>
 			</ul><br>
 			<h2>Relations</h2>
+			<h3>loginSource</h3>
+			<ul>
+				<li>authenticates user</li>
+			</ul>
 			<h3>User</h3>
 			<ul>
 				<li>user may favorite image - leads to favoriteImage</li>
