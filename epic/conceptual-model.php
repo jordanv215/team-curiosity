@@ -46,22 +46,22 @@
 			<h3>commentImage</h3>
 			<ul>
 				<li>commentImageId</li>
-				<li>commentUserId</li>
+				<li>commentImageUserId</li>
 				<li>commentImageCommentId</li>
-				<li>commentDateTime</li>
-				<li>commentContent</li>
+				<li>commentImageDateTime</li>
+				<li>commentImageContent</li>
 			</ul>
 			<h3>favoriteImage</h3>
 			<ul>
 				<li>favoriteImageId</li>
-				<li>favoriteUserId</li>
-				<li>favoriteDateTime</li>
+				<li>favoriteImageUserId</li>
+				<li>favoriteImageDateTime</li>
 			</ul>
 			<h3>favoriteNewsArticle</h3>
 			<ul>
 				<li>favoriteNewsArticleId</li>
-				<li>favoriteUserId</li>
-				<li>favoriteDateTime</li>
+				<li>favoriteNewsArticleUserId</li>
+				<li>favoriteNewsArticleDateTime</li>
 			</ul>
 			<h3>commentNewsArticle</h3>
 			<ul>
