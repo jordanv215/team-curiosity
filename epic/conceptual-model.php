@@ -14,26 +14,27 @@
 			<h2>Entities</h2>
 			<h3>loginSource</h3>
 			<ul>
+				<li>loginSourceId</li>
 				<li>loginSourceProvider</li>
 				<li>loginSourceApiKey</li>
-				<li>loginSourceUserId</li>
-				<li>loginSourceUserName</li>
-				<li>loginSourceUserEmail</li>
 			</ul>
 			<h3>user</h3>
 			<ul>
+				<li>userId</li>
 				<li>userLoginId</li>
 				<li>userName</li>
 				<li>userEmail</li>
 			</ul>
 			<h3>image</h3>
 			<ul>
-				<li>imageTitle</li>
 				<li>imageId</li>
+				<li>imageTitle</li>
 				<li>imageDescription</li>
 				<li>imageCamera</li>
 				<li>imageEarthDate</li>
 				<li>imageSol</li>
+				<li>imageType</li>
+				<li>imagePath</li>
 			</ul>
 			<h3>newsArticle</h3>
 			<ul>
@@ -47,19 +48,19 @@
 			<ul>
 				<li>commentImageId</li>
 				<li>commentImageUserId</li>
-				<li>commentImageCommentId</li>
+				<li>commentImageImageId</li>
 				<li>commentImageDateTime</li>
 				<li>commentImageContent</li>
 			</ul>
 			<h3>favoriteImage</h3>
 			<ul>
-				<li>favoriteImageId</li>
+				<li>favoriteImageImageId</li>
 				<li>favoriteImageUserId</li>
 				<li>favoriteImageDateTime</li>
 			</ul>
 			<h3>favoriteNewsArticle</h3>
 			<ul>
-				<li>favoriteNewsArticleId</li>
+				<li>favoriteNewsArticleNewsArticleId</li>
 				<li>favoriteNewsArticleUserId</li>
 				<li>favoriteNewsArticleDateTime</li>
 			</ul>
@@ -67,7 +68,7 @@
 			<ul>
 				<li>commentNewsArticleId</li>
 				<li>commentNewsArticleUserId</li>
-				<li>commentNewsArticleCommentId</li>
+				<li>commentNewsArticleNewsArticleId</li>
 				<li>commentNewsArticleDateTime</li>
 				<li>commentNewsArticleContent</li>
 			</ul><br>
