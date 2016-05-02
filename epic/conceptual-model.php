@@ -43,7 +43,6 @@
 				<li>newsArticleDate</li>
 				<li>newsArticleSynopsis</li>
 			</ul><br>
-			<h2>Weak Entities</h2>
 			<h3>commentImage</h3>
 			<ul>
 				<li>commentImageId</li>
