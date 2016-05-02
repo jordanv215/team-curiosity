@@ -11,8 +11,8 @@
 		<main>
 			<p>Kathy Sorenson: 45 years old, works in the office of a local construction company. She has two children in
 				middle school. Kathy is normally very busy, but she enjoys walking her dogs and on the weekends she likes to
-				watch shows on Netflix. At home, she uses a 15" HP laptop to access the internet using Chrome. Kathy also
-				has an LG smartphone, which is her primary device for personal use at the office and whenever she's on the
+				watch shows on Netflix. At home, she uses a 15" HP laptop with Windows 7 to access the internet using Chrome. Kathy also
+				has an LG smartphone running Android 5, which is her primary device for personal use at the office and whenever she's on the
 				go.</p>
 			<h4>Use Case</h4>
 			<p>This morning, Kathy was scrolling down her Facebook news feed on her phone when she came across a headline
