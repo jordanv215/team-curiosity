@@ -35,6 +35,7 @@
 				<li>imageSol</li>
 				<li>imageTitle</li>
 				<li>imageType</li>
+				<li>imageUrl</li>
 			</ul>
 			<h3>newsArticle</h3>
 			<ul>
