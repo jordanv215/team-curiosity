@@ -14,6 +14,8 @@
 				<li>I want to learn more about weather conditions on Mars.</li>
 				<li>I need a photo stream of the Martian surface which is updated on a regular basis.</li>
 				<li>I want an easy way to get scientific summaries and news reports about <em>Curiosity</em>.</li>
+				<li>I want to share recent photos from Mars with my Facebook friends.</li>
+				<li>I want a place to save my favorite photos from the Mars rover.</li>
 			</ul>
 		</main>
 	</body>
