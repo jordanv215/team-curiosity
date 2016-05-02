@@ -16,6 +16,7 @@
 				<li>I want an easy way to get scientific summaries and news reports about <em>Curiosity</em>.</li>
 				<li>I want to share recent photos from Mars with my Facebook friends.</li>
 				<li>I want a place to save my favorite photos from the Mars rover.</li>
+				<li>I want to comment on the latest <em>Curiosity</em>  photos.</li>
 			</ul>
 		</main>
 	</body>
