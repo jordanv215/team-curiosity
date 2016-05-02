@@ -12,7 +12,7 @@
 			<p>This app will initially load a splash page containing a highlight feed of the most recent images and article headlines. A bar across the page will display essential weather info, clickable to show the full set of current data. The main page will also contain a simplified menu offering direct access to images and articles.<br>
 			The images page will contain an option to view the featured images. It will be searchable by sol, Earth date, and camera. The articles page will be searchable by source and keywords.</p><br>
 			<h2>Entities</h2>
-			<h2>loginSource</h2>
+			<h3>loginSource</h3>
 			<ul>
 				<li>loginSourceProvider</li>
 				<li>loginSourceApiKey</li>
@@ -41,9 +41,9 @@
 				<li>newsArticleUrl</li>
 				<li>newsArticleDate</li>
 				<li>newsArticleSynopsis</li>
-			</ul>
+			</ul><br>
 			<h2>Weak Entities</h2>
-			<h4>commentImage</h4>
+			<h3>commentImage</h3>
 			<ul>
 				<li>commentImageId</li>
 				<li>commentUserId</li>
@@ -51,26 +51,26 @@
 				<li>commentDateTime</li>
 				<li>commentContent</li>
 			</ul>
-			<h4>favoriteImage</h4>
+			<h3>favoriteImage</h3>
 			<ul>
 				<li>favoriteImageId</li>
 				<li>favoriteUserId</li>
 				<li>favoriteDateTime</li>
 			</ul>
-			<h4>favoriteNewsArticle</h4>
+			<h3>favoriteNewsArticle</h3>
 			<ul>
 				<li>favoriteNewsArticleId</li>
 				<li>favoriteUserId</li>
 				<li>favoriteDateTime</li>
 			</ul>
-			<h4>commentNewsArticle</h4>
+			<h3>commentNewsArticle</h3>
 			<ul>
 				<li>commentNewsArticleId</li>
 				<li>commentNewsArticleUserId</li>
 				<li>commentNewsArticleCommentId</li>
 				<li>commentNewsArticleDateTime</li>
 				<li>commentNewsArticleContent</li>
-			</ul>
+			</ul><br>
 			<h2>Relations</h2>
 			<h3>User</h3>
 			<ul>
