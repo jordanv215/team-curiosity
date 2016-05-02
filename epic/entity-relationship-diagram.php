@@ -8,4 +8,4 @@
 		<h1>Entity Relationship Diagram</h1><br>
 		<img src="media/entity-relationship-diagram.svg" width="100%"/>
 	</body>
-</html> 
+</html>
