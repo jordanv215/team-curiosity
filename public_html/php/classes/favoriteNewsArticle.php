@@ -31,5 +31,24 @@ class favoriteNewsArticle implements \JsoonSerializable {
  * @param int/null $newFavoriteNewArticleNewsArticleId id of this favoriteNewArticle or null if a new favoriteNewsArticle
  * @param int $newFavoriteNewArticleUserId id of the user who sent this favoriteNewArticle
  * @param \DateTime/string/null $newFavoriteNewsArticleDateTime date and time favoriteNewsArticle was sent or null if set to current date and time
- * 
- */ 
+ * @throws \InvalidArgumentException if data types are not valid
+ * @throws \RangeException if data values are out of bounds (e.g., strings too long,negative integers)
+ * @throw \TypeError if data types violate type hints
+ * @throw \Exception if some other exception occurs
+ **/
+public function __construct(int $newFavoriteNewsArticleNewsArticleId = null, int $newFavoriteNewArticleUserId, $newFavoriteNewsArticleDateTime = null){
+		try {
+			$this->setFavoriteNewsArticleNewsArticleId($newFavoriteNewsArticleNewsArticleId);
+			$this->setFavoriteNewsArticleUserId($newFavoriteNewArticleUserId);
+			$this->setFavoriteNewsArticleDateTime($newFavoriteNewsArticleDateTime);
+		}	catch(\InvalidArgumentException $invalidArgument) {
+			//rethrow the exception to the caller
+				throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		}	catch(\RangeException $range) {
+			// rethrow the exception to the caller
+				throw(new \RangeException($range->getMessage(), 0, $range));
+		}	catch(\TypeError $typeError){
+			// rethrow the exception to the caller
+				throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		}
+}
