@@ -11,11 +11,11 @@ class favoriteNewsArticle implements \JsoonSerializable {
 	use ValidateDate;
 }
 /**
- * id for this favoriteNewsArticle; this is the primary key
+ * id for this favoriteNewsArticle; this is the part of composite primary key
  * @var int $favoriteNewsArticleNewsArticleId
  **/
 	private $favoriteNewsArticleNewsArticleId;
-	/**id of the user who favorites this newsArticle; this is a foreign key
+	/**id of the user who favorites this newsArticle; this is a composite primary key
 	 *@var int $favoriteNewsArticleUserId
 	 * */
 	private $favoriteNewsArticleUserId;
@@ -28,7 +28,7 @@ class favoriteNewsArticle implements \JsoonSerializable {
 /**
  * constructor for this favoriteNewsArticle
  * 
- * @param int/null $newFavoriteNewArticleNewsArticleId id of this favoriteNewArticle or null if a new favoriteNewsArticle
+ * @param int $newFavoriteNewArticleNewsArticleId id of this favoriteNewArticle
  * @param int $newFavoriteNewArticleUserId id of the user who sent this favoriteNewArticle
  * @param \DateTime/string/null $newFavoriteNewsArticleDateTime date and time favoriteNewsArticle was sent or null if set to current date and time
  * @throws \InvalidArgumentException if data types are not valid
@@ -36,10 +36,10 @@ class favoriteNewsArticle implements \JsoonSerializable {
  * @throw \TypeError if data types violate type hints
  * @throw \Exception if some other exception occurs
  **/
-public function __construct(int $newFavoriteNewsArticleNewsArticleId = null, int $newFavoriteNewArticleUserId, $newFavoriteNewsArticleDateTime = null){
+public function __construct(int $newFavoriteNewsArticleNewsArticleId =null, int $newFavoriteNewsArticleUserId, $newFavoriteNewsArticleDateTime = null){
 		try {
 			$this->setFavoriteNewsArticleNewsArticleId($newFavoriteNewsArticleNewsArticleId);
-			$this->setFavoriteNewsArticleUserId($newFavoriteNewArticleUserId);
+			$this->setFavoriteNewsArticleUserId($newFavoriteNewsArticleUserId);
 			$this->setFavoriteNewsArticleDateTime($newFavoriteNewsArticleDateTime);
 		}	catch(\InvalidArgumentException $invalidArgument) {
 			//rethrow the exception to the caller
@@ -50,5 +50,8 @@ public function __construct(int $newFavoriteNewsArticleNewsArticleId = null, int
 		}	catch(\TypeError $typeError){
 			// rethrow the exception to the caller
 				throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		}	catch(\Exception $exception){
+			//	rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 }
