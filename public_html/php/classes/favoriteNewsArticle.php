@@ -28,4 +28,8 @@ class favoriteNewsArticle implements \JsoonSerializable {
 /**
  * constructor for this favoriteNewsArticle
  * 
- */
+ * @param int/null $newFavoriteNewArticleNewsArticleId id of this favoriteNewArticle or null if a new favoriteNewsArticle
+ * @param int $newFavoriteNewArticleUserId id of the user who sent this favoriteNewArticle
+ * @param \DateTime/string/null $newFavoriteNewsArticleDateTime date and time favoriteNewsArticle was sent or null if set to current date and time
+ * 
+ */ 
