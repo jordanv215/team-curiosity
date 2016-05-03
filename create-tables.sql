@@ -49,7 +49,7 @@ CREATE TABLE newsArticle (
 	newsArticleDate DATETIME NOT NULL,
 	newsArticleSynopsis CHAR(256) NOT NULL,
 	newsArticleUrl VARCHAR(512) NOT NULL,
-	INDEX(newsArticleDate)
+	INDEX(newsArticleDate),
 	INDEX(newsArticleSynopsis),
 	UNIQUE(newsArticleUrl),
 	PRIMARY KEY(newsArticleId)
@@ -70,9 +70,33 @@ CREATE TABLE commentImage (
 );
 
 CREATE TABLE favoriteImage (
-
+	favoriteImageImageId INT UNSIGNED NOT NULL,
+	favoriteImageUserId INT UNSIGNED NOT NULL,
+	favoriteImageDateTime DATETIME NOT NULL,
+	FOREIGN KEY(favoriteImageImageId) REFERENCES image(imageId),
+	FOREIGN KEY(favoriteImageUserId) REFERENCES user(userId),
+	PRIMARY KEY(favoriteImageImageId, favoriteImageUserId)
 );
 
 CREATE TABLE commentNewsArticle (
+	commentNewsArticleId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	commentNewsArticleContent VARCHAR(1024) NOT NULL,
+	commentNewsArticleDateTime DATETIME NOT NULL,
+	commentNewsArticleNewsArticleId INT UNSIGNED NOT NULL,
+	commentNewsArticleUserId INT UNSIGNED NOT NULL,
+	INDEX(commentNewsArticleDateTime),
+	INDEX(commentNewsArticleNewsArticleId),
+	INDEX(commentNewsArticleUserId),
+	FOREIGN KEY(commentNewsArticleNewsArticleId) REFERENCES newsArticle(newsArticleId),
+	FOREIGN KEY(commentNewsArticleUserId) REFERENCES user(userId),
+	PRIMARY KEY(commentNewsArticleId)
+);
 
+CREATE TABLE favoriteNewsArticle (
+	favoriteNewsArticleNewsArticleId INT UNSIGNED NOT NULL,
+	favoriteNewsArticleUserId INT UNSIGNED NOT NULL,
+	favoriteNewsArticleDateTime DATETIME NOT NULL,
+	FOREIGN KEY(favoriteNewsArticleNewsArticleId) REFERENCES newsArticle(newsArticleId),
+	FOREIGN KEY(favoriteNewsArticleUserId) REFERENCES user(userId),
+	PRIMARY KEY(favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId)
 );
