@@ -15,4 +15,17 @@ class favoriteNewsArticle implements \JsoonSerializable {
  * @var int $favoriteNewsArticleNewsArticleId
  **/
 	private $favoriteNewsArticleNewsArticleId;
+	/**id of the user who favorites this newsArticle; this is a foreign key
+	 *@var int $favoriteNewsArticleUserId
+	 * */
+	private $favoriteNewsArticleUserId;
 	/**
+	 * date and time this favoriteNewsArticle was sent, in a PHP DateTIme object
+	 * @var \DateTime $favoriteNewsArticleDateTime
+	 **/
+	private $favoriteNewsArticleDateTime;
+
+/**
+ * constructor for this favoriteNewsArticle
+ * 
+ */
