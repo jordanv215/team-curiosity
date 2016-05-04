@@ -55,3 +55,16 @@ public function __construct(int $newFavoriteNewsArticleNewsArticleId =null, int 
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 }
+/**
+ * accessor method for favoriteNewsArticle id
+ * 
+ * @return int value of favoriteNewsArticle id
+ **/
+public function getFavoriteNewsArticleNewsArticleId() {
+	return($this->favoriteNewsArticleNewArticleId);
+}
+/**
+ * matator method for favoriteNewsArticleNewsArticle id
+ * 
+ * @param int $newfavoriteNewsArticleNewsArticleId new value of favoriteNewsArticleNewsArticleId
+ */
