@@ -194,8 +194,7 @@ class User implements \JsonSerializable {
 	 * inserts this user into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
+	 * @param $userEmail
 	 */
 	public function insert(\PDO $pdo, $userEmail) {
 		//enforce the user login id is null (dont insert a login id that already exists)
@@ -236,6 +235,7 @@ function delete(\PDO $pdo) {
 	//bind member variables
 	$parameters = ["userId" => $this->userId];
 	$statement->execute($parameters);
+
 }
 
 /**
@@ -246,8 +246,10 @@ function delete(\PDO $pdo) {
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not the correct data type
  */
+
 public
 static function getAllUserId(\PDO $pdo) {
+
 	//create query template
 	$query = "SELECT userId, userLoginId, userName, userEmail FROM data";
 	$statement = $pdo->prepare($query);
