@@ -207,6 +207,118 @@ class favoriteNewsArticle implements \JsonSerializable {
 		$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId" => $this->favoriteNewsArticleUserId, "favoriteNewsArticleDateTime" = $this->favoriteNewsArticleDateTime];
 		$statement->($parameters);
 	}
+	/**
+	 * gets the favoriteNewsArticle by favoriteNewsArticleNewsArticle id
+	 *
+	 * @param \PDO @pdo PDO connection object
+	 * @param int $favoriteNewsArticleNewsArticleId favoriteNewsArticle id to search for
+	 * @return favoriteNewsArticle/null favoriteNewArticle found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getFavoriteNewsArticlebyFavoriteNewsArticleFavoriteNewsArticleId(\PDO $pdo, int $favoriteNewsArticleNewsArticleId) {
+	//sanitize the favoriteNewsArticleNewsArticleId before searching
+	if($favoriteNewsArticleNewsArticleId <= 0) {
+		throw(new \PDOException("favoriteNewsArticle newsArticle id is not positive"));
+	}
+
+	// create query template
+	$query = "SELECT favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime FROM favoriteNewsArticle WHERE favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsArticleId";
+	$statement = $pdo->prepare($query);
+
+	//bind the favoriteNewsArticle newsArticle id to the place holder in the template
+	$parameters = array["favoriteNewsArticleNewsArticleId" => $favoriteNewsArticleNewsArticleId];
+	$statement->execute($parameters);
+
+	// grab the favoriteNewsArticle from mySQL
+	try {
+		$favoriteNewsArticle = null;
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$row = $statement->fetch();
+		if($row !== false) {
+			$favoriteNewsArticle = new favoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
+		}
+	} catch(\Exception $exception) {
+		//if the row couldn't be converted, rethrow it
+		throw(new \PDOException($exception->getMessage(), 0, $exception));
+	}
+	return ($favoriteNewsArticle);
+	}
+
+	/**gets the favoriteNewsArticle by favoriteNewsArticleUserId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $favoriteNewsArticleUserId favoriteNewsArticle user id to search for
+	 * @return favoriteNewsArticle/null favoriteNewsArticle found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getfavoriteNewsArticleByfavoriteNewsArticleUserId(\PDO $pdo, int $favoriteNewsArticleUserId) {
+	// sanitize the favoriteNewsArticleUserId before searching
+	if($favoriteNewsArticleUserId <= 0) {
+		throw(new \PDOException("favoriteNewsArticle user id is not positive"));
+	}
+
+	// create query template
+	$parameters = array["favoriteNewsArticleUserId" => $favoriteNewsArticleUserId];
+	$statement->execute($parameters);
+
+	// grab the favoriteNewsArticle from mySQL
+	try {
+		$favoriteNewsArticle = null;
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$row = $statement->fetch();
+		if($row !== false) {
+			$favoriteNewsArticle = new favoriteNewsArticle($row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleDateTime"]);
+		}
+	} catch(\Exception $exception) {
+		//if the row couldn't be converted, rethrow it
+		throw(new \PDOException($exception->getMessage(), 0, $exception));
+	}
+	return ($favoriteNewsArticle);
+	}
+
+	/**
+	 * gets all favoriteNewsArticle
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of favoriteNewsArticle found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllFavoriteNewsArticle(\PDO $pdo) {
+	// create query template
+	$query = "SELECT favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime FROM favoriteNewsArticle";
+	$statement = $pdo->prepare($query);
+	$statement->execute();
+
+	//build an array of favoriteNewsArticle
+	$favoriteNewsArticles = new \SplFixedArray($statement->rowCount());
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+	while(($row = $statement->fetch()) !== false) {
+		try {
+			$favoriteNewsArticle = new favoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favorite NewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
+			$favoriteNewsArticles[$favoriteNewsArticles->key()] = $favoriteNewsArticle;
+			$favoriteNewsArticles->next();
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+	}
+	return ($favoriteNewsArticles);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+	$fields = get_object_vars($this);
+	$fields["favoriteNewsArticleDateTime"] = intval($this->favoriteNewsArticleDateTime->format("U")) * 1000;
+	return ($fields);
+	}
+}
 
 
 
