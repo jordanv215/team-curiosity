@@ -156,4 +156,6 @@ class favoriteNewsArticle implements \JsonSerializable {
 		//create query template
 		$query = "INSERT INTO favoriteNewsArticle(favoriteNewsArticleUserId, favoriteNewsArticleDateTime) VALUES (:favoriteNewsArticleUserId, :favoriteNewsArticleDateTime)";
 		$statement = $pdo->prepare($query);
+	
+	// bind the member variables to the place holders in the template
 }
