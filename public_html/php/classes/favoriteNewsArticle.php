@@ -147,15 +147,66 @@ class favoriteNewsArticle implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function insert(\PDO $pdo){
-		//enforce the favoriteNewsArticleNewsArticleId is null (ie., don't insert a favoriteNewsArticle that already exists)
-		if($this->favoriteNewsArticleNewsArticleId !== null){
-			throw(new \PDOException("not a new favoriteNewsArticle"));
+	public function insert(\PDO $pdo) {
+	//enforce the favoriteNewsArticleNewsArticleId is null (ie., don't insert a favoriteNewsArticle that already exists)
+	if($this->favoriteNewsArticleNewsArticleId !== null) {
+		throw(new \PDOException("not a new favoriteNewsArticle"));
+	}
+
+	//create query template
+	$query = "INSERT INTO favoriteNewsArticle(favoriteNewsArticleUserId, favoriteNewsArticleDateTime) VALUES (:favoriteNewsArticleUserId, :favoriteNewsArticleDateTime)";
+	$statement = $pdo->prepare($query);
+
+	// bind the member variables to the place holders in the template
+	$formattedDate = $this->favoriteNewsArticleDateTime->format("Y-m-d H:i:s");
+	$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoritenewsArticleNewsArticleId, "favoriteNewsArticleUserId" => $this->favoriteNewsArticleUserId, "favoriteNewsArticleDateTime" => $formattedDate];
+	$statement->execute($parameters);
+	}
+
+	/**
+	 * deletes this favoriteNewsArticle from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related error occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) {
+	// enforce the favoriteNewsArticleNewsArticleId is not null (i.e., don't delete a favoriteNewsArticle that hasn't been inserted)
+	if($this->favoriteNewsArticleNewsArticleId === null) {
+		throw(new \PDOException("unable to delete a favoriteNewsArticle that does not exist"));
+	}
+
+	//create query template
+	$query = "DELETE FROM favoriteNewsArticle WHERE favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsArticleId";
+	$statement = $pdo->prepare($query);
+
+	// bind the member variables to the place holder in the template
+	$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoriteNewsArticleNewsArticleId];
+	$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this favoriteNewsArticle in mySQL
+	 * 
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo){
+		// enforce the favoriteNewsArticleNewsArticleId is not null (i.e., don't update a favoriteNewsArticle that hasn't been inserted)
+		if($this->favoriteNewsArticleNewsArticleId === null){
+			throw(new \PDOException("unable to update a favoriteNewsArticle that does not exist"));
 		}
-		
+	
 		//create query template
-		$query = "INSERT INTO favoriteNewsArticle(favoriteNewsArticleUserId, favoriteNewsArticleDateTime) VALUES (:favoriteNewsArticleUserId, :favoriteNewsArticleDateTime)";
+		$query = "UPDATE favoriteNewsArticle SET favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsarticleId, favoriteNewsArticleUserId = :favoriteNewsArticleUserId, favoriteNewsArticleDateTime = :favoriteNewsArticleDateTime";
 		$statement = $pdo->prepare($query);
 	
-	// bind the member variables to the place holders in the template
-}
+		//bind the member vatiables to the place holder in the template
+		$formattedDate = $this->favoriteNewsArticleDateTime->format("Y-m-d H:i:s");
+		$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId" => $this->favoriteNewsArticleUserId, "favoriteNewsArticleDateTime" = $this->favoriteNewsArticleDateTime];
+		$statement->($parameters);
+	}
+
+
+
