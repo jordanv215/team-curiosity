@@ -30,7 +30,7 @@ class favoriteNewsArticle implements \JsonSerializable {
  	* 
  	* @param int $newFavoriteNewArticleNewsArticleId id of this favoriteNewArticle
  	* @param int $newFavoriteNewArticleUserId id of the user who sent this favoriteNewArticle
- 	* @param \DateTime/string/null $newFavoriteNewsArticleDateTime date and time favoriteNewsArticle was sent or null 	if set to current date and time
+ 	* @param \DateTime|string|null $newFavoriteNewsArticleDateTime date and time favoriteNewsArticle was sent or null 	if set to current date and time
  	* @throws \InvalidArgumentException if data types are not valid
  	* @throws \RangeException if data values are out of bounds (e.g., strings too long,negative integers)
 	 * @throw \TypeError if data types violate type hints
@@ -119,7 +119,7 @@ class favoriteNewsArticle implements \JsonSerializable {
 
 	/**
 	 * mutator method for favoriteNewsArticle date and time
-	 * @param \DateTime/string/null $newFavoriteNewsArticleDatetime favoriteNewsArticle date and time as a DateTime object or string (or null to load the current time)
+	 * @param \DateTime|string|null $newFavoriteNewsArticleDatetime favoriteNewsArticle date and time as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newFavoriteNewsArticleDateTime is nont a valid object or string
 	 * @throws \RangeException if $newFavoriteNewsArticleDateTime is a date or time that does not exist
 	 **/
@@ -202,7 +202,7 @@ class favoriteNewsArticle implements \JsonSerializable {
 		$query = "UPDATE favoriteNewsArticle SET favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsarticleId, favoriteNewsArticleUserId = :favoriteNewsArticleUserId, favoriteNewsArticleDateTime = :favoriteNewsArticleDateTime";
 		$statement = $pdo->prepare($query);
 	
-		//bind the member vatiables to the place holder in the template
+		//bind the member variables to the place holder in the template
 		$formattedDate = $this->favoriteNewsArticleDateTime->format("Y-m-d H:i:s");
 		$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId" => $this->favoriteNewsArticleUserId, "favoriteNewsArticleDateTime" = $this->favoriteNewsArticleDateTime];
 		$statement->($parameters);
@@ -212,7 +212,7 @@ class favoriteNewsArticle implements \JsonSerializable {
 	 *
 	 * @param \PDO @pdo PDO connection object
 	 * @param int $favoriteNewsArticleNewsArticleId favoriteNewsArticle id to search for
-	 * @return favoriteNewsArticle/null favoriteNewArticle found or null if not found
+	 * @return favoriteNewsArticle|null favoriteNewArticle found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
@@ -249,7 +249,7 @@ class favoriteNewsArticle implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $favoriteNewsArticleUserId favoriteNewsArticle user id to search for
-	 * @return favoriteNewsArticle/null favoriteNewsArticle found or null if not found
+	 * @return favoriteNewsArticle|null favoriteNewsArticle found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
