@@ -267,7 +267,6 @@ static function getAllUserId(\PDO $pdo) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 	}
-	return ($tweets);
+	return ($users);
 
 }
-
