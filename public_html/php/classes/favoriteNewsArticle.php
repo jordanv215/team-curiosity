@@ -7,7 +7,7 @@ require_once("autoload.php");
  * 
  * This favoriteNewsArticle can be considered a small example of what services like favoriteNewsArticle store when NewsArticle are favorited and received by using favoriteNewsArticle.
  * */
-class favoriteNewsArticle implements \JsoonSerializable {
+class favoriteNewsArticle implements \JsonSerializable {
 	use ValidateDate;
 }
 /**
@@ -55,6 +55,7 @@ public function __construct(int $newFavoriteNewsArticleNewsArticleId =null, int 
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 }
+
 /**
  * accessor method for favoriteNewsArticle id
  * 
@@ -63,8 +64,33 @@ public function __construct(int $newFavoriteNewsArticleNewsArticleId =null, int 
 public function getFavoriteNewsArticleNewsArticleId() {
 	return($this->favoriteNewsArticleNewArticleId);
 }
+
 /**
- * matator method for favoriteNewsArticleNewsArticle id
+ * mutator method for favoriteNewsArticle id
  * 
- * @param int $newfavoriteNewsArticleNewsArticleId new value of favoriteNewsArticleNewsArticleId
+ * @param int $newFavoriteNewsArticleNewsArticleId new value of favoriteNewsArticle id
+ * @throws \RangeException if $newFavoriteNewsArticleNewsArticleId is not positve
+ * @throws  \TypeError if $newFavoriteNewsArticleNewsArticleId is not an integer
+ **/
+public function setFavoriteNewsArticleNewsArticleId(int $newFavoriteNewsArticleNewsArticleId){
+	// verify the favoriteNewsArticle id is positive
+	if($newFavoriteNewsArticleNewsArticleId <= 0){
+		throw(new \RangeException("favoriteNewsArticle id is not positive"));
+	}
+	
+	// convert and store the favoriteNewsArticle id
+	$this->favoriteNewsArticleNewsArticleId = $newFavoriteNewsArticleNewsArticleId;
+}
+
+/**
+ * accessor method for favoriteNewsArticleUserId
+ * 
+ * @return int value of favoriteNewsArticle user id
+ **/
+public function getFavoriteNewsArticleUserId(){
+	return($this->favoriteNewsArticleUserId);
+}
+
+/**
+ * mutator method for favoriteNewsArticle user id
  */
