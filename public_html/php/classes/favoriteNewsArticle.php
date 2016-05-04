@@ -314,9 +314,9 @@ class favoriteNewsArticle implements \JsonSerializable {
 	 * @return array resulting state variables to serialize
 	 **/
 	public function jsonSerialize() {
-	$fields = get_object_vars($this);
-	$fields["favoriteNewsArticleDateTime"] = intval($this->favoriteNewsArticleDateTime->format("U")) * 1000;
-	return ($fields);
+		$fields = get_object_vars($this);
+		$fields["favoriteNewsArticleDateTime"] = intval($this->favoriteNewsArticleDateTime->format("U")) * 1000;
+		return ($fields);
 	}
 }
 
