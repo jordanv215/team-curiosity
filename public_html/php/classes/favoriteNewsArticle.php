@@ -136,8 +136,24 @@ class favoriteNewsArticle implements \JsonSerializable {
 		}	catch(\InvalidArgumentException $invalidArgument){
 				throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		}	catch(\RangeException $range){
-				throw(new \RangeException($range->getMessage(), 0, $range));
+				throw(new \RangeException($range->getMessage(), 0, $range));	
 		}
 		$this->favoriteNewsArticleDateTime = $newFavoriteNewsArticleDateTime;
 	}
-
+	/**
+	 * inserts this favoriteNewsArticle into mySQL
+	 * 
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo){
+		//enforce the favoriteNewsArticleNewsArticleId is null (ie., don't insert a favoriteNewsArticle that already exists)
+		if($this->favoriteNewsArticleNewsArticleId !== null){
+			throw(new \PDOException("not a new favoriteNewsArticle"));
+		}
+		
+		//create query template
+		$query = "INSERT INTO favoriteNewsArticle(favoriteNewsArticleUserId, favoriteNewsArticleDateTime) VALUES (:favoriteNewsArticleUserId, :favoriteNewsArticleDateTime)";
+		$statement = $pdo->prepare($query);
+}
