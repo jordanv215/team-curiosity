@@ -211,64 +211,63 @@ class User implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
-}
 
-
-/**
- * deletes this user from mySQL
- *
- * @param \PDO $pdo PDO connection object
- * @throws \PDOException when mySQL related errors occur
- * @throws \TypeError if $pdo is not a PDO connection object
- */
-public
-function delete(\PDO $pdo) {
-	//enforce the userId is not null (don't delete a user that hasn't been inserted)
-	if($this->userId === null) {
-		throw (new \PDOException("unable to delete a user that does not exist"));
-	}
-
-	//create query template
-	$query = "DELETE FROM user WHERE userId = :userId";
-	$statement = $pdo->prepare($query);
-
-	//bind member variables
-	$parameters = ["userId" => $this->userId];
-	$statement->execute($parameters);
-
-}
-
-/**
- * gets the user by content
- * @param \PDO $pdo PDO connection object
- * @param int $userId to search for
- * @return \SplFixedArray SplFixedArray of id found
- * @throws \PDOException when mySQL related errors occur
- * @throws \TypeError when variables are not the correct data type
- */
-
-public
-static function getAllUserId(\PDO $pdo) {
-
-	//create query template
-	$query = "SELECT userId, userLoginId, userName, userEmail FROM data";
-	$statement = $pdo->prepare($query);
-	$statement->execute();
-
-	//build array of users
-	$users = new \SplFixedArray($statement->rowCount());
-	$statement = $pdo->prepare($query);
-	$statement->execute();
-	while(($row = $statement->fetch()) !== false) {
-		try {
-			$user = new user($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
-			$users[$users->key()] = $users;
-			$users->next();
-		} catch(\Exception $exception) {
-			//if the row couldn't be converted, rethrow
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+	/**
+	 * deletes this user from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public
+	function delete(\PDO $pdo) {
+		//enforce the userId is not null (don't delete a user that hasn't been inserted)
+		if($this->userId === null) {
+			throw (new \PDOException("unable to delete a user that does not exist"));
 		}
-	}
-	return ($users);
 
+		//create query template
+		$query = "DELETE FROM user WHERE userId = :userId";
+		$statement = $pdo->prepare($query);
+
+		//bind member variables
+		$parameters = ["userId" => $this->userId];
+		$statement->execute($parameters);
+
+	}
+
+	/**
+	 * gets the user by content
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $userId to search for
+	 * @return \SplFixedArray SplFixedArray of id found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+
+	public
+	static function getAllUserId(\PDO $pdo) {
+
+		//create query template
+		$query = "SELECT userId, userLoginId, userName, userEmail FROM data";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		//build array of users
+		$users = new \SplFixedArray($statement->rowCount());
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$user = new user($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
+				$users[$users->key()] = $users;
+				$users->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($users);
+
+	}
 }
