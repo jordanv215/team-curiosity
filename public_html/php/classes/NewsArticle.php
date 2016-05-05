@@ -9,46 +9,46 @@ require_once("Autoload.php");
  * @author Anthony Williams <ailliams144@bootcamp-coders.cnm.edu>
  * @version 2.0.0
  **/
-class newsArticle implements \JsonSerializable {
+class NewsArticle implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * id for the Article; this is the primary key
-	 * @var int $newsArticleId
+	 * @var int $NewsArticleId
 	 */
-	private $newsArticleId;
+	private $NewsArticleId;
 	/**
 	 * date and time that this Article was sent, in a PHP DateTime object
-	 * @var \DateTime $newsArticleDate
+	 * @var \DateTime $NewsArticleDate
 	 **/
-	private $newsArticleDate;
+	private $NewsArticleDate;
 	/**
 	 * actual textual Synopsis of the Article
-	 * @var string $newsArticleSynopsis
+	 * @var string $NewsArticleSynopsis
 	 **/
-	private $newsArticleSynopsis;
+	private $NewsArticleSynopsis;
 	/**
 	 * the actual Url of the Article
-	 * @var string $newsArticleUrl
+	 * @var string $NewsArticleUrl
 	 */
 	private $newsArticleUrl;
 
 	/**
-	 * constructor for this newsArticle
-	 * @param int|null $newsArticleId id of this newsArticle or Null if a new newsArticle
-	 * @param \DATETIME|string|null $ newsArticleDate date and time newsArticle was sent or null if set to current date and time
-	 * @param string $newsArticleSynopsis string containing a brief synopsis
-	 * @param string $newsArticleUrl string containing the location to newsArticleUrl
+	 * constructor for this NewsArticle
+	 * @param int|null $NewsArticleId id of this NewsArticle or Null if a new NewsArticle
+	 * @param \DATETIME|string|null $ NewsArticleDate date and time NewsArticle was sent or null if set to current date and time
+	 * @param string $NewsArticleSynopsis string containing a brief synopsis
+	 * @param string $NewsArticleUrl string containing the location to NewsArticleUrl
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newsArticleId = null, $newsArticleDate = null, string $newsArticleSynopsis, string $newsArticleUrl) {
+	public function __construct(int $NewsArticleId = null, $NewsArticleDate = null, string $NewsArticleSynopsis, string $NewsArticleUrl) {
 		try {
-			$this->setNewsArticleId($newsArticleId);
-			$this->setNewsArticleDate($newsArticleDate);
-			$this->setNewsArticleSynopsis($newsArticleSynopsis);
-			$this->setNewsArticleUrl($newsArticleUrl);
+			$this->setNewsArticleId($NewsArticleId);
+			$this->setNewsArticleDate($NewsArticleDate);
+			$this->setNewsArticleSynopsis($NewsArticleSynopsis);
+			$this->setNewsArticleUrl($NewsArticleUrl);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -65,133 +65,133 @@ class newsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for newsArticleId
+	 * accessor method for NewsArticleId
 	 *
-	 * @return int|null value of  newsArticleId
+	 * @return int|null value of  NewsArticleId
 	 **/
 	public function getNewsArticleId() {
-		return ($this->newsArticleId);
+		return ($this->NewsArticleId);
 	}
 
 	/**
-	 * mutator method for newsArticleId
+	 * mutator method for NewsArticleId
 	 *
-	 * @param int|null $newsArticleId new value of newsArticleId
-	 * @throws \RangeException if $newsArticleId is not positive
-	 * @throws \TypeError if $newsArticleId is not an integer
+	 * @param int|null $NewsArticleId new value of NewsArticleId
+	 * @throws \RangeException if $NewsArticleId is not positive
+	 * @throws \TypeError if $NewsArticleId is not an integer
 	 **/
-	public function setNewsArticleId(int $newsArticleId = null) {
-		//base case: if the newsArticleId is null, this is a new newsArticleId without a mySQL assigned id (yet)
-		if($newsArticleId === null) {
-			$this->newsArticleId = null;
+	public function setNewsArticleId(int $NewsArticleId = null) {
+		//base case: if the NewsArticleId is null, this is a new NewsArticleId without a mySQL assigned id (yet)
+		if($NewsArticleId === null) {
+			$this->NewsArticleId = null;
 			return;
 		}
 
-		//verify the newsArticleId is positive
-		if($newsArticleId <= 0) {
-			throw(new \RangeException("newsArticleId is not positive"));
+		//verify the NewsArticleId is positive
+		if($NewsArticleId <= 0) {
+			throw(new \RangeException("NewsArticleId is not positive"));
 		}
 
-		//convert and store the newsArticleId
-		$this->newsArticleId = $newsArticleId;
+		//convert and store the NewsArticleId
+		$this->NewsArticleId = $NewsArticleId;
 	}
 
 	/**
-	 * accessor method for newsArticleDate
+	 * accessor method for NewsArticleDate
 	 *
-	 * @return \DateTime value of the newsArticleDate
+	 * @return \DateTime value of the NewsArticleDate
 	 **/
 	public function getNewsArticleDate() {
-		return ($this->newsArticleDate);
+		return ($this->NewsArticleDate);
 	}
 
 	/**
-	 * mutator method for newsArticleDate
-	 * @param \DateTime|string|null $newsArticleDate newsArticleDate as a DateTime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $newsArticleDate is not a valid object or string
-	 * @throws \RangeException if $newsArticleDate is a date that does not exist
+	 * mutator method for NewsArticleDate
+	 * @param \DateTime|string|null $NewsArticleDate NewsArticleDate as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $NewsArticleDate is not a valid object or string
+	 * @throws \RangeException if $NewsArticleDate is a date that does not exist
 	 **/
 	public
-	function setNewsArticleDate($newsArticleDate = null) {
+	function setNewsArticleDate($NewsArticleDate = null) {
 		//base case: if the date is null, use the current date and time
-		if($newsArticleDate === null) {
-			$this->newsArticleDate = new \DateTime();
+		if($NewsArticleDate === null) {
+			$this->NewsArticleDate = new \DateTime();
 			return;
 		}
 		// store the newsArticleDate
 		try {
-			$newsArticleDate = $this->validateDate($newsArticleDate);
+			$NewsArticleDate = $this->validateDate($NewsArticleDate);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
-		$this->newsArticleDate = $newsArticleDate;
+		$this->NewsArticleDate = $NewsArticleDate;
 	}
 
 	/**
-	 * accessor method for newsArticleSynopsis
+	 * accessor method for NewsArticleSynopsis
 	 *
-	 * @return string value of newsArticleSynopsis
+	 * @return string value of NewsArticleSynopsis
 	 **/
 	public
 	function getNewsArticleSynopsis() {
-		return ($this->newsArticleSynopsis);
+		return ($this->NewsArticleSynopsis);
 	}
 
 	/**
-	 * mutator method for newsArticleSynopsis
-	 * @param string $newsArticleSynopsis new value of newsArticleSynopsis
-	 * @throws \InvalidArgumentException if $newsArticleSynopsis is not a string or insecure
-	 * @throws \RangeException if $newsArticleSynopsis is > 256 characters
-	 * @throws \TypeError if $newsArticleSynopsis is not a string
+	 * mutator method for NewsArticleSynopsis
+	 * @param string $NewsArticleSynopsis new value of NewsArticleSynopsis
+	 * @throws \InvalidArgumentException if $NewsArticleSynopsis is not a string or insecure
+	 * @throws \RangeException if $NewsArticleSynopsis is > 256 characters
+	 * @throws \TypeError if $NewsArticleSynopsis is not a string
 	 **/
 
 	public
-	function setNewsArticleSynopsis(string $newsArticleSynopsis) {
-		if(strlen($newsArticleSynopsis) > 256) {
-			// verify the newsArticleSynopsis is secure
-			$newsArticleSynopsis = trim($newsArticleSynopsis);
-			$newsArticleSynopsis = filter_var($newsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-			if(empty($newsArticleSynopsis) === true) {
-				throw(new \InvalidArgumentException("newsArticleSynopsis is empty or insecure"));
+	function setNewsArticleSynopsis(string $NewsArticleSynopsis) {
+		if(strlen($NewsArticleSynopsis) > 256) {
+			// verify the NewsArticleSynopsis is secure
+			$NewsArticleSynopsis = trim($NewsArticleSynopsis);
+			$NewsArticleSynopsis = filter_var($NewsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+			if(empty($NewsArticleSynopsis) === true) {
+				throw(new \InvalidArgumentException("NewsArticleSynopsis is empty or insecure"));
 			}
 
-			// store the newsArticleSynopsis;
-			$this->newsArticleSynopsis = $newsArticleSynopsis;
+			// store the NewsArticleSynopsis;
+			$this->NewsArticleSynopsis = $NewsArticleSynopsis;
 		}
 	}
 
 
 	/**
-	 * accessor method for newsArticleUrl
+	 * accessor method for NewsArticleUrl
 	 *
-	 * @return string value of newsArticleUrl
+	 * @return string value of NewsArticleUrl
 	 **/
 	public
 	function getNewsArticleUrl() {
-		return ($this->newsArticleUrl);
+		return ($this->NewsArticleUrl);
 	}
 
 	/**
-	 * mutator method for newsArticleUrl
-	 * @param string $newsArticleUrl new value of newsArticleUrl
-	 * @throws \InvalidArgumentException if $newsArticleUrl is not a string or insecure
-	 * @throws \RangeException if $newsArticleUrl is > 256 characters
-	 * @throws \TypeError if $newsArticleUrl is not a string
+	 * mutator method for NewsArticleUrl
+	 * @param string $NewsArticleUrl new value of NewsArticleUrl
+	 * @throws \InvalidArgumentException if $NewsArticleUrl is not a string or insecure
+	 * @throws \RangeException if $NewsArticleUrl is > 256 characters
+	 * @throws \TypeError if $NewsArticleUrl is not a string
 	 **/
 
 	public
-	function setNewsArticleUrl(string $newsArticleUrl) {
-		if(strlen($newsArticleUrl) > 256) {
-			// verify the newsArticleUrl is secure
-			$newsArticleUrl = trim($newsArticleUrl);
-			$newsArticleUrl = filter_var($newsArticleUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-			if(empty($newsArticleUrl) === true) {
-				throw(new \InvalidArgumentException("newsArticleUrl is empty or insecure"));
+	function setNewsArticleUrl(string $NewsArticleUrl) {
+		if(strlen($NewsArticleUrl) > 256) {
+			// verify the NewsArticleUrl is secure
+			$NewsArticleUrl = trim($NewsArticleUrl);
+			$NewsArticleUrl = filter_var($NewsArticleUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+			if(empty($NewsArticleUrl) === true) {
+				throw(new \InvalidArgumentException("NewsArticleUrl is empty or insecure"));
 			}
-			// store the newsArticleUrl;
-			$this->newsArticleUrl = $newsArticleUrl;
+			// store the NewsArticleUrl;
+			$this->NewsArticleUrl = $NewsArticleUrl;
 			{
 			}
 		}
@@ -206,17 +206,17 @@ class newsArticle implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo){
-			// enforce the newsArticleId is null (i.e., don't insert a newsArticleId that already exists)
-			if($this->newsArticleId !== null){
-				throw(new \PDOException("not a new newsArticle"));
+			// enforce the NewsArticleId is null (i.e., don't insert a NewsArticleId that already exists)
+			if($this->NewsArticleId !== null){
+				throw(new \PDOException("not a new NewsArticle"));
 			}
 
 		// create query template
-		$query = "INSERT INTO newsArticle(newsArticleDate, newsArticleSynopsis, newsArticleUrl) VALUES(:newsArticleDate, :newsArticleSynopsis, :newsArticleUrl)";
+		$query = "INSERT INTO NewsArticle(NewsArticleDate, NewsArticleSynopsis, NewsArticleUrl) VALUES(:NewsArticleDate, :NewsArticleSynopsis, :NewsArticleUrl)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["newsArticleDate" => $this->newsArticleDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, $formattedDate];
+		$formattedDate = $this->NewsArticleDate->format("Y-m-d H:i:s");
+		$parameters = ["NewsArticleDate" => $this->NewsArticleDate, "NewsArticleSynopsis" => $this->NewsArticleSynopsis, $formattedDate];
 		$statement = $pdo->prepare($query);
 
 	}
