@@ -206,7 +206,19 @@ class newsArticle implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo){
-			// enforce the newsArticleDate is null (i.e., don't insert
+			// enforce the newsArticleId is null (i.e., don't insert a newsArticleId that already exists)
+			if($this->newsArticleId !== null){
+				throw(new \PDOException("not a new newsArticle"));
+			}
+
+		// create query template
+		$query = "INSERT INTO newsArticle(newsArticleDate, newsArticleSynopsis, newsArticleUrl) VALUES(:newsArticleDate, :newsArticleSynopsis, :newsArticleUrl)";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holders in the template
+		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
+		$parameters = ["newsArticleDate" => $this->newsArticleDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, $formattedDate];
+		$statement = $pdo->prepare($query);
+
 	}
 
 
