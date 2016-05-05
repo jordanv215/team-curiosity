@@ -12,12 +12,12 @@ require_once(dirname(__DIR__) . "/php/classes/autoload.php");
 /**
  * FULL PHPUnit test for the favoriteNewsArticle class
  *
- * This is a complete PHPUnit test of the favoriteNewsArticle class. It is complete because *ALL* mySQL/PDO enabled methods
+ * This is a complete PHPUnit test of the FavoriteNewsArticle class. It is complete because *ALL* mySQL/PDO enabled methods
  * are tested for both invalid and valid inputs.
  **/
 class favoriteNewsArticleTest extends TeamCuriosityTest {
 	/**
-	 * content of the favoriteNewsArticle
-	 * @var 
+	 * timestamp of the FavoriteNewsArticle;
+	
 	 */
 }
