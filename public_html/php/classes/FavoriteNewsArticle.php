@@ -7,7 +7,7 @@ require_once("Autoload.php");
  *
  * This favoriteNewsArticle can be considered a small example of what services like favoriteNewsArticle store when NewsArticle are favorited and received by using favoriteNewsArticle.
  * */
-class favoriteNewsArticle implements \JsonSerializable {
+class FavoriteNewsArticle implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * id for this favoriteNewsArticle; this is the part of composite primary key

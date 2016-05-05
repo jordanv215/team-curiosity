@@ -6,7 +6,7 @@ require_once("Autoload.php");
 /**
  *
  **/
-class image implements \JsonSerializable {
+class Image implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * constructor for this image
@@ -50,5 +50,3 @@ class image implements \JsonSerializable {
 				throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
-	
-	/**

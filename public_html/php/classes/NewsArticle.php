@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Awilliams144\TeamCuriosity;
+namespace Edu\Cnm\TeamCuriosity;
 
 require_once("Autoload.php");
 
@@ -67,7 +67,7 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * accessor method for NewsArticleId
 	 *
-	 * @return int|null value of  NewsArticleId
+	 * @return int | null value of  NewsArticleId
 	 **/
 	public function getNewsArticleId() {
 		return ($this->NewsArticleId);
@@ -76,7 +76,7 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * mutator method for NewsArticleId
 	 *
-	 * @param int|null $NewsArticleId new value of NewsArticleId
+	 * @param int | null $NewsArticleId new value of NewsArticleId
 	 * @throws \RangeException if $NewsArticleId is not positive
 	 * @throws \TypeError if $NewsArticleId is not an integer
 	 **/
@@ -107,7 +107,7 @@ class NewsArticle implements \JsonSerializable {
 
 	/**
 	 * mutator method for NewsArticleDate
-	 * @param \DateTime|string|null $NewsArticleDate NewsArticleDate as a DateTime object or string (or null to load the current time)
+	 * @param \DateTime | string | null $NewsArticleDate NewsArticleDate as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $NewsArticleDate is not a valid object or string
 	 * @throws \RangeException if $NewsArticleDate is a date that does not exist
 	 **/
