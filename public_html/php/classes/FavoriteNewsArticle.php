@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity;
 
-require_once("autoload.php");
+require_once("foo.php");
 
 /**A section for users to like their favorite article of news
  *
