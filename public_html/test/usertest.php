@@ -4,7 +4,7 @@ namespace Edu\Cnm\TeamCuriosity\Test;
 use Edu\Cnm\\TeamCuriosity\{user};
 
 // grab test parameters
-require_once ("TeamCuriosityTest.php");
+require_once("TeamCuriosityTest.php");
 
 // grab test under scrutiny
 require_once (dirname(__DIR__)) . "/php/classes/Autoload.php");
@@ -57,10 +57,31 @@ class UserTest extends TeamCuriosityTest {
 		$user->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields to match our expectations
-		$pdoUser = User::getUserbyUserID($this->getPDO(), $user ->getUserId());
+		$pdoUser = User::getUserbyUserID($this->getPDO(), $user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("user"));
-		$this->assertEquals($pdoUser->getEmail)
+		$this->assertEquals($pdoUser->getEmail(), $this->email->getEmail());
+		$this->assertEquals($pdoUsername->getUsername(), $this->username->getUsername());
+		$this->assertEquals($pdoLoginSource->getLoginSource(), $this->loginSource->getLoginSource());
+
 	}
+
+	//test inserting something that already exists
+	//expecting PDOException
+
+	public function testInsertInvalidUser() {
+		$user = new User(UserTest::INVALID_KEY, $this->user->$getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
+		$user->insert($this->getPDO());
+
+	}
+
+
+
+
+
+
+
+
+
 
 
 
