@@ -90,11 +90,34 @@ class LoginSourceTest extends TeamCuriosityTest {
 	}
 	
 	/**
-	 * test updating a login source that already exists
+	 * test creating a login source and then deleting it
 	 *
 	 * @expectedException PDOException
 	 */
-	public function testUpdateInvalidLoginSource() {
-		//
+	public function testDeleteValidLoginSource() {
+		// count number of rows
+		$numRows = $this->getConnection()->getRowCount("LoginSource");
+		
+		// create a new login source and insert into table
+		$LoginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$LoginSource->insert($this->getPDO());
+		
+		// delete it from the table
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
+		$LoginSource->delete($this->getPDO());
+		
+		// grab data from table and enforce that login source does not exist
+		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $LoginSource->getLoginSourceId());
+		$this->assertNull($pdoLoginSource);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("LoginSource"));
+	}
+	
+	/**
+	 * test deleting a login source that does not exist
+	 * 
+	 * @expectedException PDOException
+	 */
+	public function testDeleteInvalidLoginSource() {
+		
 	}
 }
