@@ -203,11 +203,11 @@ class User implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO user(userLoginId, userName, userEmail) VALUES(:userLoginId, userName, userEmail)";
+		$query = "INSERT INTO user(userLoginId, userName, userEmail) VALUES(:userLoginId, :userName, :userEmail)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$parameters = ["userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $userEmail];
+		$parameters = ["userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
 		$statement->execute($parameters);
 	}
 

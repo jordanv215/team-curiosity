@@ -20,8 +20,16 @@ require_once(dirname(__DIR__)) . "/php/classes/autoload.php");
  */
 class usertest extends TeamCuriosityTest {
 	/**
-	 *
+	 * content of this tweet
+	 * @var string $VALID_USER
 	 */
+	protected $VALID_USER = "PHPUnit test passing";
+	/**
+	 * content of the updated Tweet
+	 * @var string $VALID_USER2
+	 **/
+	protected $VALID_USER2= "PHPUnit test passing";
+
 }
 
 
