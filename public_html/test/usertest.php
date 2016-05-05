@@ -74,6 +74,7 @@ class UserTest extends TeamCuriosityTest {
 
 	}
 
+	//test creating a user and then deleting it
 
 
 
