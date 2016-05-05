@@ -204,7 +204,10 @@ class newsArticle implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 */
+	 **/
+	public function insert(\PDO $pdo){
+			// enforce the newsArticleDate is null (i.e., don't insert
+	}
 
 
 }
