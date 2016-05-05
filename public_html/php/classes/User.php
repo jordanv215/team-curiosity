@@ -14,27 +14,27 @@ class User implements \JsonSerializable {
 
 	/**
 	 * id for this user; this is the primary key
-	 * @var int $userId
+	 * @var int $UserId
 	 **/
-	private $userId;
+	private $UserId;
 
 	/**
 	 * login id for this user; this is a foreign key
 	 * @var int userLoginId
 	 **/
-	private $userLoginId;
+	private $UserLoginId;
 
 	/**
 	 * username for this user;
 	 * @var int userName
 	 **/
-	private $userName;
+	private $UserName;
 
 	/**
 	 * email for this user
 	 * @var int userEmail
 	 **/
-	private $userEmail;
+	private $UserEmail;
 
 	/**
 	 * constructor for this user
@@ -77,7 +77,7 @@ class User implements \JsonSerializable {
 	 **/
 
 	public function getUserId() {
-		return ($this->userId);
+		return ($this->UserId);
 	}
 
 	/**
@@ -108,7 +108,7 @@ class User implements \JsonSerializable {
 	 * @return int value for userLoginId
 	 **/
 	public function getUserLoginId() {
-		return ($this->userLoginId);
+		return ($this->UserLoginId);
 	}
 
 	/**
@@ -125,7 +125,7 @@ class User implements \JsonSerializable {
 		}
 
 		//convert and store userLoginId
-		$this->userLoginId = $newUserLoginId;
+		$this->UserLoginId = $newUserLoginId;
 	}
 
 	/**
@@ -134,7 +134,7 @@ class User implements \JsonSerializable {
 	 * @return int value for username
 	 **/
 	public function getUserName() {
-		return ($this->userName);
+		return ($this->UserName);
 	}
 
 	/**
@@ -151,7 +151,7 @@ class User implements \JsonSerializable {
 		}
 
 		//convert and store username
-		$this->userName = $newUserName;
+		$this->UserName = $newUserName;
 	}
 
 	/** accessor method for user email
@@ -159,7 +159,7 @@ class User implements \JsonSerializable {
 	 * @return int value for email
 	 **/
 	public function getUserEmail() {
-		return ($this->userEmail);
+		return ($this->UserEmail);
 	}
 
 	/**
@@ -176,7 +176,7 @@ class User implements \JsonSerializable {
 		}
 
 		//convert and store username
-		$this->userEmail = $newUserEmail;
+		$this->UserEmail = $newUserEmail;
 	}
 
 	/**
@@ -186,7 +186,7 @@ class User implements \JsonSerializable {
 	 */
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		$fields["newUserId"] = intval($this->userId->format("U")) * 1000;
+		$fields["newUserId"] = intval($this->UserId->format("U")) * 1000;
 		return ($fields);
 	}
 
@@ -198,7 +198,7 @@ class User implements \JsonSerializable {
 	 */
 	public function insert(\PDO $pdo) {
 		//enforce the user login id is null (dont insert a user id that already exists)
-		if($this->userId !== null) {
+		if($this->UserId !== null) {
 			throw(new \PDOException("not a new user"));
 		}
 
@@ -207,7 +207,7 @@ class User implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$parameters = ["userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
+		$parameters = ["userLoginId" => $this->UserLoginId, "userName" => $this->UserName, "userEmail" => $this->UserEmail];
 		$statement->execute($parameters);
 	}
 
@@ -222,7 +222,7 @@ class User implements \JsonSerializable {
 	public
 	function delete(\PDO $pdo) {
 		//enforce the userId is not null (don't delete a user that hasn't been inserted)
-		if($this->userId === null) {
+		if($this->UserId === null) {
 			throw (new \PDOException("unable to delete a user that does not exist"));
 		}
 
@@ -231,7 +231,7 @@ class User implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind member variables
-		$parameters = ["userId" => $this->userId];
+		$parameters = ["userId" => $this->UserId];
 		$statement->execute($parameters);
 
 	}
@@ -249,7 +249,7 @@ class User implements \JsonSerializable {
 	static function getAllUserId(\PDO $pdo) {
 
 		//create query template
-		$query = "SELECT userId, userLoginId, userName, userEmail FROM data";
+		$query = "SELECT :UserId, :UserLoginId, :UserName, :UserEmail FROM data";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
