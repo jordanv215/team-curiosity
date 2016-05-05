@@ -89,5 +89,12 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->LoginSource->getLoginSourceProvider());
 	}
 	
-	
+	/**
+	 * test updating a login source that already exists
+	 *
+	 * @expectedException PDOException
+	 */
+	public function testUpdateInvalidLoginSource() {
+		//
+	}
 }
