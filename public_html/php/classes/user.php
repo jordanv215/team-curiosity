@@ -186,7 +186,7 @@ class User implements \JsonSerializable {
 	 */
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		$fields["newUserEmail"] = intval($this->userEmail->format("U")) * 1000;
+		$fields["newUserId"] = intval($this->userId->format("U")) * 1000;
 		return ($fields);
 	}
 
@@ -196,10 +196,10 @@ class User implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @param $userEmail
 	 */
-	public function insert(\PDO $pdo, $userEmail) {
-		//enforce the user login id is null (dont insert a login id that already exists)
-		if($this->userLoginId !== null) {
-			throw(new \PDOException("not a new user login"));
+	public function insert(\PDO $pdo) {
+		//enforce the user login id is null (dont insert a user id that already exists)
+		if($this->userId !== null) {
+			throw(new \PDOException("not a new user"));
 		}
 
 		//create query template

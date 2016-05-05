@@ -49,7 +49,7 @@ abstract class DataDesignTest extends \PHPUnit_Extensions_Database_TestCase {
 		$dataset->addTable("favoriteImage");
 		$dataset->addTable("commentNewsArticle");
 		$dataset->addTable("favoriteNewsArticle");
-		return($dataset);
+		return ($dataset);
 	}
 
 	/**
@@ -72,7 +72,7 @@ abstract class DataDesignTest extends \PHPUnit_Extensions_Database_TestCase {
 	 * @return \PHPUnit_Extensions_Database_Operation_IDatabaseOperation delete command for the database
 	 **/
 	public final function getTearDownOperation() {
-		return(\PHPUnit_Extensions_Database_Operation_Factory::DELETE_ALL());
+		return (\PHPUnit_Extensions_Database_Operation_Factory::DELETE_ALL());
 	}
 
 	/**
@@ -89,7 +89,7 @@ abstract class DataDesignTest extends \PHPUnit_Extensions_Database_TestCase {
 			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/TeamCuriosity.ini");
 			$this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 		}
-		return($this->connection);
+		return ($this->connection);
 	}
 
 	/**
@@ -98,6 +98,6 @@ abstract class DataDesignTest extends \PHPUnit_Extensions_Database_TestCase {
 	 * @return \PDO active PDO object
 	 **/
 	public final function getPDO() {
-		return($this->getConnection()->getConnection());
+		return ($this->getConnection()->getConnection());
 	}
 }
