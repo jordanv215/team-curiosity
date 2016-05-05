@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\Awilliams144\TeamCuriosity;
 
-require_once("foo.php");
+require_once("Autoload.php");
 
 /**
  *This newsArticles can be a small example of what services

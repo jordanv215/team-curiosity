@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity;
 
-require_once("foo.php");
+require_once("Autoload.php");
 
 /**
  * user class of the Curiosity team ERD
