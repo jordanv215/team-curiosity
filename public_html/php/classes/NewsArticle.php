@@ -99,7 +99,7 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * accessor method for newsArticleDate
 	 *
-	 * @return \DateTime value of the newewsArticleDate
+	 * @return \DateTime value of the newsArticleDate
 	 **/
 	public function getNewsArticleDate() {
 		return ($this->newsArticleDate);
