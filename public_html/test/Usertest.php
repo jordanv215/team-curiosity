@@ -155,6 +155,41 @@ class UserTest extends TeamCuriosityTest {
 	*test grabbing a User by content that does not exist
 	**/
 	public function testGetInvalidUserbyUserId() {
+		// grab a user by searching for content that does not exist
+		$User = User::getUserByUserId($this->getPDO(), "User not found");
+		$this->assertCount(0, $User);
+
+	}
+
+	//test grabbing all users
+	public function testGetAllValidUsers() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("User");
+
+		// create a new User and insert to into mySQL
+		$User = new User(null, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$User->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = User::getAllUsers($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Users"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test\\UserTest", $results);
+
+		// grab the result from the array and validate it
+		$pdoUser = $results[0];
+		$this->assertEquals($pdoUser->getUserId(), $this->User->getUserId());
+		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoUser->getLoginSource(), $this->VALID_LOGINSOURCE);
+	}
+
+
+
+
+
+
+
+}
 
 
 
