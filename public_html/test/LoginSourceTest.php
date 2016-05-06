@@ -34,10 +34,6 @@ class LoginSourceTest extends TeamCuriosityTest {
 	 */
 	protected $VALID_LOGIN_SOURCE_PROVIDER = "congratulations";
 	/**
-	 * setup method
-	 */
-	public final function setUp();
-	/**
 	 * test inserting a valid login source
 	 */
 	public function testInsertValidLoginSource() {
