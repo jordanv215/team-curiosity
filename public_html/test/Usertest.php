@@ -140,7 +140,7 @@ class UserTest extends TeamCuriosityTest {
 		$results = User::getUserByUserId($this->getPDO(), $User->getUserEmail());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\TeamCuriosity\Test\UserTest, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test\\UserTest", $results);
 
 		// grab the result from the array and validate it
 		$pdoUser = $results[0];
@@ -160,9 +160,6 @@ class UserTest extends TeamCuriosityTest {
 
 
 
-
-
-}
 
 
 
