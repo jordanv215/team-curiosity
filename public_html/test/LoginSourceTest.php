@@ -14,7 +14,7 @@ require_once(dirname(_DIR_) . "/php/classes/LoginSource.php");
  *
  * This is a test of the LoginSource class belonging to the team-curiosity project. All PDO enabled methods are tested for * valid and invalid inputs.
  *
- * @see loginSource
+ * @see LoginSource
  * @author Kai Garrott <garrottkai@gmail.com>
  */
 class LoginSourceTest extends TeamCuriosityTest {

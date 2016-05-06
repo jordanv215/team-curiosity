@@ -17,7 +17,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
  *
  * *NOTE*: Tables must be added in the order they were created in step (2).
  **/
-abstract class DataDesignTest extends \PHPUnit_Extensions_Database_TestCase {
+abstract class TeamCuriosityTest extends \PHPUnit_Extensions_Database_TestCase {
 	/**
 	 * invalid id to use for an INT UNSIGNED field (maximum allowed INT UNSIGTNED in mySQL) + 1
 	 * @see https://dev.mysql.com/doc/refman/5.6/en/integer-types.html mySQL Integer Types
