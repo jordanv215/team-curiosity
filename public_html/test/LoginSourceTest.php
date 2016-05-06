@@ -12,7 +12,7 @@ require_once(dirname(_DIR_) . "/php/classes/LoginSource.php");
 /**
  * PHPUnit test for the LoginSource class
  *
- * This is a test of the LoginSource class belonging to the team-curiosity project. All PDO enabled methods are tested for * valid and invalid inputs.
+ * This is a test of the LoginSource class belonging to the team-curiosity project. All PDO enabled methods are tested for valid and invalid inputs.
  *
  * @see LoginSource
  * @author Kai Garrott <garrottkai@gmail.com>
