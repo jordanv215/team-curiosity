@@ -108,7 +108,7 @@ class Image implements \JsonSerializable {
 
 		// verify the image camera will fit in the database
 		if(strlen($newImageCamera) > 64) {
-			throw(new \RangeException("image camera too large"))
+			throw(new \RangeException("image camera too large"));
 		}
 
 		//store the image camera
