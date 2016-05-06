@@ -23,7 +23,7 @@ class Image implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g. strings too long, negarive intergers)
 	 * @throws \TypeError if data types violate type hints
-	 * @throw  \Exception if some other exception occurs
+	 * @throws  \Exception if some other exception occurs
 	 **/
 	public function __construct(int $newImageId = null, string $newImageCamera, string $newImageDescription, $newImageEarthDate, string $newImagePath, int $newImageSol, string $newImageTitle, string $newImageType, string $newImageUrl) {
 		try {
