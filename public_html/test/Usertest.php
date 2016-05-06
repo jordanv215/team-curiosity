@@ -93,7 +93,7 @@ class UserTest extends TeamCuriosityTest {
 //@expectedException PDOException
 	public function testUpdateInvalidUser($User) {
 		//create a user with a non null user id to watch it fail
-		$User-> new User(null, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$User = new User(null, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
 		$User->update($this->getPDO());
 
 }
@@ -153,13 +153,14 @@ class UserTest extends TeamCuriosityTest {
 	/**
 	*
 	*test grabbing a User by content that does not exist
-	**/
-	public function testGetInvalidUserbyUserId() {
+
+	*public function testGetInvalidUserbyUserId() {
 		// grab a user by searching for content that does not exist
 		$User = User::getUserByUserId($this->getPDO(), "User not found");
 		$this->assertCount(0, $User);
 
 	}
+	 **/
 
 	//test grabbing all users
 	public function testGetAllValidUsers() {
