@@ -122,4 +122,45 @@ class Image implements \JsonSerializable {
 	public function getImageDescription() {
 		return($this->getImageDescription);
 	}
+
+	/**
+	 * mutator method for image description
+	 *
+	 * @param string $newImageDescription new value of image description
+	 * @throws \InvalidArgumentException if $newImageDescription is not a string or insecure
+	 * @throws \RangeException if $newImageDescription is > 5000 characters
+	 * @throws \TypeError if $newImageDescription is not a string
+	 **/
+	public function setImageDescription(string $newImageDescription) {
+		// verify the image description is secure
+		$newImageDescription = trim($newImageDescription);
+		$newImageDescription = filter_var($newImageDescription, FILTER_SANITIZE_STRING);
+		if(empty($newImageDescription) === true) {
+			throw(new \InvalidArgumentException("image description is empty or insecure"));
+		}
+
+		// verify the image description will fit in the database
+		if(strlen($newImageDescription) > 5000) {
+			throw(new \RangeException("image description too large"));
+		}
+		
+		//store the image description
+		$this->imageDescription = $newImageDescription;
+	}
+	
+	/**
+	 * accessor method for image earth date
+	 *
+	 * @return \DateTime value of image earth date
+	 **/
+	public function  getImageEarthDate() {
+		return($this->getImageEarthDate);
+	}
+
+	/**
+	 * mutator method for image earth date
+	 *
+	 * @param \DateTime | string | null $newImageEarthDate image earth date as a Datetime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newImageEarthDate is 
+	 */
 }
