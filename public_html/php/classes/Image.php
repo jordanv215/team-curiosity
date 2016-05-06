@@ -162,5 +162,6 @@ class Image implements \JsonSerializable {
 	 *
 	 * @param \DateTime | string | null $newImageEarthDate image earth date as a Datetime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newImageEarthDate is 
+	 * @throws \TypeError a date that does not exist
 	 */
 }

@@ -285,6 +285,31 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	}
 
 	/**
+	 * gets the FavoriteNewsArticle by NewsArticle id and User id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $NewsArticleIdAndUserId news article id and user id to search for
+	 * @return favoriteNewsArticle | null favoriteNewArticle found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getFavoriteNewsArticleByNewsArticleIdAndUserId(\PDO $pdo, int $newArticleId, int $userId) {
+		// sanitize the newsArticlIdAndUserId before searching
+		if($newsArticleIdAndUserId <= 0) {
+			throw(new \PDOException("newsArticleIdAndUserId is not positive"));
+		}
+		
+		//create query template
+		$query = "SELECT newsArticleIdAndUserId, favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime from favoriteNewsArticle WHERE newsArticleIdAndUserId = :newsArticleIdAndUserId";
+		$statement = $pdo->prepare($query);
+		
+		//bind the newsArticleIdAndUserId to the place holder in the template
+		$parameters = array("newsArticleIdAndUserId" => $newsArticleIdAndUserId);
+		$statement->execute($parameters);
+		
+	}
+
+	/**
 	 * gets all FavoriteNewsArticles
 	 *
 	 * @param \PDO $pdo PDO connection object
