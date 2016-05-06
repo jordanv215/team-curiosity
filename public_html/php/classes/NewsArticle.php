@@ -34,21 +34,21 @@ class NewsArticle implements \JsonSerializable {
 
 	/**
 	 * constructor for this NewsArticle
-	 * @param int|null $NewsArticleId id of this NewsArticle or Null if a new NewsArticle
-	 * @param \DATETIME|string|null $ NewsArticleDate date and time NewsArticle was sent or null if set to current date and time
-	 * @param string $NewsArticleSynopsis string containing a brief synopsis
-	 * @param string $NewsArticleUrl string containing the location to NewsArticleUrl
+	 * @param int|null $newsArticleId id of this NewsArticle or Null if a new NewsArticle
+	 * @param \DATETIME|string|null $newsArticleDate date and time NewsArticle was sent or null if set to current date and time
+	 * @param string $newsArticleSynopsis string containing a brief synopsis
+	 * @param string $newsArticleUrl string containing the location to newsArticleUrl
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $NewsArticleId = null, $NewsArticleDate = null, string $NewsArticleSynopsis, string $NewsArticleUrl) {
+	public function __construct(int $newsArticleId = null, $newsArticleDate = null, string $newsArticleSynopsis, string $newsArticleUrl) {
 		try {
-			$this->setNewsArticleId($NewsArticleId);
-			$this->setNewsArticleDate($NewsArticleDate);
-			$this->setNewsArticleSynopsis($NewsArticleSynopsis);
-			$this->setNewsArticleUrl($NewsArticleUrl);
+			$this->setNewsArticleId($newsArticleId);
+			$this->setNewsArticleDate($newsArticleDate);
+			$this->setNewsArticleSynopsis($newsArticleSynopsis);
+			$this->setNewsArticleUrl($newsArticleUrl);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -65,51 +65,51 @@ class NewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for NewsArticleId
+	 * accessor method for newsArticleId
 	 *
-	 * @return int|null value of  NewsArticleId
+	 * @return int|null value of  newsArticleId
 	 **/
 	public function getNewsArticleId() {
 		return ($this->newsArticleId);
 	}
 
 	/**
-	 * mutator method for NewsArticleId
+	 * mutator method for newsArticleId
 	 *
-	 * @param int|null $newsArticleId new value of NewsArticleId
-	 * @throws \RangeException if $NewsArticleId is not positive
-	 * @throws \TypeError if $NewsArticleId is not an integer
+	 * @param int|null $newsArticleId new value of newsArticleId
+	 * @throws \RangeException if $newsArticleId is not positive
+	 * @throws \TypeError if $newsArticleId is not an integer
 	 **/
 	public function setNewsArticleId(int $newsArticleId = null) {
-		//base case: if the NewsArticleId is null, this is a new NewsArticleId without a mySQL assigned id (yet)
+		//base case: if the newsArticleId is null, this is a new newsArticleId without a mySQL assigned id (yet)
 		if($newsArticleId === null) {
 			$this->newsArticleId = null;
 			return;
 		}
 
-		//verify the NewsArticleId is positive
+		//verify the newsArticleId is positive
 		if($newsArticleId <= 0) {
-			throw(new \RangeException("NewsArticleId is not positive"));
+			throw(new \RangeException("newsArticleId is not positive"));
 		}
 
-		//convert and store the NewsArticleId
+		//convert and store the newsArticleId
 		$this->newsArticleId = $newNewsArticleId;
 	}
 
 	/**
-	 * accessor method for NewsArticleDate
+	 * accessor method for newsArticleDate
 	 *
-	 * @return \DateTime value of the NewsArticleDate
+	 * @return \DateTime value of the newewsArticleDate
 	 **/
 	public function getNewsArticleDate() {
 		return ($this->newsArticleDate);
 	}
 
 	/**
-	 * mutator method for NewsArticleDate
-	 * @param \DateTime|string|null $newNewsArticleDate NewsArticleDate as a DateTime object or string (or null to load the current time)
+	 * mutator method for newsArticleDate
+	 * @param \DateTime|string|null $newNewsArticleDate newsArticleDate as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newNewsArticleDate is not a valid object or string
-	 * @throws \RangeException if $NewsArticleDate is a date that does not exist
+	 * @throws \RangeException if $newsArticleDate is a date that does not exist
 	 **/
 	public
 	function setNewsArticleDate($newNewsArticleDate = null) {
@@ -118,7 +118,7 @@ class NewsArticle implements \JsonSerializable {
 			$this->newsArticleDate = new \DateTime();
 			return;
 		}
-		// store the NewsArticleDate
+		// store the newsArticleDate
 		try {
 			$newNewsArticleDate = $this->validateDate($newNewsArticleDate);
 		} catch(\InvalidArgumentException $invalidArgument) {
@@ -130,9 +130,9 @@ class NewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for NewsArticleSynopsis
+	 * accessor method for newsArticleSynopsis
 	 *
-	 * @return string value of NewsArticleSynopsis
+	 * @return string value of newsArticleSynopsis
 	 **/
 	public
 	function getNewsArticleSynopsis() {
@@ -140,7 +140,7 @@ class NewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for NewsArticleSynopsis
+	 * mutator method for newsArticleSynopsis
 	 * @param string $newNewsArticleSynopsis new value of News Article Synopsis
 	 * @throws \InvalidArgumentException if $newNewsArticleSynopsis is not a string or insecure
 	 * @throws \RangeException if $newNewsArticleSynopsis is > 256 characters
@@ -148,15 +148,15 @@ class NewsArticle implements \JsonSerializable {
 	 **/
 
 	public function setNewsArticleSynopsis(string $newNewsArticleSynopsis) {
-			// verify the NewsArticleSynopsis is secure
+			// verify the newsArticleSynopsis is secure
 			$newNewsArticleSynopsis = trim($newNewsArticleSynopsis);
 			$newNewsArticleSynopsis = filter_var($newNewsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 			if(empty($newNewsArticleSynopsis) === true) {
-				throw(new \InvalidArgumentException("NewsArticleSynopsis is empty or insecure"));
+				throw(new \InvalidArgumentException("newsArticleSynopsis is empty or insecure"));
 			}
-			// verify the NewsArticleSynopsis will fit in the database
+			// verify the newsArticleSynopsis will fit in the database
 			if(strlen($newNewsArticleSynopsis) > 256) {
-						throw(new \RangeException("NewsArticleSynopsis too large"));
+						throw(new \RangeException("newsArticleSynopsis too large"));
 			}
 
 		// store the NewsArticleSynopsis;
@@ -166,9 +166,9 @@ class NewsArticle implements \JsonSerializable {
 
 
 	/**
-	 * accessor method for NewsArticleUrl
+	 * accessor method for newsArticleUrl
 	 *
-	 * @return string value of NewsArticleUrl
+	 * @return string value of newsArticleUrl
 	 **/
 	public
 	function getNewsArticleUrl() {
@@ -176,8 +176,8 @@ class NewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for NewsArticleUrl
-	 * @param string $newNewsArticleUrl new value of NewsArticleUrl
+	 * mutator method for newsArticleUrl
+	 * @param string $newNewsArticleUrl new value of newsArticleUrl
 	 * @throws \InvalidArgumentException if $newNewsArticleUrl is not a string or insecure
 	 * @throws \RangeException if $newNewsArticleUrl is > 256 characters
 	 * @throws \TypeError if $newNewsArticleUrl is not a string
@@ -185,18 +185,18 @@ class NewsArticle implements \JsonSerializable {
 
 	public
 	function setNewsArticleUrl(string $newNewsArticleUrl) {
-			// verify the NewsArticleUrl is secure
+			// verify the newsArticleUrl is secure
 			$newNewsArticleUrl = trim($newNewsArticleUrl);
 			$newNewsArticleUrl = filter_var($newNewsArticleUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 			if(empty($newNewsArticleUrl) === true) {
-				throw(new \InvalidArgumentException("NewsArticleUrl is empty or insecure"));
+				throw(new \InvalidArgumentException("newsArticleUrl is empty or insecure"));
 			}
-			//verify the NewsArticleUrl will fit in the database
+			//verify the newsArticleUrl will fit in the database
 			if(strlen($newNewsArticleUrl) > 256){
-						throw(new \RangeException("NewsArticleUrl too large"));
+						throw(new \RangeException("newsArticleUrl too large"));
 			}
 
-			// store the NewsArticleUrl;
+			// store the newsArticleUrl;
 			$this->newsArticleUrl = $newNewsArticleUrl;
 
 			}
@@ -209,18 +209,17 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo) {
-		// enforce the NewsArticleId is null (i.e., don't insert a NewsArticleId that already exists)
+		// enforce the newsArticleId is null (i.e., don't insert a newsArticleId that already exists)
 		if($this->newsArticleId !== null) {
-			throw(new \PDOException("not a new NewsArticle"));
+			throw(new \PDOException("not a new newsArticle"));
 		}
 
 		// create query template
-		$query = "INSERT INTO NewsArticle(NewsArticleDate, NewsArticleSynopsis, NewsArticleUrl) VALUES(:NewsArticleDate, :NewsArticleSynopsis, :NewsArticleUrl)";
+		$query = "INSERT INTO NewsArticle(newsArticleDate, newsArticleSynopsis, newsArticleUrl) VALUES(:newsArticleDate, :newsArticleSynopsis, :newsArticleUrl)";
 		$statement = $pdo->prepare($query);
-
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["NewsArticleId" => $this->newsArticleId, "NewsArticleSynopsis" => $this->newsArticleSynopsis, "NewsArticleUrl" => $this->newsArticleUrl, "NewsArticleDate" => $formattedDate];
+		$parameters = ["newsArticleId" => $this->newsArticleId, "n" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
 		$statement->excecute($parameters);
 
 		// update the null ArticleId with what mySQL just gave us
@@ -237,15 +236,15 @@ class NewsArticle implements \JsonSerializable {
 	 *
 	 */
 	public function delete(\PDO $pdo) {
-		// enforce the NewsArticleId is not null (i.e., don't delete a NewsArticle that hasn't been inserted)
+		// enforce the newsArticleId is not null (i.e., don't delete a newsArticle that hasn't been inserted)
 		if($this->newsArticleId === null) {
 			throw(new \PDOException("unable to delete a NewsArticle that does not exist"));
 		}
 		//create query template
-		$query = "DELETE FROM NewsArticleId WHERE NewsArticleId = :NewsArticleId";
+		$query = "DELETE FROM newsArticleId WHERE newsArticleId = :newsArticleId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holder in the template
-		$parameters = ["NewsArticleId" => $this->newsArticleId];
+		$parameters = ["newsArticleId" => $this->newsArticleId];
 		$statement->execute($parameters);
 	}
 
@@ -259,16 +258,16 @@ class NewsArticle implements \JsonSerializable {
 	 *
 	 */
 	public function update(\PDO $pdo) {
-		// enforce the NewsArticleId is not null (i.e., don't update a NewsArticleId hasn't been inserted)
+		// enforce the newsArticleId is not null (i.e., don't update a newsArticleId hasn't been inserted)
 		if($this->newsArticleId === null) {
 			throw(new \PDOException("unable to update a NewsArticle that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE NewsArticle SET NewsArticleId = :NewsArticleId, NewsArticleDate = :NewsArticleDate, NewsArticleSynopsis = :NewsArticleSynopsis, NewsArticleUrl = :NewsArticleUrl";
+		$query = "UPDATE NewsArticle SET newsArticleId = :newsArticleId, newsArticleDate = :newsArticleDate, newsArticleSynopsis = :newsArticleSynopsis, newsArticleUrl = :newsArticleUrl";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["NewsArticleId" => $this->newsArticleId, "NewsArticleSynopsis" => $this->newsArticleSynopsis, "NewsArticleUrl" => $this->newsArticleUrl, "NewsArticleDate" => $this->$formattedDate];
+		$parameters = ["newsArticleId" => $this->newsArticleId, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $this->$formattedDate];
 		$statement->execute($parameters);
 	}
 
@@ -276,34 +275,34 @@ class NewsArticle implements \JsonSerializable {
 	 * gets the NewsArticle by Synopsis
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $NewsArticleSynopsis News Article Synopsis to search for
+	 * @param string $newsArticleSynopsis News Article Synopsis to search for
 	 * @return \SplFixedArray SplFixedArray of NewsArticles found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getNewsArticleSynopsisByNewsArticleSynopsis(\PDO $pdo, string $NewsArticleSynopsis) {
+	public static function getNewsArticleSynopsisByNewsArticleSynopsis(\PDO $pdo, string $newsArticleSynopsis) {
 		//sanitize the description before searching
-		$NewsArticleSynopsis = trim($NewsArticleSynopsis);
-		$NewsArticleSynopsis = filter_var($NewsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$newsArticleSynopsis = trim($newsArticleSynopsis);
+		$newsArticleSynopsis = filter_var($newsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if
-		(empty($NewsArticleSynopsis) === true
+		(empty($newsArticleSynopsis) === true
 		) {
-			throw(new \PDOException("NewsArticleSynopsis is invalid"));
+			throw(new \PDOException("newsArticleSynopsis is invalid"));
 		}
 				// create query template
-				$query = "SELECT NewsArticleId, NewsArticleDate, NewsArticleSynopsis, NewsArticleUrl FROM NewsArticle WHERE NewsArticleSynopsis LIKE :NewsArticleSynopsis";
+				$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleSynopsis LIKE :newsArticleSynopsis";
 				$statement = $pdo->prepare($query);
 
-				// bind the NewsArticleSynopsis to the place holder in the template
-				$NewsArticleSynopsis = "%$NewsArticleSynopsis%";
-				$parameters = array("NewsArticleSynopsis" => $NewsArticleSynopsis);
+				// bind the newsArticleSynopsis to the place holder in the template
+				$newsArticleSynopsis = "%$newsArticleSynopsis%";
+				$parameters = array("newsArticleSynopsis" => $newsArticleSynopsis);
 				$statement->execute($parameters);
 				// build an array of NewsArticles
 				$NewsArticle = new \SplFixedArray($statement->rowCount());
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				while(($row = $statement->fetch()) !== false) {
 					try {
-						$NewsArticle = new NewsArticle($row["NewsArticleId"], $row["NewsArticleDate"], $row["NewsArticleSynopsis"], $row["NewsArticleUrl"]);
+						$NewsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
 						$NewsArticle[$NewsArticle->key()] = $NewsArticle;
 						$NewsArticle->next();
 					} catch(\Exception $exception) {
@@ -316,27 +315,27 @@ class NewsArticle implements \JsonSerializable {
 
 			}
 			/**
-			 * gets the NewsArticle by NewsArticleId
+			 * gets the NewsArticle by newsArticleId
 			 *
 			 * @param \PDO $pdo PDO connection object
-			 * @param int $NewsArticleId tweet id to search for
-			 * @return NewsArticle|null NewsArticle found or null if not found
+			 * @param int $newsArticleId tweet id to search for
+			 * @return NewsArticle|null newsArticle found or null if not found
 			 * @throws \PDOException when mySQL related errors occur
 			 * @throws \TypeError when variables are not the correct data type
 			 **/
 			public
-			static function getNewsArticleByNewsArticleId(\PDO $pdo, int $NewsArticleId) {
+			static function getNewsArticleByNewsArticleId(\PDO $pdo, int $newsArticleId) {
 				// sanitize the tweetId before searching
-				if($NewsArticleId <= 0) {
+				if($newsArticleId <= 0) {
 					throw(new \PDOException("Article id is not positive"));
 				}
 
 				// create query template
-				$query = "SELECT NewsArticleId, NewsArticleDate, NewsArticleSynopsis, NewsArticleUrl FROM NewsArticle WHERE NewsArticleId = :NewsArticleId";
+				$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleId = :newsArticleId";
 				$statement = $pdo->prepare($query);
 
 				// bind the tweet id to the place holder in the template
-				$parameters = array("NewsArticleId" => $NewsArticleId);
+				$parameters = array("newsArticleId" => $newsArticleId);
 				$statement->execute($parameters);
 
 				// grab the NewsArticle from mySQL
@@ -345,7 +344,7 @@ class NewsArticle implements \JsonSerializable {
 					$statement->setFetchMode(\PDO::FETCH_ASSOC);
 					$row = $statement->fetch();
 					if($row !== false) {
-						$NewsArticle = new NewsArticle($row["NewsArticleId"], $row["NewsArticleDate"], $row["NewsArticleSynopsis"], $row["NewsArticleUrl"]);
+						$NewsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
 					}
 				} catch(\Exception $exception) {
 					// if the row couldn't be converted, rethrow it
@@ -364,7 +363,7 @@ class NewsArticle implements \JsonSerializable {
 			 **/
 			public static function getAllNewsArticles(\PDO $pdo) {
 				// create query template
-				$query = "SELECT NewsArticleId, NewsArticleDate, NewsArticleSynopsis, NewsArticleUrl FROM NewsArticle";
+				$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle";
 				$statement = $pdo->prepare($query);
 				$statement->execute();
 
@@ -373,7 +372,7 @@ class NewsArticle implements \JsonSerializable {
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				while(($row = $statement->fetch()) !== false) {
 					try {
-						$NewsArticle = new NewsArticle($row["NewsArticleId"], $row["NewsArticleDate"], $row["NewsArticleSynopsis"], $row["NewsArticleUrl"]);
+						$NewsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
 						$NewsArticles[$NewsArticles->key()] = $NewsArticle;
 						$NewsArticles->next();
 					} catch(\Exception $exception) {
@@ -391,7 +390,7 @@ class NewsArticle implements \JsonSerializable {
 			 **/
 			public function jsonSerialize() {
 				$fields = get_object_vars($this);
-				$fields["NewsArticleDate"] = intval($this->newsArticleDate->format("U")) * 1000;
+				$fields["newsArticleDate"] = intval($this->newsArticleDate->format("U")) * 1000;
 				return ($fields);
 			}
 		}
