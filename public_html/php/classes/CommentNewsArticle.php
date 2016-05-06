@@ -319,97 +319,97 @@ class CommentNewsArticle implements \JsonSerializable {
 			throw(new \PDOException("CommentNewsArticleContent is invalid"));
 		}
 		// create query template
-		$query = "SELECT NewsArticleId, NewsArticleDate, NewsArticleSynopsis, NewsArticleUrl FROM NewsArticle WHERE NewsArticleSynopsis LIKE :NewsArticleSynopsis";
+		$query = "SELECT CommentNewsArticleId, CommentNewsArticleDateTime, CommentNewsArticleContent, CommentNewsArticleNewsArticleId, CommentNewsArticleUserId FROM CommentNewsArticle WHERE CommentNewsArticleContent LIKE :CommentNewsArticleContent";
 		$statement = $pdo->prepare($query);
 
-		// bind the NewsArticleSynopsis to the place holder in the template
-		$NewsArticleSynopsis = "%$NewsArticleSynopsis%";
-		$parameters = array("NewsArticleSynopsis" => $NewsArticleSynopsis);
+		// bind the CommentNewsArticleContent to the place holder in the template
+		$CommentNewsArticleContent = "%$CommentNewsArticleContent%";
+		$parameters = array("CommentNewsArticleContent" => $CommentNewsArticleContent);
 		$statement->execute($parameters);
 		// build an array of NewsArticles
-		$NewsArticle = new \SplFixedArray($statement->rowCount());
+		$CommentNewsArticle = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$NewsArticle = new NewsArticle($row["NewsArticleId"], $row["NewsArticleDate"], $row["NewsArticleSynopsis"], $row["NewsArticleUrl"]);
-				$NewsArticle[$NewsArticle->key()] = $NewsArticle;
-				$NewsArticle->next();
+				$CommentNewsArticle = new CommentNewsArticle($row["CommentNewsArticleId"], $row["CommentNewsArticleDateTime"], $row["CommentNewsArticleContent"], $row["CommentNewsArticleUserId"], $row["CommentNewsArticleNewsArticleId"]);
+				$CommentNewsArticle[$CommentNewsArticle->key()] = $CommentNewsArticle;
+				$CommentNewsArticle->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
 
-		return ($NewsArticle);
+		return ($CommentNewsArticle);
 
 	}
 	/**
-	 * gets the NewsArticle by NewsArticleId
+	 * gets the CommentNewsArticle by CommentNewsArticleId
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $NewsArticleId tweet id to search for
-	 * @return NewsArticle|null NewsArticle found or null if not found
+	 * @param int $CommentNewsArticleId Comment id to search for
+	 * @return CommentNewsArticle|null CommentNewsArticle found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public
-	static function getNewsArticleByNewsArticleId(\PDO $pdo, int $NewsArticleId) {
-		// sanitize the tweetId before searching
-		if($NewsArticleId <= 0) {
-			throw(new \PDOException("Article id is not positive"));
+	static function getCommentNewsArticleByCommentNewsArticleId(\PDO $pdo, int $CommentNewsArticleId) {
+		// sanitize the CommentId before searching
+		if($CommentNewsArticleId <= 0) {
+			throw(new \PDOException("CommentArticle id is not positive"));
 		}
 
 		// create query template
 		$query = "SELECT NewsArticleId, NewsArticleDate, NewsArticleSynopsis, NewsArticleUrl FROM NewsArticle WHERE NewsArticleId = :NewsArticleId";
 		$statement = $pdo->prepare($query);
 
-		// bind the tweet id to the place holder in the template
-		$parameters = array("NewsArticleId" => $NewsArticleId);
+		// bind the Commment Article id to the place holder in the template
+		$parameters = array("CommentNewsArticleId" => $CommentNewsArticleId);
 		$statement->execute($parameters);
 
-		// grab the NewsArticle from mySQL
+		// grab the CommentNewsArticle from mySQL
 		try {
-			$NewsArticle = null;
+			$CommentNewsArticle = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$NewsArticle = new NewsArticle($row["NewsArticleId"], $row["NewsArticleDate"], $row["NewsArticleSynopsis"], $row["NewsArticleUrl"]);
+				$CommentNewsArticle = new CommentNewsArticle($row["CommentNewsArticleId"], $row["CommentNewsArticleDateTime"], $row["CommentNewsArticleContent"], $row["CommentNewsArticleNewsArticleId"], $row["CommentNewsArticleUserId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($NewsArticle);
+		return ($CommentNewsArticle);
 	}
 
 	/**
-	 * gets all NewsArticles
+	 * gets all CommentNewsArticles
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @return \SplFixedArray SplFixedArray of NewsArticles found or null if not found
+	 * @return \SplFixedArray SplFixedArray of CommentNewsArticles found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getAllNewsArticles(\PDO $pdo) {
+	public static function getAllCommentNewsArticles(\PDO $pdo) {
 		// create query template
-		$query = "SELECT NewsArticleId, NewsArticleDate, NewsArticleSynopsis, NewsArticleUrl FROM NewsArticle";
+		$query = "SELECT CommentNewsArticleId, CommentNewsArticleDateTime, CommentNewsArticleContent, CommentNewsArticleNewsArticleId, CommentNewsArticleUserId FROM CommentNewsArticle";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
-		// build an array of NewsArticles
-		$NewsArticles = new \SplFixedArray($statement->rowCount());
+		// build an array of CommentNewsArticles
+		$CommentNewsArticles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$NewsArticle = new NewsArticle($row["NewsArticleId"], $row["NewsArticleDate"], $row["NewsArticleSynopsis"], $row["NewsArticleUrl"]);
-				$NewsArticles[$NewsArticles->key()] = $NewsArticle;
-				$NewsArticles->next();
+				$CommentNewsArticle = new CommentNewsArticle($row["CommentNewsArticleId"], $row["CommentNewsArticleDateTime"], $row["CommentNewsArticleContent"], $row["CommentNewsArticleNewsArticleId], $row["CommentNewsArticleUserId"]);
+				$CommentNewsArticles[$CommentNewsArticles->key()] = $CommentNewsArticle;
+				$CommentNewsArticles->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($NewsArticles);
+		return ($CommentNewsArticles);
 	}
 
 	/**
@@ -419,7 +419,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 **/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		$fields["CommentNewsArticleDate"] = intval($this->CommentNewsArticleDate->format("U")) * 1000;
+		$fields["CommentNewsArticleDateTime"] = intval($this->CommentNewsArticleDateTime->format("U")) * 1000;
 		return ($fields);
 	}
 }
