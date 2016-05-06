@@ -119,7 +119,12 @@ class UserTest extends TeamCuriosityTest {
 
 	}
 
-
+	//test grabbing a User that does not exist
+	public function testGetInvalidUserbyUserId() {
+		//grab a profile id that exceeds the maximum allowable profile id
+		$User = User::getUserbyUserId($this->getPDO(), UserTest::INVALID_KEY);
+		$this->assertNull($User);
+	}
 
 
 
