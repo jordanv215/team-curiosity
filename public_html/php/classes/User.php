@@ -40,7 +40,7 @@ class User implements \JsonSerializable {
 	 * constructor for this user
 	 *
 	 * @param int | null $newUserId id of this user or null if a new user
-	 * @param int $newLoginId of the person logging in to this site
+	 * @param int $newUserLoginId of the person logging in to this site
 	 * @param string $newUserName username of new user
 	 * @param \DateTime | string | null $newUserEmail email login info of user or null
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -48,10 +48,10 @@ class User implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newUserId = null, int $newLoginId, string $newUserName, $newUserEmail) {
+	public function __construct(int $newUserId = null, int $newUserLoginId, string $newUserName, $newUserEmail) {
 		try {
 			$this->setUserId($newUserId);
-			$this->setLoginId($newLoginId);
+			$this->setUserLoginId($newUserLoginId);
 			$this->setUserName($newUserName);
 			$this->setUserEmail($newUserEmail);
 		} catch
@@ -87,7 +87,7 @@ class User implements \JsonSerializable {
 	 * @throws \RangeException if $newUserId is not positive
 	 * @throws \TypeError if $newUserId is not an integer
 	 **/
-	public function setUserId(INT $newUserId = null) {
+	public function setUserId(int $newUserId = null) {
 		//base case: if the user id is null, this is a new user without an assigned mySQL id (yet)
 		if($newUserId === null) {
 			$this->userId = null;
@@ -186,7 +186,6 @@ class User implements \JsonSerializable {
 	 */
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		$fields["newUserId"] = intval($this->userId->format("U")) * 1000;
 		return ($fields);
 	}
 
@@ -244,10 +243,10 @@ class User implements \JsonSerializable {
 	 */
 
 	public
-	static function getAllUserId(\PDO $pdo) {
+	static function getAllUsers(\PDO $pdo) {
 
 		//create query template
-		$query = "SELECT :userId, :userLoginId, :userName, :userEmail FROM data";
+		$query = "SELECT :userId, :userLoginId, :userName, :userEmail FROM user";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -257,8 +256,8 @@ class User implements \JsonSerializable {
 		$statement->execute();
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$User = new User($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
-				$users[$users->key()] = $users;
+				$user = new User($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
+				$users[$users->key()] = $user;
 				$users->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow
