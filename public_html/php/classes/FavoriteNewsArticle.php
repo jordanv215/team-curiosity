@@ -5,12 +5,12 @@ require_once("Autoload.php");
 
 /**A section for users to like their favorite article of news
  *
- * This favoriteNewsArticle can be considered a small example of what services like favoriteNewsArticle store when NewsArticle are favorited and received by using favoriteNewsArticle.
+ * This favoriteNewsArticle can be considered a small example of what services like FavoriteNewsArticle store when NewsArticle are favorited and received by using FavoriteNewsArticle.
  * */
 class FavoriteNewsArticle implements \JsonSerializable {
 	use ValidateDate;
 	/**
-	 * id for this favoriteNewsArticle; this is the part of composite primary key
+	 * id for this FavoriteNewsArticle; this is the part of composite primary key
 	 * @var int $favoriteNewsArticleNewsArticleId
 	 **/
 	private $favoriteNewsArticleNewsArticleId;
@@ -25,11 +25,11 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	private $favoriteNewsArticleDateTime;
 
 	/**
-	 * constructor for this favoriteNewsArticle
+	 * constructor for this FavoriteNewsArticle
 	 *
 	 * @param int $newFavoriteNewsArticleNewsArticleId id of this favoriteNewsArticle
 	 * @param int $newFavoriteNewsArticleUserId id of the user who sent this favoriteNewsArticle
-	 * @param \DateTime|string|null $newFavoriteNewsArticleDateTime date and time favoriteNewsArticle was sent or null   if set to current date and time
+	 * @param \DateTime | string | null $newFavoriteNewsArticleDateTime date and time FavoriteNewsArticle was sent or null   if set to current date and time
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long,negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -118,7 +118,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 
 	/**
 	 * mutator method for favoriteNewsArticle date and time
-	 * @param \DateTime | string | null $newFavoriteNewsArticleDatetime favoriteNewsArticle date and time as a DateTime object or string (or null to load the current time)
+	 * @param \DateTime | string | null $newFavoriteNewsArticleDateTime favoriteNewsArticle date and time as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newFavoriteNewsArticleDateTime is nont a valid object or string
 	 * @throws \RangeException if $newFavoriteNewsArticleDateTime is a date or time that does not exist
 	 **/
@@ -141,7 +141,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * inserts this favoriteNewsArticle into mySQL
+	 * inserts this FavoriteNewsArticle into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -164,7 +164,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * deletes this favoriteNewsArticle from mySQL
+	 * deletes this FavoriteNewsArticle from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related error occur
@@ -177,7 +177,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "DELETE FROM favoriteNewsArticle WHERE favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsArticleId";
+		$query = "DELETE FROM FavoriteNewsArticle WHERE favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsArticleId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
@@ -186,20 +186,20 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * updates this favoriteNewsArticle in mySQL
+	 * updates this FavoriteNewsArticle in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function update(\PDO $pdo) {
-		// enforce the favoriteNewsArticleNewsArticleId is not null (i.e., don't update a favoriteNewsArticle that hasn't been inserted)
+		// enforce the favoriteNewsArticleNewsArticleId is not null (i.e., don't update a FavoriteNewsArticle that hasn't been inserted)
 		if($this->favoriteNewsArticleNewsArticleId === null) {
-			throw(new \PDOException("unable to update a favoriteNewsArticle that does not exist"));
+			throw(new \PDOException("unable to update a FavoriteNewsArticle that does not exist"));
 		}
 
 		//create query template
-		$query = "UPDATE favoriteNewsArticle SET favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsarticleId, favoriteNewsArticleUserId = :favoriteNewsArticleUserId, favoriteNewsArticleDateTime = :favoriteNewsArticleDateTime";
+		$query = "UPDATE FavoriteNewsArticle SET favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsarticleId, favoriteNewsArticleUserId = :favoriteNewsArticleUserId, favoriteNewsArticleDateTime = :favoriteNewsArticleDateTime";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holder in the template
@@ -209,48 +209,48 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the favoriteNewsArticle by favoriteNewsArticleNewsArticle id
+	 * gets the FavoriteNewsArticle by favoriteNewsArticleNewsArticle id
 	 *
-	 * @param \PDO @pdo PDO connection object
+	 * @param \PDO $pdo PDO connection object
 	 * @param int $favoriteNewsArticleNewsArticleId favoriteNewsArticle id to search for
-	 * @return favoriteNewsArticle|null favoriteNewArticle found or null if not found
+	 * @return favoriteNewsArticle | null favoriteNewArticle found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getFavoriteNewsArticlebyFavoriteNewsArticleFavoriteNewsArticleId(\PDO $pdo, int $favoriteNewsArticleNewsArticleId) {
+	public static function getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleId(\PDO $pdo, int $favoriteNewsArticleNewsArticleId) {
 		//sanitize the favoriteNewsArticleNewsArticleId before searching
 		if($favoriteNewsArticleNewsArticleId <= 0) {
 			throw(new \PDOException("favoriteNewsArticle newsArticle id is not positive"));
 		}
 
 		// create query template
-		$query = "SELECT favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime FROM favoriteNewsArticle WHERE favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsArticleId";
+		$query = "SELECT favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime FROM FavoriteNewsArticle WHERE favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsArticleId";
 		$statement = $pdo->prepare($query);
 
 		//bind the favoriteNewsArticle newsArticle id to the place holder in the template
 		$parameters = array("favoriteNewsArticleNewsArticleId" => $favoriteNewsArticleNewsArticleId);
 		$statement->execute($parameters);
 
-		// grab the favoriteNewsArticle from mySQL
+		// grab the FavoriteNewsArticle from mySQL
 		try {
-			$favoriteNewsArticle = null;
+			$FavoriteNewsArticle = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$favoriteNewsArticle = new favoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
+				$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($favoriteNewsArticle);
+		return ($FavoriteNewsArticle);
 	}
 
-	/**gets the favoriteNewsArticle by favoriteNewsArticleUserId
+	/**gets the FavoriteNewsArticle by favoriteNewsArticleUserId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $favoriteNewsArticleUserId favoriteNewsArticle user id to search for
-	 * @return favoriteNewsArticle|null favoriteNewsArticle found or null if not found
+	 * @return FavoriteNewsArticle | null FavoriteNewsArticle found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
@@ -261,50 +261,50 @@ class FavoriteNewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT favoriteNewsArticleUserId, favoriteNewsArticleNewsArticleId, favoriteNewsArticleDateTime FROM favoriteNewsArticle WHERE favoriteNewsArticleUserId = :favoriteNewsArticleUserId";
+		$query = "SELECT favoriteNewsArticleUserId, favoriteNewsArticleNewsArticleId, favoriteNewsArticleDateTime FROM FavoriteNewsArticle WHERE favoriteNewsArticleUserId = :favoriteNewsArticleUserId";
 		$statement = $pdo->prepare($query);
-		//bind the favoriteNewsArticle newsArticle user id to the place holder in the template
+		//bind the favoriteNewsArticle  user id to the place holder in the template
 		//
 		// id to the place holder in the template
 		$parameters = array("favoriteNewsArticleUserId" => $favoriteNewsArticleUserId);
 		$statement->execute($parameters);
 
-		// grab the favoriteNewsArticle from mySQL
+		// grab the FavoriteNewsArticle from mySQL
 		try {
-			$favoriteNewsArticle = null;
+			$FavoriteNewsArticle = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$favoriteNewsArticle = new favoriteNewsArticle($row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleDateTime"]);
+				$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleDateTime"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($favoriteNewsArticle);
+		return ($FavoriteNewsArticle);
 	}
 
 	/**
-	 * gets all favoriteNewsArticle
+	 * gets all FavoriteNewsArticles
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @return \SplFixedArray SplFixedArray of favoriteNewsArticle found or null if not found
+	 * @return \SplFixedArray SplFixedArray of FavoriteNewsArticle found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getAllFavoriteNewsArticle(\PDO $pdo) {
 		// create query template
-		$query = "SELECT favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime FROM favoriteNewsArticle";
+		$query = "SELECT favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime FROM FavoriteNewsArticle";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
-		//build an array of favoriteNewsArticle
+		//build an array of FavoriteNewsArticle
 		$favoriteNewsArticles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$favoriteNewsArticle = new favoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favorite NewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
-				$favoriteNewsArticles[$favoriteNewsArticles->key()] = $favoriteNewsArticle;
+				$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
+				$favoriteNewsArticles[$favoriteNewsArticles->key()] = $FavoriteNewsArticle;
 				$favoriteNewsArticles->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -326,5 +326,5 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	}
 }
 
-
+?>
 

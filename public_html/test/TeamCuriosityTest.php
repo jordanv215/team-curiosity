@@ -101,3 +101,4 @@ abstract class DataDesignTest extends \PHPUnit_Extensions_Database_TestCase {
 		return ($this->getConnection()->getConnection());
 	}
 }
+?>
