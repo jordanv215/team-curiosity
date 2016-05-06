@@ -222,7 +222,7 @@ class NewsArticle implements \JsonSerializable {
 		$parameters = ["newsArticleId" => $this->newsArticleId, "n" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
 		$statement->excecute($parameters);
 
-		// update the null ArticleId with what mySQL just gave us
+		// update the null articleId with what mySQL just gave us
 		$this->newsArticleId = intval($pdo->lastInsertId());
 
 	}
@@ -241,7 +241,7 @@ class NewsArticle implements \JsonSerializable {
 			throw(new \PDOException("unable to delete a NewsArticle that does not exist"));
 		}
 		//create query template
-		$query = "DELETE FROM newsArticleId WHERE newsArticleId = :newsArticleId";
+		$query = "DELETE FROM NewsArticle WHERE newsArticleId = :newsArticleId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holder in the template
 		$parameters = ["newsArticleId" => $this->newsArticleId];
