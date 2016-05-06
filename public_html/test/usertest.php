@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\\TeamCuriosity\{user};
+use Edu\Cnm\TeamCuriosity\{User};
 
 // grab test parameters
 require_once("TeamCuriosityTest.php");
@@ -33,18 +33,15 @@ class UserTest extends TeamCuriosityTest {
 
 	protected $LoginSource = null;
 
-	//create dependant objects before running each test
+	//create dependent objects before running each test
 
-	public final function setup() {
-		//run the default setup() method first
-		parent::setup();
+	public final function setUp() {
+		//run the default setUp() method first
+		parent::setUp();
 
 		//create and insert a LoginSource to own the test user
 		$this->LoginSource = new LoginSource(null, "@phpunit", "@testphpunit.de", "12125551212");
-		$this->loginSource->insert($this->getPDO());
-
-		$this->VALID_EMAIL = new \User();
-
+		$this->LoginSource->insert($this->getPDO());
 	}
 
 	//test inserting a valid email and verify that it matches the mySQL data
@@ -65,11 +62,12 @@ class UserTest extends TeamCuriosityTest {
 
 	}
 
-	//test inserting something that already exists
-	//expecting PDOException
+	/** test inserting something that already exists
+	* @expectedException PDOException
+	*/
 
 	public function testInsertInvalidUser() {
-		$user = new User(UserTest::INVALID_KEY, $this->user->$getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
+		$user = new User(UserTest::INVALID_KEY, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 	}
