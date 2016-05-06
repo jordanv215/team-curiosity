@@ -70,94 +70,94 @@ class CommentNewsArticle implements \JsonSerializable {
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 				}
 	/**
-	 * accessor method for NewsArticleId
+	 * accessor method for CommentNewsArticleId
 	 *
-	 * @return int|null value of  NewsArticleId
+	 * @return int|null value of  CommentNewsArticleId
 	 **/
-	public function getNewsArticleId() {
-		return ($this->NewsArticleId);
+	public function getCommentNewsArticleId() {
+		return ($this->CommentNewsArticleId);
 	}
 
 	/**
-	 * mutator method for NewsArticleId
+	 * mutator method for CommentNewsArticleId
 	 *
-	 * @param int|null $NewsArticleId new value of NewsArticleId
-	 * @throws \RangeException if $NewsArticleId is not positive
-	 * @throws \TypeError if $NewsArticleId is not an integer
+	 * @param int|null $CommentNewsArticleId new value of CommentNewsArticleId
+	 * @throws \RangeException if $CommentNewsArticleId is not positive
+	 * @throws \TypeError if $CommentNewsArticleId is not an integer
 	 **/
-	public function setNewsArticleId(int $NewsArticleId = null) {
-		//base case: if the NewsArticleId is null, this is a new NewsArticleId without a mySQL assigned id (yet)
-		if($NewsArticleId === null) {
-			$this->NewsArticleId = null;
+	public function setCommentNewsArticleId(int $CommentNewsArticleId = null) {
+		//base case: if the CommentNewsArticleId is null, this is a new CommentNewsArticleId without a mySQL assigned id (yet)
+		if($CommentNewsArticleId === null) {
+			$this->CommentNewsArticleId = null;
 			return;
 		}
 
-		//verify the NewsArticleId is positive
-		if($NewsArticleId <= 0) {
-			throw(new \RangeException("NewsArticleId is not positive"));
+		//verify the CommentNewsArticleId is positive
+		if($CommentNewsArticleId <= 0) {
+			throw(new \RangeException("CommentNewsArticleId is not positive"));
 		}
 
-		//convert and store the NewsArticleId
-		$this->NewsArticleId = $newNewsArticleId;
+		//convert and store the CommentNewsArticleId
+		$this->CommentNewsArticleId = $newCommentNewsArticleId;
 	}
 
 	/**
-	 * accessor method for NewsArticleDate
+	 * accessor method for CommentNewsArticleDateTime
 	 *
-	 * @return \DateTime value of the NewsArticleDate
+	 * @return \DateTime value of the CommentNewsArticleDateTime
 	 **/
-	public function getNewsArticleDate() {
-		return ($this->NewsArticleDate);
+	public function getCommentNewsArticleDateTime() {
+		return ($this->CommentNewsArticleDateTime);
 	}
 
 	/**
-	 * mutator method for NewsArticleDate
-	 * @param \DateTime|string|null $newNewsArticleDate NewsArticleDate as a DateTime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $newNewsArticleDate is not a valid object or string
-	 * @throws \RangeException if $NewsArticleDate is a date that does not exist
+	 * mutator method for CommentNewsArticleDateTime
+	 * @param \DateTime|string|null $CommentnewNewsArticleDateTime CommentNewsArticleDateTime as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $CommentnewNewsArticleDateTime is not a valid object or string
+	 * @throws \RangeException if $CommentNewsArticleDateTime is a date that does not exist
 	 **/
 	public
-	function setNewsArticleDate($newNewsArticleDate = null) {
+	function setCommentNewsArticleDateTime($newCommentNewsArticleDateTime = null) {
 		//base case: if the date is null, use the current date and time
-		if($newNewsArticleDate === null) {
-			$this->NewsArticleDate = new \DateTime();
+		if($CommentnewNewsArticleDateTime === null) {
+			$this->CommentNewsArticleDateTime = new \DateTime();
 			return;
 		}
-		// store the NewsArticleDate
+		// store the CommentNewsArticleDateTime
 		try {
-			$newNewsArticleDate = $this->validateDate($newNewsArticleDate);
+			$newCommentNewsArticleDateTime = $this->validateDate($CommentnewNewsArticleDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
-		$this->NewsArticleDate = $newNewsArticleDate;
+		$this->CommentNewsArticleDateTime = $CommentnewNewsArticleDateTime;
 	}
 
 	/**
-	 * accessor method for NewsArticleSynopsis
+	 * accessor method for CommentNewsArticleContent
 	 *
-	 * @return string value of NewsArticleSynopsis
+	 * @return string value of CommentNewsArticleContent
 	 **/
 	public
-	function getNewsArticleSynopsis() {
-		return ($this->NewsArticleSynopsis);
+	function getCommentNewsArticleContent() {
+		return ($this->CommentNewsArticleContent);
 	}
 
 	/**
-	 * mutator method for NewsArticleSynopsis
-	 * @param string $newNewsArticleSynopsis new value of News Article Synopsis
-	 * @throws \InvalidArgumentException if $newNewsArticleSynopsis is not a string or insecure
-	 * @throws \RangeException if $newNewsArticleSynopsis is > 256 characters
-	 * @throws \TypeError if $newNewsArticleSynopsis is not a string
+	 * mutator method for CommentNewsArticleContent
+	 * @param string $newCommentNewsArticleContent new value of News Article Content
+	 * @throws \InvalidArgumentException if $newCommentNewsArticleContent is not a string or insecure
+	 * @throws \RangeException if $newCommentNewsArticleContent is > 256 characters
+	 * @throws \TypeError if $newCommentNewsArticleContent is not a string
 	 **/
 
-	public function setNewsArticleSynopsis(string $newNewsArticleSynopsis) {
-		// verify the NewsArticleSynopsis is secure
-		$newNewsArticleSynopsis = trim($newNewsArticleSynopsis);
-		$newNewsArticleSynopsis = filter_var($newNewsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newNewsArticleSynopsis) === true) {
-			throw(new \InvalidArgumentException("NewsArticleSynopsis is empty or insecure"));
+	public function setCommentNewsArticleContent(string $newCommentNewsArticleContent) {
+		// verify the CommentNewsArticleContent is secure
+		$newCommentNewsArticleContent = trim($newCommentNewsArticleContent);
+		$newCommentNewsArticleContent = filter_var($newCommentNewsArticleContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newCommentNewsArticleContent) === true) {
+			throw(new \InvalidArgumentException(" is empty or insecure"));
 		}
 		// verify the NewsArticleSynopsis will fit in the database
 		if(strlen($newNewsArticleSynopsis) > 256) {
