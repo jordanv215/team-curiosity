@@ -1,13 +1,13 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\\TeamCuriosity\{User};
+use Edu\Cnm\TeamCuriosity\{User};
 
 // grab test parameters
 require_once("TeamCuriosityTest.php");
 
 // grab test under scrutiny
-require_once (dirname(__DIR__)) . "/php/classes/Autoload.php");
+require_once (dirname(__DIR__) . "/php/classes/Autoload.php");
 
 /**
  * Full PHPUnit test for the user class
@@ -48,7 +48,7 @@ class UserTest extends TeamCuriosityTest {
 	}
 
 	//test inserting a valid email and verify that it matches the mySQL data
-	public function testInsertValidUser() {
+	public function testInsertValidUser($pdoUsername, $pdoLoginSource) {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("Email");
 
@@ -68,14 +68,14 @@ class UserTest extends TeamCuriosityTest {
 	//test inserting something that already exists
 	//expecting PDOException
 
-	public function testInsertInvalidUser() {
+	public function testInsertInvalidUser($getUserId) {
 		$User = new User(UserTest::INVALID_KEY, $this->User->$getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
 		$User->insert($this->getPDO());
 
 	}
 
 	//test creating a user, editing it, and then updating it
-	public function testUpdateValidUser() {
+	public function testUpdateValidUser($User, $pdoUser) {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("user");
 
@@ -91,7 +91,7 @@ class UserTest extends TeamCuriosityTest {
 
 //test updating a user that already exists
 //@expectedException PDOException
-	public function testUpdateInvalidUser() {
+	public function testUpdateInvalidUser($User) {
 		//create a user with a non null user id to watch it fail
 		$User-> new User(null, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
 		$User->update($this->getPDO());
@@ -128,7 +128,7 @@ class UserTest extends TeamCuriosityTest {
 	}
 
 	//test grabbing a User by Email
-	public function testGetInvalidUserByEmail() {
+	public function testGetInvalidUserByEmail($User) {
 		//count number of rows
 		$numRows = $this->getConnection()->getRowCount("User");
 
