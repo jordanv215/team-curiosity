@@ -14,35 +14,35 @@ class User implements \JsonSerializable {
 
 	/**
 	 * id for this user; this is the primary key
-	 * @var int $UserId
+	 * @var int $userId
 	 **/
-	private $UserId;
+	private $userId;
 
 	/**
 	 * login id for this user; this is a foreign key
 	 * @var int userLoginId
 	 **/
-	private $UserLoginId;
+	private $userLoginId;
 
 	/**
 	 * username for this user;
 	 * @var int userName
 	 **/
-	private $UserName;
+	private $userName;
 
 	/**
 	 * email for this user
 	 * @var int userEmail
 	 **/
-	private $UserEmail;
+	private $userEmail;
 
 	/**
 	 * constructor for this user
 	 *
-	 * @param int|null $newUserId id of this user or null if a new user
+	 * @param int | null $newUserId id of this user or null if a new user
 	 * @param int $newLoginId of the person logging in to this site
 	 * @param string $newUserName username of new user
-	 * @param \DateTime|string|null $newUserEmail email login info of user or null
+	 * @param \DateTime | string | null $newUserEmail email login info of user or null
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -73,11 +73,11 @@ class User implements \JsonSerializable {
 	/**
 	 * accessor method for userId
 	 *
-	 * @return int|null value of user id
+	 * @return int | null value of user id
 	 **/
 
 	public function getUserId() {
-		return ($this->UserId);
+		return ($this->userId);
 	}
 
 	/**
@@ -90,7 +90,7 @@ class User implements \JsonSerializable {
 	public function setUserId(INT $newUserId = null) {
 		//base case: if the user id is null, this is a new user without an assigned mySQL id (yet)
 		if($newUserId === null) {
-			$this->UserId = null;
+			$this->userId = null;
 			return;
 		}
 
@@ -99,7 +99,7 @@ class User implements \JsonSerializable {
 			throw(new \RangeException("user id is not positive"));
 		}
 		//convert and store user id
-		//this->userId = $newUserId;
+		$this->userId = $newUserId;
 	}
 
 	/**
@@ -108,7 +108,7 @@ class User implements \JsonSerializable {
 	 * @return int value for userLoginId
 	 **/
 	public function getUserLoginId() {
-		return ($this->UserLoginId);
+		return ($this->userLoginId);
 	}
 
 	/**
@@ -125,7 +125,7 @@ class User implements \JsonSerializable {
 		}
 
 		//convert and store userLoginId
-		$this->UserLoginId = $newUserLoginId;
+		$this->userLoginId = $newUserLoginId;
 	}
 
 	/**
@@ -134,7 +134,7 @@ class User implements \JsonSerializable {
 	 * @return int value for username
 	 **/
 	public function getUserName() {
-		return ($this->UserName);
+		return ($this->userName);
 	}
 
 	/**
@@ -151,7 +151,7 @@ class User implements \JsonSerializable {
 		}
 
 		//convert and store username
-		$this->UserName = $newUserName;
+		$this->userName = $newUserName;
 	}
 
 	/** accessor method for user email
@@ -159,7 +159,7 @@ class User implements \JsonSerializable {
 	 * @return int value for email
 	 **/
 	public function getUserEmail() {
-		return ($this->UserEmail);
+		return ($this->userEmail);
 	}
 
 	/**
@@ -176,7 +176,7 @@ class User implements \JsonSerializable {
 		}
 
 		//convert and store username
-		$this->UserEmail = $newUserEmail;
+		$this->userEmail = $newUserEmail;
 	}
 
 	/**
@@ -186,7 +186,7 @@ class User implements \JsonSerializable {
 	 */
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		$fields["newUserId"] = intval($this->UserId->format("U")) * 1000;
+		$fields["newUserId"] = intval($this->userId->format("U")) * 1000;
 		return ($fields);
 	}
 
@@ -194,20 +194,19 @@ class User implements \JsonSerializable {
 	 * inserts this user into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param $userEmail
 	 */
 	public function insert(\PDO $pdo) {
 		//enforce the user login id is null (dont insert a user id that already exists)
-		if($this->UserId !== null) {
+		if($this->userId !== null) {
 			throw(new \PDOException("not a new user"));
 		}
 
 		//create query template
-		$query = "INSERT INTO user(userLoginId, userName, userEmail) VALUES(:userLoginId, :userName, :userEmail)";
+		$query = "INSERT INTO User(userLoginId, userName, userEmail) VALUES(:userLoginId, :userName, :userEmail)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$parameters = ["userLoginId" => $this->UserLoginId, "userName" => $this->UserName, "userEmail" => $this->UserEmail];
+		$parameters = ["userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
 		$statement->execute($parameters);
 	}
 
@@ -222,16 +221,16 @@ class User implements \JsonSerializable {
 	public
 	function delete(\PDO $pdo) {
 		//enforce the userId is not null (don't delete a user that hasn't been inserted)
-		if($this->UserId === null) {
+		if($this->userId === null) {
 			throw (new \PDOException("unable to delete a user that does not exist"));
 		}
 
 		//create query template
-		$query = "DELETE FROM user WHERE userId = :userId";
+		$query = "DELETE FROM User WHERE userId = :userId";
 		$statement = $pdo->prepare($query);
 
 		//bind member variables
-		$parameters = ["userId" => $this->UserId];
+		$parameters = ["userId" => $this->userId];
 		$statement->execute($parameters);
 
 	}
@@ -239,7 +238,6 @@ class User implements \JsonSerializable {
 	/**
 	 * gets the user by content
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $userId to search for
 	 * @return \SplFixedArray SplFixedArray of id found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
@@ -249,7 +247,7 @@ class User implements \JsonSerializable {
 	static function getAllUserId(\PDO $pdo) {
 
 		//create query template
-		$query = "SELECT :UserId, :UserLoginId, :UserName, :UserEmail FROM data";
+		$query = "SELECT :userId, :userLoginId, :userName, :userEmail FROM data";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -259,7 +257,7 @@ class User implements \JsonSerializable {
 		$statement->execute();
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$user = new user($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
+				$User = new User($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
 				$users[$users->key()] = $users;
 				$users->next();
 			} catch(\Exception $exception) {
