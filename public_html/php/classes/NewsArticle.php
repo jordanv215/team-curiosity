@@ -264,7 +264,7 @@ class NewsArticle implements \JsonSerializable {
 			throw(new \PDOException("unable to update a NewsArticle that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE NewsArticle SET NewsArticleId = :NewsArticleId, NewsArticleDate = :NewsArticleDate, NewsArticleSynopsis = :NewsArticleSynopsis, NewsArticleUrl = :NewArticleUrl";
+		$query = "UPDATE NewsArticle SET NewsArticleId = :NewsArticleId, NewsArticleDate = :NewsArticleDate, NewsArticleSynopsis = :NewsArticleSynopsis, NewsArticleUrl = :NewsArticleUrl";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->NewsArticleDate->format("Y-m-d H:i:s");
@@ -281,7 +281,7 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getNewsArticleByNewsArticleSynopsis(\PDO $pdo, string $NewsArticleSynopsis) {
+	public static function getNewsArticleSynopsisByNewsArticleSynopsis(\PDO $pdo, string $NewsArticleSynopsis) {
 		//sanitize the description before searching
 		$NewsArticleSynopsis = trim($NewsArticleSynopsis);
 		$NewsArticleSynopsis = filter_var($NewsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
