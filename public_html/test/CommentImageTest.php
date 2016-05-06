@@ -96,4 +96,5 @@ class CommentImageTest extends TeamCuriosityTest {
 	/**
 	 * test inserting an image comment, editing it, and then updating it
 	 */
+	
 }
