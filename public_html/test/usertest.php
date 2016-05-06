@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{User};
+use Edu\Cnm\\TeamCuriosity\{User};
 
 // grab test parameters
 require_once("TeamCuriosityTest.php");
@@ -33,48 +33,91 @@ class UserTest extends TeamCuriosityTest {
 
 	protected $LoginSource = null;
 
-	//create dependent objects before running each test
+	//create dependant objects before running each test
 
-	public final function setUp() {
-		//run the default setUp() method first
-		parent::setUp();
+	public final function setup() {
+		//run the default setup() method first
+		parent::setup();
 
 		//create and insert a LoginSource to own the test user
 		$this->LoginSource = new LoginSource(null, "@phpunit", "@testphpunit.de", "12125551212");
-		$this->LoginSource->insert($this->getPDO());
+		$this->loginSource->insert($this->getPDO());
+
+		$this->VALID_EMAIL = new \User();
+
 	}
 
 	//test inserting a valid email and verify that it matches the mySQL data
 	public function testInsertValidUser() {
 		//count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("email");
+		$numRows = $this->getConnection()->getRowCount("Email");
 
 		//create a new user and insert it into mySQL
-		$user = new User(null, $this->user->getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
-		$user->insert($this->getPDO());
+		$User = new User(null, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
+		$User->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields to match our expectations
-		$pdoUser = User::getUserbyUserID($this->getPDO(), $user->getUserId());
+		$pdoUser = User::getUserbyUserID($this->getPDO(), $User->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("user"));
-		$this->assertEquals($pdoUser->getEmail(), $this->email->getEmail());
-		$this->assertEquals($pdoUsername->getUsername(), $this->username->getUsername());
+		$this->assertEquals($pdoUser->getEmail(), $this->Email->getEmail());
+		$this->assertEquals($pdoUsername->getUsername(), $this->Username->getUsername());
 		$this->assertEquals($pdoLoginSource->getLoginSource(), $this->loginSource->getLoginSource());
 
 	}
 
-	/** test inserting something that already exists
-	* @expectedException PDOException
-	*/
+	//test inserting something that already exists
+	//expecting PDOException
 
 	public function testInsertInvalidUser() {
-		$user = new User(UserTest::INVALID_KEY, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
-		$user->insert($this->getPDO());
+		$User = new User(UserTest::INVALID_KEY, $this->User->$getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
+		$User->insert($this->getPDO());
 
 	}
 
-	//test creating a user and then deleting it
+	//test creating a user, editing it, and then updating it
+	public function testUpdateValidUser() {
+		//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("user");
+
+		//create a new user and update it into mySQL
+		$User->setUserbyUserId($this->getPDO(), $User->getUserId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("user"));
+		$this->assertEquals($pdoUser->getUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoUser->getEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoUser->getLoginSource(), $this->VALID_LOGINSOURCE);
 
 
+	}
+
+//test updating a user that already exists
+//@expectedException PDOException
+	public function testUpdateInvalidUser() {
+		//create a user with a non null user id to watch it fail
+		$User-> new User(null, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$User->update($this->getPDO());
+
+}
+
+	//test creating a User then deleting it
+
+	public function testDeleteValidUser() {
+		//count rows
+		$numRows = $this->getConnection()->getRowCount("User");
+
+		//create a new User and insert into mySQL
+		$User = new User(null, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$User->insert($this->getPDO());
+
+		//delete this User from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
+		$User->delere($this->getPDO());
+
+		//grab the data from mySQL and enforce the User does not exist
+		$pdoUser = User::GetUserbyUserId($this->getPDO(), $User->getUserId());
+		$this->assertNul($pdoUser);
+		$User->assertEquals($numRows, $this->User->getConnection()->getRowCount("User"));
+
+	}
 
 
 
