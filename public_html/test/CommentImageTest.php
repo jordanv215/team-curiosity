@@ -35,17 +35,15 @@ class CommentImageTest extends TeamCuriosityTest {
 	 */
 	protected $VALID_COMMENT_IMAGE_DATE_TIME = null;
 	/**
-	 * id of user that created the comment - a foreign key relation
-	 *  @todo what goes here?
-	 * @var User
+	 * user that created the comment - a foreign key relation
+	 * @var User User
 	 */
-	protected $commentImageUserId = null;
+	protected $User = null;
 	/**
-	 * id of photo that was commented on; foreign key relation
-	 * @todo what about here?
-	 * @var
+	 * photo that was commented on; foreign key relation
+	 * @var Image Image
 	 */
-	protected $commentImageImageId = null;
+	protected $Image = null;
 
 	/**
 	 * create dependent objects before running test
@@ -96,5 +94,5 @@ class CommentImageTest extends TeamCuriosityTest {
 	/**
 	 * test inserting an image comment, editing it, and then updating it
 	 */
-	
+
 }
