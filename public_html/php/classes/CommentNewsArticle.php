@@ -1,7 +1,7 @@
 <?php
-namespace Edu\Cnm\Awilliams144\TeamCuriosity;
+namespace Edu\Cnm\TeamCuriosity;
 
-require_once("autoload.php");
+require_once("Autoload.php");
 
 /**
  *This newsArticle can be a small example of what services
@@ -49,7 +49,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 */
-	public function __construct(int $commentNewsArticleId = null, $commentNewsArticleDate = null, string $commentNewsArticleContent, int $commentNewsArticleNewsArticleId, int $commentNewsArticleUserId)
+	public function __construct(int $commentNewsArticleId = null, $commentNewsArticleDate = null, string $commentNewsArticleContent, int $commentNewsArticleNewsArticleId, int $commentNewsArticleUserId) {
 	try{
 			$this->setCommentNewsArticleUserId($commentNewsArticleUserId);
 			$this->setCommentNewsArticleId($commentNewsArticleId);
@@ -63,12 +63,14 @@ class CommentNewsArticle implements \JsonSerializable {
 			// rethrow the exception to the caller
 			throw(new \RangeException($range->getMessage(), 0, $range));
 			} catch(\TypeError $typeError) {
-			// rethrow the exception to the caller
-				throw(new \TypeError($typeError->getMessage(), 0, $typeError));
-			 catch(\Exception $exception) {
+		// rethrow the exception to the caller
+		throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+	catch
+		(\Exception $exception) {
 			// rethrow the exception to the caller
 			throw(new \Exception($exception->getMessage(), 0, $exception));
-				}
+		}
+		}
 	/**
 	 * accessor method for commentNewsArticleId
 	 *
@@ -186,7 +188,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	public function setCommentNewsArticleNewsArticleId(int $newCommentNewsArticleNewsArticleId = null) {
 		//base case: if the commentNewsArticleNewsArticleId is null, this is a new commentNewsArticleNewsArticleId without a mySQL assigned id (yet)
 		if($newCommentNewsArticleNewsArticleId === null) {
-			$this->commentNewsArticleNewsArtcileId = null;
+			$this->commentNewsArticleNewsArticleId = null;
 			return;
 		}
 
@@ -240,7 +242,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo) {
 		// enforce the commentNewsArticleId is null (i.e., don't insert a commentNewsArticleId that already exists)
-		if($this->CommentNewsArticleId !== null) {
+		if($this->commentNewsArticleId !== null) {
 			throw(new \PDOException("not a new commentNewsArticleId"));
 		}
 
@@ -249,11 +251,11 @@ class CommentNewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
-		$parameters = ["commentNewsArticleId" => $this->CommentNewsArticleId, "CommentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleUserId" => $this->commentNewsArtcileUserId, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId,"commentNewsArticleDateTime" => $formattedDate];
-		$statement->excecute($parameters);
+		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId, "CommentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleUserId" => $this->commentNewsArticleUserId, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId,"commentNewsArticleDateTime" => $formattedDate];
+		$statement->execute($parameters);
 
 		// update the null ArticleId with what mySQL just gave us
-		$this->CommentNewsArticleId = intval($pdo->lastInsertId());
+		$this->commentNewsArticleId = intval($pdo->lastInsertId());
 
 	}
 	/**
