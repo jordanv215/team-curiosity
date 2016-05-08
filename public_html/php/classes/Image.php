@@ -120,7 +120,7 @@ class Image implements \JsonSerializable {
 	 * @return string value of imageDescription
 	 **/
 	public function getImageDescription() {
-		return($this->getImageDescription);
+		return ($this->getImageDescription);
 	}
 
 	/**
@@ -143,25 +143,53 @@ class Image implements \JsonSerializable {
 		if(strlen($newImageDescription) > 5000) {
 			throw(new \RangeException("image description too large"));
 		}
-		
+
 		//store the image description
 		$this->imageDescription = $newImageDescription;
 	}
-	
+
 	/**
 	 * accessor method for image earth date
 	 *
 	 * @return \DateTime value of image earth date
 	 **/
-	public function  getImageEarthDate() {
-		return($this->getImageEarthDate);
+	public function getImageEarthDate() {
+		return ($this->getImageEarthDate);
 	}
 
 	/**
 	 * mutator method for image earth date
 	 *
 	 * @param \DateTime | string | null $newImageEarthDate image earth date as a Datetime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $newImageEarthDate is 
+	 * @throws \InvalidArgumentException if $newImageEarthDate is
 	 * @throws \TypeError a date that does not exist
-	 */
-}
+	 **/
+
+	public function setImageEarthDate($newImageEarthDate = null) {
+		//base case: if the date is null, use the current date and time
+		if($newImageEarthDate === null) {
+			$this->imageEarthDate = new \DateTime();
+			return;
+		}
+
+		//store the image earth date
+		try {
+			$newImageEarthDate = $this->validateDate($newImageEarthDate);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+		$this->imageEarthDate = $newImageEarthDate;
+	}
+
+	/**
+	 * accesor method for image path
+	 *
+	 * @return string value of image path
+	 **/
+	public function getImagePath() {
+		return ($this->imagePath);
+	}
+}	
+
