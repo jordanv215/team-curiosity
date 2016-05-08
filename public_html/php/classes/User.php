@@ -19,36 +19,37 @@ class User implements \JsonSerializable {
 	private $userId;
 
 	/**
-	 * login id for this user; this is a foreign key
-	 * @var int userLoginId
+	 * email for this user
+	 * @var string $userEmail
+	 **/
+	private $userEmail;
+
+	/**
+	 * login source id for this user; this is a foreign key
+	 * @var int $userLoginId
 	 **/
 	private $userLoginId;
 
 	/**
 	 * username for this user;
-	 * @var int userName
+	 * @var string $userName
 	 **/
 	private $userName;
 
-	/**
-	 * email for this user
-	 * @var int userEmail
-	 **/
-	private $userEmail;
 
 	/**
 	 * constructor for this user
 	 *
-	 * @param int | null $newUserId id of this user or null if a new user
-	 * @param int $newUserLoginId of the person logging in to this site
+	 * @param int|null $newUserId id of this user or null if a new user
+	 * @param int $newUserLoginId login source id of the person logging in to this site
 	 * @param string $newUserName username of new user
-	 * @param \DateTime | string | null $newUserEmail email login info of user or null
+	 * @param string|null $newUserEmail email login info of user or null
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newUserId = null, int $newUserLoginId, string $newUserName, $newUserEmail) {
+	public function __construct(int $newUserId = null, string $newUserEmail, int $newUserLoginId, string $newUserName) {
 		try {
 			$this->setUserId($newUserId);
 			$this->setUserLoginId($newUserLoginId);
@@ -73,7 +74,7 @@ class User implements \JsonSerializable {
 	/**
 	 * accessor method for userId
 	 *
-	 * @return int | null value of user id
+	 * @return int|null value of user id
 	 **/
 
 	public function getUserId() {
@@ -83,7 +84,7 @@ class User implements \JsonSerializable {
 	/**
 	 * mutator method for userId
 	 *
-	 * @param int|null $newUserId new id of user id
+	 * @param int|null $newUserId new value of user id; null if not yet inserted into DB
 	 * @throws \RangeException if $newUserId is not positive
 	 * @throws \TypeError if $newUserId is not an integer
 	 **/
@@ -131,7 +132,7 @@ class User implements \JsonSerializable {
 	/**
 	 * accessor method for user name
 	 *
-	 * @return int value for username
+	 * @return string value for username
 	 **/
 	public function getUserName() {
 		return ($this->userName);
@@ -140,23 +141,31 @@ class User implements \JsonSerializable {
 	/**
 	 * mutator method for userName
 	 *
-	 * @param int $newUserName new value for username
-	 * @throws \RangeException if $newUserName is not positive
+	 * @param string $newUserName new value for userName
+	 * @throws \InvalidArgumentException if value is not a string or is insecure
+	 * @throws \RangeException if $newUserName is > 128 characters
 	 * @throws \TypeError if $newUserName is not a string
 	 **/
-	public function setUserName(int $newUserName) {
-		//verify the username is positive
-		if($newUserName <= 0) {
-			throw(new \RangeException("username is not positive"));
+	public function setUserName(string $newUserName) {
+		// verify the user name is secure
+		$newUserName = trim($newUserName);
+		$newUserName = filter_var($newUserName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newUserName) === true) {
+			throw(new \InvalidArgumentException("user name is empty or insecure"));
 		}
 
-		//convert and store username
+		// verify the username will fit in the database field
+		if(strlen($newUserName) > 128) {
+			throw(new \RangeException("user name is too long"));
+		}
+
+		//store the user name
 		$this->userName = $newUserName;
 	}
 
 	/** accessor method for user email
 	 *
-	 * @return int value for email
+	 * @return string value for email
 	 **/
 	public function getUserEmail() {
 		return ($this->userEmail);
@@ -165,28 +174,26 @@ class User implements \JsonSerializable {
 	/**
 	 * mutator method for userEmail
 	 *
-	 * @param int $newUserEmail new value for user email
-	 * @throws \RangeException if $newUserEmail is not positive
+	 * @param string $newUserEmail new value for user email
+	 * @throws \InvalidArgumentException if $newUserEmail is not a string or is insecure
+	 * @throws \RangeException if $newUserEmail is > 128 characters
 	 * @throws \TypeError if $newUserEmail is not a string
 	 **/
-	public function setUserEmail(int $newUserEmail) {
-		//verify the user email is positive
-		if($newUserEmail <= 0) {
-			throw(new \RangeException("user email is not positive"));
+	public function setUserEmail(string $newUserEmail) {
+		// verify that the email is secure
+		$newUserEmail = trim($newUserEmail);
+		$newUserEmail = filter_var($newUserEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newUserEmail) === true) {
+			throw(new \InvalidArgumentException("email is empty or insecure"));
 		}
 
-		//convert and store username
-		$this->userEmail = $newUserEmail;
-	}
+		// verify that email will fit in the database field
+		if(strlen($newUserEmail) > 128) {
+			throw(new \RangeException("email address is too long"));
+		}
 
-	/**
-	 * formats JSON
-	 *
-	 * @return array resulting state variables to serialize
-	 */
-	public function jsonSerialize() {
-		$fields = get_object_vars($this);
-		return ($fields);
+		//store user email
+		$this->userEmail = $newUserEmail;
 	}
 
 	/**
@@ -267,4 +274,15 @@ class User implements \JsonSerializable {
 		return ($users);
 
 	}
+
+	/**
+	 * formats JSON
+	 *
+	 * @return array resulting state variables to serialize
+	 */
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return ($fields);
+	}
+
 }

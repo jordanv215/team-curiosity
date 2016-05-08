@@ -33,22 +33,22 @@ class UserTest extends TeamCuriosityTest {
 
 	protected $LoginSource = null;
 
-	//create dependant objects before running each test
+	//create dependent objects before running each test
 
-	public final function setup() {
-		//run the default setup() method first
-		parent::setup();
+	public final function setUp() {
+		//run the default setUp() method first
+		parent::setUp();
 
 		//create and insert a LoginSource to own the test user
 		$this->LoginSource = new LoginSource(null, "@phpunit", "@testphpunit.de", "12125551212");
-		$this->loginSource->insert($this->getPDO());
+		$this->LoginSource->insert($this->getPDO());
 
 		$this->VALID_EMAIL = new \User();
 
 	}
 
 	//test inserting a valid email and verify that it matches the mySQL data
-	public function testInsertValidUser($pdoUsername, $pdoLoginSource) {
+	public function testInsertValidUser($pdoUserName, $pdoLoginSource) {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("Email");
 
@@ -59,9 +59,9 @@ class UserTest extends TeamCuriosityTest {
 		//grab the data from mySQL and enforce the fields to match our expectations
 		$pdoUser = User::getUserbyUserID($this->getPDO(), $User->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("user"));
-		$this->assertEquals($pdoUser->getEmail(), $this->Email->getEmail());
-		$this->assertEquals($pdoUsername->getUsername(), $this->Username->getUsername());
-		$this->assertEquals($pdoLoginSource->getLoginSource(), $this->loginSource->getLoginSource());
+		$this->assertEquals($pdoUser->getEmail(), $this->User->getEmail());
+		$this->assertEquals($pdoUserName->getUserName(), $this->userName->getUsername());
+		$this->assertEquals($pdoLoginSource->getLoginSource(), $this->LoginSource->getLoginSource());
 
 	}
 
@@ -151,16 +151,13 @@ class UserTest extends TeamCuriosityTest {
 	}
 
 	/**
-	*
 	*test grabbing a User by content that does not exist
-
-	*public function testGetInvalidUserbyUserId() {
+	*/
+	public function testGetInvalidUserbyUserId() {
 		// grab a user by searching for content that does not exist
 		$User = User::getUserByUserId($this->getPDO(), "User not found");
 		$this->assertCount(0, $User);
-
 	}
-	 **/
 
 	//test grabbing all users
 	public function testGetAllValidUsers() {
@@ -183,12 +180,6 @@ class UserTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
 		$this->assertEquals($pdoUser->getLoginSource(), $this->VALID_LOGINSOURCE);
 	}
-
-
-
-
-
-
 
 }
 
