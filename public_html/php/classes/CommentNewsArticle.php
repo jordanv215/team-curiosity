@@ -1,14 +1,13 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity;
+namespace Edu\Cnm\Awilliams144\TeamCuriosity;
 
-require_once("Autoload.php");
+require_once("autoload.php");
 
 /**
- *Comment News Article
- * 
- * This class provides functionality to the CommentNewsArticle table for storing and accessing comments made on the Curiosity rover app's scientific news articles
+ *This newsArticle can be a small example of what services
+ *The Mars Curiosity Rover will send.  These can easily be extended
  * @author Anthony Williams <ailliams144@bootcamp-coders.cnm.edu>
- * @version 1.0.0
+ * @version 2.0.0
  **/
 class CommentNewsArticle implements \JsonSerializable {
 	use ValidateDate;
@@ -40,34 +39,33 @@ class CommentNewsArticle implements \JsonSerializable {
 
 	/**
 	 * constructor for this CommentNewsArticle
-	 * @param int|null $commentNewsArticleId id of this CommentNewsArticle or Null if a new CommentNewsArticle
-	 * @param int|null $commentNewsArticleUserId id of the user who Commented on the NewsArticle
-	 * @param int|null $commentNewsArticleNewsArticleId id of the commentNewsArticleNewsArticleId
-	 * @param \DATETIME|string|null $commentNewsArticleDate date and time CommentNewsArticle was sent or null if set to current date and time
-	 * @param string $commentNewsArticleContent string containing content
+	 * @param int|null $newCommentNewsArticleId id of this CommentNewsArticle or Null if a new CommentNewsArticle
+	 * @param int|null $newCommentNewsArticleUserId id of the user who Commented on the NewsArticle
+	 * @param int|null $newCommentNewsArticleNewsArticleId id of the commentNewsArticleNewsArticleId
+	 * @param \DATETIME|string|null $newCommentNewsArticleDate date and time CommentNewsArticle was sent or null if set to current date and time
+	 * @param string $newCommentNewsArticleContent string containing content
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 */
-	public function __construct(int $commentNewsArticleId = null, $commentNewsArticleDate = null, string $commentNewsArticleContent, int $commentNewsArticleNewsArticleId, int $commentNewsArticleUserId) {
-	try{
-		$this->setCommentNewsArticleId($newCommentNewsArticleId);
-		$this->setCommentNewsArticleDate($newCommentNewsArticleDate);
-		$this->setCommentNewsArticleContent($newCommentNewsArticleContent);
-		$this->setCommentNewsArticleNewsArticleId($newCommentNewsArticleNewsArticleId);
-		$this->setCommentNewsArticleUserId($newCommentNewsArticleUserId);
-			} catch(\InvalidArgumentException $invalidArgument) {
-					// rethrow the exception to the caller
+	public function __construct(int $newCommentNewsArticleId = null, $newCommentNewsArticleDate = null, string $newCommentNewsArticleContent, int $newCommentNewsArticleNewsArticleId, int $newCommentNewsArticleUserId) {
+		try {
+			$this->setCommentNewsArticleUserId($newCommentNewsArticleUserId);
+			$this->setCommentNewsArticleId($newCommentNewsArticleId);
+			$this->setCommentNewsArticleDate($newCommentNewsArticleDate);
+			$this->setCommentNewsArticleContent($newCommentNewsArticleContent);
+			$this->setCommentNewsArticleNewsArticleId($newCommentNewsArticleNewsArticleId);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
-			} catch(\RangeException $range) {
+		} catch(\RangeException $range) {
 			// rethrow the exception to the caller
 			throw(new \RangeException($range->getMessage(), 0, $range));
-			} catch(\TypeError $typeError) {
-		// rethrow the exception to the caller
-		throw(new \TypeError($typeError->getMessage(), 0, $typeError));
-	catch
-		(\Exception $exception) {
+		} catch(\TypeError $typeError) {
+			// rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
 			// rethrow the exception to the caller
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
@@ -86,7 +84,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 *
 	 * @param int|null $newCommentNewsArticleId new value of commentNewsArticleId
 	 * @throws \RangeException if $newCommentNewsArticleId is not positive
-	 * @throws \TypeError if $newCommentNewsArticleId is not an integer
+	 * @throws \TypeError if $CommentNewsArticleId is not an integer
 	 **/
 	public function setCommentNewsArticleId(int $newCommentNewsArticleId = null) {
 		//base case: if the commentNewsArticleId is null, this is a new commentNewsArticleId without a mySQL assigned id (yet)
@@ -128,7 +126,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		}
 		// store the commentNewsArticleDateTime
 		try {
-			$newCommentNewsArticleDateTime = $this->ValidateDate($newCommentNewsArticleDateTime);
+			$newCommentNewsArticleDateTime = $this->validateDate($newCommentNewsArticleDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -149,8 +147,8 @@ class CommentNewsArticle implements \JsonSerializable {
 
 	/**
 	 * mutator method for commentNewsArticleContent
-	 * @param string $newCommentNewsArticleContent new value of Comment News Article Content
-	 * @throws \InvalidArgumentException if $newCommentNewsArticleContent is not a string or is insecure
+	 * @param string $newCommentNewsArticleContent new value of News Article Content
+	 * @throws \InvalidArgumentException if $newCommentNewsArticleContent is not a string or insecure
 	 * @throws \RangeException if $newCommentNewsArticleContent is > 256 characters
 	 * @throws \TypeError if $newCommentNewsArticleContent is not a string
 	 **/
@@ -160,9 +158,9 @@ class CommentNewsArticle implements \JsonSerializable {
 		$newCommentNewsArticleContent = trim($newCommentNewsArticleContent);
 		$newCommentNewsArticleContent = filter_var($newCommentNewsArticleContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newCommentNewsArticleContent) === true) {
-			throw(new \InvalidArgumentException("comment news article content is empty or insecure"));
+			throw(new \InvalidArgumentException(" is empty or insecure"));
 		}
-		// verify the commentNewsArticleContent will fit in the database
+		// verify the CommentNewsArticleContent will fit in the database
 		if(strlen($newCommentNewsArticleContent) > 1024) {
 			throw(new \RangeException("commentNewsArticleContent too large"));
 		}
@@ -178,12 +176,13 @@ class CommentNewsArticle implements \JsonSerializable {
 	public function getCommentNewsArticleNewsArticleId() {
 		return ($this->commentNewsArticleNewsArticleId);
 	}
+
 	/**
 	 * mutator method for commentNewsArticleNewsArticleId
 	 *
-	 * @param int|null $newCommentNewsArticleNewsArticleId new value of commentNewsArticleNewsArticleId
+	 * @param int|null $newCommentNewsArticleNewsArticleId new value of newCommentNewsArticleNewsArticleId
 	 * @throws \RangeException if $newCommentNewsArticleNewsArticleId is not positive
-	 * @throws \TypeError if $newCommentNewsArticleNewsArticleId is not an integer
+	 * @throws \TypeError if $newCommentNewsArticleId is not an integer
 	 **/
 	public function setCommentNewsArticleNewsArticleId(int $newCommentNewsArticleNewsArticleId = null) {
 		//base case: if the commentNewsArticleNewsArticleId is null, this is a new commentNewsArticleNewsArticleId without a mySQL assigned id (yet)
@@ -203,21 +202,21 @@ class CommentNewsArticle implements \JsonSerializable {
 	/**
 	 * accessor method for commentNewsArticleUserId
 	 *
-	 * @return int|null value of commentNewsArticleUserId
+	 * @return int|null value of  commentNewsArticleUserId
 	 **/
 	public function getCommentNewsArticleUserId() {
 		return ($this->commentNewsArticleUserId);
 	}
 
 	/**
-	 * mutator method for commentNewsArticleUserId
+	 * mutator method for CommentNewsArticleUserId
 	 *
-	 * @param int|null $newCommentNewsArticleUserId new value of commentNewsArticleUserId
+	 * @param int|null $newCommentNewsArticleUserId new value of newCommentNewsArticleUserId
 	 * @throws \RangeException if $newCommentNewsArticleUserId is not positive
 	 * @throws \TypeError if $newCommentNewsArticleUserId is not an integer
 	 **/
 	public function setCommentNewsArticleUserId(int $newCommentNewsArticleUserId = null) {
-		//base case: if the commentNewsArticleUserId is null, this is a new commentNewsArticleUserId without a mySQL assigned id (yet)
+		//base case: if the commentNewsArticleUserId is null, this is a new CommentNewsArticleUserId without a mySQL assigned id (yet)
 		if($newCommentNewsArticleUserId === null) {
 			$this->commentNewsArticleUserId = null;
 			return;
@@ -247,12 +246,11 @@ class CommentNewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO CommentNewsArticle(commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId) VALUES(:commentNewsArticleContent, :commentNewsArticleDateTime, :commentNewsArticleNewsArticleId, :commentNewsArticleUserId)";
+		$query = "INSERT INTO commentNewsArticleId(commentNewsArticleDateTime, commentNewsArticleContent, commentNewsArticleNewsArticleId, commentNewsArticleUserId) VALUES(:commentNewsArticleDateTime, :commentNewsArticleContent, :commentNewsArticleNewsArticleId, :commentNewsArticleUserId)";
 		$statement = $pdo->prepare($query);
-
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
-		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId, "CommentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleUserId" => $this->commentNewsArticleUserId, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId,"commentNewsArticleDateTime" => $formattedDate];
+		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId, "commentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleUserId" => $this->commentNewsArticleUserId, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId,"commentNewsArticleDateTime" => $formattedDate];
 		$statement->execute($parameters);
 
 		// update the null ArticleId with what mySQL just gave us
@@ -273,16 +271,15 @@ class CommentNewsArticle implements \JsonSerializable {
 			throw(new \PDOException("unable to delete a CommentNewsArticle that does not exist"));
 		}
 		//create query template
-		$query = "DELETE FROM CommentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
+		$query = "DELETE FROM commentNewsArticleId WHERE commentNewsArticleId = :commentNewsArticleId";
 		$statement = $pdo->prepare($query);
-
 		// bind the member variables to the place holder in the template
 		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId];
 		$statement->execute($parameters);
 	}
 
 	/**
-	 * updates this CommentNewsArticle in mySQL
+	 * updates this NewsArticle in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -295,14 +292,12 @@ class CommentNewsArticle implements \JsonSerializable {
 		if($this->commentNewsArticleId === null) {
 			throw(new \PDOException("unable to update a CommentNewsArticle that does not exist"));
 		}
-
 		// create query template
-		$query = "UPDATE CommentNewsArticle SET commentNewsArticleId = :commentNewsArticleId, commentNewsArticleContent = :commentNewsArticleContent, commentNewsArticleDateTime = :commentNewsArticleDateTime, commentNewsArticleNewsArticleId = :commentNewsArticleNewsArticleId, commentNewsArticleUserId = :commentNewsArticleUserId";
+		$query = "UPDATE CommentNewsArticle SET commentNewsArticleId = :commentNewsArticleId, commentNewsArticleDateTime = :commentNewsArticleDateTime, commentNewsArticleContent = :commentNewsArticleContent, commentNewsArticleNewsArticleId = :commentNewsArticleNewsArticleId, commentNewsArticleUserId = :commentNewsArticleUserId";
 		$statement = $pdo->prepare($query);
-
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
-		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId, "commentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleDateTime" => $this->$formattedDate, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId, "commentNewsArticleUserId" => $this->commentNewsArticleUserId];
+		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId, "commentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId, "commentNewsArticleUserId" => $this->commentNewsArticleUserId, "commentNewsArticleDateTime" => $this->$formattedDate];
 		$statement->execute($parameters);
 	}
 
@@ -315,41 +310,40 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getCommentNewsArticleByCommentNewsArticleContent(\PDO $pdo, string $commentNewsArticleContent) {
+	public static function getCommentNewsArticleContentByCommentNewsArticleContent(\PDO $pdo, string $commentNewsArticleContent) {
 		//sanitize the description before searching
 		$commentNewsArticleContent = trim($commentNewsArticleContent);
 		$commentNewsArticleContent = filter_var($commentNewsArticleContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if
-		(empty($commentNewsArticleContent) === true) {
+		(empty($commentNewsArticleContent) === true
+		) {
 			throw(new \PDOException("commentNewsArticleContent is invalid"));
 		}
-
 		// create query template
-		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle WHERE commentNewsArticleContent LIKE :commentNewsArticleContent";
+		$query = "SELECT commentNewsArticleId, commentNewsArticleDateTime, commentNewsArticleContent, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle WHERE commentNewsArticleContent LIKE :commentNewsArticleContent";
 		$statement = $pdo->prepare($query);
 
 		// bind the commentNewsArticleContent to the place holder in the template
 		$commentNewsArticleContent = "%$commentNewsArticleContent%";
 		$parameters = array("commentNewsArticleContent" => $commentNewsArticleContent);
 		$statement->execute($parameters);
-
 		// build an array of NewsArticles
-		$CommentNewsArticles = new \SplFixedArray($statement->rowCount());
+		$CommentNewsArticle = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$CommentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"],$row["commentNewsArticleDateTime"], $row["commentNewsArticleUserId"], $row["commentNewsArticleNewsArticleId"]);
-				$CommentNewsArticles[$CommentNewsArticles->key()] = $CommentNewsArticle;
-				$CommentNewsArticles->next();
+				$CommentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleDateTime"], $row["commentNewsArticleContent"], $row["commentNewsArticleUserId"], $row["commentNewsArticleNewsArticleId"]);
+				$CommentNewsArticle[$CommentNewsArticle->key()] = $CommentNewsArticle;
+				$CommentNewsArticle->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
 
-		return ($CommentNewsArticles);
-	}
+		return ($CommentNewsArticle);
 
+	}
 	/**
 	 * gets the CommentNewsArticle by commentNewsArticleId
 	 *
@@ -359,17 +353,18 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getCommentNewsArticleByCommentNewsArticleId(\PDO $pdo, int $commentNewsArticleId) {
+	public
+	static function getCommentNewsArticleByCommentNewsArticleId(\PDO $pdo, int $commentNewsArticleId) {
 		// sanitize the CommentId before searching
 		if($commentNewsArticleId <= 0) {
-			throw(new \PDOException("commentNewsArticleId is not positive"));
+			throw(new \PDOException("CommentArticle id is not positive"));
 		}
 
 		// create query template
-		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId,commentNewsArticleUserId FROM CommentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
+		$query = "SELECT commentNewsArticleId, commentNewsArticleDateTime, commentNewsArticleUserId, commentNewsArticleNewsArticleId, commentNewsArticleContent FROM CommentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
 		$statement = $pdo->prepare($query);
 
-		// bind the commentNewsArticleId to the place holder in the template
+		// bind the CommentArticle id to the place holder in the template
 		$parameters = array("commentNewsArticleId" => $commentNewsArticleId);
 		$statement->execute($parameters);
 
@@ -379,7 +374,7 @@ class CommentNewsArticle implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$CommentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"],$row["commentNewsArticleDateTime"], $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
+				$CommentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleDateTime"], $row["commentNewsArticleContent"], $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -398,7 +393,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 **/
 	public static function getAllCommentNewsArticles(\PDO $pdo) {
 		// create query template
-		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle";
+		$query = "SELECT commentNewsArticleId, commentNewsArticleDateTime, commentNewsArticleContent, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -407,8 +402,8 @@ class CommentNewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$CommentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"],$row["commentNewsArticleDateTime"], $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
-				$CommentNewsArticles[$CommentNewsArticles->key()] = $CommentNewsArticle;
+				$CommentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleDateTime"], $row["commentNewsArticleContent"], $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
+				$CommentNewsArticles[$CommentNewsArticles->key()] = $CommentNewsArticles;
 				$CommentNewsArticles->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
