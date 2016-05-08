@@ -1,13 +1,14 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity;
 
-require_once("autoload.php");
+require_once("Autoload.php");
 
 /**
- *This newsArticle can be a small example of what services
- *The Mars Curiosity Rover will send.  These can easily be extended
+ * News Article
+ * 
+ * This class accesses and manipulates the News Article table to provide a feed of scientific news articles related to the Curiosity Mars rover
  * @author Anthony Williams <ailliams144@bootcamp-coders.cnm.edu>
- * @version 2.0.0
+ * @version 1.0.0
  **/
 class NewsArticle implements \JsonSerializable {
 		use ValidateDate;

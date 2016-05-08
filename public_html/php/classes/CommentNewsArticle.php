@@ -4,8 +4,9 @@ namespace Edu\Cnm\TeamCuriosity;
 require_once("Autoload.php");
 
 /**
- *This newsArticle can be a small example of what services
- *The Mars Curiosity Rover will send.  These can easily be extended
+ *Comment News Article
+ * 
+ * This class provides functionality to the CommentNewsArticle table for storing and accessing comments made on the Curiosity rover app's scientific news articles
  * @author Anthony Williams <ailliams144@bootcamp-coders.cnm.edu>
  * @version 1.0.0
  **/
