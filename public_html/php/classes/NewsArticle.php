@@ -35,21 +35,21 @@ class NewsArticle implements \JsonSerializable {
 
 	/**
 	 * constructor for this NewsArticle
-	 * @param int|null $newsArticleId id of this NewsArticle or Null if a new NewsArticle
-	 * @param \DATETIME|string|null $newsArticleDate date and time NewsArticle was sent or null if set to current date and time
-	 * @param string $newsArticleSynopsis string containing a brief synopsis
-	 * @param string $newsArticleUrl string containing the location to newsArticleUrl
+	 * @param int|null $newNewsArticleId id of this NewsArticle or Null if a new NewsArticle
+	 * @param \DATETIME|string|null $newNewsArticleDate date and time NewsArticle was sent or null if set to current date and time
+	 * @param string $newNewsArticleSynopsis string containing a brief synopsis
+	 * @param string $newNewsArticleUrl string containing the location to newsArticleUrl
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newsArticleId = null, $newsArticleDate = null, string $newsArticleSynopsis, string $newsArticleUrl) {
+	public function __construct(int $newNewsArticleId = null, $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl) {
 		try {
-			$this->setNewsArticleId($newsArticleId);
-			$this->setNewsArticleDate($newsArticleDate);
-			$this->setNewsArticleSynopsis($newsArticleSynopsis);
-			$this->setNewsArticleUrl($newsArticleUrl);
+			$this->setNewsArticleId($newNewsArticleId);
+			$this->setNewsArticleDate($newNewsArticleDate);
+			$this->setNewsArticleSynopsis($newNewsArticleSynopsis);
+			$this->setNewsArticleUrl($newNewsArticleUrl);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -77,19 +77,19 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * mutator method for newsArticleId
 	 *
-	 * @param int|null $newsArticleId new value of newsArticleId
-	 * @throws \RangeException if $newsArticleId is not positive
-	 * @throws \TypeError if $newsArticleId is not an integer
+	 * @param int|null $newNewsArticleId new value of newsArticleId
+	 * @throws \RangeException if $newNewsArticleId is not positive
+	 * @throws \TypeError if $newNewsArticleId is not an integer
 	 **/
-	public function setNewsArticleId(int $newsArticleId = null) {
+	public function setNewsArticleId(int $newNewsArticleId = null) {
 		//base case: if the newsArticleId is null, this is a new newsArticleId without a mySQL assigned id (yet)
-		if($newsArticleId === null) {
+		if($newNewsArticleId === null) {
 			$this->newsArticleId = null;
 			return;
 		}
 
 		//verify the newsArticleId is positive
-		if($newsArticleId <= 0) {
+		if($newNewsArticleId <= 0) {
 			throw(new \RangeException("newsArticleId is not positive"));
 		}
 
@@ -110,7 +110,7 @@ class NewsArticle implements \JsonSerializable {
 	 * mutator method for newsArticleDate
 	 * @param \DateTime|string|null $newNewsArticleDate newsArticleDate as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newNewsArticleDate is not a valid object or string
-	 * @throws \RangeException if $newsArticleDate is a date that does not exist
+	 * @throws \RangeException if $newNewsArticleDate is a date that does not exist
 	 **/
 	public
 	function setNewsArticleDate($newNewsArticleDate = null) {
@@ -221,7 +221,7 @@ class NewsArticle implements \JsonSerializable {
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
 		$parameters = ["newsArticleId" => $this->newsArticleId, "n" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
-		$statement->excecute($parameters);
+		$statement->execute($parameters);
 
 		// update the null articleId with what mySQL just gave us
 		$this->newsArticleId = intval($pdo->lastInsertId());
