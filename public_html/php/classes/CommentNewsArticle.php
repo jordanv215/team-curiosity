@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Awilliams144\TeamCuriosity;
+namespace Edu\Cnm\TeamCuriosity;
 
 require_once("autoload.php");
 
