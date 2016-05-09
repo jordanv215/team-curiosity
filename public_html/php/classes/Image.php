@@ -218,10 +218,89 @@ class Image implements \JsonSerializable {
 
 	/**
 	 * accessor method for image sol
-	 * 
+	 *
 	 * @return martian solar day of image
 	 */
 	public function getimageSol() {
-		return($this->imageSol);
+		return ($this->imageSol);
+	}
+
+	/**
+	 * mutator method for image sol
+	 *
+	 * @param int $newImageSol new value of image sol
+	 * @throws \RangeException if $newImageId is not positive
+	 * @throws \TypeError if $newImageId is not an integer
+	 **/
+	public function setImageSol(int $newImageSol) {
+		// verify the image sole is positive
+		if($newImageSol <= 0) {
+			throw(new \RangeException("image sol is not positive"));
+		}
+		
+		// convert and store the image sol
+		$this->imageSol = $newImageSol;
+	}
+	/**
+	 * accessor method for image title
+	 *
+	 * @return string value of image title
+	 **/
+	public function getImageTitle() {
+		return($this->imageTitle);
+	}
+
+	/**
+	 * mutator method for image title
+	 *
+	 * @param string $newImageTitle new value of image title
+	 * @throws \InvalidArgumentException if $newImageTitle is not a string or insecure
+	 * @throws \RangeException if $newImageTitle is > 128 characters
+	 * @throws \TypeError if $newImageTitle is not a string
+	 **/
+	public function setImageTitle(string $newImageTitle) {
+		// verify the image title is secure
+		$newImageTitle = trim($newImageTitle);
+		$newImageTitle = filter_var($newImageTitle, FILTER_SANITIZE_STRING);
+		if(empty($newImageTitle) === true) {
+			throw(new \InvalidArgumentException("image title is empty or insecure"));
+		}
+
+		// verify the image title will fit in the database
+		if(strlen($newImageTitle) > 128) {
+			throw(new \RangeException("image title too large"));
+		}
+
+		// store the image title
+		$this->imageTitle = $newImageTitle;
+	}
+
+	/**
+	 * accessor method for image type
+	 *
+	 * @return string value of image type
+	 **/
+	public function getImageType() {
+		return($this->imageType);
+	}
+
+	/**
+	 * mutator method for image type
+	 *
+	 * @param string string $newImageType new value of image type
+	 * @throws \InvalidArgumentException if $newImageTitle is not a string
+	 * @throws \RangeException if $newImageTitle is > 10 characters
+	 * @throws \TypeError if $newImageType is not a string
+	 **/
+	public function setImageType(string $newImageType) {
+		// verify the image title is secure
+		$newImageTitle = trim($newImageType);
+		$newImageType = filter_var($newImageType, FILTER_SANITIZE_STRING);
+		if(empty($newImageType) === true) {
+			throw(new \InvalidArgumentException("image type is empty or insecure"));
+		}
+
+		// store the image title
+		$this->imageType = $newImageType;
 	}
 }
