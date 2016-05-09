@@ -12,6 +12,7 @@ require_once("Autoload.php");
  */
 
 class FavoriteImage implements \JsonSerializable {
+	use ValidateDate;
 
 	/**
 	 * id for this favorited image; this is part of the composite key
@@ -100,11 +101,139 @@ class FavoriteImage implements \JsonSerializable {
 	/**
 	 * accessor method for favoriteImageUserId
 	 *
-	 * @return int|null vaue for user id
+	 * @return int|null value for user id
 	 */
 
-	public function
+	public function getFavoriteImageUserId() {
+		return($this->favoriteImageUserId);
+	}
 
+	/**
+	 * mutator method for favoriteImageUserId
+	 *
+	 * @param int $newFavoriteImageUserId
+	 * @throws \RangeException if $newFavoriteImageUserId is not positive
+	 * @throws \TypeError if $newFavoriteImageUserId is not an integer
+	 */
+	public function setFavoriteImageUserId(int $newFavoriteImageUserId) {
+		//verify the User Id is positive
+		if($newFavoriteImageUserId <= 0) {
+			throw(new \RangeException("User id for favorite image is not positive"));
+
+		}
+
+		//convert and store the favorite image user id
+		$this->favoriteImageUserId = $newFavoriteImageUserId;
+	}
+
+	/**
+	 * accessor method for favoriteImageDateTime
+	 *
+	 * @return \DateTime value for Image date and time
+	 */
+	public function getFavoriteImageDateTime() {
+		return($this->favoriteImageDateTime);
+	}
+
+	/**
+	 * mutator method for favoriteImageDateTime
+	 *
+	 * @param \DateTime|string|null $newFavoriteImageDateTime
+	 * @throws \InvalidArgumentException if $newFavoriteImageDateTime is not a valid object or string
+	 * @throws \RangeException if $newFavoriteImageDateTime is a date that does not exist
+	 */
+	public function setFavoriteImageDateTime($newFavoriteImageDateTime = null) {
+		//base case: if the favoriteImageDateTime is null, use the current date and time
+		if($newFavoriteImageDateTime === null) {
+			$this->favoriteImageDateTime = new \DateTime();
+			return;
+		}
+
+		//store the image date
+		try {
+			$newFavoriteImageDateTime = $this->validateDate($newFavoriteImageDateTime);
+		} catch(\invalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range){
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+		$this->favoriteImageDateTime = $newFavoriteImageDateTime;
+
+	}
+
+	/**
+	 * inserts this favoriteImage into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function insert(\PDO $pdo) {
+		//enforce the favoriteImageId is null (i.e., don't insert an image id that already exists)
+		if($this->favoriteImageId !== null) {
+			throw(new \PDOException("not a new image"));
+		}
+
+		// create a query template
+		$query ="INSERT INTO favoriteImage(favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime) VALUES(:favoriteImageId, :favoriteImageUserID, :favoriteimageDateTime)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in the template
+		$formattedDate = $this->favoriteImageDateTime->format("Y-m-d H:i:s");
+		$parameters = ["favoriteImageId" => $this->favoriteImageId, "favoriteImageUserId" => $this->favoriteImageUserId, "favoriteImageDateTime" => $formattedDate];
+		$statement->execute($parameters);
+
+		//update the null favoriteImageId with what mySQL just gave us
+		$this->favoriteImageId = intval($pdo->lastInsertId());
+
+	}
+
+	/**
+	 * deletes this image from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO Connection object
+	 */
+	public function delete(\PDO $pdo) {
+		//enforce the favoriteImageId is not null (i.e., don't delete an image that hasn't been inserted)
+		if($this->favoriteImageId === null) {
+			throw(new \PDOException("unable to delete a favorite image that does not exist"));
+		}
+
+		//create query template
+		$query = "DELETE FROM FavoriteImage WHERE favoriteImageImageId = :favoriteImageId";
+		$statement = $pdo->prepare($query);
+
+		//bind the members variables to the place holder in the template
+		$parameters = ["favoriteImageId" => $this->favoriteImageId];
+		$statement->execute($parameters);
+
+	}
+
+	/**
+	 * updates this tweet in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function update(\PDO $pdo) {
+		//enforce the favoriteImageId is not null (i.e., don't update an image that hasn't been inserted)
+		if($this->favoriteImageId === null) {
+			throw(new \PDOException("unable to update a favorite image that does not exist"));
+
+		}
+
+		//create query template
+		$query = "UPDATE FavoriteImage SET favoriteImageUserId = :favoriteImageUserId, favoriteImageDateTime = :favoriteImageDateTime WHERE favoriteImageId = :favoriteImageId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in the template
+		$formattedDate = $this->favoriteImageDateTime->format("Y-m-d H:i:S");
+		$parameters = ["favoriteImageUserId => $this->favoriteImageUserId, "]
+
+	}
 
 
 
