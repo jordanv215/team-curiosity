@@ -220,7 +220,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["newsArticleId" => $this->newsArticleId, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
+		$parameters = ["newsArticleDate" => $this->newsArticleDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
 		$statement->execute($parameters);
 
 		// update the null articleId with what mySQL just gave us
@@ -264,11 +264,11 @@ class NewsArticle implements \JsonSerializable {
 			throw(new \PDOException("unable to update a NewsArticle that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE NewsArticle SET newsArticleId = :newsArticleId, newsArticleDate = :newsArticleDate, newsArticleSynopsis = :newsArticleSynopsis, newsArticleUrl = :newsArticleUrl";
+		$query = "UPDATE NewsArticle SET newsArticleDate = :newsArticleDate, newsArticleSynopsis = :newsArticleSynopsis, newsArticleUrl = :newsArticleUrl";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["newsArticleId" => $this->newsArticleId, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $this->$formattedDate];
+		$parameters = ["newsArticleDate" => $this->newsArticleDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $this->$formattedDate];
 		$statement->execute($parameters);
 	}
 
