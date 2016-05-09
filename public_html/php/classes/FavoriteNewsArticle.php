@@ -308,16 +308,14 @@ class FavoriteNewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the data to the place holder in the template
-		$favoriteNewsArticleNewsArticleId = "%favoriteNewsArticleNewsArticleId%";
-		$favoriteNewsArticleUserId = "%favoriteNewsArticleUserId%";
 		$parameters = array("favoriteNewsArticleNewsArticleId" => $favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId => $favoriteNewsArticleUserId");
 		$statement->execute($parameters);
-	}
+
 
 		// build an array of FavoriteNewsArticle entries
 		$favoriteNewsArticles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while((row = $statement->fetch()) !== false) {
+		while(($row = $statement->fetch()) !== false) {
 			try {
 			$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
 			$favoriteNewsArticles[$favoriteNewsArticles->key()] = $FavoriteNewsArticle;
