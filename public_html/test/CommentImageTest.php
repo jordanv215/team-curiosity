@@ -192,5 +192,57 @@ class CommentImageTest extends TeamCuriosityTest {
 	 */
 	public function testGetValidCommentImageByCommentImageContent() {
 		// count number of rows
+		$numRows = $this->getConnection()->getRowCount("CommentImage");
+
+		// create a new image comment and insert into table
+		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
+		$CommentImage->insert($this->getPDO());
+
+		// grab data from table and enforce that fields match expectations
+		$results = CommentImage::getCommentImageByCommentImageContent($this->getPDO(), $CommentImage->getCommentImageContent());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentImage"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentImage", $results);
+
+		// grab the result from the array and validate it
+		$pdoCommentImage = $results[0];
+		$this->assertEquals($pdoCommentImage->getCommentImageContent(), $this->VALID_COMMENT_IMAGE_CONTENT);
+		$this->assertEquals($pdoCommentImage->getCommentImageDateTime(), $this->VALID_COMMENT_IMAGE_DATE_TIME);
+		$this->assertEquals($pdoCommentImage->getCommentImageImageId(), $this->Image->getImageId());
+		$this->assertEquals($pdoCommentImage->getCommentImageUserId(), $this->User->getUserId());
+	}
+
+	/**
+	 * test grabbing an image comment by content that does not exist
+	 */
+	public function testGetInvalidCommentImageByCommentImageContent() {
+		// grab an image comment by searching for content that does not exist
+		$CommentImage = CommentImage::getCommentImageByCommentImageContent($this->getPDO(), "LOL good luck");
+		$this->assertCount(0, $CommentImage);
+	}
+
+	/**
+	 * test grabbing all image comments
+	 */
+	public function testGetAllCommentImage() {
+		// count number of table rows
+		$numRows = $this->getConnection()->getRowCount("CommentImage");
+
+		// create a new image comment and insert into table
+		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
+		$CommentImage->insert($this->getPDO());
+
+		// grab data from table and enforce that fields match expectations
+		$results = CommentImage::getAllCommentImage($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentImage"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentImage", $results);
+
+		// grab the result from the array and validate it
+		$pdoCommentImage = $results[0];
+		$this->assertEquals($pdoCommentImage->getCommentImageContent(), $this->VALID_COMMENT_IMAGE_CONTENT);
+		$this->assertEquals($pdoCommentImage->getCommentImageDateTime(), $this->VALID_COMMENT_IMAGE_DATE_TIME);
+		$this->assertEquals($pdoCommentImage->getCommentImageImageId(), $this->Image->getImageId());
+		$this->assertEquals($pdoCommentImage->getCommentImageUserId(), $this->User->getUserId());
 	}
 }
