@@ -276,7 +276,7 @@ class User implements \JsonSerializable {
 	 */
 
 	public
-	static function getUserIdByUserId (\PDO $pdo, int $userIdContent) {
+	static function getUserIdByUserId(\PDO $pdo, int $userIdContent) {
 		//sanitize the description before searching
 		$userIdContent = trim($userIdContent);
 		$userIdContent = filter_var($userIdContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -324,84 +324,85 @@ class User implements \JsonSerializable {
 		return ($users);
 
 	}
-}
-/**
- * gets the User by UserId
- *
- * @param \PDO $pdo PDO connection object
- * @param int $userId id to search for
- * @return userId|null userId found or null if not found
- * @throws \PDOException when mySQL related errors occur
- * @throws \TypeError when variables are not the correct data type
- **/
-public static function getUserIdByUserIdContent(\PDO $pdo, int $userId) {
-	// sanitize the ContentId before searching
-	if($userId <= 0) {
-		throw(new \PDOException("User id is not positive"));
+
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return mixed data which can be serialized by <b>json_encode</b>,
+	 * which is a value of any type other than a resource.
+	 * @since 5.4.0
+	 */
+	function jsonSerialize() {
+		// TODO: Implement jsonSerialize() method.
 	}
 
-	// create query template
-	$query = "SELECT UserId, UserIdContent, UserEmailContent, UserNameContent, UserLoginContent FROM UserId WHERE UserIdContent = :UserIdContent";
-	$statement = $pdo->prepare($query);
 
-	// bind the User id to the place holder in the template
-	$parameters = array("UserIdContent" => $UserIdContent);
-	$statement->execute($parameters);
-
-	// grab the UserId from mySQL
-	try {
-		$UserId = null;
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		$row = $statement->fetch();
-		if($row !== false) {
-			$UserId = new UserId($row["UserIdContent"], $row["UserNameContent"], $row["UserEmailContent"], $row["UserLoginIdContent"], $row["UserIdContent"]);
+	/**
+	 * gets the User by UserId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $userId id to search for
+	 * @return User|null userId found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public
+	static function getUserByUserId(\PDO $pdo, int $userId) {
+		// sanitize the ContentId before searching
+		if($userId <= 0) {
+			throw(new \PDOException("User id is not positive"));
 		}
-	} catch(\Exception $exception) {
-		// if the row couldn't be converted, rethrow it
-		throw(new \PDOException($exception->getMessage(), 0, $exception));
-	}
-	return ($UserId);
-}
 
-/**
- * gets all users
- *
- * @param \PDO $pdo PDO connection object
- * @return \SplFixedArray SplFixedArray of UserIds found or null if not found
- * @throws \PDOException when mySQL related errors occur
- * @throws \TypeError when variables are not the correct data type
- **/
-public static function UserId(\PDO $pdo) {
-	// create query template
-	$query = "SELECT UserId, UserIdUserNameContent, UserIdUserEmailContent, UserIdUserLoginIdContent FROM UserId";
-	$statement = $pdo->prepare($query);
-	$statement->execute();
+		// create query template
+		$query = "SELECT UserId, UserId, UserEmail, UserName, UserLogin FROM UserId WHERE UserId = :user";
+		$statement = $pdo->prepare($query);
 
-	// build an array of UserIds
-	$UserId = new \SplFixedArray($statement->rowCount());
-	$statement->setFetchMode(\PDO::FETCH_ASSOC);
-	while(($row = $statement->fetch()) !== false) {
+		// bind the User id to the place holder in the template
+		$parameters = array("userId" => $userId);
+		$statement->execute($parameters);
+
+		// grab the UserId from mySQL
 		try {
-			$User = new User($row["UserId"], $row["UserIdUserName"], $row["UserIdUserLoginId"], $row["UserIdUserEmail"],"]);
-			$User [$User->key()] = $User;
-			$User->next();
+			$UserId = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$UserId = new UserId($row["UserIdContent"], $row["UserNameContent"], $row["UserEmailContent"], $row["UserLoginIdContent"], $row["UserIdContent"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($UserId);
+	}
+
+	/**
+	 * gets all users
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of UserIds found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public
+	static function UserId(\PDO $pdo, $exception, $user, $fields) {
+		// create query template
+		$query = "SELECT UserId, UserIdUserName, UserIdUserEmail, UserIdUserLoginId FROM user";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of users
+		$UserId = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$user = new user($row["UserId"], $row["UserIdUserName"], $row["UserIdUserLoginId"], $row["UserIdUserEmail"]);
+			$user [$user->key()] = $user;
+			$user->next();
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 	}
-	return ($User);
-}
-
-
-/**
-	 * formats JSON
-	 *
-	 * @return array resulting state variables to serialize
-	 */
-	public function jsonSerialize() {
-		$fields = get_object_vars($this);
-		return ($fields);
-	}
-
+	return ($user);
 }
