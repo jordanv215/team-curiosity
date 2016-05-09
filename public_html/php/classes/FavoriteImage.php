@@ -340,41 +340,51 @@ class FavoriteImage implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId(\PDO $pdo, int $favoriteNewsArticleNewsArticleId, int $favoriteNewsArticleUserId) {
-		// sanitize the favoriteNewsArticleNewsArticleId and favoriteNewsArticleUserId before searching
-		if($favoriteNewsArticleNewsArticleId <= 0) {
-			throw(new \RangeException("favoriteNewsArticleNewsArticleId is not positive"));
+	public static function getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId(\PDO $pdo, int $favoriteImageImageId, int $favoriteImageUserId) {
+		// sanitize the favoriteImageImageId and favoriteImageUserId before searching
+		if($favoriteImageImageId <= 0) {
+			throw(new \RangeException("favoriteImageImageId is not positive"));
 		}
-		if($favoriteNewsArticleUserId <= 0) {
-			throw(new \RangeException("favoriteNewsArticleUserId is not positive"));
+		if($favoriteImageUserId <= 0) {
+			throw(new \RangeException("favoriteImageUserId is not positive"));
 		}
 
 		// create query template
-		$query = "SELECT favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime FROM FavoriteNewsArticle WHERE favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsArticleId AND favoriteNewsArticleUserId = :favoriteNewsArticleUserId";
+		$query = "SELECT favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime FROM FavoriteImage WHERE favoriteImageImageId = :favoriteImageImageId AND favoriteImageUserId = :favoriteImageUserId";
 		$statement = $pdo->prepare($query);
 
 		// bind the data to the place holder in the template
-		$parameters = array("favoriteNewsArticleNewsArticleId" => $favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId => $favoriteNewsArticleUserId");
+		$parameters = array("favoriteImageImageId" => $favoriteImageImageId, "favoriteImageUserId => $favoriteImageUserId");
 		$statement->execute($parameters);
 
 
-		// build an array of FavoriteNewsArticle entries
-		$favoriteNewsArticles = new \SplFixedArray($statement->rowCount());
+		// build an array of favoriteImage entries
+		$favoriteImage = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
-				$favoriteNewsArticles[$favoriteNewsArticles->key()] = $FavoriteNewsArticle;
-				$favoriteNewsArticles->next();
+				$FavoriteImage = new FavoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+				$favoriteImage[$favoriteImage->key()] = $FavoriteImage;
+				$favoriteImage->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($favoriteNewsArticles);
+		return($favoriteImage);
 	}
 
 
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		$fields["favoriteNewsArticleDateTime"] = intval($this->favoriteImageDateTime->format("U")) * 1000;
+		return ($fields);
+	}
 
 
 
