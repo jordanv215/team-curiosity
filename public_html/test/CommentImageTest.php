@@ -31,7 +31,7 @@ class CommentImageTest extends TeamCuriosityTest {
 	protected $VALID_COMMENT_IMAGE_CONTENT2 = "More incredible success";
 	/**
 	 * timestamp of the image comment - assigned by mySQL
-	 * @var DateTime $VALID_COMMENT_IMAGE_DATE_TIME
+	 * @var \DateTime $VALID_COMMENT_IMAGE_DATE_TIME
 	 */
 	protected $VALID_COMMENT_IMAGE_DATE_TIME = null;
 	/**
@@ -94,5 +94,39 @@ class CommentImageTest extends TeamCuriosityTest {
 	/**
 	 * test inserting an image comment, editing it, and then updating it
 	 */
+	public function testUpdateValidCommentImage() {
+		// count number of rows in table
+		$numRows = $this->getConnection()->getRowCount("CommentImage");
 
+		// create a new image comment and insert into table
+		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->commentImageImageId, $this->commentImageUserId);
+		$CommentImage->insert($this->getPDO());
+
+		// edit the comment and update table entry
+		$CommentImage->setCommentImage($this->VALID_COMMENT_IMAGE_CONTENT2);
+		$CommentImage->update($this->getPDO());
+
+		// grab data from table and enforce that fields match expectations
+		$pdoCommentImage = CommentImage::getCommentImageByCommentImageId($this->getPDO(), $CommentImage->getCommentImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentImage"));
+		$this->assertEquals($pdoCommentImage->getCommentImageContent(), $this->VALID_COMMENT_IMAGE_CONTENT2);
+		$this->assertEquals($pdoCommentImage->getCommentImageDateTime(), $this->VALID_COMMENT_IMAGE_DATE_TIME);
+		$this->assertEquals($pdoCommentImage->getCommentImageImageId(), $this->commentImageImageId);
+		$this->assertEquals($pdoCommentImage->getCommentImageUserId(), $this->commentImageUserId);
+	}
+
+	/**
+	 * test updating an image comment that already exists
+	 *
+	 * @expectedException \PDOException
+	 */
+	public function testUpdateInvalidCommentImage() {
+		// create an image comment with a non-null id; it should fail
+		$CommentImage = new CommentImage(this->TeamCuriosityTest::INVALID_KEY, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->commentImageImageId, $this->commentImageUserId);
+		$CommentImage->update($this->getPDO());
+	}
+
+	/**
+	 * test 
+	 */
 }
