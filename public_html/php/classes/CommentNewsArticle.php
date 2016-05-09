@@ -4,7 +4,7 @@ namespace Edu\Cnm\TeamCuriosity;
 require_once("autoload.php");
 
 /**
- *This NewsArticle class provides accessors and mutators for the NewsArticle database table
+ *This CommentNewsArticle class provides accessors and mutators for the CommentNewsArticle database table
  * 
  * @author Anthony Williams <awilliams144@cnm.edu>
  * @version 1.0.0
