@@ -191,5 +191,37 @@ class Image implements \JsonSerializable {
 	public function getImagePath() {
 		return ($this->imagePath);
 	}
-}	
 
+	/**mutator method for image path
+	 *
+	 * @param string $newImagePath new value  of image path
+	 * @throws \InvalidArgumentException if $newImagePath is not a string or insecure
+	 * @throws \RangeException if $newImagePath is > 256 characters
+	 * @throw \TypeError if $newImagePath is not a string
+	 **/
+	public function setImagePath(string $newImagePath) {
+		// verify the image path is secure
+		$newImagePath = trim($newImagePath);
+		$newImagePath = filter_var($newImagePath, FILTER_SANITIZE_STRING);
+		if(empty($newImagePath) === true) {
+			throw(new \InvalidArgumentException("image path is empty or insecure"));
+		}
+
+		// verify the image path will fit in the database
+		if(strlen($newImagePath) > 256) {
+			throw(new \RangeException("image path too large"));
+		}
+
+		// store the image path
+		$this->imagePath = $newImagePath;
+	}
+
+	/**
+	 * accessor method for image sol
+	 * 
+	 * @return martian solar day of image
+	 */
+	public function getimageSol() {
+		return($this->imageSol);
+	}
+}
