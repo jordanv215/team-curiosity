@@ -95,7 +95,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$favoriteNewsArticle->delete($this->getPDO());
 
 		//grab the data from mySQL and enforce the favoriteNewsArticle does not exist
-		$pdoFavoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleIdAndFavoriteNewsArticleUserId($this->getPDO(), $favoriteNewsArticle->getFavoriteNewsArticleByFavoriteNewsArticleIdAndFavoriteNewsArticleUserId());
+		$pdoFavoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId($this->getPDO(), $favoriteNewsArticle->getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId());
 		$this->assertNull($pdoFavoriteNewsArticle);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("favoriteNewsArticle"));
 	}
@@ -107,12 +107,34 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 	 **/
 	public function testDeleteInvalidFavoriteNewsArticle() {
 		// create a FavoriteNewsArticle and try to delete it without actually inserting it
-		$favoriteNewsArticle = new FavoriteNewsarticle(null, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(),$this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle = new FavoriteNewsArticle(null, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(),$this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->Delete($this->getPDO());
 	}
 	
 	/**
-	 * test grabbing a FavoriteNewsArticle that does not exist
+	 * test grabbing a FavoriteNewsArticle that does not exist by FavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId
 	 **/
-	public function testGetInvalidFavoriteNewsArticlebyFavoriteNewsArticle
+	public function testGetInvalidFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId() {
+		 //grab a FavoriteNewsArticleNewsArticleIdandFavoriteNewsArticleUser id that exceeds the maximum allowable favoriteNewsArticleNewsArticleIdandFavoriteNewsArticleUser id
+		$favoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
+		$this->assertNull($favoriteNewsArticle);
+	}
+	/**
+	 * test grabbing a FavoriteNewsArticle that does not exist by favoriteNewsArticle newsArticle id
+	 */
+	public function testGetInvalidFavoriteNewsArticleByFavoriteNewsArticleNewsArticleId() {
+		// grab a favoriteNewsArticle NewsArticle id that exceeds the maximum allowable favoriteNewsArticle NewsArticle id
+		$favoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
+		$this->assertNull($favoriteNewsArticle);
+	}
+	/**
+	 * test grabbing a FavoriteNewsArticle that does not exist by FavoriteNewsArticle User Id
+	 **/
+	public function testGetInvalidFavoriteNewsArticleByFavoriteNEewsArtilceUserId() {
+		// grab a favoriteNewsArticle User id that exceeds the maximum allowable favoriteNewsArticle User id
+		$favoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleUserId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
+		$this->assertNull($favoriteNewsArticle);
+	}
+
+
 }
