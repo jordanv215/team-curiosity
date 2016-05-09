@@ -286,6 +286,35 @@ class FavoriteImage implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 */
+	public static function getFavoriteImageByFavoriteImageUserId(\PDO $pdo, int $favoriteImageUserId, $return) {
+		//sanitize the description before searching
+		if($favoriteImageUserId <= 0) {
+			throw(new \PDOException("user id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT favoriteImageUserId, favoriteImageId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImageUserId LIKE :favoriteImageId";
+		$statement = $pdo->prepare($query);
+
+		//bind the favoriteImageUserId to the place holder in the template
+		$parameters = array("favoriteImageUserId" => $favoriteImageUserId);
+		$statement->execute($parameters);
+
+		//grab the favorite image from mySQL
+		try {
+			$favoriteImage = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$favoriteImageUSerId = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+			}
+		} catch(\Exception $exception) {
+			// if row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		$return($favoriteImage);
+	}
+
 
 
 
