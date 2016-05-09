@@ -220,7 +220,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["newsArticleId" => $this->newsArticleId, "n" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
+		$parameters = ["newsArticleId" => $this->newsArticleId, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
 		$statement->execute($parameters);
 
 		// update the null articleId with what mySQL just gave us
