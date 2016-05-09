@@ -257,7 +257,7 @@ class User implements \JsonSerializable {
 	public function update(\PDO $pdo) {
 		// enforce the userId is not null (i.e., don't update a userId hasn't been inserted)
 		if($this->userId === null) {
-			throw(new \PDOException("unable to update a NewsArticle that does not exist"));
+			throw(new \PDOException("unable to update a user that does not exist"));
 		}
 		// create query template
 		$query = "UPDATE user SET UserId = :UserId, userLoginId = :userLoginId, userName = :userName, userEmail = :userEmail";
@@ -276,7 +276,7 @@ class User implements \JsonSerializable {
 	 */
 
 	public
-	static function getUserIdByUserId(\PDO $pdo, int $userIdContent) {
+	static function getUserIdByUserId(\PDO $pdo, int $userIdContent, $userId) {
 		//sanitize the description before searching
 		$userIdContent = trim($userIdContent);
 		$userIdContent = filter_var($userIdContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -294,16 +294,16 @@ class User implements \JsonSerializable {
 		$users = new \SplFixedArray($statement->rowCount());
 		$statement = $pdo->prepare($query);
 
-		// bind the userIdContent to the place holder in the template
+		// bind the userId to the place holder in the template
 		$userIdContent = "%$userIdContent%";
-		$parameters = array("userIdContent" => $userIdContent);
+		$parameters = array("user" => $userId);
 		$statement->execute($parameters);
 		// build an array of users
 		$userId = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$userId = new User($row["userId"], $row["userLoginIdContent"], $row["UserEmailContent"], $row["UserNameContent"], $row["UserIdContent"]);
+				$userId = new User($row["user"], $row["userEmail"], $row["userName"], $row["userLoginId"], $row["userId"]);
 				$UserId[$UserId->key()] = $userIdContent;
 				$userId->next();
 			} catch(\Exception $exception) {
@@ -348,13 +348,13 @@ class User implements \JsonSerializable {
 	 **/
 	public
 	static function getUserByUserId(\PDO $pdo, int $userId) {
-		// sanitize the ContentId before searching
+		// sanitize the usertId before searching
 		if($userId <= 0) {
 			throw(new \PDOException("User id is not positive"));
 		}
 
 		// create query template
-		$query = "SELECT UserId, UserId, UserEmail, UserName, UserLogin FROM UserId WHERE UserId = :user";
+		$query = "SELECT userId, userEmail, userName, userLoginId FROM user WHERE userId = :userId";
 		$statement = $pdo->prepare($query);
 
 		// bind the User id to the place holder in the template
@@ -367,7 +367,7 @@ class User implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$UserId = new UserId($row["UserIdContent"], $row["UserNameContent"], $row["UserEmailContent"], $row["UserLoginIdContent"], $row["UserIdContent"]);
+				$UserId = new user($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -387,7 +387,7 @@ class User implements \JsonSerializable {
 	public
 	static function UserId(\PDO $pdo, $exception, $user, $fields) {
 		// create query template
-		$query = "SELECT UserId, UserIdUserName, UserIdUserEmail, UserIdUserLoginId FROM user";
+		$query = "SELECT userId, userName, userEmail, userLoginId FROM user";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -396,13 +396,15 @@ class User implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$user = new user($row["UserId"], $row["UserIdUserName"], $row["UserIdUserLoginId"], $row["UserIdUserEmail"]);
-			$user [$user->key()] = $user;
-			$user->next();
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+				$user = new user($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
+				$user [$user->key()] = $user;
+				$user->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
 		}
+		return ($user);
 	}
-	return ($user);
+
 }
