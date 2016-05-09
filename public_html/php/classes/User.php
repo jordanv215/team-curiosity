@@ -295,7 +295,7 @@ class User implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the userId to the place holder in the template
-		$userIdContent = "%$userIdContent%";
+		$userId = "%$userId%";
 		$parameters = array("user" => $userId);
 		$statement->execute($parameters);
 		// build an array of users
@@ -304,8 +304,6 @@ class User implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$userId = new User($row["user"], $row["userEmail"], $row["userName"], $row["userLoginId"], $row["userId"]);
-				$UserId[$UserId->key()] = $userIdContent;
-				$userId->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
@@ -397,8 +395,6 @@ class User implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$user = new User($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
-				$user [$user->key()] = $user;
-				$user->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
