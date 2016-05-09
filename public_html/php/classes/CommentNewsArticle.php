@@ -126,7 +126,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		}
 		// store the commentNewsArticleDateTime
 		try {
-			$newCommentNewsArticleDateTime = $this->validateDate($newCommentNewsArticleDateTime);
+			$newCommentNewsArticleDateTime = $this->ValidateDate($newCommentNewsArticleDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -154,13 +154,13 @@ class CommentNewsArticle implements \JsonSerializable {
 	 **/
 
 	public function setCommentNewsArticleContent(string $newCommentNewsArticleContent) {
-		// verify the CommentNewsArticleContent is secure
+		// verify the commentNewsArticleContent is secure
 		$newCommentNewsArticleContent = trim($newCommentNewsArticleContent);
 		$newCommentNewsArticleContent = filter_var($newCommentNewsArticleContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newCommentNewsArticleContent) === true) {
-			throw(new \InvalidArgumentException(" is empty or insecure"));
+			throw(new \InvalidArgumentException("commentNewsArticleContent is empty or insecure"));
 		}
-		// verify the CommentNewsArticleContent will fit in the database
+		// verify the commentNewsArticleContent will fit in the database
 		if(strlen($newCommentNewsArticleContent) > 1024) {
 			throw(new \RangeException("commentNewsArticleContent too large"));
 		}

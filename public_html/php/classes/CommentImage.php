@@ -118,6 +118,52 @@ class CommentImage implements \JsonSerializable {
 	/**
 	 * mutator method for commentImageContent
 	 *
-	 * @param
+	 * @param string $newCommentImageContent content of new comment
+	 * @throws \InvalidArgumentException if $newCommentImageContent is not a string or is insecure
+	 * @throws \RangeException if $newCommentImageContent is > 1024 characters
+	 * @throws \TypeError if $newCommentImageContent is not a string
 	 */
+	public function setCommentImageContent(string $newCommentImageContent) {
+		// verify the input is secure
+		$newCommentImageContent = trim($newCommentImageContent);
+		$newCommentImageContent = filter_var($newCommentImageContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newCommentImageContent) === true) {
+			throw(new \InvalidArgumentException("commentImageContent is empty or insecure"));
+		}
+		// verify the commentImageContent will fit in the table
+		if(strlen($newCommentImageContent) > 1024) {
+			throw(new \RangeException("commentImageContent is too long"));
+		}
+		// store the newCommentImageContent
+		$this->commentImageContent = $newCommentImageContent;
+	}
+	
+	/**
+	 * accessor method for commentImageDateTime
+	 * 
+	 * @return \DateTime value of $commentImageDateTime
+	 */
+	public function getCommentImageDateTime() {
+		return ($this->commentImageDateTime);
+	}
+	
+	/**
+	 * mutator method for commentImageDateTime
+	 * 
+	 * @param \DateTime|null $newCommentImageDateTime new timestamp from mySQL or null if not yet inserted
+	 * @throws \InvalidArgumentException if $newCommentImageDateTime is not a valid object
+	 * @throws \RangeException if $newCommentImageDateTime is a date that does not exist
+	 */
+	public function setCommentImageDateTime($newCommentImageDateTime = null) {
+		// base case: if the value is null, the comment has not been inserted yet - use current timestamp
+		if($newCommentImageDateTime === null) {
+			$this->commentImageDateTime = new \DateTime();
+			return;
+		}
+		// store the commentImageDateTime
+		try {
+			$newCommentImageDateTime = $this->ValidateDate($newCommentImageDateTime);
+		} catch 	
+		}
+	}
 }
