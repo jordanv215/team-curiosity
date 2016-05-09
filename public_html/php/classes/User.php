@@ -385,7 +385,7 @@ class User implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public
-	static function UserId(\PDO $pdo, $exception, $user, $fields) {
+	static function getAllUsers(\PDO $pdo) {
 		// create query template
 		$query = "SELECT userId, userName, userEmail, userLoginId FROM user";
 		$statement = $pdo->prepare($query);
@@ -396,7 +396,7 @@ class User implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$user = new user($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
+				$user = new User($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
 				$user [$user->key()] = $user;
 				$user->next();
 			} catch(\Exception $exception) {
