@@ -319,7 +319,7 @@ class FavoriteImage implements \JsonSerializable {
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				$row = $statement->fetch();
 				if($row !== false) {
-					$favoriteImageUSerId = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+					$favoriteImageUserId = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
 				}
 			} catch(\Exception $exception) {
 				// if row couldn't be converted, rethrow it
@@ -372,6 +372,35 @@ class FavoriteImage implements \JsonSerializable {
 			}
 		}
 		return($favoriteImage);
+	}
+	/**
+	 * gets all FavoriteImage
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of FavoriteImage found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllFavoriteImage(\PDO $pdo) {
+		// create query template
+		$query = "SELECT favoriteImageImageId, favoriteImageUserId,favoriteImageDateTime FROM FavoriteImage";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		//build an array of FavoriteImage
+		$favoriteImage = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$FavoriteImage = new FavoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+				$favoriteImage[$favoriteImage->key()] = $FavoriteImage;
+				$favoriteImage->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($favoriteImage);
 	}
 
 
