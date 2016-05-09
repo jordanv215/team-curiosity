@@ -231,11 +231,36 @@ class FavoriteImage implements \JsonSerializable {
 
 		//bind the member variables to the place holders in the template
 		$formattedDate = $this->favoriteImageDateTime->format("Y-m-d H:i:S");
-		$parameters = ["favoriteImageUserId => $this->favoriteImageUserId, "]
-
+		$parameters = ["favoriteImageUserId" => $this->favoriteImageUserId, "favoriteImageDateTime" => $this->favoriteImageDateTime, "favoriteImageID" => $this->favoriteImageId];
+		$statement->execute($parameters);
 	}
 
+	/**
+	 * gets favoriteimage by image id??
+	 *
+	 * getfavorite image by favorite image image id
+	 * getfavorite image by favorite image user
+	 * get favorite image by favorite image image id and favorite image image id
+	 */
 
+	/**
+	 * gets favoriteImage by favoriteImageImageId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $favoriteImageId image id to search for
+	 * @return \SplFixedArray SplFixedArray of images found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getFavoriteImageByFavoriteImageId(\PDO $pdo, int $favoriteImageId) {
+		//sanitize the description before searching
+		$favoriteImageId = filter_var($favoriteImageId, FILTER_SANITIZE_INT, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($favoriteImageId) === true) {
+			throw(new \PDOException("image id is invalid"));
+	}
+
+	//create query template
+	$query = "SELECT favoriteImageId, favoriteImageUserId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImageId LIKE :favoriteImageId";
 
 
 
