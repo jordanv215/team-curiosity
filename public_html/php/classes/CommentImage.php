@@ -42,17 +42,17 @@ class CommentImage implements \JsonSerializable {
 
 	/**
 	 * Constructor for the image comment
-	 * @param int|null $commentImageId primary key assigned by mySQL; empty until inserted
-	 * @param string $commentImageContent content of the comment
-	 * @param \DateTime|null $commentImageDateTime timestamp of the comment as assigned by mySQL
-	 * @param int $commentImageImageId id of the image commented on
-	 * @param int $commentImageUserId id of the user who created the comment
+	 * @param int|null $newCommentImageId new primary key assigned by mySQL; empty until inserted
+	 * @param string $newCommentImageContent content of the new comment
+	 * @param \DateTime|null $newCommentImageDateTime timestamp of the new comment as assigned by mySQL
+	 * @param int $newCommentImageImageId id of the image newly commented on
+	 * @param int $newCommentImageUserId id of the user who created the new comment
 	 * @throws \InvalidArgumentException if entry is not valid
 	 * @throws \RangeException if entry is negative or too long
 	 * @throws \TypeError if type hint is violated
 	 * @throws \Exception if some other exception occurs
 	 */
-	public function __construct(int $newCommentImageId = null, string $newCommentImageContent, $newCommentImageDateTime = null, int $newCommentImageImageId; int $newCommentImageUserId) {
+	public function __construct(int $newCommentImageId = null, string $newCommentImageContent, $newCommentImageDateTime = null, int $newCommentImageImageId, int $newCommentImageUserId) {
 		try {
 			$this->setCommentImageId($newCommentImageId);
 			$this->setCommentImageContent($newCommentImageContent);
@@ -79,5 +79,45 @@ class CommentImage implements \JsonSerializable {
 	 *
 	 * @return int|null value of commentImageId
 	 */
-	public function getCommentImageId()
+	public function getCommentImageId() {
+		return ($this->commentImageId);
+	}
+
+	/**
+	 * mutator method for commentImageId
+	 *
+	 * @param int|null $newCommentImageId new value of commentImageId
+	 * @throws \RangeException if $newCommentImageId is not positive
+	 * @throws \TypeError if $newCommentImageId is not an integer
+	 */
+	public function setCommentImageId(int $newCommentImageId = null) {
+		// base case: comment not yet inserted into table; id is null
+		if($newCommentImageId === null) {
+			$this->commentImageId = null;
+			return;
+		}
+
+		// verify the commentImageId is positive
+		if($newCommentImageId <= 0) {
+			throw(new \RangeException("commentImageId is not positive"));
+		}
+
+		// convert and store the commentImageId
+		$this->commentImageId = $newCommentImageId;
+	}
+
+	/**
+	 * accessor method for commentImageContent
+	 *
+	 * @return string value of $commentImageContent
+	 */
+	public function getCommentImageContent() {
+		return ($this->commentImageContent);
+	}
+
+	/**
+	 * mutator method for commentImageContent
+	 *
+	 * @param
+	 */
 }
