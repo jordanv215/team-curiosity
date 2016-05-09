@@ -276,17 +276,17 @@ class User implements \JsonSerializable {
 	 */
 
 	public
-	static function getUserIdByUserId(\PDO $pdo, int $userIdContent, $userId) {
+	static function getUserIdByUserId(\PDO $pdo, int $userIdContent, $userId, $user) {
 		//sanitize the description before searching
-		$userIdContent = trim($userIdContent);
-		$userIdContent = filter_var($userIdContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$user = trim($user);
+		$user = filter_var($user, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if
-		(empty($userIdContent) === true
+		(empty($user) === true
 		) {
-			throw(new \PDOException("userIdContent is invalid"));
+			throw(new \PDOException("user is invalid"));
 		}
 		//create query template
-		$query = "SELECT :userIdContent, :userLoginIdContent, :userNameContent, :userEmailContent FROM user WHERE userIdContent LIKE :userIdContent";
+		$query = "SELECT :user, :userLoginId, :userName, :userEmail FROM user WHERE userId LIKE :userId";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
