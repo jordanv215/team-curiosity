@@ -122,7 +122,7 @@ class CommentImageTest extends TeamCuriosityTest {
 	 */
 	public function testUpdateInvalidCommentImage() {
 		// create an image comment with a non-null id; it should fail
-		$CommentImage = new CommentImage(this->TeamCuriosityTest::INVALID_KEY, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
+		$CommentImage = new CommentImage($this->TeamCuriosityTest->INVALID_KEY, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
 		$CommentImage->update($this->getPDO());
 	}
 
