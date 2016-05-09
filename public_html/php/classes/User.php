@@ -214,6 +214,9 @@ class User implements \JsonSerializable {
 		//bind the member variables to the place holders in the template
 		$parameters = ["userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
 		$statement->execute($parameters);
+
+		// update the null articleId with what mySQL just gave us
+		$this->UserId = intval($pdo->lastInsertId());
 	}
 
 
@@ -241,26 +244,73 @@ class User implements \JsonSerializable {
 
 	}
 
+
 	/**
-	 * gets the user by content
+	 * updates this UserId in mySQL
+	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @return \SplFixedArray SplFixedArray of id found
 	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 *
+	 *
+	 */
+	public function update(\PDO $pdo) {
+		// enforce the userId is not null (i.e., don't update a userId hasn't been inserted)
+		if($this->userId === null) {
+			throw(new \PDOException("unable to update a NewsArticle that does not exist"));
+		}
+		// create query template
+		$query = "UPDATE user SET UserId = :UserId, userLoginId = :userLoginId, userName = :userName, userEmail = :userEmail";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holders in the template
+		$parameters = ["userId" => $this->userId, "userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * gets the user by int content
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $userIdContent
+	 * @return \SplFixedArray SplFixedArray of id found
+	 * @internal param int $userid user id int to search for
 	 */
 
 	public
-	static function getAllUsers(\PDO $pdo) {
-
+	static function getUserIdByUserId (\PDO $pdo, int $userIdContent) {
+		//sanitize the description before searching
+		$userIdContent = trim($userIdContent);
+		$userIdContent = filter_var($userIdContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if
+		(empty($userIdContent) === true
+		) {
+			throw(new \PDOException("userIdContent is invalid"));
+		}
 		//create query template
-		$query = "SELECT :userId, :userLoginId, :userName, :userEmail FROM user";
+		$query = "SELECT :userIdContent, :userLoginIdContent, :userNameContent, :userEmailContent FROM user WHERE userIdContent LIKE :userIdContent";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
 		//build array of users
 		$users = new \SplFixedArray($statement->rowCount());
 		$statement = $pdo->prepare($query);
-		$statement->execute();
+
+		// bind the userIdContent to the place holder in the template
+		$userIdContent = "%$userIdContent%";
+		$parameters = array("userIdContent" => $userIdContent);
+		$statement->execute($parameters);
+		// build an array of users
+		$userId = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$userId = new User($row["userId"], $row["userLoginIdContent"], $row["UserEmailContent"], $row["UserNameContent"], $row["UserIdContent"]);
+				$UserId[$UserId->key()] = $userIdContent;
+				$userId->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$user = new User($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
@@ -274,8 +324,77 @@ class User implements \JsonSerializable {
 		return ($users);
 
 	}
+}
+/**
+ * gets the User by UserId
+ *
+ * @param \PDO $pdo PDO connection object
+ * @param int $userId id to search for
+ * @return userId|null userId found or null if not found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables are not the correct data type
+ **/
+public static function getUserIdByUserIdContent(\PDO $pdo, int $userId) {
+	// sanitize the ContentId before searching
+	if($userId <= 0) {
+		throw(new \PDOException("User id is not positive"));
+	}
 
-	/**
+	// create query template
+	$query = "SELECT UserId, UserIdContent, UserEmailContent, UserNameContent, UserLoginContent FROM UserId WHERE UserIdContent = :UserIdContent";
+	$statement = $pdo->prepare($query);
+
+	// bind the User id to the place holder in the template
+	$parameters = array("UserIdContent" => $UserIdContent);
+	$statement->execute($parameters);
+
+	// grab the UserId from mySQL
+	try {
+		$UserId = null;
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$row = $statement->fetch();
+		if($row !== false) {
+			$UserId = new UserId($row["UserIdContent"], $row["UserNameContent"], $row["UserEmailContent"], $row["UserLoginIdContent"], $row["UserIdContent"]);
+		}
+	} catch(\Exception $exception) {
+		// if the row couldn't be converted, rethrow it
+		throw(new \PDOException($exception->getMessage(), 0, $exception));
+	}
+	return ($UserId);
+}
+
+/**
+ * gets all users
+ *
+ * @param \PDO $pdo PDO connection object
+ * @return \SplFixedArray SplFixedArray of UserIds found or null if not found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables are not the correct data type
+ **/
+public static function UserId(\PDO $pdo) {
+	// create query template
+	$query = "SELECT UserId, UserIdUserNameContent, UserIdUserEmailContent, UserIdUserLoginIdContent FROM UserId";
+	$statement = $pdo->prepare($query);
+	$statement->execute();
+
+	// build an array of UserIds
+	$UserId = new \SplFixedArray($statement->rowCount());
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+	while(($row = $statement->fetch()) !== false) {
+		try {
+			$User = new User($row["UserId"], $row["UserIdUserName"], $row["UserIdUserLoginId"], $row["UserIdUserEmail"],"]);
+			$User [$User->key()] = $User;
+			$User->next();
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+	}
+	return ($User);
+}
+
+
+/**
 	 * formats JSON
 	 *
 	 * @return array resulting state variables to serialize
