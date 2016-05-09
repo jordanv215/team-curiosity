@@ -278,7 +278,14 @@ class FavoriteImage implements \JsonSerializable {
 	}
 
 
-	// get favoriteImage by favoriteImageByFavoriteImageUserId
+	/** get favoriteImage by favoriteImageByFavoriteImageUserId
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $favoriteImageId image id to search for
+	 * @param int $favoriteImageUserId user id to search for
+	 * @return \SplFixedArray SplFixedArray of images found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
 
 
 
