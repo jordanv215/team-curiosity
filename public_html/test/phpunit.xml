@@ -4,11 +4,13 @@
 			<file>UserTest.php</file>
 			<file>CommentImageTest.php</file>
 			<file>FavoriteNewsArticleTest.php</file>
+			<file>LoginSourceTest.php</file>
+			<file></file>
 		</testsuite>
 	</testsuites>
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<test suffix=".php">../php/classes</test>
+			<directory suffix=".php">../php/classes</directory>
 		</whitelist>
 	</filter>
 </phpunit>
