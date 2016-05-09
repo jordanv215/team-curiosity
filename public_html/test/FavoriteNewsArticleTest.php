@@ -110,4 +110,9 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$favoriteNewsArticle = new FavoriteNewsarticle(null, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(),$this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->Delete($this->getPDO());
 	}
+	
+	/**
+	 * test grabbing a FavoriteNewsArticle that does not exist
+	 **/
+	public function testGetInvalidFavoriteNewsArticlebyFavoriteNewsArticle
 }
