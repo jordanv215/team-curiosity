@@ -1,20 +1,20 @@
-DROP TABLE IF EXISTS favoriteNewsArticle;
-DROP TABLE IF EXISTS commentNewsArticle;
-DROP TABLE IF EXISTS favoriteImage;
-DROP TABLE IF EXISTS commentImage;
-DROP TABLE IF EXISTS newsArticle;
-DROP TABLE IF EXISTS image;
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS loginSource;
+DROP TABLE IF EXISTS FavoriteNewsArticle;
+DROP TABLE IF EXISTS CommentNewsArticle;
+DROP TABLE IF EXISTS FavoriteImage;
+DROP TABLE IF EXISTS CommentImage;
+DROP TABLE IF EXISTS NewsArticle;
+DROP TABLE IF EXISTS Image;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS LoginSource;
 
-CREATE TABLE loginSource (
+CREATE TABLE LoginSource (
 	loginSourceId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	loginSourceApiKey VARCHAR(256) NOT NULL,
 	loginSourceProvider VARCHAR(128) NOT NULL,
 	PRIMARY KEY(loginSourceId)
 );
 
-CREATE TABLE user (
+CREATE TABLE User (
 	userId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	userEmail VARCHAR(128) NOT NULL,
 	userLoginId INT UNSIGNED NOT NULL,
@@ -22,11 +22,11 @@ CREATE TABLE user (
 	INDEX(userName),
 	UNIQUE(userEmail),
 	INDEX (userLoginId),
-	FOREIGN KEY (userLoginId) REFERENCES loginSource(loginSourceId),
+	FOREIGN KEY (userLoginId) REFERENCES LoginSource(loginSourceId),
 	PRIMARY KEY(userId)
 );
 
-CREATE TABLE image (
+CREATE TABLE Image (
 	imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	imageCamera VARCHAR(64) NOT NULL,
 	imageDescription VARCHAR(5000),
@@ -44,7 +44,7 @@ CREATE TABLE image (
 	PRIMARY KEY(imageId)
 );
 
-CREATE TABLE newsArticle (
+CREATE TABLE NewsArticle (
 	newsArticleId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	newsArticleDate DATETIME NOT NULL,
 	newsArticleSynopsis VARCHAR(256) NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE newsArticle (
 	PRIMARY KEY(newsArticleId)
 );
 
-CREATE TABLE commentImage (
+CREATE TABLE CommentImage (
 	commentImageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	commentImageContent VARCHAR(1024) NOT NULL,
 	commentImageDateTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -63,23 +63,23 @@ CREATE TABLE commentImage (
 	commentImageUserId INT UNSIGNED NOT NULL,
 	INDEX(commentImageImageId),
 	INDEX(commentImageUserId),
-	FOREIGN KEY(commentImageImageId) REFERENCES image(imageId),
-	FOREIGN KEY(commentImageUserId) REFERENCES user(userId),
+	FOREIGN KEY(commentImageImageId) REFERENCES Image(imageId),
+	FOREIGN KEY(commentImageUserId) REFERENCES User(userId),
 	PRIMARY KEY(commentImageId)
 );
 
-CREATE TABLE favoriteImage (
+CREATE TABLE FavoriteImage (
 	favoriteImageImageId INT UNSIGNED NOT NULL,
 	favoriteImageUserId INT UNSIGNED NOT NULL,
 	favoriteImageDateTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	INDEX(favoriteImageImageId),
 	INDEX(favoriteImageUserId),
-	FOREIGN KEY(favoriteImageImageId) REFERENCES image(imageId),
-	FOREIGN KEY(favoriteImageUserId) REFERENCES user(userId),
+	FOREIGN KEY(favoriteImageImageId) REFERENCES Image(imageId),
+	FOREIGN KEY(favoriteImageUserId) REFERENCES User(userId),
 	PRIMARY KEY(favoriteImageImageId, favoriteImageUserId)
 );
 
-CREATE TABLE commentNewsArticle (
+CREATE TABLE CommentNewsArticle (
 	commentNewsArticleId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	commentNewsArticleContent VARCHAR(1024) NOT NULL,
 	commentNewsArticleDateTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -87,18 +87,18 @@ CREATE TABLE commentNewsArticle (
 	commentNewsArticleUserId INT UNSIGNED NOT NULL,
 	INDEX(commentNewsArticleNewsArticleId),
 	INDEX(commentNewsArticleUserId),
-	FOREIGN KEY(commentNewsArticleNewsArticleId) REFERENCES newsArticle(newsArticleId),
-	FOREIGN KEY(commentNewsArticleUserId) REFERENCES user(userId),
+	FOREIGN KEY(commentNewsArticleNewsArticleId) REFERENCES NewsArticle(newsArticleId),
+	FOREIGN KEY(commentNewsArticleUserId) REFERENCES User(userId),
 	PRIMARY KEY(commentNewsArticleId)
 );
 
-CREATE TABLE favoriteNewsArticle (
+CREATE TABLE FavoriteNewsArticle (
 	favoriteNewsArticleNewsArticleId INT UNSIGNED NOT NULL,
 	favoriteNewsArticleUserId INT UNSIGNED NOT NULL,
 	favoriteNewsArticleDateTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	INDEX(favoriteNewsArticleNewsArticleId),
 	INDEX(favoriteNewsArticleUserId),
-	FOREIGN KEY(favoriteNewsArticleNewsArticleId) REFERENCES newsArticle(newsArticleId),
-	FOREIGN KEY(favoriteNewsArticleUserId) REFERENCES user(userId),
+	FOREIGN KEY(favoriteNewsArticleNewsArticleId) REFERENCES NewsArticle(newsArticleId),
+	FOREIGN KEY(favoriteNewsArticleUserId) REFERENCES User(userId),
 	PRIMARY KEY(favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId)
 );
