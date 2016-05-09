@@ -1,10 +1,12 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{User, NewsArticle, FavoriteNewsArticle};
+use Edu\Cnm\TeamCuriosity\{
+	User, NewsArticle, FavoriteNewsArticle
+};
 
 // grab the project test parameters
-require_once ("TeamCuriosityTest.php");
+require_once("TeamCuriosityTest.php");
 
 //grab the class under scrutiny
 require_once(dirname(__DIR__) . "/php/classes/autoload.php");
@@ -49,18 +51,18 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_FAVORITENEWSARTICLEDATETIME = new \DateTime();
 	}
-	
+
 	/**
 	 * test inserting a valid FavoriteNewsArticle and verify that the actual mySQL data matches
 	 **/
-	public function  testInsertValidFavoriteNewsArticle() {
+	public function testInsertValidFavoriteNewsArticle() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("favoriteNewsArticle");
-		
+
 		//create a new FavoriteNewsArticle and insert into mySQL
 		$favoriteNewsArticle = new FavoriteNewsArticle(null, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->insert($this->getPDO());
-		
+
 		//grab the data from mySQL and enforce the fields match our expectations
 		$pdoFavoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByUserId($this->getPDO(), $favoriteNewsArticle->getUserId());
 		$this->assertEquals($favoriteNewsArticle + 1, $this->getConnection()->getRowCount("favoriteNewsArticle"));
@@ -68,25 +70,44 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoFavoriteNewsArticle->getNewsArticleId(), $this->newsArticle->getNewsArticleId());
 		$this->assertEquals($pdoFavoriteNewsArticle->getNewsArticleDateTime(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 	}
-	
-	/**
-	 * test inserting a FavoriteNewsArticle that already exists
-	 * 
-	 * @expectedException PDOException
+
+	/** PDOException
 	 **/
 	public function testInsertInvalidFavoriteNewsArticle() {
 		// create a FavoriteNewsArticle with a non null favoriteNewsArticle id and watch it fail
 		$favoriteNewsArticle = new FavoriteNewsArticle(TeamCuriosityTest::INVALID_KEY, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->insert($this->getPDO());
 	}
-	
+
 	/**
-	 * test inserting a FavoriteNewsArticle, editing it, and then updateing it
+	 * test creating a FavoriteNewsArticle and then deleting it
 	 **/
-	public function testUpdateValidFavoriteNewsArticle() {
-		// count the number of row s and save it for later
+	public function testDeleteValidFavoriteNewsArticle() {
+		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("favoriteNewsArticle");
-		
-		
+
+		// create a new FavoriteNewsArticle and insert into mySQL
+		$favoriteNewsArticle = new FavoriteNewsArticle(null, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle->insert($this->getPDO());
+
+		// delete the FavoriteNewsArticle from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("favoriteNewsArticle"));
+		$favoriteNewsArticle->delete($this->getPDO());
+
+		//grab the data from mySQL and enforce the favoriteNewsArticle does not exist
+		$pdoFavoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleIdAndFavoriteNewsArticleUserId($this->getPDO(), $favoriteNewsArticle->getFavoriteNewsArticleByFavoriteNewsArticleIdAndFavoriteNewsArticleUserId());
+		$this->assertNull($pdoFavoriteNewsArticle);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("favoriteNewsArticle"));
+	}
+
+	/**
+	 * test deleting a favoriteNewsArticle that does not exist
+	 *
+	 * @expectedException \PDOException
+	 **/
+	public function testDeleteInvalidFavoriteNewsArticle() {
+		// create a FavoriteNewsArticle and try to delete it without actually inserting it
+		$favoriteNewsArticle = new FavoriteNewsarticle(null, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(),$this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle->Delete($this->getPDO());
 	}
 }
