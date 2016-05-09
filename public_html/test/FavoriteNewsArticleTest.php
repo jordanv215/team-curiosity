@@ -18,7 +18,7 @@ require_once(dirname(__DIR__) . "/php/classes/autoload.php");
 class FavoriteNewsArticleTest extends TeamCuriosityTest {
 	/**
 	 * timestamp of the FavoriteNewsArticle; this starts as null and is assigned later
-	 * @var DateTime $VALID_FAVORITENEWSARTICLEDATETIME
+	 * @var \DateTime $VALID_FAVORITENEWSARTICLEDATETIME
 	 **/
 	protected $VALID_FAVORITENEWSARTICLEDATETIME = null;
 	/**
