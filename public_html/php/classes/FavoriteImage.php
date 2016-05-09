@@ -235,6 +235,7 @@ class FavoriteImage implements \JsonSerializable {
 	}
 
 	/**
+	 * THESE ARE NOTES FOR WHAT I NEED TO ADD. IGNORE THEM
 	 * getfavorite image by favorite image image id
 	 * getfavorite image by favorite image userid
 	 * get favorite image by favorite image image id and favorite image image id
@@ -248,14 +249,14 @@ class FavoriteImage implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 */
-	public static function getFavoriteImageByFavoriteImageId(\PDO $pdo, int $favoriteImageId, $return) {
+	public static function getFavoriteImageByFavoriteImageId(\PDO $pdo, int $favoriteImageId) {
 		//sanitize the description before searching
 		if($favoriteImageId <= 0) {
 			throw(new \PDOException("image id is not positive"));
 		}
 
 		//create query template
-		$query = "SELECT favoriteImageId, favoriteImageUserId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImageId LIKE :favoriteImageId";
+		$query = "SELECT favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImage.favoriteImageImageId = :favoriteImageId";
 		$statement = $pdo->prepare($query);
 
 		//bind the favoriteImage to the place holder in the template
@@ -263,19 +264,31 @@ class FavoriteImage implements \JsonSerializable {
 		$statement->execute($parameters);
 
 		//grab the favorite image from mySQL
-		try {
 			$favoriteImage = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$favoriteImage = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+			while(($row = $statement->fetch()) !== false) {
+				try {
+					$favoriteImage = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+					$favoriteImage[$favoriteImage->key()] = $favoriteImage;
+					$favoriteImage->next();
+				} catch(\Exception $exception) {
+					// if the row couldn't be converted, rethrow it
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+				}
 			}
-		} catch(\Exception $exception) {
-			// if row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+			return ($favoriteImage);
 		}
-		$return($favoriteImage);
-	}
+			/**$row = $statement->fetch();
+			 * if($row !== false) {
+			 * $favoriteImage = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+			 * }
+			 * } catch(\Exception $exception) {
+			 * // if row couldn't be converted, rethrow it
+			 * throw(new \PDOException($exception->getMessage(), 0, $exception));
+			 * }
+			 * return($favoriteImage);
+			 * }
+			 * */
 
 
 	/** get favoriteImage by favoriteImageByFavoriteImageUserId
@@ -287,37 +300,33 @@ class FavoriteImage implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 */
 	public static function getFavoriteImageByFavoriteImageUserId(\PDO $pdo, int $favoriteImageUserId, $return) {
-		//sanitize the description before searching
-		if($favoriteImageUserId <= 0) {
-			throw(new \PDOException("user id is not positive"));
-		}
-
-		//create query template
-		$query = "SELECT favoriteImageUserId, favoriteImageId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImageUserId LIKE :favoriteImageId";
-		$statement = $pdo->prepare($query);
-
-		//bind the favoriteImageUserId to the place holder in the template
-		$parameters = array("favoriteImageUserId" => $favoriteImageUserId);
-		$statement->execute($parameters);
-
-		//grab the favorite image from mySQL
-		try {
-			$favoriteImage = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$favoriteImageUSerId = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+			//sanitize the description before searching
+			if($favoriteImageUserId <= 0) {
+				throw(new \PDOException("user id is not positive"));
 			}
-		} catch(\Exception $exception) {
-			// if row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+
+			//create query template
+			$query = "SELECT favoriteImageUserId, favoriteImageImageId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImageUserId = :favoriteImageId";
+			$statement = $pdo->prepare($query);
+
+			//bind the favoriteImageUserId to the place holder in the template
+			$parameters = array("favoriteImageUserId" => $favoriteImageUserId);
+			$statement->execute($parameters);
+
+			//grab the favorite image from mySQL
+			try {
+				$favoriteImage = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$favoriteImageUSerId = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+				}
+			} catch(\Exception $exception) {
+				// if row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+			$return($favoriteImage);
 		}
-		$return($favoriteImage);
-	}
-
-
-
-
 
 
 
