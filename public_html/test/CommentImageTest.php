@@ -68,14 +68,14 @@ class CommentImageTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("CommentImage");
 
 		// create a new image comment and insert into table
-		$CommentImage = new CommentImage(null, $this->commentImageUserId, $this->commentImageImageId, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME);
+		$CommentImage = new CommentImage(null, $this->User->getUserId(), $this->Image->getImageId(), $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME);
 		$CommentImage->insert($this->getPDO());
 
 		// grab data from table and enforce that fields match expectations
 		$pdoCommentImage = CommentImage::getCommentImageByCommentImageId($this->getPDO(), $CommentImage->getCommentImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentImage"));
-		$this->assertEquals($pdoCommentImage->getCommentImageUserId(), $this->commentImageUserId);
-		$this->assertEquals($pdoCommentImage->getCommentImageImageId(), $this->commentImageImageId);
+		$this->assertEquals($pdoCommentImage->getCommentImageUserId(), $this->User->getUserId());
+		$this->assertEquals($pdoCommentImage->getCommentImageImageId(), $this->Image->getImageId());
 		$this->assertEquals($pdoCommentImage->getCommentImageContent(), $this->VALID_COMMENT_IMAGE_CONTENT);
 		$this->assertEquals($pdoCommentImage->getCommentImageDateTime(), $this->VALID_COMMENT_IMAGE_DATE_TIME);
 	}
@@ -87,7 +87,7 @@ class CommentImageTest extends TeamCuriosityTest {
 	 */
 	public function testInsertInvalidCommentImage() {
 		// create an image comment with a non-null id; it should fail
-		$CommentImage = new CommentImage(TeamCuriosityTest::INVALID_KEY, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->commentImageImageId, $this->commentImageUserId);
+		$CommentImage = new CommentImage(TeamCuriosityTest::INVALID_KEY, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
 		$CommentImage->insert($this->getPDO());
 	}
 	
@@ -99,7 +99,7 @@ class CommentImageTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("CommentImage");
 
 		// create a new image comment and insert into table
-		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->commentImageImageId, $this->commentImageUserId);
+		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
 		$CommentImage->insert($this->getPDO());
 
 		// edit the comment and update table entry
@@ -111,8 +111,8 @@ class CommentImageTest extends TeamCuriosityTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentImage"));
 		$this->assertEquals($pdoCommentImage->getCommentImageContent(), $this->VALID_COMMENT_IMAGE_CONTENT2);
 		$this->assertEquals($pdoCommentImage->getCommentImageDateTime(), $this->VALID_COMMENT_IMAGE_DATE_TIME);
-		$this->assertEquals($pdoCommentImage->getCommentImageImageId(), $this->commentImageImageId);
-		$this->assertEquals($pdoCommentImage->getCommentImageUserId(), $this->commentImageUserId);
+		$this->assertEquals($pdoCommentImage->getCommentImageImageId(), $this->Image->getImageId());
+		$this->assertEquals($pdoCommentImage->getCommentImageUserId(), $this->User->getUserId());
 	}
 
 	/**
@@ -122,7 +122,7 @@ class CommentImageTest extends TeamCuriosityTest {
 	 */
 	public function testUpdateInvalidCommentImage() {
 		// create an image comment with a non-null id; it should fail
-		$CommentImage = new CommentImage(this->TeamCuriosityTest::INVALID_KEY, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->commentImageImageId, $this->commentImageUserId);
+		$CommentImage = new CommentImage(this->TeamCuriosityTest::INVALID_KEY, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
 		$CommentImage->update($this->getPDO());
 	}
 
@@ -134,7 +134,7 @@ class CommentImageTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("CommentImage");
 
 		// create a new comment and insert into table
-		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->commentImageImageId, $this->commentImageUserId);
+		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
 		$CommentImage->insert($this->getPDO());
 
 		// delete the tweet from the table
@@ -154,7 +154,7 @@ class CommentImageTest extends TeamCuriosityTest {
 	 */
 	public function testDeleteInvalidCommentImage() {
 		// create a comment and try to delete it without actually inserting it
-		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->commentImageImageId, $this->commentImageUserId);
+		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
 		$CommentImage->delete($this->getPDO());
 	}
 
@@ -166,7 +166,7 @@ class CommentImageTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("CommentImage");
 
 		// create a new image comment and insert into table
-		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->commentImageImageId, $this->commentImageUserId);
+		$CommentImage = new CommentImage(null, $this->VALID_COMMENT_IMAGE_CONTENT, $this->VALID_COMMENT_IMAGE_DATE_TIME, $this->Image->getImageId(), $this->User->getUserId());
 		$CommentImage->insert($this->getPDO());
 
 		// grab data from mySQL and enforce that fields match expectations
@@ -174,8 +174,8 @@ class CommentImageTest extends TeamCuriosityTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentImage"));
 		$this->assertEquals($pdoCommentImage->getCommentImageContent(), $this->VALID_COMMENT_IMAGE_CONTENT);
 		$this->assertEquals($pdoCommentImage->getCommentImageDateTime(), $this->VALID_COMMENT_IMAGE_DATE_TIME);
-		$this->assertEquals($pdoCommentImage->getCommentImageImageId, $this->commentImageImageId);
-		$this->assertEquals($pdoCommentImage->getCommentImageUserId, $this->commentImageUserId);
+		$this->assertEquals($pdoCommentImage->getCommentImageImageId, $this->Image->getImageId());
+		$this->assertEquals($pdoCommentImage->getCommentImageUserId, $this->User->getUserId());
 	}
 
 	/**
@@ -187,5 +187,10 @@ class CommentImageTest extends TeamCuriosityTest {
 		$this->assertNull($CommentImage);
 	}
 
-	
+	/**
+	 * test grabbing an image comment by image comment content
+	 */
+	public function testGetValidCommentImageByCommentImageContent() {
+		// count number of rows
+	}
 }
