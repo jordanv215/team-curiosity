@@ -16,12 +16,14 @@ class FavoriteImage implements \JsonSerializable {
 	/**
 	 * id for this favorited image; this is part of the composite key
 	 * @var int $favoriteImageId
+	 *
 	 **/
 	private $favoriteImageId;
 
 	/**
 	 * id for the user id who favorites image; this is part of the composite key
 	 * @var int $favoriteImageUserId
+	 *
 	 **/
 	private $favoriteImageUserId;
 
@@ -63,8 +65,45 @@ class FavoriteImage implements \JsonSerializable {
 		}
 	}
 
+/**
+ * Accessor method for favoriteImageId
+ *
+ * @return int|null value of image id
+ */
 
+	public function getFavoriteImageId() {
+		return ($this->favoriteImageId);
+	}
 
+	/**
+	 * mutator method for favoriteImageId
+	 *
+	 * @param int|null $favoriteImageId
+	 * @throws \RangeException if $favoriteImageId is not positive
+	 * @throws \TypeError if $newFavoriteImageId is not an integer
+	 */
+	public function setFavoriteImageId(int $newFavoriteImageId = null) {
+		//base case: if the favorite image id is null, this is a new user
+		if ($newFavoriteImageId === null) {
+			$this->favoriteImageId = null;
+			return;
+		}
+
+		//verify the image id is positive
+		if($newFavoriteImageId <= 0) {
+			throw(new \RangeException("image id is not positive"));
+		}
+		//convert and store image id
+		$this->favoriteImageId = $newFavoriteImageId;
+	}
+
+	/**
+	 * accessor method for favoriteImageUserId
+	 *
+	 * @return int|null vaue for user id
+	 */
+
+	public function
 
 
 
