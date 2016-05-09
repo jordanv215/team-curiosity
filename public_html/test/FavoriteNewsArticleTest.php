@@ -64,6 +64,29 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		//grab the data from mySQL and enforce the fields match our expectations
 		$pdoFavoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByUserId($this->getPDO(), $favoriteNewsArticle->getUserId());
 		$this->assertEquals($favoriteNewsArticle + 1, $this->getConnection()->getRowCount("favoriteNewsArticle"));
-		$this->assertEquals($pdoFavoriteNewsArticle->getUserId(), $this->)
+		$this->assertEquals($pdoFavoriteNewsArticle->getUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoFavoriteNewsArticle->getNewsArticleId(), $this->newsArticle->getNewsArticleId());
+		$this->assertEquals($pdoFavoriteNewsArticle->getNewsArticleDateTime(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
+	}
+	
+	/**
+	 * test inserting a FavoriteNewsArticle that already exists
+	 * 
+	 * @expectedException PDOException
+	 **/
+	public function testInsertInvalidFavoriteNewsArticle() {
+		// create a FavoriteNewsArticle with a non null favoriteNewsArticle id and watch it fail
+		$favoriteNewsArticle = new FavoriteNewsArticle(TeamCuriosityTest::INVALID_KEY, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle->insert($this->getPDO());
+	}
+	
+	/**
+	 * test inserting a FavoriteNewsArticle, editing it, and then updateing it
+	 **/
+	public function testUpdateValidFavoriteNewsArticle() {
+		// count the number of row s and save it for later
+		$numRows = $this->getConnection()->getRowCount("favoriteNewsArticle");
+		
+		
 	}
 }
