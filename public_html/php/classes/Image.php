@@ -309,5 +309,32 @@ class Image implements \JsonSerializable {
 	 *
 	 * @return string value of image url
 	 **/
-	cd
+	public function getImageUrl() {
+		return($this->imageUrl);
+	}
+
+	/**
+	 *  mutator method for image url
+	 *
+	 * @param string $newImageUrl new value of image url
+	 * @throws \InvalidArgumentException if $newImageUrl is not a string or insecure
+	 * @throws \RangeException if $newImageUrl is > 256 characters
+	 * @throws \TypeError if @newImageUrl is not a string
+	 **/
+	public function setImageUrl(string $newImageUrl) {
+		// verify the image url is secure
+		$newImageUrl = trim($newImageUrl);
+		$newImageUrl = filter_var($newImageUrl, FILTER_SANITIZE_STRING);
+		if(empty($newImageUrl) === true) {
+			throw(new \InvalidArgumentException("image url is empty or insecure"));
+		}
+
+		// verify the image url will fit in the databass
+		if(strlen($newImageUrl) > 256) {
+			throw(new \RangeException("image url too large"));
+		}
+
+		// store the image url
+		$this->imageUrl = $newImageUrl;
+	}
 }
