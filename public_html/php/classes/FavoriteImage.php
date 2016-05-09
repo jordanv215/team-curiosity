@@ -10,7 +10,6 @@ require_once("Autoload.php");
  * @author Jordan Vinson <jvinson3@cnm.edu>
  * version 1.0.0
  */
-
 class FavoriteImage implements \JsonSerializable {
 	use ValidateDate;
 
@@ -66,11 +65,11 @@ class FavoriteImage implements \JsonSerializable {
 		}
 	}
 
-/**
- * Accessor method for favoriteImageId
- *
- * @return int|null value of image id
- */
+	/**
+	 * Accessor method for favoriteImageId
+	 *
+	 * @return int|null value of image id
+	 */
 
 	public function getFavoriteImageId() {
 		return ($this->favoriteImageId);
@@ -85,7 +84,7 @@ class FavoriteImage implements \JsonSerializable {
 	 */
 	public function setFavoriteImageId(int $newFavoriteImageId = null) {
 		//base case: if the favorite image id is null, this is a new user
-		if ($newFavoriteImageId === null) {
+		if($newFavoriteImageId === null) {
 			$this->favoriteImageId = null;
 			return;
 		}
@@ -105,7 +104,7 @@ class FavoriteImage implements \JsonSerializable {
 	 */
 
 	public function getFavoriteImageUserId() {
-		return($this->favoriteImageUserId);
+		return ($this->favoriteImageUserId);
 	}
 
 	/**
@@ -132,7 +131,7 @@ class FavoriteImage implements \JsonSerializable {
 	 * @return \DateTime value for Image date and time
 	 */
 	public function getFavoriteImageDateTime() {
-		return($this->favoriteImageDateTime);
+		return ($this->favoriteImageDateTime);
 	}
 
 	/**
@@ -154,7 +153,7 @@ class FavoriteImage implements \JsonSerializable {
 			$newFavoriteImageDateTime = $this->validateDate($newFavoriteImageDateTime);
 		} catch(\invalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
-		} catch(\RangeException $range){
+		} catch(\RangeException $range) {
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
 		$this->favoriteImageDateTime = $newFavoriteImageDateTime;
@@ -175,7 +174,7 @@ class FavoriteImage implements \JsonSerializable {
 		}
 
 		// create a query template
-		$query ="INSERT INTO favoriteImage(favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime) VALUES(:favoriteImageId, :favoriteImageUserID, :favoriteimageDateTime)";
+		$query = "INSERT INTO favoriteImage(favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime) VALUES(:favoriteImageId, :favoriteImageUserID, :favoriteimageDateTime)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
@@ -236,31 +235,52 @@ class FavoriteImage implements \JsonSerializable {
 	}
 
 	/**
-	 * gets favoriteimage by image id??
-	 *
 	 * getfavorite image by favorite image image id
-	 * getfavorite image by favorite image user
+	 * getfavorite image by favorite image userid
 	 * get favorite image by favorite image image id and favorite image image id
 	 */
 
 	/**
 	 * gets favoriteImage by favoriteImageImageId
-	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $favoriteImageId image id to search for
 	 * @return \SplFixedArray SplFixedArray of images found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 */
-	public static function getFavoriteImageByFavoriteImageId(\PDO $pdo, int $favoriteImageId) {
+	public static function getFavoriteImageByFavoriteImageId(\PDO $pdo, int $favoriteImageId, $return) {
 		//sanitize the description before searching
-		$favoriteImageId = filter_var($favoriteImageId, FILTER_SANITIZE_INT, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($favoriteImageId) === true) {
-			throw(new \PDOException("image id is invalid"));
+		if($favoriteImageId <= 0) {
+			throw(new \PDOException("image id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT favoriteImageId, favoriteImageUserId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImageId LIKE :favoriteImageId";
+		$statement = $pdo->prepare($query);
+
+		//bind the favoriteImage to the place holder in the template
+		$parameters = array("favoriteImageId" => $favoriteImageId);
+		$statement->execute($parameters);
+
+		//grab the favorite image from mySQL
+		try {
+			$favoriteImage = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$favoriteImage = new favoriteImage($row["favoriteImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+			}
+		} catch(\Exception $exception) {
+			// if row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		$return($favoriteImage);
 	}
 
-	//create query template
-	$query = "SELECT favoriteImageId, favoriteImageUserId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImageId LIKE :favoriteImageId";
+
+	// get favoriteImage by favoriteImageByFavoriteImageUserId
+
+
 
 
 
