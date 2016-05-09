@@ -136,5 +136,27 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$this->assertNull($favoriteNewsArticle);
 	}
 
+	/**
+	 * test grabbing all FavoriteNewsArticle
+	 **/
+	public function testGetAllValidFavoriteNewsArticles() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("favoriteNewsArticle");
 
+		// create a new FavoriteNewsArticle and insert into into mySQL
+		$favoriteNewsArticle = new FavoriteNewsArticle(null, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields mathc our expectations
+		$results = FavoriteNewsArticle::getAllFavoriteNewsArticles($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("favoriteNewsArticle"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstanceOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
+
+		//grab the result from the array and validate it
+		$pdoFavoriteNewsArticle = $results[0];
+		$this->assertEquals($pdoFavoriteNewsArticle->getUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoFavoriteNewsArticle->getNewsArticleId(), $this->newsArticle->getNewsArticleId());
+		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleDateTime(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
+ 	}
 }
