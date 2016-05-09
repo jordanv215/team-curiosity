@@ -132,7 +132,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 
 		// store the favoriteNewsArticleDateTime date
 		try {
-			$newFavoriteNewsArticleDateTime = $this->validateDate($newFavoriteNewsArticleDateTime);
+			$newFavoriteNewsArticleDateTime = $this->ValidateDate($newFavoriteNewsArticleDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {

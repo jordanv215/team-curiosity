@@ -303,4 +303,11 @@ class Image implements \JsonSerializable {
 		// store the image title
 		$this->imageType = $newImageType;
 	}
+
+	/**
+	 * accessor method for image url
+	 *
+	 * @return string value of image url
+	 **/
+	cd
 }
