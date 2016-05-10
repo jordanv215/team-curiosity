@@ -446,4 +446,89 @@ class Image implements \JsonSerializable {
 		}
 		return($Image);
 	}
-}
+
+	/**
+	 * gets the Image by imageCamera
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $imageCamera image camera to search for
+	 * @return \SplFixedArray SplFixedArray of Images found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getImageByImageCamera(\PDO $pdo, string $imageCamera) {
+		// sanitize the description before searching
+		$imageCamera = trim($imageCamera);
+		$imageCamera = filter_var($imageCamera, FILTER_SANITIZE_STRING);
+		if(empty($imageCamera) === true) {
+			throw(new \PDOException("image camera is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageCamera LIKE :imageCamera";
+		$statement = $pdo->prepare($query);
+
+		// bind the image camera to the place holder in the template
+		$imageCamera = "%imageCamera%";
+		$parameters = array("imageCamera" => $imageCamera);
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		// build an array of Images
+		$Images = new \SplFixedArray(($statement->rowCount()));
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$Image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$Images[$Images->key()] = $Image;
+				$Images->next();
+			} catch(\Exception $exception) {
+					// if the row couldn't be converted, rethrow it
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($Images);
+	}
+
+	/**
+	 * gets the Image by imageDescription
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $imageDescription image description to search for
+	 * @return \SplFixedArray SplFixedArray of Images found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getImageByImageDescription(\PDO $pdo, string $imageDescription) {
+		// sanitize the description before searching
+		$imageDescription = trim($imageDescription);
+		$imageDescription = filter_var($imageDescription, FILTER_SANITIZE_STRING);
+		if(empty($imageDescription) === true) {
+				throw(new \PDOException("image description is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageDescription LIKE :imageDescription";
+		$statement = $pdo->prepare($query);
+
+		// bind an array of images
+		$imageDescription = "%$imageDescription%";
+		$parameters =array("imageDescription" => $imageDescription);
+		$statement->execute($parameters);
+
+		//build an array of images
+		$Images = new \SplFixedArray(($statement->rowCount()));
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$Image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$Images[$Images->key()] = $Image;
+				$Images->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($Images);
+	}
+
+	}
