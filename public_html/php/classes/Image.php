@@ -337,4 +337,113 @@ class Image implements \JsonSerializable {
 		// store the image url
 		$this->imageUrl = $newImageUrl;
 	}
+
+	/**
+	 *
+	 * inserts this Image into mySQL
+	 * @paran \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) {
+		// enforce the imageId is null (i.e. , don't insert a image that already exists)
+		if($this->imageId !== null) {
+			throw(new \PDOException("not a new image"));
+		}
+
+		// create query template
+		$query = "INSERT INTO Image(imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl) VALUES (:imageId, :imageCamera, :imageDescription, :imageEarthDate, :imagePath, :imageSol,:imageTitle, :imageType, :imageUrl)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$formattedDate = $this->ImageEarthDate->format("Y-m-d H:i:s");
+		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
+		$statement->execute($parameters);
+
+		// update the null imageId with what mySQL just gave us
+		$this->imageId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * deletes this Image from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) {
+		// enforce the imageId is not null (i.e., don't delete a image that hasn't been inserted)
+		if($this->imageId === null) {
+			throw(new \PDOException("unable to delete a image that does not exist"));
+		}
+
+		// create query template
+		$query = "DELETE FROM image WHERE imageId = :imageId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member varialbes to the place holder in the template
+		$parameters = ["imageId" => $this->imageId];
+		$statement->execute($parameters);
+	}
+	
+	/**
+	 * updates this image in mySQL
+	 * 
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) {
+		// enforce the imageId is not null (i.e., don't update a image that hasn't been inserted)
+		if($this->imageId === null) {
+			throw(new \PDOException("unable to update a image that does not exist"));
+		}
+		
+		// create query template
+		$query = "UPDATE Image SET imageId = :imageId, imageCamera = :imageCamera, imageDescription = :imageDescription, imageEarthDate = :imageEarthDate, imagePath = :imagePath, imageSol = :imageSol, imageTitle = :imageTitle, imageType = :imageType, imageUrl = :imageUrl";
+		$statement = $pdo->prepare($query);
+		
+		// bind the member variables to the place holders in the template
+		$formattedDate = $this->imageDarthDate->format("Y-m-d H:i:s");
+		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEartDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
+		$statement->execute($parameters);
+	}
+	
+	/**
+	 * gets the Image by imageId
+	 * 
+	 * @param \PDO $pdo PDO connectionobject
+	 * @param int $imageId Image id to search for
+	 * @return Image | null Image found or null if not found
+	 * @thorws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getImageByImageId(\PDO $pdo, int $imageId) {
+		// sanitize the imageId before searching
+		if($imageId <= 0) {
+			throw(new \PDOException("image id is not positive"));
+		}
+		
+		// create query template
+		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageId = :imageId";
+		$statement = $pdo->prepare($query);
+		
+		// bind the image id to the place holder in the template
+		$parameters = array("imageId" => $imageId);
+		$statement->execute($parameters);
+		
+		// grab the Image from mySQL
+		try {
+			$Image = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$Image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+			}
+		} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($Image);
+	}
 }
