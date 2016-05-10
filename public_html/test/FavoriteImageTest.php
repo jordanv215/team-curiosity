@@ -84,3 +84,40 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	}
 
 	/**
+	 * test to create favoriteImage and then delete it
+	 *
+	 */
+	public function testDeleteInvalidFavoriteImage() {
+		//count the number of rows, save
+		$numRows = $this->getConnection()->getRowCount("favoriteImage");
+
+		//create a favoriteImage and insert into mySQL
+		$favoriteImage = new favoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FavoriteImageDateTime);
+		$favoriteImage->insert($this->getPDO());
+
+		// delete the favoriteImage from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("favoriteImage"));
+		$favoriteImage->delete($this->getPDO());
+
+		// grab the data from mySQL and enforce the favoriteImage that does not exist
+		$pdoFavoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageIdAndFavoriteImageUserId($this->getPDO(), $favoriteImage->getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId());
+		$this->assertNull($pdoFavoriteImage);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("FavoriteImage"));
+	}
+
+	/**
+	 * Test to delete a favoriteImage that doesn't exist
+	 */
+	public function testGetInvalidFavoriteImage() {
+		$favoriteImage = new favoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FavoriteImageDateTime);
+		$favoriteImage->delete($this->getPDO());
+
+	}
+
+
+
+
+
+
+
+}
