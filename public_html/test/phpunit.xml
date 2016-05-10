@@ -3,9 +3,11 @@
 		<testsuite name="Team Curiosity Test">
 			<file>LoginSourceTest.php</file>
 			<file>UserTest.php</file>
+			<file>ImageTest.php</file>
 			<file>NewsArticleTest.php</file>
 			<file>CommentImageTest.php</file>
 			<file>FavoriteImageTest.php</file>
+			<file>CommentNewsArticleTest.php</file>
 			<file>FavoriteNewsArticleTest.php</file>
 		</testsuite>
 	</testsuites>
