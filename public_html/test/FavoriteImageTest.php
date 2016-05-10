@@ -1,7 +1,9 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{User, image, favoriteImage};
+use Edu\Cnm\TeamCuriosity\{
+	User, image, favoriteImage
+};
 
 //grab the test parameters
 require_once("TeamCuriosityTest.php");
@@ -78,10 +80,10 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	/**
 	 * PDO Exception
 	 */
-	publc function testInsertInvalidFavoriteImage() {
+publc function testInsertInvalidFavoriteImage() {
 	$favoriteImage = new favoriteImage(TeamCuriosityTest::INVALID_KEY, $this->User->getUserId(), $this->image->getImageId(), $this->VALID_FavoriteImageDateTime);
 	$favoriteImage->insert($this->getPDO());
-	}
+}
 
 	/**
 	 * test to create favoriteImage and then delete it
@@ -107,6 +109,8 @@ class FavoriteImageTest extends TeamCuriosityTest {
 
 	/**
 	 * Test to delete a favoriteImage that doesn't exist
+	 *
+	 * @expectedException \PDOException
 	 */
 	public function testGetInvalidFavoriteImage() {
 		$favoriteImage = new favoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FavoriteImageDateTime);
@@ -114,9 +118,35 @@ class FavoriteImageTest extends TeamCuriosityTest {
 
 	}
 
+	/**
+	 * /**
+	 * test grabbing a FavoriteImage that does not exist by FavoriteImageImageIdAndFavoriteImageUserId
+	 **/
+	public function testGetInvalidFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId() {
+		//grab a FavoriteImageImageIdAndFavoriteImageUserId that exceeds the maximum allowable favoriteImageImageIdAndFavoriteImageUserId
+		$favoriteImage = favoriteImage:: getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
+		$this->assertNull($favoriteImage);
+	}
 
+	/**
+	 * test grabbing a FavoriteImage that does not exist by favoriteImageImageId
+	 */
+	public function testGetInvalidFavoriteImageByFavoriteImageImageId() {
+		// grab a favoriteImageImageId that exceeds the maximum allowable favoriteImageImageId
+		$favoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageImageId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
+		$this->assertNull($favoriteImage);
+	}
 
+	/**
+	 * Test grabbing a favoriteImage that doesnt exist by favoriteImageUserId
+	 *
+	 */
+	public function testGetInvalidFavoriteImageByFavoriteImageUserId() {
+		//grab a favoriteImageUserId that exceeds max allowed amount
+		$favoriteImage = favoriteImage::getFavoriteImageByFavoriteImageUserId($this->getPDO(),TeamCuriosityTest::INVALID_KEY);
+		$this->assertNull($favoriteImage);
 
+	}
 
 
 
