@@ -14,6 +14,10 @@ require_once("../php/classes/Autoload.php");
  *
  * This is a complete PHPUnit test of the FavoriteImage class. It is complete because *ALL* mySQL/PDO enabled methods
  * are tested for both invalid and valid inputs.
+ *
+ * @see FavoriteImage
+ * @author Jordan Vinson <jvinson3@cnm.edu>
+ *
  **/
 class FavoriteImageTest extends TeamCuriosityTest {
 	/**
