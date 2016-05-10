@@ -73,3 +73,14 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoFavoriteImage->getImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoFavoriteImage->getImageDateTime(), $this->VALID_FavoriteImageDateTime);
 	}
+
+
+	/**
+	 * PDO Exception
+	 */
+	publc function testInsertInvalidFavoriteImage() {
+	$favoriteImage = new favoriteImage(TeamCuriosityTest::INVALID_KEY, $this->User->getUserId(), $this->image->getImageId(), $this->VALID_FavoriteImageDateTime);
+	$favoriteImage->insert($this->getPDO());
+	}
+
+	/**
