@@ -7,7 +7,7 @@ use Edu\Cnm\TeamCuriosity\{LoginSource};
 require_once("TeamCuriosityTest.php");
 
 // grab the class to be tested
-require_once(dirname(_DIR_) . "/php/classes/LoginSource.php");
+require_once(dirname(_DIR_) . "/php/classes/LoginSource.php"); // @todo correct this filepath
 
 /**
  * PHPUnit test for the LoginSource class
