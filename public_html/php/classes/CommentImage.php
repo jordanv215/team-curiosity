@@ -210,6 +210,95 @@ class CommentImage implements \JsonSerializable {
 		}
 
 		// create a query template
-		$query = 
+		$query = "DELETE FROM CommentImage WHERE commentImageId = :commentImageId";
+		$statement = $pdo->prepare($query);
+		
+		// bind member variables to the placeholders in the template
+		$parameters = ["commentImageId" => $this->commentImageId];
+		$statement->execute($parameters);
+	}
+	
+	/**
+	 * updates this image comment in the mySQL table
+	 * 
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL-related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function update(\PDO $pdo) {
+		// enforce that commentImageId is not null (don't update a comment that hasn't been inserted into table)
+		if($this->commentImageId === null) {
+			throw(new \PDOException("unable to update a nonexistent comment"));
+		}
+		
+		// create a query template
+		$query = "UPDATE CommentImage SET commentImageContent = :commentImageContent, commentImageDateTime = :commentImageDateTime, commentImageImageId = :commentImageImageId, commentImageUserId = :commentImageUserId";
+		$statement = $pdo->prepare($query);
+		
+		// bind the member variables to the placeholders in the template
+		$formattedDate = $this->commentImageDateTime->format("Y-m-d H:i:s");
+		$parameters = ["commentImageContent" => $this->commentImageContent, "commentImageDateTime" => $formattedDate, "commentImageImageId => $this->commentImageImageId", "commentImageUserId" => $this->commentImageUserId];
+		$statement->execute($parameters);
+	}
+	
+	/**
+	 * gets image comment by content
+	 * 
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $commentImageContent comment content to search for
+	 * @return \SplFixedArray SplFixedArray of comments found
+	 * @throws \PDOException when mySQL-related errors occur
+	 * @throws \TypeError when variables violate type hints
+	 */
+	public static function getCommentImageByCommentImageContent(\PDO $pdo, string $commentImageContent) {
+		// sanitize input before searching
+		$commentImageContent = trim($commentImageContent);
+		$commentImageContent = filter_var($commentImageContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($commentImageContent) === true) {
+			throw(new \PDOException("search content is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM CommentImage WHERE commentImageContent LIKE :commentImageContent";
+		$statement = $pdo->prepare($query);
+
+		// bind the comment content to the placeholder in the template
+		$commentImageContent = "%commentImageContent%";
+		$parameters = array("commentImageContent" => $commentImageContent);
+		$statement->execute($parameters);
+
+		// build an array of image comments
+		$commentImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$CommentImage = new CommentImage($row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImages[$commentImages->key()] = $CommentImage;
+				$commentImages->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($commentImages);
+	}
+
+	/**
+	 * gets an image comment by commentImageId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $commentImageId image comment id to search for
+	 * @return CommentImage|null comment found or null if none found
+	 * @throws \PDOException when mySQL-related errors occur
+	 * @throws \TypeError when variables violate type hints
+	 */
+	public static function getCommentImageByCommentImageId(\PDO $pdo, int $commentImageId) {
+		// sanitize the input before searching
+		if($commentImageId <= 0) {
+			throw(new \PDOException("search input is not positive"));
+		}
+
+		// create query template
+		
 	}
 }
