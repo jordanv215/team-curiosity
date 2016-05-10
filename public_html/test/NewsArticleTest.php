@@ -16,7 +16,7 @@ require_once("../php/classes/Autoload.php");
  * are tested for both invalid and valid inputs.
  *
  * @see NewsArticle
- * @author Anthony Willams <awilliams144@cnm.edu>
+ * @author Anthony Williams <awilliams144@cnm.edu>
  *
  * */
 
