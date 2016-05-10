@@ -145,6 +145,30 @@ publc function testInsertInvalidFavoriteImage() {
 		//grab a favoriteImageUserId that exceeds max allowed amount
 		$favoriteImage = favoriteImage::getFavoriteImageByFavoriteImageUserId($this->getPDO(),TeamCuriosityTest::INVALID_KEY);
 		$this->assertNull($favoriteImage);
+	}
+
+	/**
+	 * test grabbing all favoriteImage
+	 */
+	public function testGetAllValidFavoriteImages() {
+		// count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("FavoriteImage");
+
+		// create a new FavoriteImage and insert into mySQL
+		$favoriteImage = new favoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FavoriteImageDateTime);
+		$favoriteImage->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = FavoriteImage::getAllFavoriteImage($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstanceOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
+
+		//grab the result from the array and validate it
+		$pdoFavoriteImage = $results[0];
+		$this->assertEquals($pdoFavoriteImage->getUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoFavoriteImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoFavoriteImage->getFavoriteImageDateTime(), $this->VALID_FavoriteImageDateTime);
 
 	}
 
