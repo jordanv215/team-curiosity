@@ -299,6 +299,50 @@ class CommentImage implements \JsonSerializable {
 		}
 
 		// create query template
+		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM CommentImage WHERE commentImageId = :commentImageId";
+		$statement = $pdo->prepare($query);
+
+		// bind the commentImageId to the placeholder in the template
+		$parameters = array("commentImageId" => $commentImageId);
+		$statement->execute($parameters);
+
+		// grab the image comment from the table
+		try {
+			$CommentImage = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$CommentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($CommentImage);
+	}
+
+	/**
+	 * gets image comments by commentImageImageId (all the comments on a given image)
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $commentImageImageId id of the image whose comments this method searches for
+	 * @return \SplFixedArray SplFixedArray of comments found
+	 * @throws \PDOException if mySQL-related errors occur
+	 * @throws \TypeError if variables violate type hints
+	 */
+	public static function getCommentImageByCommentImageImageId(\PDO $pdo, int $commentImageImageId) {
+		// sanitize input before searching
+		$commentImageImageId = trim($commentImageImageId);
+		$commentImageImageId = filter_var($commentImageImageId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($commentImageImageId) === true) {
+			throw(new \PDOException("image id input is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM CommentImage WHERE commentImageImageId LIKE :commentImageImageId";
+		$statement = $pdo->prepare($query);
+
+		// bind the image id to the placeholder in the template
 		
 	}
 }
