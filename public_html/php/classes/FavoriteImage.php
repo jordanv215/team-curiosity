@@ -417,5 +417,4 @@ class FavoriteImage implements \JsonSerializable {
 
 
 
-
 }
