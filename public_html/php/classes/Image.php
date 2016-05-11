@@ -530,6 +530,7 @@ class Image implements \JsonSerializable {
 		}
 		return($Images);
 	}
+
 	/**
 	 * get the Image by image title
 	 *
@@ -572,4 +573,13 @@ class Image implements \JsonSerializable {
 		return($Images);
 	}
 
+	/**
+	 * get the Image by image sol
+	 *
+	 * @param \PDO $pdo PDO connectionobject
+	 * @param int $imageSol Image sol to search for
+	 * @return \SplFixedArray SplFixedArray of Images found
+	 * @thorws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
 	}
