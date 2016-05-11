@@ -17,21 +17,26 @@ require_once (dirname(__DIR__) . "/php/classes/Autoload.php");
  *
  * @see user
  * @author Jordan Vinson <jvinson3@cnm.edu>
- */
+ **/
 class UserTest extends TeamCuriosityTest {
 	/**
-	 * user
-	 * @var string $VALID_USER
-	 */
+	 * user email
+	 * @var string $VALID_EMAIL
+	 **/
 	protected $VALID_EMAIL = "testtest@test.test";
+	/**
+	 * @var string $VALID_EMAIL2
+	 **/
 	protected $VALID_EMAIL2 = "anothertest@test.test";
 	/**
-	 * user
-	 * @var string $VALID_USER2
+	 * user name
+	 * @var string $VALID_USERNAME
 	 **/
 	protected $VALID_USERNAME = "Test User Name";
 
 	protected $loginSource = null;
+
+	protected $user = null;
 
 	//create dependent objects before running each test
 
@@ -78,7 +83,7 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		//create a new user and update it into mySQL
-		$user->setUserbyUserId($this->getPDO(), $user->getUserId());
+		$user->setUserId($this->getPDO(), $this->user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoUser->getEmail(), $this->VALID_EMAIL);
@@ -87,12 +92,14 @@ class UserTest extends TeamCuriosityTest {
 
 	}
 
-//test updating a user that already exists
-//@expectedException PDOException
+/**test updating a user that already exists
+ *
+* @expectedException \PDOException
+**/
 	public function testUpdateInvalidUser() {
 		//create a user with a non null user id to watch it fail
-		$user = new User(null, $this->User->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
-		$User->update($this->getPDO());
+		$user = new User(null, $this->user->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$user->update($this->getPDO());
 
 }
 
@@ -126,7 +133,7 @@ class UserTest extends TeamCuriosityTest {
 	}
 
 	//test grabbing a User by Email
-	public function testGetInvalidUserByEmail($User) {
+	public function testGetInvalidUserByEmail($user) {
 		//count number of rows
 		$numRows = $this->getConnection()->getRowCount("User");
 
