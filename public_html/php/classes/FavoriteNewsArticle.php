@@ -234,17 +234,17 @@ class FavoriteNewsArticle implements \JsonSerializable {
 
 		// grab the FavoriteNewsArticle from mySQL
 		try {
-			$FavoriteNewsArticle = null;
+			$favoriteNewsArticle = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
+				$favoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($FavoriteNewsArticle);
+		return ($favoriteNewsArticle);
 	}
 
 	/**gets the FavoriteNewsArticle by favoriteNewsArticleUserId
@@ -270,17 +270,17 @@ class FavoriteNewsArticle implements \JsonSerializable {
 
 		// grab the FavoriteNewsArticle from mySQL
 		try {
-			$FavoriteNewsArticle = null;
+			$favoriteNewsArticle = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleDateTime"]);
+				$favoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleDateTime"]);
 			}
 		} catch(\Exception $exception) {
 			//if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($FavoriteNewsArticle);
+		return ($favoriteNewsArticle);
 	}
 
 	/**
@@ -317,8 +317,8 @@ class FavoriteNewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-			$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
-			$favoriteNewsArticles[$favoriteNewsArticles->key()] = $FavoriteNewsArticle;
+			$favoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
+			$favoriteNewsArticles[$favoriteNewsArticles->key()] = $favoriteNewsArticle;
 			$favoriteNewsArticles->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -346,8 +346,8 @@ class FavoriteNewsArticle implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			while(($row = $statement->fetch()) !== false) {
 				try {
-					$FavoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
-					$favoriteNewsArticles[$favoriteNewsArticles->key()] = $FavoriteNewsArticle;
+					$favoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
+					$favoriteNewsArticles[$favoriteNewsArticles->key()] = $favoriteNewsArticle;
 					$favoriteNewsArticles->next();
 				} catch(\Exception $exception) {
 					// if the row couldn't be converted, rethrow it

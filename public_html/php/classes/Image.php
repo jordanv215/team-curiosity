@@ -582,4 +582,12 @@ class Image implements \JsonSerializable {
 	 * @thorws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
+	public static function getImageByImageSol(\PDO $pdo, int $imageSol) {
+		// sanitize the imageId before searching
+		if($imageSol <= 0) {
+			throw(new \PDOException("image sol is not positive"));
+	}
+		// create query template
+		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageSol = :imageSol";
+		$statement = $pdo->prepare($query);
 	}
