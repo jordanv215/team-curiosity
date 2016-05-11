@@ -186,6 +186,7 @@ class CommentImage implements \JsonSerializable {
 
 		// create query template
 		$query = "INSERT INTO CommentImage(commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId) VALUES(:commentImageContent, :commentImageDateTime, :commentImageImageId, :commentImageUserId)";
+		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the placeholders in the template
 		$formattedDate = $this->commentImageDateTime->format("Y-m-d H:i:s");
@@ -272,8 +273,8 @@ class CommentImage implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$CommentImage = new CommentImage($row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
-				$commentImages[$commentImages->key()] = $CommentImage;
+				$commentImage = new CommentImage($row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImages[$commentImages->key()] = $commentImage;
 				$commentImages->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
@@ -308,17 +309,17 @@ class CommentImage implements \JsonSerializable {
 
 		// grab the image comment from the table
 		try {
-			$CommentImage = null;
+			$commentImage = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$CommentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($CommentImage);
+		return($commentImage);
 	}
 
 	/**
@@ -343,6 +344,6 @@ class CommentImage implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the image id to the placeholder in the template
-		
+
 	}
 }
