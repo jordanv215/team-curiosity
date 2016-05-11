@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{User};
+use Edu\Cnm\TeamCuriosity\{User, LoginSource};
 
 // grab test parameters
 require_once("TeamCuriosityTest.php");

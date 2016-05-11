@@ -73,7 +73,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	/**
 	 * accessor method for commentNewsArticleId
 	 *
-	 * @return int|null value of  commentNewsArticleId
+	 * @return int|null value of commentNewsArticleId
 	 **/
 	public function getCommentNewsArticleId() {
 		return ($this->commentNewsArticleId);
@@ -185,7 +185,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if $newCommentNewsArticleId is not an integer
 	 **/
 	public function setCommentNewsArticleNewsArticleId(int $newCommentNewsArticleNewsArticleId = null) {
-		//base case: if the commentNewsArticleNewsArticleId is null, this is a new commentNewsArticleNewsArticleId without a mySQL assigned id (yet)
+		//base case: if the commentNewsArticleNewsArticleId is null, this is a new commentNewsArticle without a mySQL assigned id (yet)
 		if($newCommentNewsArticleNewsArticleId === null) {
 			$this->commentNewsArticleNewsArticleId = null;
 			return;
@@ -250,7 +250,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
-		$parameters = ["commentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleDateTime" => $this->commentNewsArticleDateTime, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId, "commentNewsArticleUserId" => $this->commentNewsArticleUserId, "commentNewsArticleDateTime" => $formattedDate];
+		$parameters = ["commentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId, "commentNewsArticleUserId" => $this->commentNewsArticleUserId, "commentNewsArticleDateTime" => $formattedDate];
 		$statement->execute($parameters);
 
 		// update the null ArticleId with what mySQL just gave us
@@ -271,7 +271,7 @@ class CommentNewsArticle implements \JsonSerializable {
 			throw(new \PDOException("unable to delete a CommentNewsArticle that does not exist"));
 		}
 		//create query template
-		$query = "DELETE FROM commentNewsArticleId WHERE commentNewsArticleId = :commentNewsArticleId";
+		$query = "DELETE FROM CommentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holder in the template
 		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId];
@@ -297,11 +297,11 @@ class CommentNewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
-		$parameters = ["commentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleDateTime" => $this->commentNewsArticleDateTime, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId, "commentNewsArticleUserId" => $this->commentNewsArticleUserId, "commentNewsArticleDateTime" => $this->$formattedDate];
+		$parameters = ["commentNewsArticleContent" => $this->commentNewsArticleContent, "commentNewsArticleNewsArticleId" => $this->commentNewsArticleNewsArticleId, "commentNewsArticleUserId" => $this->commentNewsArticleUserId, "commentNewsArticleDateTime" => $formattedDate];
 		$statement->execute($parameters);
 	}
 
-	/**
+	/** @todo Check variable names in output array; may return multiple comments - look at getTweetByTweetContent() on website (or getAllCommentNewsArticles() below)
 	 * gets the commentNewsArticleContent by Contents
 	 *
 	 * @param \PDO $pdo PDO connection object
