@@ -4,7 +4,7 @@ namespace Edu\Cnm\TeamCuriosity;
 require_once("autoload.php");
 
 /**
- *This CommentNewsArticle class provides accessors and mutators for the CommentNewsArticle database table
+ *This commentNewsArticle class provides accessors and mutators for the commentNewsArticle database table
  * 
  * @author Anthony Williams <awilliams144@cnm.edu>
  * @version 1.0.0
@@ -12,7 +12,7 @@ require_once("autoload.php");
 class CommentNewsArticle implements \JsonSerializable {
 	use ValidateDate;
 	/**
-	 * id for the CommentNewsArticle; this is the primary key
+	 * id for the commentNewsArticle; this is the primary key
 	 * @var int $commentNewsArticleId
 	 */
 	private $commentNewsArticleId;
@@ -22,12 +22,12 @@ class CommentNewsArticle implements \JsonSerializable {
 	 **/
 	private $commentNewsArticleDateTime;
 	/**
-	 * actual textual Content of the CommentNewsArticle
+	 * actual textual Content of the commentNewsArticle
 	 * @var string $CommentNewsArticleContent
 	 **/
 	private $commentNewsArticleContent;
 	/**
-	 * the actual id of the CommentNewsArticleNewsArticleId
+	 * the actual id of the commentNewsArticleNewsArticleId
 	 * @var int $commentNewsArticleNewsArticleId
 	 */
 	private $commentNewsArticleNewsArticleId;
@@ -38,11 +38,11 @@ class CommentNewsArticle implements \JsonSerializable {
 	private $commentNewsArticleUserId;
 
 	/**
-	 * constructor for this CommentNewsArticle
-	 * @param int|null $newCommentNewsArticleId id of this CommentNewsArticle or Null if a new CommentNewsArticle
-	 * @param int|null $newCommentNewsArticleUserId id of the user who Commented on the NewsArticle
+	 * constructor for this commentNewsArticle
+	 * @param int|null $newCommentNewsArticleId id of this commentNewsArticle or Null if a new CommentNewsArticle
+	 * @param int|null $newCommentNewsArticleUserId id of the user who commented on the NewsArticle
 	 * @param int|null $newCommentNewsArticleNewsArticleId id of the commentNewsArticleNewsArticleId
-	 * @param \DATETIME|string|null $newCommentNewsArticleDateTime date and time CommentNewsArticle was sent or null if set to current date and time
+	 * @param \DATETIME|string|null $newCommentNewsArticleDateTime date and time commentNewsArticle was sent or null if set to current date and time
 	 * @param string $newCommentNewsArticleContent string containing content
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long)
@@ -84,7 +84,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 *
 	 * @param int|null $newCommentNewsArticleId new value of commentNewsArticleId
 	 * @throws \RangeException if $newCommentNewsArticleId is not positive
-	 * @throws \TypeError if $CommentNewsArticleId is not an integer
+	 * @throws \TypeError if $commentNewsArticleId is not an integer
 	 **/
 	public function setCommentNewsArticleId(int $newCommentNewsArticleId = null) {
 		//base case: if the commentNewsArticleId is null, this is a new commentNewsArticleId without a mySQL assigned id (yet)
@@ -216,7 +216,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if $newCommentNewsArticleUserId is not an integer
 	 **/
 	public function setCommentNewsArticleUserId(int $newCommentNewsArticleUserId = null) {
-		//base case: if the commentNewsArticleUserId is null, this is a new CommentNewsArticleUserId without a mySQL assigned id (yet)
+		//base case: if the commentNewsArticleUserId is null, this is a new commentNewsArticleUserId without a mySQL assigned id (yet)
 		if($newCommentNewsArticleUserId === null) {
 			$this->commentNewsArticleUserId = null;
 			return;
@@ -233,7 +233,7 @@ class CommentNewsArticle implements \JsonSerializable {
 
 
 	/**
-	 * inserts this Article into mySQL
+	 * inserts this commentArticle into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -246,7 +246,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO CommentNewsArticle(commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId ) VALUES(:commentNewsArticleContent, :commentNewsArticleDateTime, :commentNewsArticleNewsArticleId, :commentNewsArticleUserId)";
+		$query = "INSERT INTO commentNewsArticle(commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId ) VALUES(:commentNewsArticleContent, :commentNewsArticleDateTime, :commentNewsArticleNewsArticleId, :commentNewsArticleUserId)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
@@ -258,7 +258,7 @@ class CommentNewsArticle implements \JsonSerializable {
 
 	}
 	/**
-	 * deletes this CommentNewsArticle from mySQL
+	 * deletes this commentNewsArticle from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -266,12 +266,12 @@ class CommentNewsArticle implements \JsonSerializable {
 	 *
 	 */
 	public function delete(\PDO $pdo) {
-		//enforce the CommentNewsArticle is not null (i.e., don't delete a CommentNewsArticle that hasn't been inserted)
+		//enforce the commentNewsArticle is not null (i.e., don't delete a commentNewsArticle that hasn't been inserted)
 		if($this->commentNewsArticleId === null) {
 			throw(new \PDOException("unable to delete a CommentNewsArticle that does not exist"));
 		}
 		//create query template
-		$query = "DELETE FROM CommentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
+		$query = "DELETE FROM commentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holder in the template
 		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId];
@@ -279,7 +279,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	}
 
 	/**
-	 * updates this NewsArticle in mySQL
+	 * updates this commentNewsArticle in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -290,10 +290,10 @@ class CommentNewsArticle implements \JsonSerializable {
 	public function update(\PDO $pdo) {
 		// enforce the commentNewsArticleId is not null (i.e., don't update a commentNewsArticleId hasn't been inserted)
 		if($this->commentNewsArticleId === null) {
-			throw(new \PDOException("unable to update a CommentNewsArticle that does not exist"));
+			throw(new \PDOException("unable to update a commentNewsArticle that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE CommentNewsArticle SET commentNewsArticleContent = :commentNewsArticleContent, commentNewsArticleDateTime = :commentNewsArticleDateTime, commentNewsArticleNewsArticleId = :commentNewsArticleNewsArticleId, commentNewsArticleUserId = :commentNewsArticleUserId";
+		$query = "UPDATE commentNewsArticle SET commentNewsArticleContent = :commentNewsArticleContent, commentNewsArticleDateTime = :commentNewsArticleDateTime, commentNewsArticleNewsArticleId = :commentNewsArticleNewsArticleId, commentNewsArticleUserId = :commentNewsArticleUserId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
@@ -320,7 +320,7 @@ class CommentNewsArticle implements \JsonSerializable {
 			throw(new \PDOException("commentNewsArticleContent is invalid"));
 		}
 		// create query template
-		$query = "SELECT commentNewsArticle, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle WHERE commentNewsArticleContent LIKE :commentNewsArticleContent";
+		$query = "SELECT commentNewsArticle, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM commentNewsArticle WHERE commentNewsArticleContent LIKE :commentNewsArticleContent";
 		$statement = $pdo->prepare($query);
 
 		// bind the commentNewsArticleContent to the place holder in the template
@@ -328,7 +328,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		$parameters = array("commentNewsArticleContent" => $commentNewsArticleContent);
 		$statement->execute($parameters);
 		// build an array of NewsArticles
-		$CommentNewsArticle = new \SplFixedArray($statement->rowCount());
+		$commentNewsArticle = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
