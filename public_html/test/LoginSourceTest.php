@@ -7,7 +7,7 @@ use Edu\Cnm\TeamCuriosity\{LoginSource};
 require_once("TeamCuriosityTest.php");
 
 // grab the class to be tested
-require_once(dirname(_DIR_) . "/php/classes/LoginSource.php"); // @todo correct this filepath
+require_once(dirname(_DIR_) . "/php/classes/LoginSource.php");
 
 /**
  * PHPUnit test for the LoginSource class
@@ -41,26 +41,26 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
 
 		//create a new login source and insert it into table
-		$LoginSource = new LoginSource(null, $this->LoginSource->getLoginSourceId(), $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
-		$LoginSource->insert($this->getPDO());
+		$loginSource = new LoginSource(null, $this->loginSource->getLoginSourceId(), $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$loginSource->insert($this->getPDO());
 
 		// grab data from table and ensure it matches expectations
-		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $LoginSource->getLoginSourceId());
+		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $loginSource->getLoginSourceId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
-		$this->assertEquals($pdoLoginSource->getLoginSourceId(), $this->LoginSource->getLoginSourceId());
-		$this->assertEquals($pdoLoginSource->getLoginSourceApiKey(), $this->LoginSource->getLoginSourceApiKey());
-		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->LoginSource->getLoginSourceProvider());
+		$this->assertEquals($pdoLoginSource->getLoginSourceId(), $this->loginSource->getLoginSourceId());
+		$this->assertEquals($pdoLoginSource->getLoginSourceApiKey(), $this->loginSource->getLoginSourceApiKey());
+		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->loginSource->getLoginSourceProvider());
 	}
 
 	/**
 	 *  test inserting a login source with a primary key that already exists
 	 *
-	 * @expectedException PDOException
+	 * @expectedException \PDOException
 	 */
 	public function testInsertInvalidLoginSource() {
 		// create a login source with a non null id - it should fail
-		$LoginSource = new LoginSource(TeamCuriosityTest::INVALID_KEY, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
-		$LoginSource->insert($this->getPDO());
+		$loginSource = new LoginSource(TeamCuriosityTest::INVALID_KEY, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$loginSource->insert($this->getPDO());
 	}
 	
 	/**
@@ -71,39 +71,39 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
 		
 		//create a new login source and insert it into table
-		$LoginSource = new LoginSource(null, $this->LoginSource->getLoginSourceApiKey(), $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
-		$LoginSource->insert($this->getPDO());
+		$loginSource = new LoginSource(null, $this->loginSource->getLoginSourceApiKey(), $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$loginSource->insert($this->getPDO());
 		
 		// edit the login source and update it in table
-		$LoginSource->setLoginSourceApiKey($this->VALID_LOGIN_SOURCE_API_KEY2);
-		$LoginSource->update($this->getPDO());
+		$loginSource->setLoginSourceApiKey($this->VALID_LOGIN_SOURCE_API_KEY2);
+		$loginSource->update($this->getPDO());
 		
 		// grab the table data and enforce that fields match expectations
-		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $LoginSource->getLoginSourceId());
+		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $loginSource->getLoginSourceId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
-		$this->assertEquals($pdoLoginSource->getLoginSourceApiKey(), $this->LoginSource->getLoginSourceApiKey());
-		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->LoginSource->getLoginSourceProvider());
+		$this->assertEquals($pdoLoginSource->getLoginSourceApiKey(), $this->loginSource->getLoginSourceApiKey());
+		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->loginSource->getLoginSourceProvider());
 	}
 	
 	/**
 	 * test creating a login source and then deleting it
 	 *
-	 * @expectedException PDOException
+	 * @expectedException \PDOException
 	 */
 	public function testDeleteValidLoginSource() {
 		// count number of rows
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
 		
 		// create a new login source and insert into table
-		$LoginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
-		$LoginSource->insert($this->getPDO());
+		$loginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$loginSource->insert($this->getPDO());
 		
 		// delete it from the table
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
-		$LoginSource->delete($this->getPDO());
+		$loginSource->delete($this->getPDO());
 		
 		// grab data from table and enforce that login source does not exist
-		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $LoginSource->getLoginSourceId());
+		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $loginSource->getLoginSourceId());
 		$this->assertNull($pdoLoginSource);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("LoginSource"));
 	}
@@ -111,12 +111,12 @@ class LoginSourceTest extends TeamCuriosityTest {
 	/**
 	 * test deleting a login source that does not exist
 	 * 
-	 * @expectedException PDOException
+	 * @expectedException \PDOException
 	 */
 	public function testDeleteInvalidLoginSource() {
 		// create a new login source and attempt to delete it without first inserting it into a table
-		$LoginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
-		$LoginSource->delete($this->getPDO());
+		$loginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$loginSource->delete($this->getPDO());
 	}
 
 	/**
@@ -127,13 +127,13 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
 
 		// create a new login source and insert it into the table
-		$LoginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
-		$LoginSource->insert($this->getPDO());
+		$loginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$loginSource->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce that fields match expectations
-		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $LoginSource->getLoginSourceId());
+		$pdoLoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), $loginSource->getLoginSourceId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
-		$this->assertEquals($pdoLoginSource->getLoginSourceId(), $this->LoginSource->getLoginSourceId());
+		$this->assertEquals($pdoLoginSource->getLoginSourceId(), $this->loginSource->getLoginSourceId());
 		$this->assertEquals($pdoLoginSource->getLoginSourceApiKey(), $this->VALID_LOGIN_SOURCE_API_KEY);
 		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->VALID_LOGIN_SOURCE_PROVIDER);
 	}
@@ -143,8 +143,8 @@ class LoginSourceTest extends TeamCuriosityTest {
 	 */
 	public function testGetInvalidLoginSourceByLoginSourceId() {
 		// grab a login source id that exceeds the maximum allowable value
-		$LoginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
-		$this->assertNull($LoginSource);
+		$loginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
+		$this->assertNull($loginSource);
 	}
 
 	/**
@@ -155,18 +155,18 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
 
 		// create a new login source and insert into table
-		$LoginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
-		$LoginSource->insert($this->getPDO());
+		$loginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$loginSource->insert($this->getPDO());
 
 		// grab data from mySQL and enforce that fields match expectations
-		$results = LoginSource::getLoginSourceByLoginSourceProvider($this->getPDO(), $LoginSource->getLoginSourceProvider());
+		$results = LoginSource::getLoginSourceByLoginSourceProvider($this->getPDO(), $loginSource->getLoginSourceProvider());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\LoginSource", $results);
 
 		// grab the login source from the array and validate it
 		$pdoLoginSource = $results[0];
-		$this->assertEquals($pdoLoginSource->getLoginSourceUserId(), $this->LoginSource->getLoginSourceId());
+		$this->assertEquals($pdoLoginSource->getLoginSourceUserId(), $this->loginSource->getLoginSourceId());
 		$this->assertEquals($pdoLoginSource->getLoginSourceApiKey(), $this->VALID_LOGIN_SOURCE_API_KEY);
 		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->VALID_LOGIN_SOURCE_PROVIDER);
 	}
@@ -176,8 +176,8 @@ class LoginSourceTest extends TeamCuriosityTest {
 	 */
 	public function testGetInvalidLoginSourceByLoginSourceProvider () {
 		// grab a login source by searching for string that does not exist
-		$LoginSource = LoginSource::getLoginSourceByLoginSourceProvider($this->getPDO(), "there's nothing here");
-		$this->assertCount(0, $LoginSource);
+		$loginSource = LoginSource::getLoginSourceByLoginSourceProvider($this->getPDO(), "there's nothing here");
+		$this->assertCount(0, $loginSource);
 	}
 
 	/**
@@ -188,8 +188,8 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
 
 		// create a new login source and insert into table
-		$LoginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
-		$LoginSource->insert($this->getPDO());
+		$loginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
+		$loginSource->insert($this->getPDO());
 
 		// grab data from table and enforce that fields match expectations
 		$results = LoginSource::getAllLoginSource($this->getPDO());
@@ -199,7 +199,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 		
 		// grab result from array and validate it
 		$pdoLoginSource = $results [0];
-		$this->assertEquals($pdoLoginSource->getLoginSourceId(), $this->LoginSource->getLoginSourceId());
+		$this->assertEquals($pdoLoginSource->getLoginSourceId(), $this->loginSource->getLoginSourceId());
 		$this->assertEquals($pdoLoginSource->getLoginSourceApiKey(), $this->VALID_LOGIN_SOURCE_API_KEY);
 		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->VALID_LOGIN_SOURCE_PROVIDER);
 	}
