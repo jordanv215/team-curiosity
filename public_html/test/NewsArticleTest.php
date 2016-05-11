@@ -77,7 +77,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("NewsArticle");
 
 		// create a new NewsArticle and insert to into mySQL
-		$NewsArticle = new NewsArticle(null, $this->newsArticleId->geNewsArticleId(), $this->VALID_NEWSARTICLEDATE, $this->VALID_NEWSARTICLESYNOPSIS, $this->NEWSARTICLEURL);
+		$NewsArticle = new NewsArticle(null, $this->newsArticleId->geNewsArticleId(), $this->VALID_NEWSARTICLEDATE, $this->VALID_NEWSARTICLESYNOPSIS, $this->VALID_NEWSARTICLEURL);
 		$NewsArticle->insert($this->getPDO());
 
 		// edit the NewsArticle and update it in mySQL
@@ -88,7 +88,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$pdoNewsArticle = NewsArticle::getNewsArticleByNewsArticleId($this->getPDO(), $NewsArticle->getNewsArticleId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("NewsArticle"));
 		$this->assertEquals($pdoNewsArticle->getNewsArticleId(), $this->NewsArticle->getNewsArticleId());
-		$this->assertEquals($pdoNewsArticle->getNewsArticleSynopsis(), $this->VALID_NEWSARTICLESYNOPSIS22);
+		$this->assertEquals($pdoNewsArticle->getNewsArticleSynopsis(), $this->VALID_NEWSARTICLESYNOPSIS2);
 		$this->assertEquals($pdoNewsArticle->getNewsArticleDate(), $this->VALID_NEWSARTICLEDATE);
 	}
 	/**
@@ -171,7 +171,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("NewsArticle");
 
 		// create a new NewsArticle and insert to into mySQL
-		$NewsArticle = new NewsArticle(null, $this->NewsArticleId->getNewsArticleId(), $this->VALID_NEWSARTICLEID,$this->VALID_NEWSARTICLEDATE, $this->VALID_NEWSARTICLESYNOPSIS, $this->VALID_NEWSARTICLEURL);
+		$NewsArticle = new NewsArticle(null, $this->newsArticleId->getNewsArticleId(), $this->VALID_NEWSARTICLEID,$this->VALID_NEWSARTICLEDATE, $this->VALID_NEWSARTICLESYNOPSIS, $this->VALID_NEWSARTICLEURL);
 		$NewsArticle->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
