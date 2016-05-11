@@ -15,7 +15,7 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * id for the Article; this is the primary key
 	 * @var int $newsArticleId
-	 */
+	 **/
 	private $newsArticleId;
 	/**
 	 * date and time that this Article was sent, in a PHP DateTime object
@@ -30,7 +30,7 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * the actual Url of the Article
 	 * @var string $newsArticleUrl
-	 */
+	 **/
 	private $newsArticleUrl;
 
 	/**
@@ -160,7 +160,7 @@ class NewsArticle implements \JsonSerializable {
 						throw(new \RangeException("newsArticleSynopsis too large"));
 			}
 
-		// store the NewsArticleSynopsis;
+		// store the newsArticleSynopsis;
 			$this->newsArticleSynopsis = $newNewsArticleSynopsis;
 		}
 
