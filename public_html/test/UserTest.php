@@ -64,7 +64,7 @@ class UserTest extends TeamCuriosityTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserEmail(), $this->user->getUserEmail());
 		$this->assertEquals($pdoUser->getUserName(), $this->user->getUsername());
-		$this->assertEquals($pdoLoginSource->getLoginSource(), $this->loginSource->getLoginSource());
+		$this->assertEquals($pdoUser->getLoginSource(), $this->loginSource->getLoginSource());
 
 	}
 
@@ -81,6 +81,14 @@ class UserTest extends TeamCuriosityTest {
 	public function testUpdateValidUser() {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("User");
+
+		// create a new user and insert to into mySQL
+		$user = new User(null, $this->user->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$user->insert($this->getPDO());
+
+		// edit the Tweet and update it in mySQL
+		$user->setUserEmail($this->VALID_LOGINSOURCE);
+		$user->update($this->getPDO());
 
 		//create a new user and update it into mySQL
 		$user = setUserId($this->getPDO(), $this->user->getUserId());
@@ -128,7 +136,7 @@ class UserTest extends TeamCuriosityTest {
 	public function testGetInvalidUserByUserId() {
 		//grab a profile id that exceeds the maximum allowable profile id
 		$user = User::getUserByUserId($this->getPDO(), UserTest::INVALID_KEY);
-		$this->assertNull($user);
+		$this->	assertNull($user);
 
 	}
 
