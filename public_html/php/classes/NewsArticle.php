@@ -140,7 +140,7 @@ class NewsArticle implements \JsonSerializable {
 		return ($this->newsArticleSynopsis);
 	}
 
-	/**
+	/** @todo add expression to truncate synopsis at 256 characters rather than rejecting it
 	 * mutator method for newsArticleSynopsis
 	 * @param string $newNewsArticleSynopsis new value of News Article Synopsis
 	 * @throws \InvalidArgumentException if $newNewsArticleSynopsis is not a string or insecure
@@ -220,7 +220,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["newsArticleDate" => $this->newsArticleDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
+		$parameters = ["newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
 		$statement->execute($parameters);
 
 		// update the null articleId with what mySQL just gave us
@@ -268,7 +268,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["newsArticleDate" => $this->newsArticleDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $this->$formattedDate];
+		$parameters = ["newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleDate" => $formattedDate];
 		$statement->execute($parameters);
 	}
 

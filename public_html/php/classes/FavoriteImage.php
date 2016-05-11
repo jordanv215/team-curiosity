@@ -78,8 +78,8 @@ class FavoriteImage implements \JsonSerializable {
 	/**
 	 * mutator method for favoriteImageId
 	 *
-	 * @param int|null $favoriteImageId
-	 * @throws \RangeException if $favoriteImageId is not positive
+	 * @param int|null $newFavoriteImageId
+	 * @throws \RangeException if $newFavoriteImageId is not positive
 	 * @throws \TypeError if $newFavoriteImageId is not an integer
 	 */
 	public function setFavoriteImageId(int $newFavoriteImageId = null) {
@@ -174,7 +174,7 @@ class FavoriteImage implements \JsonSerializable {
 		}
 
 		// create a query template
-		$query = "INSERT INTO favoriteImage(favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime) VALUES(:favoriteImageId, :favoriteImageUserID, :favoriteimageDateTime)";
+		$query = "INSERT INTO FavoriteImage(favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime) VALUES(:favoriteImageId, :favoriteImageUserID, :favoriteimageDateTime)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
@@ -188,7 +188,7 @@ class FavoriteImage implements \JsonSerializable {
 	}
 
 	/**
-	 * deletes this image from mySQL
+	 * deletes this image favorite from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -201,7 +201,7 @@ class FavoriteImage implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "DELETE FROM FavoriteImage WHERE favoriteImageImageId = :favoriteImageId";
+		$query = "DELETE FROM FavoriteImage WHERE favoriteImageId = :favoriteImageId";
 		$statement = $pdo->prepare($query);
 
 		//bind the members variables to the place holder in the template
@@ -230,7 +230,7 @@ class FavoriteImage implements \JsonSerializable {
 
 		//bind the member variables to the place holders in the template
 		$formattedDate = $this->favoriteImageDateTime->format("Y-m-d H:i:S");
-		$parameters = ["favoriteImageUserId" => $this->favoriteImageUserId, "favoriteImageDateTime" => $this->favoriteImageDateTime, "favoriteImageID" => $this->favoriteImageId];
+		$parameters = ["favoriteImageUserId" => $this->favoriteImageUserId, "favoriteImageDateTime" => $formattedDate, "favoriteImageID" => $this->favoriteImageId];
 		$statement->execute($parameters);
 	}
 
@@ -256,7 +256,7 @@ class FavoriteImage implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "SELECT favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime FROM favoriteImage WHERE favoriteImage.favoriteImageImageId = :favoriteImageId";
+		$query = "SELECT favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime FROM FavoriteImage WHERE favoriteImage.favoriteImageImageId = :favoriteImageId";
 		$statement = $pdo->prepare($query);
 
 		//bind the favoriteImage to the place holder in the template
