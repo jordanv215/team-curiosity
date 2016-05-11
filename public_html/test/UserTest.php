@@ -61,7 +61,7 @@ class UserTest extends TeamCuriosityTest {
 
 		//grab the data from mySQL and enforce the fields to match our expectations
 		$pdoUser = User::getUserbyUserId($this->getPDO(), $this->user->getUserId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("user"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserEmail(), $this->user->getUserEmail());
 		$this->assertEquals($pdoUser->getUserName(), $this->user->getUsername());
 		$this->assertEquals($pdoLoginSource->getLoginSource(), $this->loginSource->getLoginSource());
@@ -83,7 +83,7 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		//create a new user and update it into mySQL
-		$user->setUserId($this->getPDO(), $this->user->getUserId());
+		$user = setUserId($this->getPDO(), $this->user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoUser->getEmail(), $this->VALID_EMAIL);
@@ -157,12 +157,13 @@ class UserTest extends TeamCuriosityTest {
 
 	/**
 	*test grabbing a User by content that does not exist
-	*/
-	public function testGetInvalidUserbyUserId() {
+
+	public function testGetInvalidUserByUserId() {
 		// grab a user by searching for content that does not exist
 		$user = User::getUserByUserId($this->getPDO(), "User not found");
 		$this->assertCount(0, $user);
 	}
+	**/
 
 	//test grabbing all users
 	public function testGetAllValidUsers() {
