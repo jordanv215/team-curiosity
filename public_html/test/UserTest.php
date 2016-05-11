@@ -91,7 +91,7 @@ class UserTest extends TeamCuriosityTest {
 		$user->update($this->getPDO());
 
 		//create a new user and update it into mySQL
-		$user = setUserId($this->getPDO(), $this->user->getUserId());
+		$pdoUser = setUserId($this->getPDO(), $this->user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoUser->getEmail(), $this->VALID_EMAIL);
