@@ -215,7 +215,7 @@ class User implements \JsonSerializable {
 		$parameters = ["userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
 		$statement->execute($parameters);
 
-		// update the null articleId with what mySQL just gave us
+		// update the null userId with what mySQL just gave us
 		$this->userId = intval($pdo->lastInsertId());
 	}
 
@@ -227,8 +227,7 @@ class User implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public
-	function delete(\PDO $pdo) {
+	public function delete(\PDO $pdo) {
 		//enforce the userId is not null (don't delete a user that hasn't been inserted)
 		if($this->userId === null) {
 			throw (new \PDOException("unable to delete a user that does not exist"));
@@ -246,7 +245,7 @@ class User implements \JsonSerializable {
 
 
 	/**
-	 * updates this UserId in mySQL
+	 * updates this User in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -255,27 +254,27 @@ class User implements \JsonSerializable {
 	 *
 	 */
 	public function update(\PDO $pdo) {
-		// enforce the userId is not null (i.e., don't update a userId hasn't been inserted)
+		// enforce the userId is not null (i.e., don't update a user that hasn't been inserted)
 		if($this->userId === null) {
 			throw(new \PDOException("unable to update a user that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE user SET userId = :userId, userLoginId = :userLoginId, userName = :userName, userEmail = :userEmail";
+		$query = "UPDATE User SET userId = :userId, userLoginId = :userLoginId, userName = :userName, userEmail = :userEmail";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$parameters = ["userId" => $this->userId, "userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
 		$statement->execute($parameters);
 	}
 
-	/**
-	 * gets the user by int content
+	/** @todo correct parameters & etc. look at model of getTweetByTweetId() on website
+	 * gets the user by their id
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $userId
 	 * @param string $userEmail
 	 * @param string $userName
 	 * @param int $userLoginId
 	 * @return \SplFixedArray SplFixedArray of id found
-	 * @internal param int $userid user id int to search for
+	 * @internal param int $userId user id int to search for
 	 */
 
 	public
@@ -348,7 +347,7 @@ class User implements \JsonSerializable {
 
 
 	/**
-	 * gets all users
+	 * gets all users @todo check the construction of the array & naming of its variables
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @return \SplFixedArray SplFixedArray of UserIds found or null if not found
