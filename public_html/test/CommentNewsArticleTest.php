@@ -55,9 +55,13 @@ protected $VALID_COMMENTNEWSARTICLEDATETIME = null;
 		// run the default setUp() method first
 		parent::setUp();
 
-		// create and insert a user to own the test commentNewsArticle
+		// create and insert a user to own the test NewsArticle
 		$this->user = new User(null, "test@phpunit.de", 12345, "Test Test");
 		$this->user->insert($this->getPDO());
+		
+		// create and insert a NewsArticle to own the test NewsArticle
+		$this->NewsArticle = new NewsArticle(null, "test@phpunit.de", 12345, "Test Test");
+		$this->NewsArticle->insert($this->getPDO());
 
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_COMMENTNEWSARTICLEDATETIME = new \DateTime();
