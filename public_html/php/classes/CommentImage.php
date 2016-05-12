@@ -289,7 +289,7 @@ class CommentImage implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $commentImageId image comment id to search for
-	 * @return CommentImage|null comment found or null if none found
+	 * @return commentImage|null comment found or null if none found
 	 * @throws \PDOException when mySQL-related errors occur
 	 * @throws \TypeError when variables violate type hints
 	 */
@@ -340,7 +340,7 @@ class CommentImage implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM CommentImage WHERE commentImageImageId LIKE :commentImageImageId";
+		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM commentImage WHERE commentImageImageId LIKE :commentImageImageId";
 		$statement = $pdo->prepare($query);
 
 		// bind the image id to the placeholder in the template
