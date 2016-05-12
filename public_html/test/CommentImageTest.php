@@ -36,12 +36,12 @@ class CommentImageTest extends TeamCuriosityTest {
 	protected $VALID_COMMENT_IMAGE_DATE_TIME = null;
 	/**
 	 * user that created the comment - a foreign key relation
-	 * @var User User
+	 * @var user User
 	 */
 	protected $user = null;
 	/**
 	 * photo that was commented on; foreign key relation
-	 * @var Image Image
+	 * @var image Image
 	 */
 	protected $image = null;
 

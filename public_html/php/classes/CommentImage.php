@@ -344,6 +344,35 @@ class CommentImage implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the image id to the placeholder in the template
+		$parameters = array("commentImageImageId" => $commentImageImageId);
+		$statement->execute($parameters);
 
+		//build an array of image comments
+		$commentImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImages[$commentImages->key()] = $commentImage;
+				$commentImages->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow the exception
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($commentImages);
+	}
+
+	/**
+	 * gets all image comments
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray array of comments found
+	 * @throws \PDOException if mySQL-related errors occur
+	 * @throws \TypeError if variables violate type hints
+	 **/
+	public static function  getAllCommentImage(\PDO $pdo) {
+		// create query template
+		
 	}
 }
