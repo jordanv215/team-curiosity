@@ -237,17 +237,18 @@ class Image implements \JsonSerializable {
 		if($newImageSol <= 0) {
 			throw(new \RangeException("image sol is not positive"));
 		}
-		
+
 		// convert and store the image sol
 		$this->imageSol = $newImageSol;
 	}
+
 	/**
 	 * accessor method for image title
 	 *
 	 * @return string value of image title
 	 **/
 	public function getImageTitle() {
-		return($this->imageTitle);
+		return ($this->imageTitle);
 	}
 
 	/**
@@ -281,7 +282,7 @@ class Image implements \JsonSerializable {
 	 * @return string value of image type
 	 **/
 	public function getImageType() {
-		return($this->imageType);
+		return ($this->imageType);
 	}
 
 	/**
@@ -310,7 +311,7 @@ class Image implements \JsonSerializable {
 	 * @return string value of image url
 	 **/
 	public function getImageUrl() {
-		return($this->imageUrl);
+		return ($this->imageUrl);
 	}
 
 	/**
@@ -356,7 +357,7 @@ class Image implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$formattedDate = $this->ImageEarthDate->format("Y-m-d H:i:s");
+		$formattedDate = $this->imageEarthDate->format("Y-m-d H:i:s");
 		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
 		$statement->execute($parameters);
 
@@ -381,14 +382,14 @@ class Image implements \JsonSerializable {
 		$query = "DELETE FROM image WHERE imageId = :imageId";
 		$statement = $pdo->prepare($query);
 
-		// bind the member varialbes to the place holder in the template
+		// bind the member variables to the place holder in the template
 		$parameters = ["imageId" => $this->imageId];
 		$statement->execute($parameters);
 	}
-	
+
 	/**
 	 * updates this image in mySQL
-	 * 
+	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
@@ -398,21 +399,21 @@ class Image implements \JsonSerializable {
 		if($this->imageId === null) {
 			throw(new \PDOException("unable to update a image that does not exist"));
 		}
-		
+
 		// create query template
 		$query = "UPDATE Image SET imageId = :imageId, imageCamera = :imageCamera, imageDescription = :imageDescription, imageEarthDate = :imageEarthDate, imagePath = :imagePath, imageSol = :imageSol, imageTitle = :imageTitle, imageType = :imageType, imageUrl = :imageUrl";
 		$statement = $pdo->prepare($query);
-		
+
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->imageDarthDate->format("Y-m-d H:i:s");
 		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEartDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
 		$statement->execute($parameters);
 	}
-	
+
 	/**
 	 * gets the Image by imageId
-	 * 
-	 * @param \PDO $pdo PDO connectionobject
+	 *
+	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId Image id to search for
 	 * @return Image | null Image found or null if not found
 	 * @thorws \PDOException when mySQL related errors occur
@@ -423,28 +424,28 @@ class Image implements \JsonSerializable {
 		if($imageId <= 0) {
 			throw(new \PDOException("image id is not positive"));
 		}
-		
+
 		// create query template
 		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageId = :imageId";
 		$statement = $pdo->prepare($query);
-		
+
 		// bind the image id to the place holder in the template
 		$parameters = array("imageId" => $imageId);
 		$statement->execute($parameters);
-		
+
 		// grab the Image from mySQL
 		try {
-			$Image = null;
+			$image = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$Image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
 			}
 		} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($Image);
+		return ($image);
 	}
 
 	/**
@@ -471,22 +472,22 @@ class Image implements \JsonSerializable {
 		// bind the image camera to the place holder in the template
 		$imageCamera = "%imageCamera%";
 		$parameters = array("imageCamera" => $imageCamera);
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$statement->execute(parameters);
 
 		// build an array of Images
-		$Images = new \SplFixedArray(($statement->rowCount()));
+		$images = new \SplFixedArray(($statement->rowCount()));
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$Image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
-				$Images[$Images->key()] = $Image;
-				$Images->next();
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$images[$images->key()] = $image;
+				$images->next();
 			} catch(\Exception $exception) {
-					// if the row couldn't be converted, rethrow it
-					throw(new \PDOException($exception->getMessage(), 0, $exception));
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($Images);
+		return ($images);
 	}
 
 	/**
@@ -503,7 +504,7 @@ class Image implements \JsonSerializable {
 		$imageDescription = trim($imageDescription);
 		$imageDescription = filter_var($imageDescription, FILTER_SANITIZE_STRING);
 		if(empty($imageDescription) === true) {
-				throw(new \PDOException("image description is invalid"));
+			throw(new \PDOException("image description is invalid"));
 		}
 
 		// create query template
@@ -512,23 +513,23 @@ class Image implements \JsonSerializable {
 
 		// bind an array of images
 		$imageDescription = "%$imageDescription%";
-		$parameters =array("imageDescription" => $imageDescription);
+		$parameters = array("imageDescription" => $imageDescription);
 		$statement->execute($parameters);
 
 		//build an array of images
-		$Images = new \SplFixedArray(($statement->rowCount()));
+		$images = new \SplFixedArray(($statement->rowCount()));
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$Image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
-				$Images[$Images->key()] = $Image;
-				$Images->next();
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$images[$images->key()] = $image;
+				$images->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($Images);
+		return ($images);
 	}
 
 	/**
@@ -562,15 +563,15 @@ class Image implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$Image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
-				$Images[$Images->key()] = $Image;
-				$Images->next();
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$images[$images->key()] = $image;
+				$images->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($Images);
+		return ($images);
 	}
 
 	/**
@@ -586,8 +587,90 @@ class Image implements \JsonSerializable {
 		// sanitize the imageId before searching
 		if($imageSol <= 0) {
 			throw(new \PDOException("image sol is not positive"));
-	}
+		}
 		// create query template
 		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageSol = :imageSol";
 		$statement = $pdo->prepare($query);
+
+		// bind the image id to the place holder in the template
+		$parameters = array("imageSol" => $imageSol);
+		$statement->execute($parameters);
+
+		//build an array of images
+		$images = new \SplFixedArray(($statement->rowCount()));
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$images[$images->key()] = $image;
+				$images->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($images);
 	}
+
+	/**
+	 * gets the Image by imageEarthDate
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param \DateTime $imageEarthDate image earth date to search for
+	 * @return \SplFixedArray SplFixedArray of Images found
+	 * @thorws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getImageByImageEarthDate(\PDO $pdo, int $imageEarthDate) {
+		// sanitize the imageEarthDate before searching
+		if($imageEarthDate <= 0) {
+			throw(new \PDOException("image earth date is not positive"));
+		}
+	}
+		/**
+		 * gets all Images
+		 *
+		 * @param \PDO $pdo
+		 * @return \SplFixedArray SplFixedArray of Images found
+		 * @thorws \PDOException when mySQL related errors occur
+		 * @throws \TypeError when variables are not the correct data type
+		 **/
+
+	public static function getAllImages(\PDO $pdo) {
+		// create query template
+		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of images
+		$images = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], $row["imageEarthDate"], $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$images[$images->key()] = $image;
+				$images->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($images);
+	}
+
+	/**
+	 * format the state avriables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		$fields["imageEarthDate"] = intval($this->getImageEarthDate->format("U")) * 1000;
+		return($fields);
+	}
+}
+
+
+
+
+
