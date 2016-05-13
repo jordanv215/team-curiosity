@@ -249,7 +249,7 @@ class FavoriteImage implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "SELECT favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime FROM FavoriteImage WHERE favoriteImage.favoriteImageImageId = :favoriteImageImageId";
+		$query = "SELECT favoriteImageImageId, favoriteImageUserId, favoriteImageDateTime FROM FavoriteImage WHERE favoriteImageImageId = :favoriteImageImageId";
 		$statement = $pdo->prepare($query);
 
 		//bind the favoriteImage to the place holder in the template
@@ -271,17 +271,6 @@ class FavoriteImage implements \JsonSerializable {
 			}
 			return ($favoriteImage);
 		}
-			/**$row = $statement->fetch();
-			 * if($row !== false) {
-			 * $favoriteImage = new favoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
-			 * }
-			 * } catch(\Exception $exception) {
-			 * // if row couldn't be converted, rethrow it
-			 * throw(new \PDOException($exception->getMessage(), 0, $exception));
-			 * }
-			 * return($favoriteImage);
-			 * }
-			 **/
 
 
 	/** get favoriteImage by favoriteImageByFavoriteImageUserId
