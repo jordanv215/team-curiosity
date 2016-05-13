@@ -14,7 +14,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	/**
 	 * id for the commentNewsArticle; this is the primary key
 	 * @var int $commentNewsArticleId
-	 */
+	 **/
 	private $commentNewsArticleId;
 	/**
 	 * date and time that this Article was sent, in a PHP DateTime object
@@ -29,12 +29,12 @@ class CommentNewsArticle implements \JsonSerializable {
 	/**
 	 * the actual id of the commentNewsArticleNewsArticleId
 	 * @var int $commentNewsArticleNewsArticleId
-	 */
+	 **/
 	private $commentNewsArticleNewsArticleId;
 	/**
 	 * the actual id of the user who commented on NewsArticle foreign key
 	 * @var int $commentNewsArticleUserId
-	 */
+	 **/
 	private $commentNewsArticleUserId;
 
 	/**
@@ -48,7 +48,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
-	 */
+	 **/
 	public function __construct(int $newCommentNewsArticleId = null, $newCommentNewsArticleDateTime = null, string $newCommentNewsArticleContent, int $newCommentNewsArticleNewsArticleId, int $newCommentNewsArticleUserId) {
 		try {
 			$this->setCommentNewsArticleUserId($newCommentNewsArticleUserId);
@@ -246,7 +246,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO commentNewsArticle(commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId ) VALUES(:commentNewsArticleContent, :commentNewsArticleDateTime, :commentNewsArticleNewsArticleId, :commentNewsArticleUserId)";
+		$query = "INSERT INTO CommentNewsArticle(commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId ) VALUES(:commentNewsArticleContent, :commentNewsArticleDateTime, :commentNewsArticleNewsArticleId, :commentNewsArticleUserId)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
@@ -271,7 +271,7 @@ class CommentNewsArticle implements \JsonSerializable {
 			throw(new \PDOException("unable to delete a commentNewsArticle that does not exist"));
 		}
 		//create query template
-		$query = "DELETE FROM commentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
+		$query = "DELETE FROM CommentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holder in the template
 		$parameters = ["commentNewsArticleId" => $this->commentNewsArticleId];
@@ -293,7 +293,7 @@ class CommentNewsArticle implements \JsonSerializable {
 			throw(new \PDOException("unable to update a commentNewsArticle that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE commentNewsArticle SET commentNewsArticleContent = :commentNewsArticleContent, commentNewsArticleDateTime = :commentNewsArticleDateTime, commentNewsArticleNewsArticleId = :commentNewsArticleNewsArticleId, commentNewsArticleUserId = :commentNewsArticleUserId";
+		$query = "UPDATE CommentNewsArticle SET commentNewsArticleContent = :commentNewsArticleContent, commentNewsArticleDateTime = :commentNewsArticleDateTime, commentNewsArticleNewsArticleId = :commentNewsArticleNewsArticleId, commentNewsArticleUserId = :commentNewsArticleUserId";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->commentNewsArticleDateTime->format("Y-m-d H:i:s");
@@ -301,8 +301,8 @@ class CommentNewsArticle implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
-	/** @todo Check variable names in output array; may return multiple comments - look at getTweetByTweetContent() on website (or getAllCommentNewsArticles() below)
-	 * gets the commentNewsArticleContent by contents
+	/** 
+	 * get the commentNewsArticle by contents
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $commentNewsArticleContent News Article content to search for
@@ -320,7 +320,7 @@ class CommentNewsArticle implements \JsonSerializable {
 			throw(new \PDOException("commentNewsArticleContent is invalid"));
 		}
 		// create query template
-		$query = "SELECT commentNewsArticle, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM commentNewsArticle WHERE commentNewsArticleContent LIKE :commentNewsArticleContent";
+		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle WHERE commentNewsArticleContent LIKE :commentNewsArticleContent";
 		$statement = $pdo->prepare($query);
 
 		// bind the commentNewsArticleContent to the place holder in the template
@@ -328,20 +328,20 @@ class CommentNewsArticle implements \JsonSerializable {
 		$parameters = array("commentNewsArticleContent" => $commentNewsArticleContent);
 		$statement->execute($parameters);
 		// build an array of NewsArticles
-		$commentNewsArticle = new \SplFixedArray($statement->rowCount());
+		$commentNewsArticles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], $row["commentNewsArticleDateTime"], $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
-				$commentNewsArticle[$commentNewsArticle->key()] = $commentNewsArticle;
-				$commentNewsArticle->next();
+				$commentNewsArticles[$commentNewsArticles->key()] = $commentNewsArticle;
+				$commentNewsArticles->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
 
-		return ($commentNewsArticle);
+		return ($commentNewsArticles);
 
 	}
 	/**
@@ -361,7 +361,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM commentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
+		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle WHERE commentNewsArticleId = :commentNewsArticleId";
 		$statement = $pdo->prepare($query);
 
 		// bind the commentArticle id to the place holder in the template
@@ -393,7 +393,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 **/
 	public static function getAllCommentNewsArticles(\PDO $pdo) {
 		// create query template
-		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM commentNewsArticle";
+		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
