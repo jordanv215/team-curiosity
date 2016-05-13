@@ -256,32 +256,31 @@ class FavoriteImage implements \JsonSerializable {
 		$parameters = array("favoriteImageImageId" => $favoriteImageImageId);
 		$statement->execute($parameters);
 
-		//grab the favorite image from mySQL
-			$favoriteImage = null;
+		//build an array of favorite images
+			$favoriteImages = new \SplFixedArray($statement->rowCount());
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			while(($row = $statement->fetch()) !== false) {
 				try {
 					$favoriteImage = new favoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
-					$favoriteImage[$favoriteImage->key()] = $favoriteImage;
-					$favoriteImage->next();
+					$favoriteImages[$favoriteImages->key()] = $favoriteImage;
+					$favoriteImages->next();
 				} catch(\Exception $exception) {
 					// if the row couldn't be converted, rethrow it
 					throw(new \PDOException($exception->getMessage(), 0, $exception));
 				}
 			}
-			return ($favoriteImage);
+			return ($favoriteImages);
 		}
 
 
 	/** get favoriteImage by favoriteImageByFavoriteImageUserId
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $favoriteImageImageId image id to search for
 	 * @param int $favoriteImageUserId user id to search for
 	 * @return \SplFixedArray SplFixedArray of images found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
-	 */
-	public static function getFavoriteImageByFavoriteImageUserId(\PDO $pdo, int $favoriteImageUserId, $return) {
+	 **/
+	public static function getFavoriteImageByFavoriteImageUserId(\PDO $pdo, int $favoriteImageUserId) {
 			//sanitize the description before searching
 			if($favoriteImageUserId <= 0) {
 				throw(new \PDOException("user id is not positive"));
