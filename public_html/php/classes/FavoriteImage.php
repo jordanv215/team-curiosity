@@ -297,8 +297,7 @@ class FavoriteImage implements \JsonSerializable {
 			//build an array of favorite images
 				$favoriteImages = new \SplFixedArray($statement->RowCount);
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				$row = $statement->fetch();
-				if($row !== false) {
+				while(($row = $statement->fetch()) !== false) {
 					try {
 					$favoriteImageUserId = new favoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
 				}
