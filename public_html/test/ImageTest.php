@@ -128,7 +128,7 @@ class ImageTest extends TeamCuriosityTest {
 		$results = Image::getImageByImageCamera($this->getPDO(), $image->getImageCamera());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\Cnm\TeamCuriosity\Test", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
@@ -147,5 +147,31 @@ class ImageTest extends TeamCuriosityTest {
 		// grab a Image by image camera did not take the image of
 		$image = Image::getImageByImageCamera($this->getPDO(), "This image was not taken by camera");
 		$this->assertCount(0, $image);
+	}
+	/**
+	 * test grabbing all Images
+	 **/
+	public function testGetAllValidImages() {
+		// count the number of tow s and save it for later
+		$numRows = $this->getConnection()->getRowCount("Image");
+
+		// create a new Image and insert into mySQL
+		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Image::getAllImages($this->getPDO(), $image->getImageCamera());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
+
+		// grab the result from the array and validate it
+		$pdoImage = $results[0];
+		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
+		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
+		$this->assertEquals($pdoImage->getImageByImageSol(), $this->VALID_IMAGESOL);
+		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
 	}
 }
