@@ -309,9 +309,9 @@ class FavoriteImage implements \JsonSerializable {
 			// if row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-
-			return ($favoriteImages);
 		}
+			return ($favoriteImages);
+
 }
 
 
