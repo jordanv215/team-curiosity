@@ -73,7 +73,7 @@ class ImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test creating aImage and then deleting it
+	 * test creating a Image and then deleting it
 	 **/
 	public function testDeleteValidImage() {
 		// count the number of row sna dsave it for later
@@ -146,6 +146,42 @@ class ImageTest extends TeamCuriosityTest {
 	public function testGetInvalidImageByImageCamera() {
 		// grab a Image by image camera did not take the image of
 		$image = Image::getImageByImageCamera($this->getPDO(), "This image was not taken by camera");
+		$this->assertCount(0, $image);
+	}
+
+	/**
+	 * test grabbing a Image by image description
+	 **/
+	public function testGetValidImageByImageDescription() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("Image");
+
+		// create a new image and insert into mySQL
+		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Image::getImageByImageDescription($this->getPDO(), $image->getImageDescription());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
+
+		// grab the result from the array and validate it
+		$pdoImage = $results[0];
+		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
+		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
+		$this->assertEquals($pdoImage->getImageByImageSol(), $this->VALID_IMAGESOL);
+		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
+	}
+
+	/**
+	 * test grabbing a Image by imageDescription that does not exist
+	 **/
+	public function testGetInvalidImageByImageDescription() {
+		// grab a Image by image camera did not take the image of
+		$image = Image::getImageByImageDescription($this->getPDO(), "This image was not taken by camera");
 		$this->assertCount(0, $image);
 	}
 	/**
