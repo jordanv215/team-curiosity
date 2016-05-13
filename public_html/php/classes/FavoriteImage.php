@@ -281,30 +281,35 @@ class FavoriteImage implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getFavoriteImageByFavoriteImageUserId(\PDO $pdo, int $favoriteImageUserId) {
-			//sanitize the description before searching
-			if($favoriteImageUserId <= 0) {
-				throw(new \PDOException("user id is not positive"));
+		//sanitize the description before searching
+		if($favoriteImageUserId <= 0) {
+			throw(new \PDOException("user id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT favoriteImageUserId, favoriteImageImageId, favoriteImageDateTime FROM FavoriteImage WHERE favoriteImageUserId = :favoriteImageUserId";
+		$statement = $pdo->prepare($query);
+
+		//bind the favoriteImageUserId to the place holder in the template
+		$parameters = array("favoriteImageUserId" => $favoriteImageUserId);
+		$statement->execute($parameters);
+
+		//build an array of favorite images
+		$favoriteImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$favoriteImage = new FavoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+				$favoriteImages{$favoriteImages->key()} = $favoriteImage;
+				$favoriteImages->next();
 			}
-
-			//create query template
-			$query = "SELECT favoriteImageUserId, favoriteImageImageId, favoriteImageDateTime FROM FavoriteImage WHERE favoriteImageUserId = :favoriteImageUserId";
-			$statement = $pdo->prepare($query);
-
-			//bind the favoriteImageUserId to the place holder in the template
-			$parameters = array("favoriteImageUserId" => $favoriteImageUserId);
-			$statement->execute($parameters);
-
-			//build an array of favorite images
-				$favoriteImages = new \SplFixedArray($statement->RowCount);
-				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				while(($row = $statement->fetch()) !== false) {
-					try {
-					$favoriteImageUserId = new favoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
-				}
-			} catch(\Exception $exception) {
-				// if row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
+	catch
+		(\Exception $exception) {
+			// if row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
 			return($favoriteImages);
 		}
 
