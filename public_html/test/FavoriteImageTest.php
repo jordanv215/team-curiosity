@@ -80,10 +80,11 @@ class FavoriteImageTest extends TeamCuriosityTest {
 
 
 	/**
-	 * PDO Exception
+	 * tes inserting an invalid favorite image
+	 * @ Expected Exception \PDO Exception
 	 **/
 	public function testInsertInvalidFavoriteImage() {
-		$favoriteImage = new FavoriteImage(TeamCuriosityTest::INVALID_KEY, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
+		$favoriteImage = new FavoriteImage(TeamCuriosityTest::INVALID_KEY, $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
 		$favoriteImage->insert($this->getPDO());
 	}
 
@@ -93,14 +94,14 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	 **/
 	public function testDeleteInvalidFavoriteImage() {
 		//count the number of rows, save
-		$numRows = $this->getConnection()->getRowCount("favoriteImage");
+		$numRows = $this->getConnection()->getRowCount("FavoriteImage");
 
 		//create a favoriteImage and insert into mySQL
 		$favoriteImage = new favoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
 		$favoriteImage->insert($this->getPDO());
 
 		// delete the favoriteImage from mySQL
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("favoriteImage"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
 		$favoriteImage->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the favoriteImage that does not exist
