@@ -162,7 +162,7 @@ class CommentImage implements \JsonSerializable {
 		}
 		// store the commentImageDateTime
 		try {
-			$newCommentImageDateTime = $this->ValidateDate($newCommentImageDateTime);
+			$newCommentImageDateTime = $this-ValidateDate($newCommentImageDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {

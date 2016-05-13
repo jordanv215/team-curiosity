@@ -184,6 +184,116 @@ class ImageTest extends TeamCuriosityTest {
 		$image = Image::getImageByImageDescription($this->getPDO(), "This image was not taken by camera");
 		$this->assertCount(0, $image);
 	}
+
+	/**
+	 * test grabbing a Image by image earth date
+	 **/
+	public function testGetValidImageByImageEarthDate() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("Image");
+
+		// create a new image and insert into mySQL
+		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Image::getImageByImageEarthDate($this->getPDO(), $image->getImageCamera());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
+
+		// grab the result from the array and validate it
+		$pdoImage = $results[0];
+		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
+		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
+		$this->assertEquals($pdoImage->getImageByImageSol(), $this->VALID_IMAGESOL);
+		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
+	}
+
+	/**
+	 * test grabbing a Image by imageEarthDate that does not exist
+	 **/
+	public function testGetInvalidImageByImageEarthDate() {
+		// grab a Image by non existing image earth date
+		$image = Image::getImageByImageEarthDate($this->getPDO(), "There is no image in this date");
+		$this->assertCount(0, $image);
+	}
+
+	/**
+	 * test grabbing a Image by image sol
+	 **/
+	public function testGetValidImageByImageSol() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("Image");
+
+		// create a new image and insert into mySQL
+		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Image::getImageByImageSol($this->getPDO(), $image->getImageSol());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
+
+		// grab the result from the array and validate it
+		$pdoImage = $results[0];
+		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
+		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
+		$this->assertEquals($pdoImage->getImageByImageSol(), $this->VALID_IMAGESOL);
+		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
+	}
+
+	/**
+	 * test grabbing a Image by imageSol that does not exist
+	 **/
+	public function testGetInvalidImageByImageSol() {
+		// grab a Image by image sol that does not exist
+		$image = Image::getImageByImageSol($this->getPDO(), "cannot find image at this sol");
+		$this->assertCount(0, $image);
+	}
+
+	/**
+	 * test grabbing a Image by image title
+	 **/
+	public function testGetValidImageByImageTitle() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("Image");
+
+		// create a new image and insert into mySQL
+		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Image::getImageByTitle($this->getPDO(), $image->getImageTitle());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
+
+		// grab the result from the array and validate it
+		$pdoImage = $results[0];
+		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
+		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
+		$this->assertEquals($pdoImage->getImageByImageSol(), $this->VALID_IMAGESOL);
+		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
+	}
+
+	/**
+	 * test grabbing a Image by title that does not exist
+	 **/
+	public function testGetInvalidImageByImageTitle() {
+		// grab a Image by image title that does not exist
+		$image = Image::getImageByImageTitle($this->getPDO(), "No image matches this title ");
+		$this->assertCount(0, $image);
+	}
+
+
 	/**
 	 * test grabbing all Images
 	 **/
