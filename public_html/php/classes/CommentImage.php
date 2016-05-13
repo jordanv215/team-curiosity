@@ -373,6 +373,34 @@ class CommentImage implements \JsonSerializable {
 	 **/
 	public static function  getAllCommentImage(\PDO $pdo) {
 		// create query template
-		
+		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM CommentImage";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of all image comments
+		$commentImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImages[$commentImages->key()] = $commentImage;
+				$commentImages->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow the exception
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($commentImages);
+	}
+
+	/**
+	 * formats state variables for JSON serialization
+	 *
+	 * @return array
+	**/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		$fields["commentImageDateTime"] = intval($this->commentImageDateTime->format("U")) * 1000;
+		return($fields);
 	}
 }

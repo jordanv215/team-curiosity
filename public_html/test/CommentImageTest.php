@@ -53,7 +53,7 @@ class CommentImageTest extends TeamCuriosityTest {
 		parent::setUp();
 
 		// create and insert user to make the comment
-		$this->user = new User(null, "test@phpunit.de", 123456789, "Test Test"); // @todo pretty sure this is incorrect
+		$this->user = new User(null, "test@phpunit.de", 123456789, "Test Test"); 
 		$this->user->insert($this->getPDO());
 
 		// calculate the date, using time the test was set up
