@@ -2,7 +2,7 @@
 namespace Edu\Cnm\TeamCuriosity\Test;
 
 use Edu\Cnm\TeamCuriosity\{
-	User, Image, FavoriteImage
+	CommentImage, User, Image, FavoriteImage
 };
 
 //grab the test parameters
@@ -80,7 +80,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 
 
 	/**
-	 * tes inserting an invalid favorite image
+	 * test inserting an invalid favorite image
 	 * @ Expected Exception \PDO Exception
 	 **/
 	public function testInsertInvalidFavoriteImage() {
@@ -125,6 +125,19 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	 * test grabbing a FavoriteImage by ImageId and UserId
 	 **/
 	public function testGetFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId() {
+		// count number of rows
+		$numRows = $this->getConnection()->getRowCount("FavoriteImage");
+
+		// create a new CommentImage and insert to into mySQL
+		$favoriteImage = new FavoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
+		$favoriteImage->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoFavoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO(), $favoriteImage->getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
+		$this->assertEquals($pdoFavoriteImage->getUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoFavoriteImage->getTweetContent(), $this->VALID_TWEETCONTENT);
+		$this->assertEquals($pdoTweet->getTweetDate(), $this->VALID_TWEETDATE);
 		$favoriteImage = FavoriteImage:: getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO());
 		return($favoriteImage);
 	}
@@ -148,21 +161,21 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test grabbing all favoriteImage
+	 * test grabbing all favoriteImages
 	 **/
 	public function testGetAllFavoriteImages() {
 		// count the number of rows and save for later
 		$numRows = $this->getConnection()->getRowCount("FavoriteImage");
 
 		// create a new FavoriteImage and insert into mySQL
-		$favoriteImage = new favoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
+		$favoriteImage = new FavoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
 		$favoriteImage->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = FavoriteImage::getAllFavoriteImage($this->getPDO());
+		$results = FavoriteImage::getAllFavoriteImages($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstanceOf("Edu\\Cnm\\TeamCuriosity\\Test", $results);
+		$this->assertContainsOnlyInstanceOf("Edu\\Cnm\\TeamCuriosity\\FavoriteImage", $results);
 
 		//grab the result from the array and validate it
 		$pdoFavoriteImage = $results[0];

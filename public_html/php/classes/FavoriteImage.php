@@ -219,7 +219,7 @@ class FavoriteImage implements \JsonSerializable {
 	 **/
 	public function update(\PDO $pdo) {
 		//enforce the composite key is not null (i.e., don't update a favorite image that hasn't been inserted)
-		if($this->favoriteImageImageId && $this->favoriteImageUserId === null) {
+		if($this->favoriteImageImageId === null || $this->favoriteImageUserId === null) {
 			throw(new \PDOException("unable to update a favorite image that does not exist"));
 
 		}

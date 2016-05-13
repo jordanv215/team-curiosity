@@ -26,7 +26,7 @@ class ImageTest extends TeamCuriosityTest {
 	protected $VALID_IMAGEDESCRIPTION = "PHPUnit test passing";
 	/**
 	 * timestamp of the Image; this starts as null and is assigned later
-	 * @var DateTime $VALID_IMAGEEARTHDATE
+	 * @var /DateTime|null $VALID_IMAGEEARTHDATE
 	 **/
 	protected $VALID_IMAGEEARTHDATE = null;
 	/**
@@ -48,7 +48,7 @@ class ImageTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("Image");
 
 		//create a new image and insert into mySQL
-		$image = new image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
 		$image->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
