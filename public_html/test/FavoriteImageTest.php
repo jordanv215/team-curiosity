@@ -122,21 +122,19 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test grabbing a FavoriteImage by ImageId and UserId that does not exist by FavoriteImageImageIdAndFavoriteImageUserId
+	 * test grabbing a FavoriteImage by ImageId and UserId
 	 **/
-	public function testGetInvalidFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId() {
-		//grab a FavoriteImageImageIdAndFavoriteImageUserId that exceeds the maximum allowable favoriteImageImageIdAndFavoriteImageUserId
-		$favoriteImage = FavoriteImage:: getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
-		$this->assertNull($favoriteImage);
+	public function testGetFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId() {
+		$favoriteImage = FavoriteImage:: getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO());
+		return($favoriteImage);
 	}
 
 	/**
-	 * test grabbing a FavoriteImage that does not exist by favoriteImageImageId
+	 * test grabbing a FavoriteImage by favoriteImageImageId
 	 **/
-	public function testGetInvalidFavoriteImageByFavoriteImageImageId() {
-		// grab a favoriteImageImageId that exceeds the maximum allowable favoriteImageImageId
-		$favoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageImageId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
-		$this->assertNull($favoriteImage);
+	public function testGetFavoriteImageByFavoriteImageImageId() {
+		$favoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageImageId($this->getPDO());
+		return($favoriteImage);
 	}
 
 	/**
