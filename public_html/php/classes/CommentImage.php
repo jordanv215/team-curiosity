@@ -10,34 +10,34 @@ require_once("Autoload.php");
  *
  * @author Kai Garrott <garrottkai@gmail.com>
  * @version 1.0.0
- */
+ **/
 
 class CommentImage implements \JsonSerializable {
 	use ValidateDate;
 	/**
 	 * Unique ID of the image comment - this is the primary key
 	 * @var int $commentImageId
-	 */
+	 **/
 	private $commentImageId;
 	/**
 	 * content of the image comment; maximum 1024B
 	 * @var string $commentImageContent
-	 */
+	 **/
 	private $commentImageContent;
 	/**
 	 * timestamp of the image comment, as a DateTime object
 	 * @var \DateTime $commentImageDateTime
-	 */
+	 **/
 	private $commentImageDateTime;
 	/**
 	 * ID of the image commented on - a foreign key
-	 * @var $commentImageImageId
-	 */
+	 * @var int $commentImageImageId
+	 **/
 	private $commentImageImageId;
 	/**
 	 * ID of the user who created the comment - a foreign key
-	 * @var $commentImageUserId
-	 */
+	 * @var int $commentImageUserId
+	 **/
 	private $commentImageUserId;
 
 	/**
@@ -51,7 +51,7 @@ class CommentImage implements \JsonSerializable {
 	 * @throws \RangeException if entry is negative or too long
 	 * @throws \TypeError if type hint is violated
 	 * @throws \Exception if some other exception occurs
-	 */
+	 **/
 	public function __construct(int $newCommentImageId = null, string $newCommentImageContent, $newCommentImageDateTime = null, int $newCommentImageImageId, int $newCommentImageUserId) {
 		try {
 			$this->setCommentImageId($newCommentImageId);
@@ -78,7 +78,7 @@ class CommentImage implements \JsonSerializable {
 	 * accessor method for commentImageId
 	 *
 	 * @return int|null value of commentImageId
-	 */
+	 **/
 	public function getCommentImageId() {
 		return ($this->commentImageId);
 	}
@@ -89,7 +89,7 @@ class CommentImage implements \JsonSerializable {
 	 * @param int|null $newCommentImageId new value of commentImageId
 	 * @throws \RangeException if $newCommentImageId is not positive
 	 * @throws \TypeError if $newCommentImageId is not an integer
-	 */
+	 **/
 	public function setCommentImageId(int $newCommentImageId = null) {
 		// base case: comment not yet inserted into table; id is null
 		if($newCommentImageId === null) {
@@ -110,7 +110,7 @@ class CommentImage implements \JsonSerializable {
 	 * accessor method for commentImageContent
 	 *
 	 * @return string value of $commentImageContent
-	 */
+	 **/
 	public function getCommentImageContent() {
 		return ($this->commentImageContent);
 	}
@@ -122,7 +122,7 @@ class CommentImage implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newCommentImageContent is not a string or is insecure
 	 * @throws \RangeException if $newCommentImageContent is > 1024 characters
 	 * @throws \TypeError if $newCommentImageContent is not a string
-	 */
+	 **/
 	public function setCommentImageContent(string $newCommentImageContent) {
 		// verify the input is secure
 		$newCommentImageContent = trim($newCommentImageContent);
@@ -142,7 +142,7 @@ class CommentImage implements \JsonSerializable {
 	 * accessor method for commentImageDateTime
 	 * 
 	 * @return \DateTime value of $commentImageDateTime
-	 */
+	 **/
 	public function getCommentImageDateTime() {
 		return ($this->commentImageDateTime);
 	}
@@ -153,7 +153,7 @@ class CommentImage implements \JsonSerializable {
 	 * @param \DateTime|null $newCommentImageDateTime new timestamp from mySQL or null if not yet inserted
 	 * @throws \InvalidArgumentException if $newCommentImageDateTime is not a valid object
 	 * @throws \RangeException if $newCommentImageDateTime is a date that does not exist
-	 */
+	 **/
 	public function setCommentImageDateTime($newCommentImageDateTime = null) {
 		// base case: if the value is null, the comment has not been inserted yet - use current timestamp
 		if($newCommentImageDateTime === null) {
@@ -170,14 +170,55 @@ class CommentImage implements \JsonSerializable {
 		}
 		$this->commentImageDateTime = $newCommentImageDateTime;
 	}
-
+	/**
+	 * accessor method for commentImageImageId
+	 *
+	 * @return int value of $commentImageImageId
+	 **/
+	public function getCommentImageImageId() {
+		return ($this->commentImageImageId);
+	}
+	/**
+	 * mutator method for commentImageImageId
+	 *
+	 * @param int $newCommentImageImageId Id of new comment
+	 * @throws \InvalidArgumentException if $newCommentImageImageId is not a string or is insecure
+	 * @throws \TypeError if $newCommentImageImageId is not a string
+	 **/
+	public function setCommentImageImageId (int $newCommentImageImageId) {
+		// verify the input is secure
+		$newCommentImageImageId = trim($newCommentImageImageId);
+		// store the newCommentImageImageId
+		$this->commentImageImageId = $newCommentImageImageId;
+	}
+	/**
+	* accessor method for commentImageUserId
+	*
+	* @return int value of $commentImageUserId
+	**/
+	public function getCommentImageUserId() {
+		return ($this->commentImageUserId);
+	}
+	/**
+	 * mutator method for commentImageUserId
+	 *
+	 * @param int $newCommentImageUserId Id of new User
+	 * @throws \InvalidArgumentException if $newCommentImageUserId is not a string or is insecure
+	 * @throws \TypeError if $newCommentImageUserId is not a string
+	 **/
+	public function setCommentImageUserId (int $newCommentImageUserId) {
+		// verify the input is secure
+		$newCommentImageUserId = trim($newCommentImageUserId);
+		// store the newCommentImageUserId
+		$this->commentImageUserId = $newCommentImageUserId;
+	}
 	/**
 	 * inserts the datetime into table
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL-related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 */
+	 **/
 	public function insert(\PDO $pdo) {
 		// enforce that commentImageId is null (don't insert a row that already exists)
 		if($this->commentImageId !== null) {
@@ -203,7 +244,7 @@ class CommentImage implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL-related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 */
+	 **/
 	public function delete(\PDO $pdo) {
 		// enforce that commentImageId is not null (don't delete a comment that hasn't been inserted into table)
 		if($this->commentImageId === null) {
@@ -225,7 +266,7 @@ class CommentImage implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL-related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 */
+	 **/
 	public function update(\PDO $pdo) {
 		// enforce that commentImageId is not null (don't update a comment that hasn't been inserted into table)
 		if($this->commentImageId === null) {
@@ -250,7 +291,7 @@ class CommentImage implements \JsonSerializable {
 	 * @return \SplFixedArray SplFixedArray of comments found
 	 * @throws \PDOException when mySQL-related errors occur
 	 * @throws \TypeError when variables violate type hints
-	 */
+	 **/
 	public static function getCommentImageByCommentImageContent(\PDO $pdo, string $commentImageContent) {
 		// sanitize input before searching
 		$commentImageContent = trim($commentImageContent);
@@ -292,7 +333,7 @@ class CommentImage implements \JsonSerializable {
 	 * @return commentImage|null comment found or null if none found
 	 * @throws \PDOException when mySQL-related errors occur
 	 * @throws \TypeError when variables violate type hints
-	 */
+	 **/
 	public static function getCommentImageByCommentImageId(\PDO $pdo, int $commentImageId) {
 		// sanitize the input before searching
 		if($commentImageId <= 0) {
@@ -330,7 +371,7 @@ class CommentImage implements \JsonSerializable {
 	 * @return \SplFixedArray SplFixedArray of comments found
 	 * @throws \PDOException if mySQL-related errors occur
 	 * @throws \TypeError if variables violate type hints
-	 */
+	 **/
 	public static function getCommentImageByCommentImageImageId(\PDO $pdo, int $commentImageImageId) {
 		// sanitize input before searching
 		$commentImageImageId = trim($commentImageImageId);
@@ -340,7 +381,7 @@ class CommentImage implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM commentImage WHERE commentImageImageId LIKE :commentImageImageId";
+		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM CommentImage WHERE commentImageImageId LIKE :commentImageImageId";
 		$statement = $pdo->prepare($query);
 
 		// bind the image id to the placeholder in the template
