@@ -28,8 +28,8 @@ class FavoriteImage implements \JsonSerializable {
 	private $favoriteImageUserId;
 
 	/**
-	 * date and time for the image; this is a foreign key
-	 * @var \DateTime $favoriteImageDateTime
+	 * date and time for the favorite image
+	 * @var \DateTime or null $favoriteImageDateTime
 	 **/
 	private $favoriteImageDateTime;
 
@@ -66,7 +66,7 @@ class FavoriteImage implements \JsonSerializable {
 	}
 
 	/**
-	 * Accessor method for favoriteImageId
+	 * Accessor method for favoriteImageImageId
 	 *
 	 * @return int|null value of image id
 	 **/
@@ -76,25 +76,25 @@ class FavoriteImage implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for favoriteImageId
+	 * mutator method for favoriteImageImageId
 	 *
-	 * @param int|null $newFavoriteImageId
-	 * @throws \RangeException if $newFavoriteImageId is not positive
-	 * @throws \TypeError if $newFavoriteImageId is not an integer
+	 * @param int|null $newFavoriteImageImageId
+	 * @throws \RangeException if $newFavoriteImageImageId is not positive
+	 * @throws \TypeError if $newFavoriteImageImageId is not an integer
 	 **/
-	public function setFavoriteImageId(int $newFavoriteImageId = null) {
+	public function setFavoriteImageImageId(int $newFavoriteImageImageId = null) {
 		//base case: if the favorite image id is null, this is a new user
-		if($newFavoriteImageId === null) {
-			$this->favoriteImageId = null;
+		if($newFavoriteImageImageId === null) {
+			$this->favoriteImageImageId = null;
 			return;
 		}
 
 		//verify the image id is positive
-		if($newFavoriteImageId <= 0) {
+		if($newFavoriteImageImageId <= 0) {
 			throw(new \RangeException("image id is not positive"));
 		}
 		//convert and store image id
-		$this->favoriteImageId = $newFavoriteImageId;
+		$this->favoriteImageImageId = $newFavoriteImageImageId;
 	}
 
 	/**
@@ -150,7 +150,7 @@ class FavoriteImage implements \JsonSerializable {
 
 		//store the image date
 		try {
-			$newFavoriteImageDateTime = $this->validateDate($newFavoriteImageDateTime);
+			$newFavoriteImageDateTime = $this->ValidateDate($newFavoriteImageDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -169,8 +169,8 @@ class FavoriteImage implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo) {
 		//enforce the favoriteImageImageId is null (i.e., don't insert an image id that already exists)
-		if($this->favoriteImageImageId !== null) {
-			throw(new \PDOException("not a new image"));
+		if($this->favoriteImageImageId && $this->favoriteImageUserId !== null) {
+			throw(new \PDOException("not a new favorite image"));
 		}
 
 		// create a query template
@@ -179,11 +179,11 @@ class FavoriteImage implements \JsonSerializable {
 
 		//bind the member variables to the place holders in the template
 		$formattedDate = $this->favoriteImageDateTime->format("Y-m-d H:i:s");
-		$parameters = ["favoriteImageImageId" => $this->favoriteImageImageId, "favoriteImageImageUserId" => $this->favoriteImageUserId, "favoriteImageDateTime" => $formattedDate];
+		$parameters = ["favoriteImageImageId" => $this->favoriteImageImageId, "favoriteImageUserId" => $this->favoriteImageUserId, "favoriteImageDateTime" => $formattedDate];
 		$statement->execute($parameters);
 
-		//update the null favoriteImageImageId with what mySQL just gave us
-		$this->favoriteImageImageId = intval($pdo->lastInsertId());
+		//update the null favoriteImageDateTime with what mySQL just gave us
+		$this->favoriteImageDateTime = intval($pdo->lastInsertId());
 
 	}
 
@@ -195,17 +195,17 @@ class FavoriteImage implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO Connection object
 	 **/
 	public function delete(\PDO $pdo) {
-		//enforce the favoriteImageImageId is not null (i.e., don't delete an image that hasn't been inserted)
-		if($this->favoriteImageImageId === null) {
+		//enforce the composite key is not null (i.e., don't delete a favorite image that hasn't been inserted)
+		if($this->favoriteImageImageId && $this->favoriteImageUserId === null) {
 			throw(new \PDOException("unable to delete a favorite image that does not exist"));
 		}
 
 		//create query template
-		$query = "DELETE FROM FavoriteImage WHERE favoriteImageImageId = :favoriteImageImageId";
+		$query = "DELETE FROM FavoriteImage WHERE favoriteImageImageId = :favoriteImageImageId AND favoriteImageUserId = :favoriteImageUserId";
 		$statement = $pdo->prepare($query);
 
 		//bind the members variables to the place holder in the template
-		$parameters = ["favoriteImageImageId" => $this->favoriteImageImageId];
+		$parameters = ["favoriteImageImageId" => $this->favoriteImageImageId, "favoriteImageUserId" => $this->favoriteImageUserId];
 		$statement->execute($parameters);
 
 	}
@@ -218,8 +218,8 @@ class FavoriteImage implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function update(\PDO $pdo) {
-		//enforce the favoriteImageImageId is not null (i.e., don't update an image that hasn't been inserted)
-		if($this->favoriteImageImageId === null) {
+		//enforce the composite key is not null (i.e., don't update a favorite image that hasn't been inserted)
+		if($this->favoriteImageImageId && $this->favoriteImageUserId === null) {
 			throw(new \PDOException("unable to update a favorite image that does not exist"));
 
 		}
@@ -233,13 +233,6 @@ class FavoriteImage implements \JsonSerializable {
 		$parameters = ["favoriteImageUserId" => $this->favoriteImageUserId, "favoriteImageDateTime" => $formattedDate, "favoriteImageImageID" => $this->favoriteImageImageId];
 		$statement->execute($parameters);
 	}
-
-	/**
-	 * THESE ARE NOTES FOR WHAT I NEED TO ADD. IGNORE THEM
-	 * get favorite image by favorite image image id
-	 * get favorite image by favorite image userId
-	 * get favorite image by favorite image image id and favorite image image id
-	 **/
 
 	/**
 	 * gets favoriteImage by favoriteImageImageId
