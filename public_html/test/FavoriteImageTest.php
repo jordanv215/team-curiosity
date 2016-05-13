@@ -122,7 +122,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test grabbing a FavoriteImage that does not exist by FavoriteImageImageIdAndFavoriteImageUserId
+	 * test grabbing a FavoriteImage by ImageId and UserId that does not exist by FavoriteImageImageIdAndFavoriteImageUserId
 	 **/
 	public function testGetInvalidFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId() {
 		//grab a FavoriteImageImageIdAndFavoriteImageUserId that exceeds the maximum allowable favoriteImageImageIdAndFavoriteImageUserId

@@ -316,7 +316,7 @@ class FavoriteImage implements \JsonSerializable {
 
 
 	/**
-	 * gets the favoriteImage by favoriteImageId and favoriteImageUserId
+	 * gets the favoriteImage by favoriteImageImageId and favoriteImageUserId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $favoriteImageImageId favorite image id to search for
