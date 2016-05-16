@@ -170,7 +170,7 @@ class Image implements \JsonSerializable {
 	 * @return string value of imageDescription
 	 **/
 	public function getImageDescription() {
-		return ($this->getImageDescription);
+		return ($this->imageDescription);
 	}
 
 	/**
@@ -184,7 +184,7 @@ class Image implements \JsonSerializable {
 	public function setImageDescription(string $newImageDescription) {
 		// verify the image description is secure
 		$newImageDescription = trim($newImageDescription);
-		$newImageDescription = filter_var($newImageDescription, FILTER_SANITIZE_STRING);
+		$newImageDescription = filter_var($newImageDescription, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newImageDescription) === true) {
 			throw(new \InvalidArgumentException("image description is empty or insecure"));
 		}
@@ -204,15 +204,15 @@ class Image implements \JsonSerializable {
 	 * @return \DateTime value of image earth date
 	 **/
 	public function getImageEarthDate() {
-		return ($this->getImageEarthDate);
+		return ($this->imageEarthDate);
 	}
 
 	/**
 	 * mutator method for image earth date
 	 *
-	 * @param \DateTime | string | null $newImageEarthDate image earth date as a Datetime object or string (or null to load the current time)
-	 * @throws \InvalidArgumentException if $newImageEarthDate is
-	 * @throws \TypeError a date that does not exist
+	 * @param \DateTime|string|null $newImageEarthDate image earth date as a Datetime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newImageEarthDate is not a valid object or string
+	 * @throws \RangeException if input is a date that does not exist
 	 **/
 
 	public function setImageEarthDate($newImageEarthDate = null) {
@@ -234,9 +234,9 @@ class Image implements \JsonSerializable {
 	}
 
 	/**
-	 * accesor method for image path
+	 * accessor method for local image file path
 	 *
-	 * @return string value of image path
+	 * @return string value of image file path
 	 **/
 	public function getImagePath() {
 		return ($this->imagePath);
@@ -244,7 +244,7 @@ class Image implements \JsonSerializable {
 
 	/**mutator method for image path
 	 *
-	 * @param string $newImagePath new value  of image path
+	 * @param string $newImagePath new value of image path
 	 * @throws \InvalidArgumentException if $newImagePath is not a string or insecure
 	 * @throws \RangeException if $newImagePath is > 256 characters
 	 * @throw \TypeError if $newImagePath is not a string
@@ -252,7 +252,7 @@ class Image implements \JsonSerializable {
 	public function setImagePath(string $newImagePath) {
 		// verify the image path is secure
 		$newImagePath = trim($newImagePath);
-		$newImagePath = filter_var($newImagePath, FILTER_SANITIZE_STRING);
+		$newImagePath = filter_var($newImagePath, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newImagePath) === true) {
 			throw(new \InvalidArgumentException("image path is empty or insecure"));
 		}
@@ -269,7 +269,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * accessor method for image sol
 	 *
-	 * @return int $imageSol solar day of image
+	 * @return int $imageSol number of Martian solar days since rover landed at time of image capture
 	 */
 	public function getImageSol() {
 		return ($this->imageSol);
@@ -329,7 +329,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * accessor method for image type
 	 *
-	 * @return string value of image type
+	 * @return string value of image MIME type
 	 **/
 	public function getImageType() {
 		return ($this->imageType);
@@ -338,27 +338,27 @@ class Image implements \JsonSerializable {
 	/**
 	 * mutator method for image type
 	 *
-	 * @param string string $newImageType new value of image type
-	 * @throws \InvalidArgumentException if $newImageTitle is not a string
-	 * @throws \RangeException if $newImageTitle is > 10 characters
+	 * @param string $newImageType new value of image type
+	 * @throws \InvalidArgumentException if $newImageType is not a string
+	 * @throws \RangeException if $newImageType is > 10 characters
 	 * @throws \TypeError if $newImageType is not a string
 	 **/
 	public function setImageType(string $newImageType) {
-		// verify the image title is secure
-		$newImageTitle = trim($newImageType);
-		$newImageType = filter_var($newImageType, FILTER_SANITIZE_STRING);
+		// verify the image type is secure
+		$newImageType = trim($newImageType);
+		$newImageType = filter_var($newImageType, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newImageType) === true) {
 			throw(new \InvalidArgumentException("image type is empty or insecure"));
 		}
 
-		// store the image title
+		// store the image type
 		$this->imageType = $newImageType;
 	}
 
 	/**
 	 * accessor method for image url
 	 *
-	 * @return string value of image url
+	 * @return string value of image source url
 	 **/
 	public function getImageUrl() {
 		return ($this->imageUrl);
@@ -367,20 +367,20 @@ class Image implements \JsonSerializable {
 	/**
 	 *  mutator method for image url
 	 *
-	 * @param string $newImageUrl new value of image url
+	 * @param string $newImageUrl new value of image source url
 	 * @throws \InvalidArgumentException if $newImageUrl is not a string or insecure
 	 * @throws \RangeException if $newImageUrl is > 256 characters
-	 * @throws \TypeError if @newImageUrl is not a string
+	 * @throws \TypeError if $newImageUrl is not a string
 	 **/
 	public function setImageUrl(string $newImageUrl) {
 		// verify the image url is secure
 		$newImageUrl = trim($newImageUrl);
-		$newImageUrl = filter_var($newImageUrl, FILTER_SANITIZE_STRING);
+		$newImageUrl = filter_var($newImageUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newImageUrl) === true) {
 			throw(new \InvalidArgumentException("image url is empty or insecure"));
 		}
 
-		// verify the image url will fit in the databass
+		// verify the image url will fit in the database
 		if(strlen($newImageUrl) > 256) {
 			throw(new \RangeException("image url too large"));
 		}
@@ -392,12 +392,12 @@ class Image implements \JsonSerializable {
 	/**
 	 *
 	 * inserts this Image into mySQL
-	 * @paran \PDO $pdo PDO connection object
+	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function insert(\PDO $pdo) {
-		// enforce the imageId is null (i.e. , don't insert a image that already exists)
+		// enforce the imageId is null (i.e. , don't insert an image that already exists)
 		if($this->imageId !== null) {
 			throw(new \PDOException("not a new image"));
 		}
@@ -411,7 +411,7 @@ class Image implements \JsonSerializable {
 		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
 		$statement->execute($parameters);
 
-		// update the null imageId with what mySQL just gave us
+		// update the null Image Id with what mySQL just gave us
 		$this->imageId = intval($pdo->lastInsertId());
 	}
 
@@ -423,13 +423,13 @@ class Image implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function delete(\PDO $pdo) {
-		// enforce the imageId is not null (i.e., don't delete a image that hasn't been inserted)
+		// enforce the imageId is not null (i.e., don't delete an image that hasn't been inserted)
 		if($this->imageId === null) {
-			throw(new \PDOException("unable to delete a image that does not exist"));
+			throw(new \PDOException("unable to delete an image that does not exist"));
 		}
 
 		// create query template
-		$query = "DELETE FROM image WHERE imageId = :imageId";
+		$query = "DELETE FROM Image WHERE imageId = :imageId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
@@ -438,16 +438,16 @@ class Image implements \JsonSerializable {
 	}
 
 	/**
-	 * updates this image in mySQL
+	 * updates this Image in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 	public function update(\PDO $pdo) {
-		// enforce the imageId is not null (i.e., don't update a image that hasn't been inserted)
+		// enforce the imageId is not null (i.e., don't update an image that hasn't been inserted)
 		if($this->imageId === null) {
-			throw(new \PDOException("unable to update a image that does not exist"));
+			throw(new \PDOException("unable to update an image that does not exist"));
 		}
 
 		// create query template
@@ -455,7 +455,7 @@ class Image implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$formattedDate = $this->imageDarthDate->format("Y-m-d H:i:s");
+		$formattedDate = $this->imageEarthDate->format("Y-m-d H:i:s");
 		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
 		$statement->execute($parameters);
 	}
@@ -464,8 +464,8 @@ class Image implements \JsonSerializable {
 	 * gets the Image by imageId
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $imageId Image id to search for
-	 * @return Image | null Image found or null if not found
+	 * @param int $imageId image id to search for
+	 * @return Image|null Image found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
@@ -510,7 +510,7 @@ class Image implements \JsonSerializable {
 	public static function getImageByImageCamera(\PDO $pdo, string $imageCamera) {
 		// sanitize the description before searching
 		$imageCamera = trim($imageCamera);
-		$imageCamera = filter_var($imageCamera, FILTER_SANITIZE_STRING);
+		$imageCamera = filter_var($imageCamera, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($imageCamera) === true) {
 			throw(new \PDOException("image camera is invalid"));
 		}
@@ -522,7 +522,7 @@ class Image implements \JsonSerializable {
 		// bind the image camera to the place holder in the template
 		$imageCamera = "%imageCamera%";
 		$parameters = array("imageCamera" => $imageCamera);
-		$statement->execute(parameters);
+		$statement->execute($parameters);
 
 		// build an array of Images
 		$images = new \SplFixedArray(($statement->rowCount()));
@@ -552,7 +552,7 @@ class Image implements \JsonSerializable {
 	public static function getImageByImageDescription(\PDO $pdo, string $imageDescription) {
 		// sanitize the description before searching
 		$imageDescription = trim($imageDescription);
-		$imageDescription = filter_var($imageDescription, FILTER_SANITIZE_STRING);
+		$imageDescription = filter_var($imageDescription, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($imageDescription) === true) {
 			throw(new \PDOException("image description is invalid"));
 		}
@@ -586,7 +586,7 @@ class Image implements \JsonSerializable {
 	 * get the Image by image title
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $imageTitle image description to search for
+	 * @param string $imageTitle image title to search for
 	 * @return \SplFixedArray SplFixedArray of Images found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
@@ -594,7 +594,7 @@ class Image implements \JsonSerializable {
 	public static function getImageByImageTitle(\PDO $pdo, string $imageTitle) {
 		// sanitize the description before searching
 		$imageTitle = trim($imageTitle);
-		$imageTitle = filter_var($imageTitle, FILTER_SANITIZE_STRING);
+		$imageTitle = filter_var($imageTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($imageTitle) === true) {
 			throw(new \PDOException("image title is invalid"));
 		}
@@ -609,7 +609,7 @@ class Image implements \JsonSerializable {
 		$statement->execute($parameters);
 
 		// build an array of Images
-		$Images = new \SplFixedArray(($statement->rowCount()));
+		$images = new \SplFixedArray(($statement->rowCount()));
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
@@ -627,7 +627,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * get the Image by image sol
 	 *
-	 * @param \PDO $pdo PDO connectionobject
+	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageSol Image sol to search for
 	 * @return \SplFixedArray SplFixedArray of Images found
 	 * @thorws \PDOException when mySQL related errors occur
@@ -668,13 +668,13 @@ class Image implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @param \DateTime $imageEarthDate image earth date to search for
 	 * @return \SplFixedArray SplFixedArray of Images found
-	 * @thorws \PDOException when mySQL related errors occur
+	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 */
-	public static function getImageByImageEarthDate(\PDO $pdo, int $imageEarthDate) {
+	public static function getImageByImageEarthDate(\PDO $pdo, \DateTime $imageEarthDate) {
 		// sanitize the imageEarthDate before searching
 		if($imageEarthDate <= 0) {
-			throw(new \PDOException("image earth date is not positive"));
+			throw(new \PDOException("image earth date is not positive")); // @TODO add this method
 		}
 	}
 		/**
@@ -709,13 +709,13 @@ class Image implements \JsonSerializable {
 	}
 
 	/**
-	 * format the state avriables for JSON serialization
+	 * format the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
 	 **/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		$fields["imageEarthDate"] = intval($this->getImageEarthDate->format("U")) * 1000;
+		$fields["imageEarthDate"] = intval($this->imageEarthDate->format("U")) * 1000;
 		return($fields);
 	}
 }
