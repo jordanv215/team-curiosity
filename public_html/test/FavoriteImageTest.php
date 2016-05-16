@@ -5,6 +5,7 @@ use Edu\Cnm\TeamCuriosity\{
 	User, Image, FavoriteImage
 };
 
+
 //grab the test parameters
 require_once("TeamCuriosityTest.php");
 
