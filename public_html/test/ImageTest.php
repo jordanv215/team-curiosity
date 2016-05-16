@@ -34,7 +34,7 @@ class ImageTest extends TeamCuriosityTest {
 	 * local file path of image
 	 * @var $VALID_IMAGEPATH
 	 **/
-	protected $VALID_IMAGEPATH;
+	protected $VALID_IMAGEPATH = "test/local/filepath";
 	/**
 	 * martian date for image
 	 * @var int $VALID_IMAGESOL
@@ -49,7 +49,7 @@ class ImageTest extends TeamCuriosityTest {
 	 * updated title of image
 	 * @var string $VALID_IMAGETITLE2
 	 **/
-	protected $VALID_IMAGETITLE2;
+	protected $VALID_IMAGETITLE2 = "Updated Test Title";
 	/**
 	 * invalid image title
 	 * @var string $INVALID_IMAGETITLE
@@ -59,12 +59,12 @@ class ImageTest extends TeamCuriosityTest {
 	 * MIME type of image
 	 * @var string $VALID_IMAGETYPE
 	 **/
-	protected $VALID_IMAGETYPE;
+	protected $VALID_IMAGETYPE = "FakeMIMEType";
 	/**
 	 * source url of image
 	 * @var $VALID_IMAGEURL
 	 **/
-	protected $VALID_IMAGEURL;
+	protected $VALID_IMAGEURL = "test/file/url";
 
 	/**
 	 * test inserting a valid Image and verify that the actual mySQL data matches
