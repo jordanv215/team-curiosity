@@ -128,7 +128,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		// count number of rows
 		$numRows = $this->getConnection()->getRowCount("FavoriteImage");
 
-		// create a new CommentImage and insert to into mySQL
+		// create a new FavoriteImage and insert to into mySQL
 		$favoriteImage = new FavoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
 		$favoriteImage->insert($this->getPDO());
 
@@ -146,7 +146,13 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	 * test grabbing a FavoriteImage by favoriteImageImageId
 	 **/
 	public function testGetFavoriteImageByFavoriteImageImageId() {
-		$favoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageImageId($this->getPDO());
+		//count number of rows
+		$numRows = $this->getConnection()->getRowCount("FavoriteImage");
+
+
+		//create a favorite image and insert into table
+		$favoriteImage = New FavoriteImage($this->image->getImageId, $this->user->getUserId,$this->VALID_FAVORITEIMAGEDATETIME());
+		$favoriteImage->insert($this->getPDO());
 		return($favoriteImage);
 	}
 
