@@ -132,7 +132,7 @@ class ImageTest extends TeamCuriosityTest {
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
-		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageId(), $image->getImageId());
 		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
 		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
@@ -160,7 +160,7 @@ class ImageTest extends TeamCuriosityTest {
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
-		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageId(), $image->getImageId());
 		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
 		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
@@ -187,7 +187,7 @@ class ImageTest extends TeamCuriosityTest {
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
-		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageId(), $image->getImageId());
 		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
 		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
@@ -216,7 +216,7 @@ class ImageTest extends TeamCuriosityTest {
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
-		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageId(), $image->getImageId());
 		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
 		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
@@ -224,14 +224,6 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
 	}
 
-	/**
-	 * test grabbing a Image by imageSol that does not exist
-	 **/
-	public function testGetInvalidImageByImageSol() {
-		// grab a Image by image sol that does not exist
-		$image = Image::getImageByImageSol($this->getPDO(), "cannot find image at this sol");
-		$this->assertCount(0, $image);
-	}
 
 	/**
 	 * test grabbing a Image by image title
@@ -252,7 +244,7 @@ class ImageTest extends TeamCuriosityTest {
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
-		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageId(), $image->getImageId());
 		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
 		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
@@ -260,20 +252,11 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
 	}
 
-	/**
-	 * test grabbing a Image by title that does not exist
-	 **/
-	public function testGetInvalidImageByImageTitle() {
-		// grab a Image by image title that does not exist
-		$image = Image::getImageByImageTitle($this->getPDO(), "No image matches this title ");
-		$this->assertCount(0, $image);
-	}
-
 
 	/**
 	 * test grabbing all Images
 	 **/
-	public function testGetAllValidImages() {
+	public function testGetAllImages() {
 		// count the number of tow s and save it for later
 		$numRows = $this->getConnection()->getRowCount("Image");
 
@@ -289,7 +272,7 @@ class ImageTest extends TeamCuriosityTest {
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
-		$this->assertEquals($pdoImage->getImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoImage->getImageId(), $image->getImageId());
 		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
 		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
