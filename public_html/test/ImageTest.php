@@ -26,7 +26,7 @@ class ImageTest extends TeamCuriosityTest {
 	protected $VALID_IMAGEDESCRIPTION = "PHPUnit test passing";
 	/**
 	 * timestamp of the Image; this starts as null and is assigned later
-	 * @var /DateTime|null $VALID_IMAGEEARTHDATE
+	 * @var \DateTime|null $VALID_IMAGEEARTHDATE
 	 **/
 	protected $VALID_IMAGEEARTHDATE = null;
 	/**
@@ -36,7 +36,7 @@ class ImageTest extends TeamCuriosityTest {
 	protected $VALID_IMAGESOL = "PHPUnit test passing";
 	/**
 	 * title of image
-	 * @var $VALID_IMAGETITLE
+	 * @var string $VALID_IMAGETITLE
 	 */
 	protected $VALID_IMAGETITLE = "PHPUnit test is passing";
 

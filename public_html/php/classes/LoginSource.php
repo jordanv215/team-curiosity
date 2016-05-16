@@ -229,21 +229,17 @@ class LoginSource implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Tweet by content
+	 * gets the LoginSource by id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $tweetContent tweet content to search for
-	 * @return \SplFixedArray SplFixedArray of Tweets found
+	 * @param int $loginSourceId id to search for
+	 * @return LoginSource|null LoginSource found or null if none
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getTweetByTweetContent(\PDO $pdo, string $tweetContent) {
-		// sanitize the description before searching
-		$tweetContent = trim($tweetContent);
-		$tweetContent = filter_var($tweetContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($tweetContent) === true) {
-			throw(new \PDOException("tweet content is invalid"));
-		}
+	public static function getLoginSourceByLoginSourceId(\PDO $pdo, int $loginSourceId) {
+		// count the number of table rows
+		$
 
 		// create query template
 		$query = "SELECT tweetId, profileId, tweetContent, tweetDate FROM tweet WHERE tweetContent LIKE :tweetContent";
