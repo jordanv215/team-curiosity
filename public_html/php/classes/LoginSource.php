@@ -10,22 +10,22 @@ require_once("Autoload.php");
  *
  * @author Kai Garrott <garrottkai@gmail.com>
  * @version 1.0.0
- */
+ **/
 class LoginSource implements \JsonSerializable {
 	/**
 	 * unique id of the specific login source; this is the primary key
 	 * @var int $loginSourceId
-	 */
+	 **/
 	private $loginSourceId;
 	/**
 	 * client api key for the login source - not to be confused with the user's temporary auth token
 	 * @var string $loginSourceApiKey
-	 */
+	 **/
 	private $loginSourceApiKey;
 	/**
 	 * human-readable name of the login source
 	 * @var string $loginSourceProvider
-	 */
+	 **/
 	private $loginSourceProvider;
 	/**
 	 * constructor for this LoginSource
@@ -86,7 +86,7 @@ class LoginSource implements \JsonSerializable {
 			throw(new \RangeException("login source id is not positive"));
 		}
 
-		// convert and store the tweet id
+		// convert and store the login source id
 		$this->loginSourceId = $newLoginSourceId;
 	}
 
@@ -119,7 +119,7 @@ class LoginSource implements \JsonSerializable {
 			throw(new \RangeException("api key too large"));
 		}
 
-		// store the tweet content
+		// store the api key
 		$this->loginSourceApiKey = $newLoginSourceApiKey;
 	}
 
@@ -246,11 +246,11 @@ class LoginSource implements \JsonSerializable {
 		$query = "SELECT loginSourceId, loginSourceApiKey, loginSourceProvider FROM LoginSource WHERE loginSourceId = :loginSourceId";
 		$statement = $pdo->prepare($query);
 
-		// bind the tweet content to the place holder in the template
+		// bind the login source id to the place holder in the template
 		$parameters = array("loginSourceId" => $loginSourceId);
 		$statement->execute($parameters);
 
-		// grab the login source from the table
+		// grab the data from the table
 			try {
 				$loginSource = null;
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -292,7 +292,7 @@ class LoginSource implements \JsonSerializable {
 		$parameters = array("loginSourceProvider" => $loginSourceProvider);
 		$statement->execute($parameters);
 
-		// build an array of login source
+		// build an array of login sources
 		$loginSources = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
