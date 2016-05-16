@@ -4,7 +4,7 @@ namespace Edu\Cnm\TeamCuriosity;
 require_once("Autoload.php");
 
 /**
- * Image class
+ * Image Class
  *
  * This is the PHP class for the Image table
  *
