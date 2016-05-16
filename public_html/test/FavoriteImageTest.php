@@ -2,7 +2,7 @@
 namespace Edu\Cnm\TeamCuriosity\Test;
 
 use Edu\Cnm\TeamCuriosity\{
-	CommentImage, User, Image, FavoriteImage
+	User, Image, FavoriteImage
 };
 
 //grab the test parameters
@@ -135,9 +135,9 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoFavoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO(), $favoriteImage->getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
-		$this->assertEquals($pdoFavoriteImage->getUserId(), $this->user->getUserId());
-		$this->assertEquals($pdoFavoriteImage->getTweetContent(), $this->VALID_TWEETCONTENT);
-		$this->assertEquals($pdoTweet->getTweetDate(), $this->VALID_TWEETDATE);
+		$this->assertEquals($pdoFavoriteImage->getFavoriteImageUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoFavoriteImage->getFavoriteImageImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoFavoriteImage->getFavoriteImageDateTime(), $this->VALID_FAVORITEIMAGEDATETIME);
 		$favoriteImage = FavoriteImage:: getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO());
 		return($favoriteImage);
 	}
