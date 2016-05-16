@@ -6,8 +6,8 @@ use Edu\Cnm\TeamCuriosity\{LoginSource};
 // grab the test parameters
 require_once("./TeamCuriosityTest.php");
 
-// grab the class to be tested
-require_once(dirname(__DIR__) . "/php/classes/LoginSource.php");
+//grab the class under scrutiny
+require_once("../php/classes/Autoload.php");
 
 /**
  * PHPUnit test for the LoginSource class
@@ -16,26 +16,26 @@ require_once(dirname(__DIR__) . "/php/classes/LoginSource.php");
  *
  * @see LoginSource
  * @author Kai Garrott <garrottkai@gmail.com>
- */
+ **/
 class LoginSourceTest extends TeamCuriosityTest {
 	/**
 	 * api key of the login source
 	 * @var string $VALID_LOGIN_SOURCE_API_KEY
-	 */
+	 **/
 	protected $VALID_LOGIN_SOURCE_API_KEY = "abc123def456";
 	/**
 	 * another api key for login source
 	 * @var string $VALID_LOGIN_SOURCE_API_KEY2
-	 */
+	 **/
 	protected $VALID_LOGIN_SOURCE_API_KEY2 = "xyz789uvw000";
 	/**
 	 * social media login provider
 	 * @var string $VALID_LOGIN_SOURCE_PROVIDER
-	 */
+	 **/
 	protected $VALID_LOGIN_SOURCE_PROVIDER = "congratulations";
 	/**
 	 * test inserting a valid login source
-	 */
+	 **/
 	public function testInsertValidLoginSource() {
 		// count number of table rows
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
@@ -56,7 +56,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 	 *  test inserting a login source with a primary key that already exists
 	 *
 	 * @expectedException \PDOException
-	 */
+	 **/
 	public function testInsertInvalidLoginSource() {
 		// create a login source with a non null id - it should fail
 		$loginSource = new LoginSource(TeamCuriosityTest::INVALID_KEY, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
@@ -65,7 +65,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 	
 	/**
 	 * test inserting a login source, editing it, then updating it
-	 */
+	 **/
 	public function testUpdateValidLoginSource() {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
@@ -89,7 +89,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 	 * test creating a login source and then deleting it
 	 *
 	 * @expectedException \PDOException
-	 */
+	 **/
 	public function testDeleteValidLoginSource() {
 		// count number of rows
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
@@ -112,7 +112,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 	 * test deleting a login source that does not exist
 	 * 
 	 * @expectedException \PDOException
-	 */
+	 **/
 	public function testDeleteInvalidLoginSource() {
 		// create a new login source and attempt to delete it without first inserting it into a table
 		$loginSource = new LoginSource(null, $this->VALID_LOGIN_SOURCE_API_KEY, $this->VALID_LOGIN_SOURCE_PROVIDER);
@@ -121,7 +121,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 
 	/**
 	 * test inserting a login source and regrabbing it from mySQL
-	 */
+	 **/
 	public function testGetValidLoginSourceByLoginSourceId() {
 		// count the number of rows
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
@@ -140,7 +140,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 
 	/**
 	 * test grabbing a login source that does not exist
-	 */
+	 **/
 	public function testGetInvalidLoginSourceByLoginSourceId() {
 		// grab a login source id that exceeds the maximum allowable value
 		$loginSource = LoginSource::getLoginSourceByLoginSourceId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
@@ -149,7 +149,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 
 	/**
 	 * test grabbing a login source by provider
-	 */
+	 **/
 	public function testGetValidLoginSourceByLoginSourceProvider() {
 		// count number of rows
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
@@ -173,7 +173,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 
 	/**
 	 * test grabbing a login source by a provider that does not exist
-	 */
+	 **/
 	public function testGetInvalidLoginSourceByLoginSourceProvider () {
 		// grab a login source by searching for string that does not exist
 		$loginSource = LoginSource::getLoginSourceByLoginSourceProvider($this->getPDO(), "there's nothing here");
@@ -182,7 +182,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 
 	/**
 	 * test grabbing all login source entries
-	 */
+	 **/
 	public function testGetAllValidLoginSource() {
 		// count number of rows
 		$numRows = $this->getConnection()->getRowCount("LoginSource");
