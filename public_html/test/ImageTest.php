@@ -109,7 +109,7 @@ class ImageTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("Image");
 
 		//create a new Image and insert into mySQL
-		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
 		$image->insert($this->getPDO());
 
 		// delete the Image from mySQL
@@ -129,12 +129,42 @@ class ImageTest extends TeamCuriosityTest {
 	**/
 	public function testDeleteInvalidImage() {
 		// create a Image and try to delete it without actually inserting it
-		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->INVALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
 		$image->delete($this->getPDO());
 	}
+	/**
+	 * test grabbing an image by its id
+	 **/
+	public function testGetValidImageByImageId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("Image");
 
+		// create a new image and insert into mySQL
+		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
+		$image->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Image::getImageByImageId($this->getPDO(), $image->getImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
+
+		// grab the result from the array and validate it
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
+		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+		$this->assertEquals($pdoImage->getImageEarthDate(), $this->VALID_IMAGEEARTHDATE);
+		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImageSol(), $this->VALID_IMAGESOL);
+		$this->assertEquals($pdoImage->getImageTitle(), $this->VALID_IMAGETITLE);
+		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
+		$this->assertEquals($pdoImage->getImageUrl(), $this->VALID_IMAGEURL);
+	}
 	/**
 	 * test grabbing an Image that does not exist
+	 *
+	 * @expectedException \PDOException
 	 **/
 	public function testGetInvalidImageByImageId() {
 		// grab an image id that exceeds the maximum allowable image id
