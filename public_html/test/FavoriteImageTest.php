@@ -67,12 +67,12 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("FavoriteImage");
 
 		//create a new FavoriteImage and insert into mySQL
-		$FavoriteImage = new FavoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
-		$FavoriteImage->insert($this->getPDO());
+		$favoriteImage = new FavoriteImage(null, $this->user->getUserId(), $this->image->getImageId(), $this->VALID_FAVORITEIMAGEDATETIME);
+		$favoriteImage->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
-		$pdoFavoriteImage = FavoriteImage::getFavoriteImageByUserId($this->getPDO(), $FavoriteImage->getUserId());
-		$this->assertEquals($FavoriteImage + 1, $this->getConnection()->getRowCount("FavoriteImage"));
+		$pdoFavoriteImage = FavoriteImage::getFavoriteImageByUserId($this->getPDO(), $favoriteImage->getUserId());
+		$this->assertEquals($favoriteImage + 1, $this->getConnection()->getRowCount("FavoriteImage"));
 		$this->assertEquals($pdoFavoriteImage->getUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoFavoriteImage->getImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoFavoriteImage->getImageDateTime(), $this->VALID_FAVORITEIMAGEDATETIME);
@@ -138,7 +138,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoFavoriteImage->getFavoriteImageUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoFavoriteImage->getFavoriteImageImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoFavoriteImage->getFavoriteImageDateTime(), $this->VALID_FAVORITEIMAGEDATETIME);
-		$favoriteImage = FavoriteImage:: getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO());
+		$favoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($this->getPDO());
 		return($favoriteImage);
 	}
 
