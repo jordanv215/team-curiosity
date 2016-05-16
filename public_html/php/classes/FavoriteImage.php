@@ -150,7 +150,7 @@ class FavoriteImage implements \JsonSerializable {
 
 		//store the image date
 		try {
-			$newFavoriteImageDateTime = $this->ValidateDate($newFavoriteImageDateTime);
+			$newFavoriteImageDateTime = $this->validateDate($newFavoriteImageDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
