@@ -165,7 +165,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		// grab the result from the array and validate it
 		$pdoFavoriteImage = $results[0];
 		$this->assertEquals($pdoFavoriteImage->getFavoriteImageUserId(), $this->user->getUserId());
-		$this->assertEquals($pdoFavoriteImage->geFavoriteImageImageId(), $this->image->getImageId());
+		$this->assertEquals($pdoFavoriteImage->getFavoriteImageImageId(), $this->image->getImageId());
 		$this->assertEquals($pdoFavoriteImage->getFavoriteImageDateTime(), $this->VALID_FAVORITEIMAGEDATETIME);
 	}
 
