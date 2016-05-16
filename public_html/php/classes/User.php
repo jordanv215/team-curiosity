@@ -266,7 +266,7 @@ class User implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
-	/** @todo correct parameters & etc. look at model of getTweetByTweetId() on website
+	/**
 	 * gets the user by their id
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $userId
@@ -274,14 +274,14 @@ class User implements \JsonSerializable {
 	 * @param string $userName
 	 * @param int $userLoginId
 	 * @return \SplFixedArray SplFixedArray of id found
-	 * @internal param int $userId user id int to search for
 	 **/
 
 	public
 	static function getUserByUserId(\PDO $pdo, int $userId) {
 		//sanitize the description before searching
-		$userId = trim($userId);
-		$userId = filter_var($userId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if($userId <= 0) {
+			throw(new \RangeException("UserId is not positive"));
+		}
 		if
 		(empty($userId) === true
 		) {
@@ -292,34 +292,24 @@ class User implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
-		//build array of users
-		$users = new \SplFixedArray($statement->rowCount());
-		$statement = $pdo->prepare($query);
 
 		// bind the userId to the place holder in the template
-		$parameters = array("User" => $userId);
+		$parameters = array("userId" => $userId);
 		$statement->execute($parameters);
-		// build an array of users
-		$users = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$users = new User($row["userEmail"], $row["userName"], $row["userLoginId"], $row["userId"]);
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$user = new User($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
-			} catch(\Exception $exception) {
-				//if the row couldn't be converted, rethrow
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		return ($users);
 
+		//grab the User from the database
+		try {
+			$user = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$user = new User($row["userId"], $row["userEmail"], $row["userLoginId"], $row["userName"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($user);
 	}
 
 	/**
@@ -361,7 +351,7 @@ class User implements \JsonSerializable {
 		$statement->execute();
 
 		// build an array of users
-		$userId = new \SplFixedArray($statement->rowCount());
+		$users = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
