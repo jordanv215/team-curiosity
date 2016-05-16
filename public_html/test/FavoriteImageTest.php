@@ -186,7 +186,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 
 
 		//grab the data from mySQL and enforce that the fields match our expectations
-		$results = FavoriteImageUserId::getFavoriteImageByFavoriteImageUserId($this->getPDO(), $favoriteImage->getFavoriteImageUserId());
+		$results = FavoriteImage::getFavoriteImageByFavoriteImageUserId($this->getPDO(), $favoriteImage->getFavoriteImageUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\FavoriteImage", $results);

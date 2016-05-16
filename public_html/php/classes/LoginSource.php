@@ -238,100 +238,104 @@ class LoginSource implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getLoginSourceByLoginSourceId(\PDO $pdo, int $loginSourceId) {
-		// count the number of table rows
-		$
-
+		// sanitize input before searching
+		if($loginSourceId <= 0) {
+			throw(new \PDOException("login source id is not positive"));
+		}
 		// create query template
-		$query = "SELECT tweetId, profileId, tweetContent, tweetDate FROM tweet WHERE tweetContent LIKE :tweetContent";
+		$query = "SELECT loginSourceId, loginSourceApiKey, loginSourceProvider FROM LoginSource WHERE loginSourceId = :loginSourceId";
 		$statement = $pdo->prepare($query);
 
 		// bind the tweet content to the place holder in the template
-		$tweetContent = "%$tweetContent%";
-		$parameters = array("tweetContent" => $tweetContent);
+		$parameters = array("loginSourceId" => $loginSourceId);
 		$statement->execute($parameters);
 
-		// build an array of tweets
-		$tweets = new \SplFixedArray($statement->rowCount());
+		// grab the login source from the table
+			try {
+				$loginSource = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$loginSource = new LoginSource($row["loginSourceId"], $row["loginSourceApiKey"], $row["loginSourceProvider"]);
+				}
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+
+		}
+		return($loginSource);
+	}
+
+	/**
+	 * gets the LoginSource by loginSourceProvider
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $loginSourceProvider to search for
+	 * @return LoginSource|null LoginSource found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getLoginSourceByLoginSourceProvider(\PDO $pdo, string $loginSourceProvider) {
+		// sanitize the input before searching
+		$loginSourceProvider = trim($loginSourceProvider);
+		$loginSourceProvider = filter_var($loginSourceProvider, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($loginSourceProvider) === true) {
+			throw(new \PDOException("search entry is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT loginSourceId, loginSourceApiKey, loginSourceProvider FROM LoginSource WHERE loginSourceProvider = :loginSourceProvider";
+		$statement = $pdo->prepare($query);
+
+		// bind the data to the place holder in the template
+		$loginSourceProvider = "%$loginSourceProvider%";
+		$parameters = array("loginSourceProvider" => $loginSourceProvider);
+		$statement->execute($parameters);
+
+		// build an array of login source
+		$loginSources = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$tweet = new Tweet($row["tweetId"], $row["profileId"], $row["tweetContent"], $row["tweetDate"]);
-				$tweets[$tweets->key()] = $tweet;
-				$tweets->next();
+				$loginSource = new LoginSource($row["loginSourceId"], $row["loginSourceApiKey"], $row["loginSourceProvider"]);
+				$loginSources[$loginSources->key()] = $loginSource;
+				$loginSources->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($tweets);
+		return($loginSources);
 	}
 
 	/**
-	 * gets the Tweet by tweetId
+	 * gets all LoginSources
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $tweetId tweet id to search for
-	 * @return Tweet|null Tweet found or null if not found
+	 * @return \SplFixedArray SplFixedArray of LoginSources found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getTweetByTweetId(\PDO $pdo, int $tweetId) {
-		// sanitize the tweetId before searching
-		if($tweetId <= 0) {
-			throw(new \PDOException("tweet id is not positive"));
-		}
-
+	public static function getAllLoginSources(\PDO $pdo) {
 		// create query template
-		$query = "SELECT tweetId, profileId, tweetContent, tweetDate FROM tweet WHERE tweetId = :tweetId";
-		$statement = $pdo->prepare($query);
-
-		// bind the tweet id to the place holder in the template
-		$parameters = array("tweetId" => $tweetId);
-		$statement->execute($parameters);
-
-		// grab the tweet from mySQL
-		try {
-			$tweet = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$tweet = new Tweet($row["tweetId"], $row["profileId"], $row["tweetContent"], $row["tweetDate"]);
-			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-		return($tweet);
-	}
-
-	/**
-	 * gets all Tweets
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @return \SplFixedArray SplFixedArray of Tweets found or null if not found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
-	 **/
-	public static function getAllTweets(\PDO $pdo) {
-		// create query template
-		$query = "SELECT tweetId, profileId, tweetContent, tweetDate FROM tweet";
+		$query = "SELECT loginSourceId, loginSourceApiKey, loginSourceProvider FROM LoginSource";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
-		// build an array of tweets
-		$tweets = new \SplFixedArray($statement->rowCount());
+		// build an array of login sources
+		$loginSources = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$tweet = new Tweet($row["tweetId"], $row["profileId"], $row["tweetContent"], $row["tweetDate"]);
-				$tweets[$tweets->key()] = $tweet;
-				$tweets->next();
+				$loginSource = new LoginSource($row["loginSourceId"], $row["loginSourceApiKey"], $row["loginSourceProvider"]);
+				$loginSources[$loginSources->key()] = $loginSource;
+				$loginSources->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($tweets);
+		return ($loginSources);
 	}
 
 	/**
@@ -341,7 +345,6 @@ class LoginSource implements \JsonSerializable {
 	 **/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		$fields["tweetDate"] = intval($this->tweetDate->format("U")) * 1000;
 		return($fields);
 	}
 }
