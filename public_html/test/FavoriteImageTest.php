@@ -173,10 +173,11 @@ class FavoriteImageTest extends TeamCuriosityTest {
 	 * Test grabbing a favoriteImage by favoriteImageUserId
 	 *
 	 **/
-	public function testGetInvalidFavoriteImageByFavoriteImageUserId() {
-		//grab a favoriteImageUserId that exceeds max allowed amount
-		$favoriteImage = FavoriteImage::getFavoriteImageByFavoriteImageUserId($this->getPDO());
-		return($favoriteImage);
+	public function testGetFavoriteImageByFavoriteImageUserId() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("FavoriteImage");
+
+
 
 		//create a favorite image and insert into mySQL
 		$favoriteImage = new FavoriteImage($this->image->getImageId(), $this->user->getUserId(),$this->VALID_FAVORITEIMAGEDATETIME);
