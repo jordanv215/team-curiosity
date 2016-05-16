@@ -169,7 +169,7 @@ class FavoriteImage implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo) {
 		//enforce the favoriteImageImageId is null (i.e., don't insert an image id that already exists)
-		if($this->favoriteImageImageId && $this->favoriteImageUserId !== null) {
+		if($this->favoriteImageImageId && $this->favoriteImageUserId !== null || $this->favoriteImageUserId !== null) {
 			throw(new \PDOException("not a new favorite image"));
 		}
 
@@ -196,7 +196,7 @@ class FavoriteImage implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo) {
 		//enforce the composite key is not null (i.e., don't delete a favorite image that hasn't been inserted)
-		if($this->favoriteImageImageId && $this->favoriteImageUserId === null) {
+		if($this->favoriteImageImageId && $this->favoriteImageUserId === null || $this->favoriteImageUserId === null ) {
 			throw(new \PDOException("unable to delete a favorite image that does not exist"));
 		}
 
