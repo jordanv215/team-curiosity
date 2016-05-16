@@ -128,7 +128,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 	/**
 	 * test grabbing a FavoriteNewsArticle that does not exist by FavoriteNewsArticle User Id
 	 **/
-	public function testGetInvalidFavoriteNewsArticleByFavoriteNEewsArtilceUserId() {
+	public function testGetInvalidFavoriteNewsArticleByFavoriteNewsArtilceUserId() {
 		// grab a favoriteNewsArticle User id that exceeds the maximum allowable favoriteNewsArticle User id
 		$favoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleUserId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
 		$this->assertNull($favoriteNewsArticle);
