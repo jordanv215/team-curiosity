@@ -4,10 +4,10 @@ namespace Edu\Cnm\TeamCuriosity\Test;
 use Edu\Cnm\TeamCuriosity\{LoginSource};
 
 // grab the test parameters
-require_once("TeamCuriosityTest.php");
+require_once("./TeamCuriosityTest.php");
 
 // grab the class to be tested
-require_once(dirname(_DIR_) . "/php/classes/LoginSource.php");
+require_once(dirname(__DIR__) . "/php/classes/LoginSource.php");
 
 /**
  * PHPUnit test for the LoginSource class

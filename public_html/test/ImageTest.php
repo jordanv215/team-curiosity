@@ -4,7 +4,7 @@ namespace Edu\Cnm\TeamCuriosity\Test;
 use Edu\Cnm\TeamCuriosity\{Image};
 
 // grab the project test parameters
-require_once(dirname(__DIR__) . "/PHP/classes/autoload.php");
+require_once(dirname(__DIR__) . "/php/classes/autoload.php");
 
 /**
  * Full PHPUnit test for the Image class
@@ -62,9 +62,9 @@ class ImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test inserting a image that already exists
+	 * test inserting an image that already exists
 	 *
-	 * @expectedException PDOException
+	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidImage() {
 		// create a image with a non null image id and watch it fail
@@ -73,30 +73,30 @@ class ImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test creating a Image and then deleting it
+	 * test creating an Image and then deleting it
 	 **/
 	public function testDeleteValidImage() {
-		// count the number of row sna dsave it for later
-		$numrows = $this->getConnection()->getRowCount("Image");
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("Image");
 
 		//create a new Image and insert into mySQL
 		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
 		$image->insert($this->getPDO());
 
 		// delete the Image from mySQL
-		$this->assertEquals($numrows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$image->delete($this->getPDO());
 
 		// grab the data from mySQL and enforce the Image does not exist
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertNull($pdoImage);
-		$this->assertEquals($numrows, $this->getConnection()->getRowCount("Image"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("Image"));
 	}
 
 	/**
-	 * test deleting a Image that does not exist
+	 * test deleting an Image that does not exist
 	 *
-	 * @expectedException PDOException
+	 * @expectedException \PDOException
 	**/
 	public function testDeleteInvalidImage() {
 		// create a Image and try to delete it without actually inserting it
@@ -105,10 +105,10 @@ class ImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test grabbing a Image that does not exist
+	 * test grabbing an Image that does not exist
 	 **/
 	public function testGetInvalidImageByImageId() {
-		// grab a image id that exceeds the miximum allowable image id
+		// grab an image id that exceeds the maximum allowable image id
 		$image = Image::getImageByImageId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
 		$this->assertNull($image);
 	}
@@ -140,17 +140,9 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
 	}
 
-	/**
-	 * test grabbing a Image by imageCamera that does not exist
-	 **/
-	public function testGetInvalidImageByImageCamera() {
-		// grab a Image by image camera did not take the image of
-		$image = Image::getImageByImageCamera($this->getPDO(), "This image was not taken by camera");
-		$this->assertCount(0, $image);
-	}
 
 	/**
-	 * test grabbing a Image by image description
+	 * test grabbing an Image by image description
 	 **/
 	public function testGetValidImageByImageDescription() {
 		// count the number of rows and save it for later
@@ -177,16 +169,7 @@ class ImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test grabbing a Image by imageDescription that does not exist
-	 **/
-	public function testGetInvalidImageByImageDescription() {
-		// grab a Image by image camera did not take the image of
-		$image = Image::getImageByImageDescription($this->getPDO(), "This image was not taken by camera");
-		$this->assertCount(0, $image);
-	}
-
-	/**
-	 * test grabbing a Image by image earth date
+	 * test grabbing an Image by image earth date
 	 **/
 	public function testGetValidImageByImageEarthDate() {
 		// count the number of rows and save it for later
@@ -212,17 +195,10 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
 	}
 
-	/**
-	 * test grabbing a Image by imageEarthDate that does not exist
-	 **/
-	public function testGetInvalidImageByImageEarthDate() {
-		// grab a Image by non existing image earth date
-		$image = Image::getImageByImageEarthDate($this->getPDO(), "There is no image in this date");
-		$this->assertCount(0, $image);
-	}
+
 
 	/**
-	 * test grabbing a Image by image sol
+	 * test grabbing an Image by image sol
 	 **/
 	public function testGetValidImageByImageSol() {
 		// count the number of rows and save it for later
