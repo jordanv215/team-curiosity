@@ -153,7 +153,20 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		//create a favorite image and insert into table
 		$favoriteImage = New FavoriteImage($this->image->getImageId, $this->user->getUserId,$this->VALID_FAVORITEIMAGEDATETIME());
 		$favoriteImage->insert($this->getPDO());
-		return($favoriteImage);
+
+
+		//grab the data from mySQL and enforce that the fields match our expectations
+		$results = FavoriteImage::getFavoriteImageByFavoriteImageImageId($this->getPDO(), $favoriteImage->getFavoriteImageImgaeId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\FavoriteImage", $results);
+
+
+		// grab the result from the array and validate it
+		$pdoFavoriteImage = $results[0];
+		$this->assertEquals($pdoFavoriteImage->getFavoriteImageUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoFavoriteImage->geFavoriteImageImageId(), $this->image->getImageId);
+		$this->assertEquals($pdoFavoriteImage->getFavoriteImageDateTime(), $this->VALID_FAVORITEIMAGEDATETIME);
 	}
 
 	/**
