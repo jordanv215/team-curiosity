@@ -14,21 +14,67 @@ class Image implements \JsonSerializable {
 	use ValidateDate;
 
 	/**
+	 * primary key for image
+	 * @var int $imageId
+	 **/
+	private $imageId;
+	/**
+	 * camera which took the image
+	 * @var string $imageCamera
+	 **/
+	private $imageCamera;
+	/**
+	 * description of image; only included if it is a featured image
+	 * @var string|null $imageDescription
+	 **/
+	private $imageDescription;
+	/**
+	 * Earth date on which the image was captured
+	 * @var \DateTime $imageEarthDate
+	 **/
+	private $imageEarthDate;
+	/**
+	 * Local filepath of the image file
+	 * @var string $imagePath
+	 **/
+	private $imagePath;
+	/**
+	 * Martian date on which the image was captured; represents number of days since the rover landed on Mars
+	 * @var int $imageSol
+	 **/
+	private $imageSol;
+	/**
+	 * Title of image; may be the same as the file name
+	 * @var string $imageTitle
+	 **/
+	private $imageTitle;
+	/**
+	 * MIME type of image file
+	 * @var string $imageType
+	 **/
+	private $imageType;
+	/**
+	 * URL from which the image was taken
+	 * @var string $imageUrl
+	 **/
+	private $imageUrl;
+
+	/**
 	 * constructor for this image
 	 *
-	 * @param int | null $newImageId id of this image or null if a new image
+	 * @param int|null $newImageId id of this image or null if a new image
 	 * @param string $newImageCamera specific camera that took this image
-	 * @param string $newImageDescription string containing description of image
-	 * @param \DateTime $newImageEarthDate date and time of image was taken
-	 * @param string $newImagePath uniform resource identifier(uri) of image
-	 * @param int $newImageSol martian solar day of image was taken
+	 * @param string|null $newImageDescription string containing description of image
+	 * @param \DateTime $newImageEarthDate date and time image was taken
+	 * @param string $newImagePath local uniform resource identifier(uri) of image
+	 * @param int $newImageSol martian solar day that image was taken (number of days since rover landed)
 	 * @param string $newImageTitle title of image
-	 * @param string $newImageType image file format of image
-	 * @param string $newImageUrl uniform resource locator(url) of image
+	 * @param string $newImageType MIME file format of image
+	 * @param string $newImageUrl uniform resource locator(url) of image source
 	 * @throws \InvalidArgumentException if data types are not valid
-	 * @throws \RangeException if data values are out of bounds (e.g. strings too long, negarive intergers)
+	 * @throws \RangeException if data values are out of bounds (e.g. strings too long, negative intergers)
 	 * @throws \TypeError if data types violate type hints
-	 * @throw  \Exception if some other exception occurs
+	 * @throws  \Exception if some other exception occurs
 	 **/
 	public function __construct(int $newImageId = null, string $newImageCamera, string $newImageDescription, $newImageEarthDate, string $newImagePath, int $newImageSol, string $newImageTitle, string $newImageType, string $newImageUrl) {
 		try {
@@ -66,7 +112,7 @@ class Image implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator moethod for image id
+	 * mutator method for image id
 	 *
 	 * @param int | null $newImageId new value of image id
 	 * @throws \RangeException if $newImageId is not positive
