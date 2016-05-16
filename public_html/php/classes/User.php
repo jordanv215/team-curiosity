@@ -200,7 +200,7 @@ class User implements \JsonSerializable {
 	 * inserts this user into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 */
+	 **/
 	public function insert(\PDO $pdo) {
 		//enforce the user login id is null (dont insert a user id that already exists)
 		if($this->userId !== null) {
@@ -226,7 +226,7 @@ class User implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 */
+	 **/
 	public function delete(\PDO $pdo) {
 		//enforce the userId is not null (don't delete a user that hasn't been inserted)
 		if($this->userId === null) {
@@ -252,7 +252,7 @@ class User implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 *
 	 *
-	 */
+	 **/
 	public function update(\PDO $pdo) {
 		// enforce the userId is not null (i.e., don't update a user that hasn't been inserted)
 		if($this->userId === null) {
@@ -275,13 +275,13 @@ class User implements \JsonSerializable {
 	 * @param int $userLoginId
 	 * @return \SplFixedArray SplFixedArray of id found
 	 * @internal param int $userId user id int to search for
-	 */
+	 **/
 
 	public
-	static function getUserByUserId(\PDO $pdo, int $userId, string $userEmail, string $userName, int $userLoginId) {
+	static function getUserByUserId(\PDO $pdo, int $userId) {
 		//sanitize the description before searching
 		$userId = trim($userId);
-		$serId = filter_var($userId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$userId = filter_var($userId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if
 		(empty($userId) === true
 		) {
@@ -297,15 +297,14 @@ class User implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the userId to the place holder in the template
-		$userId = "%$userId%";
 		$parameters = array("User" => $userId);
 		$statement->execute($parameters);
 		// build an array of users
-		$userId = new \SplFixedArray($statement->rowCount());
+		$users = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$userId = new User($row["userEmail"], $row["userName"], $row["userLoginId"], $row["userId"]);
+				$users = new User($row["userEmail"], $row["userName"], $row["userLoginId"], $row["userId"]);
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
@@ -313,13 +312,13 @@ class User implements \JsonSerializable {
 		}
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$User = new User($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
+				$user = new User($row["userId"], $row["userLoginId"], $row["userName"], $row["userEmail"]);
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($User);
+		return ($users);
 
 	}
 
@@ -366,13 +365,13 @@ class User implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$User = new User($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
+				$users = new User($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($User);
+		return ($users);
 	}
 
 }
