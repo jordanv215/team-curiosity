@@ -4,7 +4,11 @@ namespace Edu\Cnm\TeamCuriosity;
 require_once("Autoload.php");
 
 /**
+ * Image class
  *
+ * This is the PHP class for the Image table
+ *
+ * @author Ellen Liu
  **/
 class Image implements \JsonSerializable {
 	use ValidateDate;
@@ -406,7 +410,7 @@ class Image implements \JsonSerializable {
 
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->imageDarthDate->format("Y-m-d H:i:s");
-		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEartDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
+		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
 		$statement->execute($parameters);
 	}
 
@@ -416,7 +420,7 @@ class Image implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId Image id to search for
 	 * @return Image | null Image found or null if not found
-	 * @thorws \PDOException when mySQL related errors occur
+	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getImageByImageId(\PDO $pdo, int $imageId) {
