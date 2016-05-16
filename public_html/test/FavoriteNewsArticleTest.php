@@ -14,21 +14,23 @@ require_once("../php/classes/Autoload.php");
  *
  * This is a complete PHPUnit test of the FavoriteNewsArticle class. It is complete because *ALL* mySQL/PDO enabled methods
  * are tested for both invalid and valid inputs.
+ * @author Ellen Liu
  **/
 class FavoriteNewsArticleTest extends TeamCuriosityTest {
 	/**
 	 * timestamp of the FavoriteNewsArticle; this starts as null and is assigned later
-	 * @var \DateTime $VALID_FAVORITENEWSARTICLEDATETIME
+	 * @var \DateTime|null $VALID_FAVORITENEWSARTICLEDATETIME
 	 **/
 	protected $VALID_FAVORITENEWSARTICLEDATETIME = null;
 	/**
-	 * user that favorites the FavoriteNewsArticle; this is for foreign key relations
-	 * @var User $user
-	 *
 	 * NewsArticle that is favorited; this is for foreign key relations
 	 * @var NewsArticle $newsArticle
 	 **/
 	protected $user = null;
+	/**
+	 * user that favorites the FavoriteNewsArticle; this is for foreign key relations
+	 * @var $user User
+	 **/
 	protected $newsArticle = null;
 
 	/**
