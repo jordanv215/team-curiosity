@@ -6,8 +6,8 @@ require_once("Autoload.php");
 /** Favorite News Article
  *
  * This class provides functionality to the FavoriteNewsArticle table, which records when a user favorites an article, in order to display all of their favorite items in one place and determine the most popular items
- * @author Team Curiosity
- * */
+ * @author  Ellen Liu
+ **/
 class FavoriteNewsArticle implements \JsonSerializable {
 	use ValidateDate;
 	/**
@@ -132,7 +132,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 
 		// store the favoriteNewsArticleDateTime date
 		try {
-			$newFavoriteNewsArticleDateTime = $this->ValidateDate($newFavoriteNewsArticleDateTime);
+			$newFavoriteNewsArticleDateTime = $this->validateDate($newFavoriteNewsArticleDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
