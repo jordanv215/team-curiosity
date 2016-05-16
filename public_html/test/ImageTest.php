@@ -96,9 +96,52 @@ class ImageTest extends TeamCuriosityTest {
 	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidImage() {
-		// create a image with a non null image id and watch it fail
+		// create an image with a non null image id and watch it fail
 		$image = new Image(TeamCuriosityTest::INVALID_KEY, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
 		$image->insert($this->getPDO());
+	}
+
+	/**
+	 * test editing an image and updating it in the database
+	 */
+	public function testUpdateValidImage() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("Image");
+
+		// create a new Image and insert it into mySQL
+		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
+		$image->insert($this->getPDO());
+
+		// edit an image field and update the image in mySQL
+		$image->setImageTitle($this->VALID_IMAGETITLE2);
+		$image->update($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
+		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+		$this->assertEquals($pdoImage->getImageEarthDate(), $this->VALID_IMAGEEARTHDATE);
+		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImageSol(), $this->VALID_IMAGESOL);
+		$this->assertEquals($pdoImage->getImageTitle(), $this->VALID_IMAGETITLE2);
+		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
+		$this->assertEquals($pdoImage->getImageUrl(), $this->VALID_IMAGEURL);
+	}
+
+	/**
+	 * test editing an image with invalid data and attempt to update it in the database
+	 *
+	 * @expectedException \PDOException
+	 **/
+	public function testUpdateInvalidImage() {
+		// create a new Image and insert it into mySQL
+		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
+		$image->insert($this->getPDO());
+
+		// edit an image field with invalid data and attempt to update the image in mySQL
+		$image->setImageTitle($this->INVALID_IMAGETITLE);
+		$image->update($this->getPDO());
 	}
 
 	/**
@@ -331,7 +374,7 @@ class ImageTest extends TeamCuriosityTest {
 	 * test grabbing all Images
 	 **/
 	public function testGetAllImages() {
-		// count the number of tow s and save it for later
+		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("Image");
 
 		// create a new Image and insert into mySQL
@@ -339,7 +382,7 @@ class ImageTest extends TeamCuriosityTest {
 		$image->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Image::getAllImages($this->getPDO();
+		$results = Image::getAllImages($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
