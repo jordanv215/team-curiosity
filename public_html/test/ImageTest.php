@@ -12,33 +12,49 @@ require_once("../php/classes/Autoload.php");
  * This is a complete PHPUnit test of the Image class. It is complete because *ALL* mySOL/PDO enabled methods are tested for both invalid and valid inputs
  * 
  * @see Image
+ * @author Ellen Liu
  **/
 class ImageTest extends TeamCuriosityTest {
 	/**
 	 * Camera of where image was taken
 	 * @var string $VALID_IMAGECAMERA
 	 **/
-	protected $VALID_IMAGECAMERA = "PHPUnit test passing";
+	protected $VALID_IMAGECAMERA = "Test Camera";
 	/**
 	 * description of the Image
 	 * @var string $VALID_IMAGEDESCRIPTION
 	 **/
-	protected $VALID_IMAGEDESCRIPTION = "PHPUnit test passing";
+	protected $VALID_IMAGEDESCRIPTION = "This is a test";
 	/**
 	 * timestamp of the Image; this starts as null and is assigned later
 	 * @var \DateTime|null $VALID_IMAGEEARTHDATE
 	 **/
 	protected $VALID_IMAGEEARTHDATE = null;
 	/**
+	 * local file path of image
+	 * @var $VALID_IMAGEPATH
+	 **/
+	protected $VALID_IMAGEPATH;
+	/**
 	 * martian date for image
-	 * @var  int $VALID_IMAGESOL
-	 */
-	protected $VALID_IMAGESOL = "PHPUnit test passing";
+	 * @var int $VALID_IMAGESOL
+	 **/
+	protected $VALID_IMAGESOL = "1234";
 	/**
 	 * title of image
 	 * @var string $VALID_IMAGETITLE
-	 */
-	protected $VALID_IMAGETITLE = "PHPUnit test is passing";
+	 **/
+	protected $VALID_IMAGETITLE = "Test Title";
+	/**
+	 * MIME type of image
+	 * @var string $VALID_IMAGETYPE
+	 **/
+	protected $VALID_IMAGETYPE;
+	/**
+	 * source url of image
+	 * @var $VALID_IMAGEURL
+	 **/
+	protected $VALID_IMAGEURL;
 
 	/**
 	 * test inserting a valid Image and verify that the actual mySQL data matches
@@ -48,17 +64,20 @@ class ImageTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("Image");
 
 		//create a new image and insert into mySQL
-		$image = new Image(null, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
 		$image->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
-		$this->assertEquals($pdoImage->getImageByImageCamera(), $this->VALID_IMAGECAMERA);
-		$this->assertEquals($pdoImage->getImageByImageDescription(), $this->VALID_IMAGEDESCRIPTION);
-		$this->assertEquals($pdoImage->getImageByEarthDate(), $this->VALID_IMAGEEARTHDATE);
-		$this->assertEquals($pdoImage->getImageByImageSol(), $this->VALID_IMAGESOL);
-		$this->assertEquals($pdoImage->getImageByImageTitle(), $this->VALID_IMAGETITLE);
+		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
+		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+		$this->assertEquals($pdoImage->getImageEarthDate(), $this->VALID_IMAGEEARTHDATE);
+		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+		$this->assertEquals($pdoImage->getImageSol(), $this->VALID_IMAGESOL);
+		$this->assertEquals($pdoImage->getImageTitle(), $this->VALID_IMAGETITLE);
+		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
+		$this->assertEquals($pdoImage->getImageUrl(), $this->VALID_IMAGEURL);
 	}
 
 	/**
