@@ -34,7 +34,7 @@ class Image implements \JsonSerializable {
 	 **/
 	private $imageEarthDate;
 	/**
-	 * Local filepath of the image file
+	 * Local file path of the image file
 	 * @var string $imagePath
 	 **/
 	private $imagePath;
@@ -105,7 +105,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * accessor method for image id
 	 *
-	 * @return int | null value of image id
+	 * @return int|null value of image id
 	 **/
 	public function getImageId() {
 		return ($this->imageId);
@@ -114,7 +114,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * mutator method for image id
 	 *
-	 * @param int | null $newImageId new value of image id
+	 * @param int|null $newImageId new value of image id
 	 * @throws \RangeException if $newImageId is not positive
 	 * @throws \TypeError if $newImageId is not an integer
 	 **/
@@ -136,7 +136,7 @@ class Image implements \JsonSerializable {
 
 	/** accessor method for image camera
 	 *
-	 * @return string value of image camera
+	 * @return string $imageCamera value of image camera
 	 **/
 	public function getImageCamera() {
 		return ($this->imageCamera);
@@ -148,10 +148,10 @@ class Image implements \JsonSerializable {
 	 * @throws \RangeException is $newImageCamera is > 64 characters
 	 * @throws \TypeError is $newImageCamera is not a string
 	 **/
-	public function setImageCamera() {
+	public function setImageCamera(string $newImageCamera) {
 		// verify the image camera is secure
 		$newImageCamera = trim($newImageCamera);
-		$newImageCamera = filter_var($newImageCamera, FILTER_SANITIZE_STRING);
+		$newImageCamera = filter_var($newImageCamera, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newImageCamera) === true) {
 			throw(new \InvalidArgumentException("image camera is empty or insecure"));
 		}
@@ -269,9 +269,9 @@ class Image implements \JsonSerializable {
 	/**
 	 * accessor method for image sol
 	 *
-	 * @return martian solar day of image
+	 * @return int $imageSol solar day of image
 	 */
-	public function getimageSol() {
+	public function getImageSol() {
 		return ($this->imageSol);
 	}
 
