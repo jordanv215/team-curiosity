@@ -7,7 +7,7 @@ require_once("Autoload.php");
  * News Article
  * 
  * This class accesses and manipulates the News Article table to provide a feed of scientific news articles related to the Curiosity Mars rover
- * @author Anthony Williams <ailliams144@bootcamp-coders.cnm.edu>
+ * @author Anthony Williams <awilliams144@bcnm.edu>
  * @version 1.0.0
  **/
 class NewsArticle implements \JsonSerializable {
@@ -36,7 +36,7 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * constructor for this NewsArticle
 	 * @param int|null $newNewsArticleId id of this NewsArticle or Null if a new NewsArticle
-	 * @param \DATETIME|string|null $newNewsArticleDate date and time NewsArticle was sent or null if set to current date and time
+	 * @param \DATETIME|string|null $newNewsArticleDate Date and Time NewsArticle was sent or null if set to current Date and Time
 	 * @param string $newNewsArticleSynopsis string containing a brief synopsis
 	 * @param string $newNewsArticleUrl string containing the location to newsArticleUrl
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -112,8 +112,7 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newNewsArticleDate is not a valid object or string
 	 * @throws \RangeException if $newNewsArticleDate is a date that does not exist
 	 **/
-	public
-	function setNewsArticleDate($newNewsArticleDate = null) {
+	public function setNewsArticleDate($newNewsArticleDate = null) {
 		//base case: if the date is null, use the current date and time
 		if($newNewsArticleDate === null) {
 			$this->newsArticleDate = new \DateTime();
@@ -135,8 +134,7 @@ class NewsArticle implements \JsonSerializable {
 	 *
 	 * @return string value of newsArticleSynopsis
 	 **/
-	public
-	function getNewsArticleSynopsis() {
+	public function getNewsArticleSynopsis() {
 		return ($this->newsArticleSynopsis);
 	}
 
@@ -235,11 +233,11 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 *
-	 */
+	 **/
 	public function delete(\PDO $pdo) {
 		// enforce the newsArticleId is not null (i.e., don't delete a newsArticle that hasn't been inserted)
 		if($this->newsArticleId === null) {
-			throw(new \PDOException("unable to delete a NewsArticle that does not exist"));
+			throw(new \PDOException("unable to delete a newsArticle that does not exist"));
 		}
 		//create query template
 		$query = "DELETE FROM NewsArticle WHERE newsArticleId = :newsArticleId";
@@ -257,7 +255,7 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 *
 	 *
-	 */
+	 **/
 	public function update(\PDO $pdo) {
 		// enforce the newsArticleId is not null (i.e., don't update a newsArticleId hasn't been inserted)
 		if($this->newsArticleId === null) {
@@ -281,13 +279,12 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getNewsArticleSynopsisByNewsArticleSynopsis(\PDO $pdo, string $newsArticleSynopsis) {
+	public static function getNewsArticleByNewsArticleSynopsis(\PDO $pdo, string $newsArticleSynopsis) {
 		//sanitize the description before searching
 		$newsArticleSynopsis = trim($newsArticleSynopsis);
 		$newsArticleSynopsis = filter_var($newsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if
-		(empty($newsArticleSynopsis) === true
-		) {
+		(empty($newsArticleSynopsis) === true) {
 			throw(new \PDOException("newsArticleSynopsis is invalid"));
 		}
 				// create query template
@@ -299,27 +296,27 @@ class NewsArticle implements \JsonSerializable {
 				$parameters = array("newsArticleSynopsis" => $newsArticleSynopsis);
 				$statement->execute($parameters);
 				// build an array of NewsArticles
-				$NewsArticle = new \SplFixedArray($statement->rowCount());
+				$newsArticles = new \SplFixedArray($statement->rowCount());
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				while(($row = $statement->fetch()) !== false) {
 					try {
-						$NewsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
-						$NewsArticle[$NewsArticle->key()] = $NewsArticle;
-						$NewsArticle->next();
+						$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+						$newsArticles[$newsArticles->key()] = $newsArticle;
+						$newsArticles->next();
 					} catch(\Exception $exception) {
 						// if the row couldn't be converted, rethrow it
 						throw(new \PDOException($exception->getMessage(), 0, $exception));
 					}
 				}
 
-				return ($NewsArticle);
+				return ($newsArticles);
 
 			}
 			/**
-			 * gets the NewsArticle by newsArticleId
+			 * gets the newsArticle by newsArticleId
 			 *
 			 * @param \PDO $pdo PDO connection object
-			 * @param int $newsArticleId tweet id to search for
+			 * @param int $newsArticleId newsArticleId to search for
 			 * @return NewsArticle|null newsArticle found or null if not found
 			 * @throws \PDOException when mySQL related errors occur
 			 * @throws \TypeError when variables are not the correct data type
@@ -341,17 +338,17 @@ class NewsArticle implements \JsonSerializable {
 
 				// grab the NewsArticle from mySQL
 				try {
-					$NewsArticle = null;
+					$newsArticle = null;
 					$statement->setFetchMode(\PDO::FETCH_ASSOC);
 					$row = $statement->fetch();
 					if($row !== false) {
-						$NewsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+						$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
 					}
 				} catch(\Exception $exception) {
 					// if the row couldn't be converted, rethrow it
 					throw(new \PDOException($exception->getMessage(), 0, $exception));
 				}
-				return ($NewsArticle);
+				return ($newsArticle);
 			}
 
 			/**
@@ -369,19 +366,19 @@ class NewsArticle implements \JsonSerializable {
 				$statement->execute();
 
 				// build an array of NewsArticles
-				$NewsArticles = new \SplFixedArray($statement->rowCount());
+				$newsArticles = new \SplFixedArray($statement->rowCount());
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				while(($row = $statement->fetch()) !== false) {
 					try {
-						$NewsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
-						$NewsArticles[$NewsArticles->key()] = $NewsArticle;
-						$NewsArticles->next();
+						$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+						$newsArticles[$newsArticles->key()] = $newsArticle;
+						$newsArticles->next();
 					} catch(\Exception $exception) {
 						// if the row couldn't be converted, rethrow it
 						throw(new \PDOException($exception->getMessage(), 0, $exception));
 					}
 				}
-				return ($NewsArticles);
+				return ($newsArticles);
 			}
 
 			/**
