@@ -4,7 +4,7 @@ namespace Edu\Cnm\TeamCuriosity\Test;
 use Edu\Cnm\TeamCuriosity\{Image};
 
 // grab the project test parameters
-require_once(dirname(__DIR__) . "/php/classes/autoload.php");
+require_once(dirname(__DIR__) . "./php/classes/Autoload.php");
 
 /**
  * Full PHPUnit test for the Image class
