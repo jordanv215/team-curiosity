@@ -46,6 +46,16 @@ class ImageTest extends TeamCuriosityTest {
 	 **/
 	protected $VALID_IMAGETITLE = "Test Title";
 	/**
+	 * updated title of image
+	 * @var string $VALID_IMAGETITLE2
+	 **/
+	protected $VALID_IMAGETITLE2;
+	/**
+	 * invalid image title
+	 * @var string $INVALID_IMAGETITLE
+	 **/
+	protected $INVALID_IMAGETITLE = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
+	/**
 	 * MIME type of image
 	 * @var string $VALID_IMAGETYPE
 	 **/
@@ -87,7 +97,7 @@ class ImageTest extends TeamCuriosityTest {
 	 **/
 	public function testInsertInvalidImage() {
 		// create a image with a non null image id and watch it fail
-		$image = new Image(TeamCuriosityTest::INVALID_KEY, $this->image->getImageId(), $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE);
+		$image = new Image(TeamCuriosityTest::INVALID_KEY, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
 		$image->insert($this->getPDO());
 	}
 
