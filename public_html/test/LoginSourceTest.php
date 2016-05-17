@@ -88,7 +88,6 @@ class LoginSourceTest extends TeamCuriosityTest {
 	/**
 	 * test creating a login source and then deleting it
 	 *
-	 * @expectedException \PDOException
 	 **/
 	public function testDeleteValidLoginSource() {
 		// count number of rows
@@ -166,7 +165,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 
 		// grab the login source from the array and validate it
 		$pdoLoginSource = $results[0];
-		$this->assertEquals($pdoLoginSource->getLoginSourceUserId(), $loginSource->getLoginSourceId());
+		$this->assertEquals($pdoLoginSource->getLoginSourceId(), $loginSource->getLoginSourceId());
 		$this->assertEquals($pdoLoginSource->getLoginSourceApiKey(), $this->VALID_LOGIN_SOURCE_API_KEY);
 		$this->assertEquals($pdoLoginSource->getLoginSourceProvider(), $this->VALID_LOGIN_SOURCE_PROVIDER);
 	}
@@ -192,7 +191,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$loginSource->insert($this->getPDO());
 
 		// grab data from table and enforce that fields match expectations
-		$results = LoginSource::getAllLoginSource($this->getPDO());
+		$results = LoginSource::getAllLoginSources($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\LoginSource", $results);
