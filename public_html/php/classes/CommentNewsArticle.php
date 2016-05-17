@@ -332,7 +332,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], $row["commentNewsArticleDateTime"], $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
+				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], \DateTime::createFromFormat("Y-m-dH:i:s", $row["commentNewsArticleDateTime"]), $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
 				$commentNewsArticles[$commentNewsArticles->key()] = $commentNewsArticle;
 				$commentNewsArticles->next();
 			} catch(\Exception $exception) {
@@ -374,7 +374,7 @@ class CommentNewsArticle implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], $row["commentNewsArticleDateTime"], $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
+				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentNewsArticleDateTime"]), $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -402,7 +402,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				 $commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], $row["commentNewsArticleDateTime"], $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
+				 $commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentNewsArticleDateTime"]), $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
 				$commentNewsArticles[$commentNewsArticles->key()] = $commentNewsArticle;
 				$commentNewsArticles->next();
 			} catch(\Exception $exception) {
