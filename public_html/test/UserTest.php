@@ -63,7 +63,7 @@ class UserTest extends TeamCuriosityTest {
 		$user->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields to match our expectations
-		$pdoUser = User::getUserByUserId($this->getPDO(), $this->$user->getUserId());
+		$pdoUser = User::getUserByUserId($this->getPDO(), $user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
 		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
@@ -86,10 +86,10 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new user and insert to into mySQL
-		$user = new User(null, $this->VALID_EMAIL, $this->loginSource);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
-		// edit the Tweet and update it in mySQL
+		// edit the User and update it in mySQL
 		$user->setUserEmail($this->VALID_EMAIL2);
 		$user->update($this->getPDO());
 
@@ -110,7 +110,7 @@ class UserTest extends TeamCuriosityTest {
 **/
 	public function testUpdateInvalidUser() {
 		//create a user with a non null user id to watch it fail
-		$user = new User(null, $this->user->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->update($this->getPDO());
 
 }
@@ -122,7 +122,7 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		//create a new User and insert into mySQL
-		$user = new User(null, $this->user->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		//delete this User from mySQL
@@ -132,50 +132,42 @@ class UserTest extends TeamCuriosityTest {
 		//grab the data from mySQL and enforce the User does not exist
 		$pdoUser = User::getUserByUserId($this->getPDO(), $user->getUserId());
 		$this->assertNull($pdoUser);
-		$user->assertEquals($numRows, $this->user->getConnection()->getRowCount("User"));
+		$user->assertEquals($numRows, $user->getConnection()->getRowCount("User"));
 
 	}
 
 	//test grabbing a User that does not exist
 	public function testGetInvalidUserByUserId() {
 		//grab a profile id that exceeds the maximum allowable profile id
-		$user = User::getUserByUserId($this->getPDO(), UserTest::INVALID_KEY);
+		$user = User::getUserByUserId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
 		$this->	assertNull($user);
 
 	}
 
 	//test grabbing a User by Email
-	public function testGetInvalidUserByEmail($user) {
+	public function testGetInvalidUserByEmail() {
 		//count number of rows
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new User and insert to into mySQL
-		$user = new User(null, $this->userEmail->getUserEmailId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = User::getUserByUserId($this->getPDO(), $this->user->getUserEmail());
+		$results = User::getUserByUserId($this->getPDO(), $user->getUserEmail());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test\\UserTest", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\User", $results);
 
 		// grab the result from the array and validate it
 		$pdoUser = $results[0];
-		$this->assertEquals($pdoUser->getUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoUser->getUserId(), $user->getUserId());
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
-		$this->assertEquals($pdoUser->getLoginSource(), $this->VALID_LOGINSOURCE);
+		$this->assertEquals($pdoUser->getLoginSource(), $this->loginSource);
+		$this->assertEquals($pdoUser->getUSerName(),$this->VALID_USERNAME);
 
 	}
 
-	/**
-	*test grabbing a User by content that does not exist
-
-	public function testGetInvalidUserByUserId() {
-		// grab a user by searching for content that does not exist
-		$user = User::getUserByUserId($this->getPDO(), "User not found");
-		$this->assertCount(0, $user);
-	}
-	**/
 
 	//test grabbing all users
 	public function testGetAllValidUsers() {
@@ -183,7 +175,7 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new User and insert to into mySQL
-		$user = new User(null, $this->user->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
