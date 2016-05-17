@@ -144,17 +144,17 @@ class UserTest extends TeamCuriosityTest {
 
 	}
 
-	//test grabbing a User by Email
-	public function testGetInvalidUserByEmail() {
+	//test grabbing a User by Id
+	public function testGetValidUserById() {
 		//count number of rows
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new User and insert to into mySQL
-		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = User::getUserByUserId($this->getPDO(), $user->getUserEmail());
+		$results = User::getUserByUserId($this->getPDO(), $user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\User", $results);
@@ -163,8 +163,8 @@ class UserTest extends TeamCuriosityTest {
 		$pdoUser = $results[0];
 		$this->assertEquals($pdoUser->getUserId(), $user->getUserId());
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
-		$this->assertEquals($pdoUser->getLoginSource(), $this->loginSource);
-		$this->assertEquals($pdoUser->getUSerName(),$this->VALID_USERNAME);
+		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource);
+		$this->assertEquals($pdoUser->getUserName(),$this->VALID_USERNAME);
 
 	}
 
@@ -175,20 +175,21 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new User and insert to into mySQL
-		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = User::getAllUsers($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Test\\UserTest", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\User", $results);
 
 		// grab the result from the array and validate it
 		$pdoUser = $results[0];
-		$this->assertEquals($pdoUser->getUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoUser->getUserId(), $user->getUserId());
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
-		$this->assertEquals($pdoUser->getLoginSource(), $this->VALID_LOGINSOURCE);
+		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource);
+		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 	}
 
 }
