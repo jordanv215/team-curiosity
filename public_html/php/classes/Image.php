@@ -682,7 +682,7 @@ class Image implements \JsonSerializable {
 		 *
 		 * @param \PDO $pdo
 		 * @return \SplFixedArray SplFixedArray of Images found
-		 * @thorws \PDOException when mySQL related errors occur
+		 * @throws \PDOException when mySQL related errors occur
 		 * @throws \TypeError when variables are not the correct data type
 		 **/
 

@@ -280,8 +280,7 @@ class User {
 			throw(new \RangeException("UserId is not positive"));
 		}
 		if
-		(empty($userId) === true
-		) {
+		(empty($userId) === true) {
 			throw(new \PDOException("User is invalid"));
 		}
 		//create query template
