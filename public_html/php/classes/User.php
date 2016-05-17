@@ -270,9 +270,6 @@ class User implements \JsonSerializable {
 	 * gets the user by their id
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $userId
-	 * @param string $userEmail
-	 * @param string $userName
-	 * @param int $userLoginId
 	 * @return \SplFixedArray SplFixedArray of id found
 	 **/
 
