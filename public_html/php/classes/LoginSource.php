@@ -284,7 +284,7 @@ class LoginSource implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT loginSourceId, loginSourceApiKey, loginSourceProvider FROM LoginSource WHERE loginSourceProvider = :loginSourceProvider";
+		$query = "SELECT loginSourceId, loginSourceApiKey, loginSourceProvider FROM LoginSource WHERE loginSourceProvider LIKE :loginSourceProvider";
 		$statement = $pdo->prepare($query);
 
 		// bind the data to the place holder in the template
