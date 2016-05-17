@@ -7,7 +7,7 @@ use Edu\Cnm\TeamCuriosity\{User, LoginSource};
 require_once("TeamCuriosityTest.php");
 
 // grab test under scrutiny
-require_once (dirname(__DIR__) . "../php/classes/Autoload.php");
+require_once("../php/classes/Autoload.php");
 
 /**
  * Full PHPUnit test for the user class

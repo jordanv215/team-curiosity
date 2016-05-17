@@ -7,7 +7,7 @@ use Edu\Cnm\TeamCuriosity\{User, Image, CommentImage};
 require_once("TeamCuriosityTest.php");
 
 // grab the class to be tested
-require_once(dirname(__DIR__) . "/php/classes/Autoload.php");
+require_once("../php/classes/Autoload.php");
 
 /**
  * Full PHPUnit test for the CommentImage class
