@@ -3,6 +3,9 @@ namespace Edu\Cnm\TeamCuriosity\Test;
 
 use Edu\Cnm\TeamCuriosity\{Image};
 
+// grab the test parameters
+require_once("./TeamCuriosityTest.php");
+
 // grab the project test parameters
 require_once("../php/classes/Autoload.php");
 
@@ -132,7 +135,7 @@ class ImageTest extends TeamCuriosityTest {
 	/**
 	 * test editing an image with invalid data and attempt to update it in the database
 	 *
-	 * @expectedException \PDOException
+	 * @expectedException \RangeException
 	 **/
 	public function testUpdateInvalidImage() {
 		// create a new Image and insert it into mySQL
@@ -207,7 +210,7 @@ class ImageTest extends TeamCuriosityTest {
 	/**
 	 * test grabbing an Image that does not exist
 	 *
-	 * @expectedException \PDOException
+	 * @expectedException \RangeException
 	 **/
 	public function testGetInvalidImageByImageId() {
 		// grab an image id that exceeds the maximum allowable image id
@@ -233,7 +236,7 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
-		$pdoImage = Image::getImageByImageCamera($this->getPDO(), $image->getImageCamera());
+		$pdoImage = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
@@ -264,7 +267,7 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
-		$pdoImage = Image::getImageByImageDescription($this->getPDO(), $image->getImageDescription());
+		$pdoImage = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
@@ -326,7 +329,7 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
-		$pdoImage = Image::getImageByImageSol($this->getPDO(), $image->getImageSol());
+		$pdoImage = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
@@ -351,7 +354,7 @@ class ImageTest extends TeamCuriosityTest {
 		$image->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Image::getImageByTitle($this->getPDO(), $image->getImageTitle());
+		$results = Image::getImageByImageTitle($this->getPDO(), $image->getImageTitle());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
