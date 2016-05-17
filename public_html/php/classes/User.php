@@ -320,7 +320,7 @@ class User {
 
 
 	/**
-	 * gets all users @todo check the construction of the array & naming of its variables
+	 * gets all users
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @return \SplFixedArray SplFixedArray of UserIds found or null if not found
