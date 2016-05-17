@@ -105,13 +105,14 @@ class UserTest extends TeamCuriosityTest {
 	}
 
 /**
- *test updating a user that already exists
+ *test updating a user with invalid info
 * @expectedException \PDOException
 **/
 	public function testUpdateInvalidUser() {
-		//create a user with a non null user id to watch it fail
+		//create a new user
 		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
+		//change user id to an invalid value
 		$user->setUserId(TeamCuriosityTest::INVALID_KEY);
 		$user->update($this->getPDO());
 
@@ -146,7 +147,7 @@ class UserTest extends TeamCuriosityTest {
 	}
 
 
-	//test grabbing a User that does not exist
+	//test grabbing a User by invalid info
 	public function testGetInvalidUserByUserId() {
 		//grab a profile id that exceeds the maximum allowable profile id
 		$user = User::getUserByUserId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
