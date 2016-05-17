@@ -211,7 +211,7 @@ class FavoriteImage implements \JsonSerializable {
 	}
 
 	/**
-	 * updates this tweet in mySQL
+	 * updates this image in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
