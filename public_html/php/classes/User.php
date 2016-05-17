@@ -10,7 +10,7 @@ require_once("Autoload.php");
  * @author Jordan Vinson <jvinson3@cnm.edu>
  * version 1.0.0
  **/
-class User implements \JsonSerializable {
+class User {
 
 	/**
 	 * id for this user; this is the primary key
@@ -316,20 +316,7 @@ class User implements \JsonSerializable {
 	 * which is a value of any type other than a resource.
 	 * @since 5.4.0
 	 */
-	function jsonSerialize() {
-		// TODO: Implement jsonSerialize() method.
-	}
 
-
-	/**
-	 * gets the User by UserId
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @param int $userId id to search for
-	 * @return User|null userId found or null if not found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
-	 **/
 
 
 	/**
@@ -352,7 +339,9 @@ class User implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$users = new User($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
+				$user = new User($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
+				$users[$users->key()] = $user;
+				$users->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
