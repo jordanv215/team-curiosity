@@ -19,7 +19,7 @@ class NewsArticle implements \JsonSerializable {
 	private $newsArticleId;
 	/**
 	 * date and time that this Article was sent, in a PHP DateTime object
-	 * @var \DateTime $newsArticleDate
+	 * @var \DateTime|null $newsArticleDate
 	 **/
 	private $newsArticleDate;
 	/**

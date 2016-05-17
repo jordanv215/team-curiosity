@@ -45,7 +45,7 @@ class UserTest extends TeamCuriosityTest {
 
 	public final function setUp() {
 		//run the default setUp() method first
-		parent::setUp();
+		parent::getSetUpOperation();
 
 		//create and insert a LoginSource to own the test user
 		$this->loginSource = new LoginSource(null, "27dollars", "Bernbook");
@@ -70,12 +70,13 @@ class UserTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 
 	}
-
-	//test inserting something that already exists
-	//expecting PDOException
+	/**
+	 * test inserting something that already exists
+	 * @expectedException \RangeException
+	 **/
 
 	public function testInsertInvalidUser() {
-		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->VALID_USERNAME);
+		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 	}
@@ -125,7 +126,7 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		//create a new User and insert into mySQL
-		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		//delete this User from mySQL

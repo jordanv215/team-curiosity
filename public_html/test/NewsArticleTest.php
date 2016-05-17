@@ -110,7 +110,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 	/**
 	 * test updating a NewsArticle that already exists
 	 *
-	 * @expectedException \PDOException
+	 * @expectedException \RangeException
 	 **/
 	public function testUpdateInvalidNewsArticle() {
 		// create a NewsArticle with a non null NewsArticle id and watch it fail

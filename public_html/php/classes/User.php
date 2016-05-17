@@ -286,7 +286,6 @@ class User {
 		//create query template
 		$query = "SELECT :userId, :userLoginId, :userName, :userEmail FROM User WHERE userId LIKE :userId";
 		$statement = $pdo->prepare($query);
-		$statement->execute();
 
 
 		// bind the userId to the place holder in the template

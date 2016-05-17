@@ -36,7 +36,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newFavoriteNewsArticleNewsArticleId = null, int $newFavoriteNewsArticleUserId = null, $newFavoriteNewsArticleDateTime = null) {
+	public function __construct(int $newFavoriteNewsArticleNewsArticleId, int $newFavoriteNewsArticleUserId, $newFavoriteNewsArticleDateTime = null) {
 		try {
 			$this->setFavoriteNewsArticleNewsArticleId($newFavoriteNewsArticleNewsArticleId);
 			$this->setFavoriteNewsArticleUserId($newFavoriteNewsArticleUserId);
@@ -150,7 +150,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo) {
 		//enforce the favoriteNewsArticleNewsArticleId and favoriteNewsArticleUserId are null (ie., don't insert a favoriteNewsArticle that already exists)
-		if($this->favoriteNewsArticleNewsArticleId !== null || $this->favoriteNewsArticleUserId !== null) {
+		if($this->favoriteNewsArticleNewsArticleId !== null and $this->favoriteNewsArticleUserId !== null) {
 			throw(new \PDOException("not a new FavoriteNewsArticle"));
 		}
 
@@ -173,7 +173,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo) {
 		// enforce the favoriteNewsArticleNewsArticleId and favoriteNewsArticleUserId are not null (i.e., don't delete a favoriteNewsArticle that hasn't been inserted)
-		if($this->favoriteNewsArticleNewsArticleId === null || $this->favoriteNewsArticleUserId === null) {
+		if($this->favoriteNewsArticleNewsArticleId === null and $this->favoriteNewsArticleUserId === null) {
 			throw(new \PDOException("unable to delete a favoriteNewsArticle that does not exist"));
 		}
 
@@ -195,7 +195,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	 **/
 	public function update(\PDO $pdo) {
 		// enforce the favoriteNewsArticleNewsArticleId and favoriteNewsArticleUserId are not null (i.e., don't update a FavoriteNewsArticle that hasn't been inserted)
-		if($this->favoriteNewsArticleNewsArticleId === null || $this->favoriteNewsArticleUserId) {
+		if($this->favoriteNewsArticleNewsArticleId === null and $this->favoriteNewsArticleUserId === null) {
 			throw(new \PDOException("unable to update a FavoriteNewsArticle that does not exist"));
 		}
 
@@ -308,7 +308,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the data to the place holder in the template
-		$parameters = array("favoriteNewsArticleNewsArticleId" => $favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId => $favoriteNewsArticleUserId");
+		$parameters = array("favoriteNewsArticleNewsArticleId" => $favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId" => $favoriteNewsArticleUserId);
 		$statement->execute($parameters);
 
 

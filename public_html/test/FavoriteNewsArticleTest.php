@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{User, NewsArticle, FavoriteNewsArticle};
+use Edu\Cnm\TeamCuriosity\{LoginSource, User, NewsArticle, FavoriteNewsArticle};
 
 // grab the project test parameters
 require_once("TeamCuriosityTest.php");
@@ -23,15 +23,16 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 	 **/
 	protected $VALID_FAVORITENEWSARTICLEDATETIME = null;
 	/**
-	 * NewsArticle that is favorited; this is for foreign key relations
-	 * @var NewsArticle $newsArticle
-	 **/
-	protected $user = null;
-	/**
 	 * user that favorites the FavoriteNewsArticle; this is for foreign key relations
 	 * @var $user User
 	 **/
+	protected $user = null;
+	/**
+	 * NewsArticle that is favorited; this is for foreign key relations
+	 * @var $newsArticle NewsArticle
+	 **/
 	protected $newsArticle = null;
+	protected $loginSource = null;
 
 	/**
 	 *create dependent objects before running each test
@@ -39,9 +40,13 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 	public final function setUp() {
 		// run the default setUp() method first
 		parent::setUp();
+		
+		// create a LoginSource to populate the user fields
+		$this->loginSource = new LoginSource(null, "123abc", "test");
+		$this->loginSource->insert($this->getPDO());
 
 		// create and insert a Profile to own the test FavoriteNewsArticle
-		$this->user = new User(null, "test@phpunit.de", 12345, "Test Test");
+		$this->user = new User(null, "test@phpunit.de", $this->loginSource->getLoginSourceId(), "Test Test");
 		$this->user->insert($this->getPDO());
 
 		// create and insert a NewsArticle to own the test FavoriteNewsArticle
@@ -60,20 +65,20 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("FavoriteNewsArticle");
 
 		//create a new FavoriteNewsArticle and insert into mySQL
-		$favoriteNewsArticle = new FavoriteNewsArticle($this->user->getUserId(), $this->newsArticle->getNewsArticleId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle = new FavoriteNewsArticle( $this->newsArticle->getNewsArticleId(), $this->user->getUserId(),$this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
 		$pdoFavoriteNewsArticle = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId($this->getPDO(), $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
-		$this->assertEquals($favoriteNewsArticle + 1, $this->getConnection()->getRowCount("FavoriteNewsArticle"));
-		$this->assertEquals($pdoFavoriteNewsArticle->getUserId(), $this->user->getUserId());
-		$this->assertEquals($pdoFavoriteNewsArticle->getNewsArticleId(), $this->newsArticle->getNewsArticleId());
-		$this->assertEquals($pdoFavoriteNewsArticle->getNewsArticleDateTime(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteNewsArticle"));
+		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleUserId(), $this->user->getUserId());
+		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleNewsArticleId(), $this->newsArticle->getNewsArticleId());
+		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleDateTime(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 	}
 
 	/**
 	 * test inserting a newsArticle with invalid key
-	 * \PDOException
+	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidFavoriteNewsArticle() {
 		// create a FavoriteNewsArticle with a non null favoriteNewsArticle id and watch it fail
@@ -89,7 +94,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("FavoriteNewsArticle");
 
 		// create a new FavoriteNewsArticle and insert into mySQL
-		$favoriteNewsArticle = new FavoriteNewsArticle(null, $this->user->getUserId(), $this->newsArticle->getNewsArticleId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle = new FavoriteNewsArticle($this->newsArticle->getNewsArticleId(),$this->user->getUserId(),  $this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->insert($this->getPDO());
 
 		// delete the FavoriteNewsArticle from mySQL
@@ -121,7 +126,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("FavoriteNewsArticle");
 
 		// create a new FavoriteNewsArticle and insert it into mySQL
-		$favoriteNewsArticle = new FavoriteNewsArticle($this->user->getUserId(), $this->newsArticle->getNewsArticleId(),$this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle = new FavoriteNewsArticle($this->newsArticle->getNewsArticleId(), $this->user->getUserId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->insert($this->getPDO());
 
 		// grab a FavoriteNewsArticle from mySQL and enforce the fields match our expectations
@@ -133,7 +138,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		// grab the results from the array and validate it
 		$pdoFavoriteNewsArticle = $results[0];
 		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleNewsArticleId(), $this->newsArticle->getNewsArticleId());
-		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleUserId(), $this->user->getUserId);
+		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleDateTime(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 	}
 	/**
@@ -144,7 +149,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("FavoriteNewsArticle");
 
 		// create a new FavoriteNewsArticle and insert it into mySQL
-		$favoriteNewsArticle = new FavoriteNewsArticle($this->user->getUserId(), $this->newsArticle->getNewsArticleId(),$this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$favoriteNewsArticle = new FavoriteNewsArticle($this->newsArticle->getNewsArticleId(), $this->user->getUserId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->insert($this->getPDO());
 
 		// grab a FavoriteNewsArticle from mySQL and enforce the fields match our expectations
@@ -156,7 +161,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		// grab the results from the array and validate it
 		$pdoFavoriteNewsArticle = $results[0];
 		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleNewsArticleId(), $this->newsArticle->getNewsArticleId());
-		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleUserId(), $this->user->getUserId);
+		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleDateTime(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 	}
 	/**
@@ -179,7 +184,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		// grab the results from the array and validate it
 		$pdoFavoriteNewsArticle = $results[0];
 		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleNewsArticleId(), $this->newsArticle->getNewsArticleId());
-		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleUserId(), $this->user->getUserId);
+		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleUserId(), $this->user->getUserId());
 		$this->assertEquals($pdoFavoriteNewsArticle->getFavoriteNewsArticleDateTime(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 	}
 
