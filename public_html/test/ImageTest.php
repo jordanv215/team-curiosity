@@ -175,7 +175,7 @@ class ImageTest extends TeamCuriosityTest {
 	**/
 	public function testDeleteInvalidImage() {
 		// create a Image and try to delete it without actually inserting it
-		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->INVALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
+		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
 		$image->delete($this->getPDO());
 	}
 	/**
@@ -188,12 +188,6 @@ class ImageTest extends TeamCuriosityTest {
 		// create a new image and insert into mySQL
 		$image = new Image(null, $this->VALID_IMAGECAMERA, $this->VALID_IMAGEDESCRIPTION, $this->VALID_IMAGEEARTHDATE, $this->VALID_IMAGEPATH, $this->VALID_IMAGESOL, $this->VALID_IMAGETITLE, $this->VALID_IMAGETYPE, $this->VALID_IMAGEURL);
 		$image->insert($this->getPDO());
-
-		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Image::getImageByImageId($this->getPDO(), $image->getImageId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
-		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
@@ -210,7 +204,6 @@ class ImageTest extends TeamCuriosityTest {
 	/**
 	 * test grabbing an Image that does not exist
 	 *
-	 * @expectedException \RangeException
 	 **/
 	public function testGetInvalidImageByImageId() {
 		// grab an image id that exceeds the maximum allowable image id
@@ -219,7 +212,7 @@ class ImageTest extends TeamCuriosityTest {
 	}
 
 	/**
-	 * test grabbing a Image by image camera
+	 * test grabbing an Image by image camera
 	 **/
 	public function testGetImageByImageCamera() {
 		// count the number of rows and save it for later
@@ -360,7 +353,7 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
-		$pdoImage = Image::getImageByImageTitle($this->getPDO(), $image->getImageTitle());
+		$pdoImage = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
