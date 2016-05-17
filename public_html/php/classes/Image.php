@@ -630,7 +630,7 @@ class Image implements \JsonSerializable {
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageSol Image sol to search for
 	 * @return \SplFixedArray SplFixedArray of Images found
-	 * @thorws \PDOException when mySQL related errors occur
+	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getImageByImageSol(\PDO $pdo, int $imageSol) {

@@ -5,10 +5,10 @@ require_once("Autoload.php");
 
 /**
  * user class of the Curiosity team ERD
- *
- * this user class will use social media log ins in order to allow users to share and save pictures to their social media site and keep their login data off of our direct database
+  this user class will use social media log ins in order to allow users to share and save pictures to their social media site and keep their login data off of our direct database
  * @author Jordan Vinson <jvinson3@cnm.edu>
- * version 1.0.0
+ * version 1.0.0*
+ *
  **/
 class User {
 
