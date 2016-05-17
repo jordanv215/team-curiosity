@@ -34,9 +34,12 @@ class UserTest extends TeamCuriosityTest {
 	 **/
 	protected $VALID_USERNAME = "Test User Name";
 
+	/**
+	 * Information from the social login api, this is a foreign key relation
+	 * @var string
+	 */
 	protected $loginSource = null;
 
-	protected $user = null;
 
 	//create dependent objects before running each test
 
