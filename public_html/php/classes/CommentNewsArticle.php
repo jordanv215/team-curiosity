@@ -1,7 +1,7 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity;
 
-require_once("autoload.php");
+require_once("Autoload.php");
 
 /**
  *This commentNewsArticle class provides accessors and mutators for the commentNewsArticle database table

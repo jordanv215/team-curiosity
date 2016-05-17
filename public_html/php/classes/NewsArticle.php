@@ -36,7 +36,7 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * constructor for this NewsArticle
 	 * @param int|null $newNewsArticleId id of this NewsArticle or Null if a new NewsArticle
-	 * @param \DATETIME|string|null $newNewsArticleDate Date and Time NewsArticle was sent or null if set to current Date and Time
+	 * @param \DateTime|string|null $newNewsArticleDate Date and Time NewsArticle was sent or null if set to current Date and Time
 	 * @param string $newNewsArticleSynopsis string containing a brief synopsis
 	 * @param string $newNewsArticleUrl string containing the location to newsArticleUrl
 	 * @throws \InvalidArgumentException if data types are not valid
@@ -44,7 +44,7 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newNewsArticleId = null, $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl) {
+	public function __construct(int $newNewsArticleId = null, \DateTime $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl) {
 		try {
 			$this->setNewsArticleId($newNewsArticleId);
 			$this->setNewsArticleDate($newNewsArticleDate);
@@ -112,7 +112,7 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $newNewsArticleDate is not a valid object or string
 	 * @throws \RangeException if $newNewsArticleDate is a date that does not exist
 	 **/
-	public function setNewsArticleDate($newNewsArticleDate = null) {
+	public function setNewsArticleDate(\DateTime $newNewsArticleDate = null) {
 		//base case: if the date is null, use the current date and time
 		if($newNewsArticleDate === null) {
 			$this->newsArticleDate = new \DateTime();
@@ -138,7 +138,7 @@ class NewsArticle implements \JsonSerializable {
 		return ($this->newsArticleSynopsis);
 	}
 
-	/** @todo add expression to truncate synopsis at 256 characters rather than rejecting it
+	/** 
 	 * mutator method for newsArticleSynopsis
 	 * @param string $newNewsArticleSynopsis new value of News Article Synopsis
 	 * @throws \InvalidArgumentException if $newNewsArticleSynopsis is not a string or insecure
@@ -300,7 +300,7 @@ class NewsArticle implements \JsonSerializable {
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				while(($row = $statement->fetch()) !== false) {
 					try {
-						$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+						$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
 						$newsArticles[$newsArticles->key()] = $newsArticle;
 						$newsArticles->next();
 					} catch(\Exception $exception) {
@@ -342,7 +342,7 @@ class NewsArticle implements \JsonSerializable {
 					$statement->setFetchMode(\PDO::FETCH_ASSOC);
 					$row = $statement->fetch();
 					if($row !== false) {
-						$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+						$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
 					}
 				} catch(\Exception $exception) {
 					// if the row couldn't be converted, rethrow it
@@ -370,7 +370,7 @@ class NewsArticle implements \JsonSerializable {
 				$statement->setFetchMode(\PDO::FETCH_ASSOC);
 				while(($row = $statement->fetch()) !== false) {
 					try {
-						$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleDate"], $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+						$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
 						$newsArticles[$newsArticles->key()] = $newsArticle;
 						$newsArticles->next();
 					} catch(\Exception $exception) {

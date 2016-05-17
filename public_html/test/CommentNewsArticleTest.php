@@ -1,8 +1,7 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{
-	CommentNewsArticle, NewsArticle};
+use Edu\Cnm\TeamCuriosity\{CommentNewsArticle, NewsArticle, User};
 
 // grab the project test parameters
 require_once("TeamCuriosityTest.php");

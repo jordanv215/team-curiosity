@@ -34,7 +34,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 	protected $VALID_NEWSARTICLESYNOPSIS2 = "Orange juice was found on Mars";
 	/**
 	 * timestamp of the NewsArticle; this starts as null and is assigned later
-	 * @var /DateTime | null $VALID_NEWSARTICLEDATE
+	 * @var \DateTime | null $VALID_NEWSARTICLEDATE
 	 *
 	 **/
 	protected $VALID_NEWSARTICLEDATE = null;
@@ -43,6 +43,17 @@ class NewsArticleTest extends TeamCuriosityTest {
 	 * @var string $VALID_NEWSARTICLEURL
 	 **/
 	protected $VALID_NEWSARTICLEURL = "This/is/a/test";
+
+	/**
+	 *create dependent objects before running each test
+	 **/
+	public final function setUp() {
+		// run the default setUp() method first
+		parent::setUp();
+
+		$this->VALID_NEWSARTICLEDATE = new \DateTime();
+	}
+
 	/**
 	 * test inserting a valid NewsArticle and verify that the actual mySQL data matches
 	 **/
@@ -66,7 +77,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 	/**
 	 * test inserting a NewsArticle that already exists
 	 *
-	 * @expectedException /PDOException
+	 * @expectedException \PDOException
 	 **/
 	public function testInsertInvalidNewsArticle() {
 		// create a NewsArticle with a non null NewsArticle id and watch it fail
@@ -103,7 +114,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 	 **/
 	public function testUpdateInvalidNewsArticle() {
 		// create a NewsArticle with a non null NewsArticle id and watch it fail
-		$newsArticle = new NewsArticle(TeamCuriosityTest::INVALID_KEY, $this->VALID_NEWSARTICLEDATE, $this->VALID_NEWSARTICLESYNOPSIS, $this->VALID_NEWSARTICLEURL);
+		$newsArticle = new NewsArticle(null, $this->VALID_NEWSARTICLEDATE, $this->VALID_NEWSARTICLESYNOPSIS, $this->VALID_NEWSARTICLEURL);
 		$newsArticle->update($this->getPDO());
 	}
 
@@ -183,7 +194,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$results = NewsArticle::getNewsArticleByNewsArticleSynopsis($this->getPDO(), $newsArticle->getNewsArticleSynopsis());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("NewsArticle"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\NewsArticle, $results");
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\NewsArticle", $results);
 
 		// grab the result from the array and validate it
 		$pdoNewsArticle = $results[0];
@@ -218,7 +229,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$results = NewsArticle::getAllNewsArticles($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("NewsArticle"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\NewsArticle, $results");
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\NewsArticle", $results);
 
 		// grab the result from the array and validate it
 		$pdoNewsArticle = $results[0];
