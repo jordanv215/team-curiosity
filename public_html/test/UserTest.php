@@ -67,7 +67,7 @@ class UserTest extends TeamCuriosityTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
 		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
-		$this->assertEquals($pdoUser->getLoginSource(), $this->loginSource->getLoginSource());
+		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource->getUserLoginId());
 
 	}
 
@@ -94,7 +94,7 @@ class UserTest extends TeamCuriosityTest {
 		$user->update($this->getPDO());
 
 		//create a new user and update it into mySQL
-		$pdoUser = User::setUserId($this->getPDO(), $user->getUserId());
+		$pdoUser = User::getUserByUserId($this->getPDO(), $user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserId(),$user->getUserId());
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL2);
