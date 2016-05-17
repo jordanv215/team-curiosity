@@ -66,8 +66,8 @@ class UserTest extends TeamCuriosityTest {
 		$pdoUser = User::getUserByUserId($this->getPDO(), $user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
-		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource->getUserLoginId());
+		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 
 	}
 
@@ -104,13 +104,15 @@ class UserTest extends TeamCuriosityTest {
 
 	}
 
-/**test updating a user that already exists
- *
+/**
+ *test updating a user that already exists
 * @expectedException \PDOException
 **/
 	public function testUpdateInvalidUser() {
 		//create a user with a non null user id to watch it fail
-		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user->insert($this->getPDO());
+		$user->setUserId(TeamCuriosityTest::INVALID_KEY);
 		$user->update($this->getPDO());
 
 }
@@ -136,11 +138,19 @@ class UserTest extends TeamCuriosityTest {
 
 	}
 
+	//test create user and try to delete it without inserting it
+	public function testDeleteInvalidUser() {
+		//create a user with a non null user id to watch it fail
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user->delete($this->getPDO());
+	}
+
+
 	//test grabbing a User that does not exist
 	public function testGetInvalidUserByUserId() {
 		//grab a profile id that exceeds the maximum allowable profile id
 		$user = User::getUserByUserId($this->getPDO(), TeamCuriosityTest::INVALID_KEY);
-		$this->	assertNull($user);
+		$this->assertNull($user);
 
 	}
 
@@ -191,6 +201,7 @@ class UserTest extends TeamCuriosityTest {
 		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource);
 		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 	}
+
 
 }
 
