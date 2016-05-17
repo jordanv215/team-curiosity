@@ -63,10 +63,10 @@ class UserTest extends TeamCuriosityTest {
 		$user->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields to match our expectations
-		$pdoUser = User::getUserbyUserId($this->getPDO(), $this->user->getUserId());
+		$pdoUser = User::getUserByUserId($this->getPDO(), $this->$user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
-		$this->assertEquals($pdoUser->getUserEmail(), $this->user->getUserEmail());
-		$this->assertEquals($pdoUser->getUserName(), $this->user->getUsername());
+		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 		$this->assertEquals($pdoUser->getLoginSource(), $this->loginSource->getLoginSource());
 
 	}
@@ -75,7 +75,7 @@ class UserTest extends TeamCuriosityTest {
 	//expecting PDOException
 
 	public function testInsertInvalidUser() {
-		$user = new User(UserTest::INVALID_KEY, $this->user->getUserId(), $this->VALID_EMAIL, $this->VALID_USERNAME);
+		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 	}
@@ -86,18 +86,18 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new user and insert to into mySQL
-		$user = new User(null, $this->user->getUserId(), $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
+		$user = new User(null, $this->VALID_EMAIL, $this->VALID_LOGINSOURCE);
 		$user->insert($this->getPDO());
 
 		// edit the Tweet and update it in mySQL
-		$user->setUserEmail($this->VALID_LOGINSOURCE);
+		$user->setUserEmail($this->VALID_EMAIL2);
 		$user->update($this->getPDO());
 
 		//create a new user and update it into mySQL
-		$pdoUser = setUserId($this->getPDO(), $this->user->getUserId());
+		$pdoUser = setUserId($this->getPDO(), $user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
-		$this->assertEquals($pdoUser->getUserId(), $this->user->getUserId());
-		$this->assertEquals($pdoUser->getEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoUser->getUserId(),$user->getUserId());
+		$this->assertEquals($pdoUser->getEmail(), $this->VALID_EMAIL2);
 		$this->assertEquals($pdoUser->getLoginSource(), $this->VALID_LOGINSOURCE);
 
 
