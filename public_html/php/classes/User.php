@@ -49,12 +49,12 @@ class User {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newUserId = null, string $newUserEmail, int $newUserLoginId, string $newUserName) {
+	public function __construct(int $newUserId = null, string $newUserEmail, int $newUserLoginId = null, string $newUserName) {
 		try {
 			$this->setUserId($newUserId);
+			$this->setUserEmail($newUserEmail);
 			$this->setUserLoginId($newUserLoginId);
 			$this->setUserName($newUserName);
-			$this->setUserEmail($newUserEmail);
 		} catch
 		(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
@@ -208,11 +208,11 @@ class User {
 		}
 
 		//create query template
-		$query = "INSERT INTO User(userLoginId, userName, userEmail) VALUES(:userLoginId, :userName, :userEmail)";
+		$query = "INSERT INTO User(userEmail, userLoginId, userName) VALUES(:userEmail, :userLoginId, :userName)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$parameters = ["userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
+		$parameters = ["userEmail" => $this->userEmail, "userLoginId" => $this->userLoginId, "userName" => $this->userName];
 		$statement->execute($parameters);
 
 		// update the null userId with what mySQL just gave us
@@ -259,10 +259,10 @@ class User {
 			throw(new \PDOException("unable to update a user that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE User SET userId = :userId, userLoginId = :userLoginId, userName = :userName, userEmail = :userEmail";
+		$query = "UPDATE User SET userId = :userId,  userEmail = :userEmail, userLoginId = :userLoginId, userName = :userName";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
-		$parameters = ["userId" => $this->userId, "userLoginId" => $this->userLoginId, "userName" => $this->userName, "userEmail" => $this->userEmail];
+		$parameters = ["userId" => $this->userId, "userEmail" => $this->userEmail, "userLoginId" => $this->userLoginId, "userName" => $this->userName];
 		$statement->execute($parameters);
 	}
 
@@ -277,14 +277,13 @@ class User {
 	static function getUserByUserId(\PDO $pdo, int $userId) {
 		//sanitize the description before searching
 		if($userId <= 0) {
-			throw(new \RangeException("UserId is not positive"));
+			throw(new \RangeException("userId is not positive"));
 		}
-		if
-		(empty($userId) === true) {
+		if (empty($userId) === true) {
 			throw(new \PDOException("User is invalid"));
 		}
 		//create query template
-		$query = "SELECT :userId, :userLoginId, :userName, :userEmail FROM User WHERE userId LIKE :userId";
+		$query = "SELECT userId, userEmail, userLoginId, userName FROM User WHERE userId LIKE :userId";
 		$statement = $pdo->prepare($query);
 
 
@@ -328,7 +327,7 @@ class User {
 	public
 	static function getAllUsers(\PDO $pdo) {
 		// create query template
-		$query = "SELECT userId, userName, userEmail, userLoginId FROM User";
+		$query = "SELECT userId, userEmail, userLoginId, userName FROM User";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -337,7 +336,7 @@ class User {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$user = new User($row["userId"], $row["userEmail"], $row["userName"], $row["userLoginId"]);
+				$user = new User($row["userId"], $row["userEmail"], $row["userLoginId"], $row["userName"]);
 				$users[$users->key()] = $user;
 				$users->next();
 			} catch(\Exception $exception) {

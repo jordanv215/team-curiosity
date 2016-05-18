@@ -45,7 +45,7 @@ class UserTest extends TeamCuriosityTest {
 
 	public final function setUp() {
 		//run the default setUp() method first
-		parent::getSetUpOperation();
+		parent::setUp();
 
 		//create and insert a LoginSource to own the test user
 		$this->loginSource = new LoginSource(null, "27dollars", "Bernbook");
@@ -66,17 +66,17 @@ class UserTest extends TeamCuriosityTest {
 		$pdoUser = User::getUserByUserId($this->getPDO(), $user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
-		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource->getUserLoginId());
+		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource->getLoginSourceId());
 		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 
 	}
 	/**
 	 * test inserting something that already exists
-	 * @expectedException \RangeException
+	 * @expectedException \PDOException
 	 **/
 
 	public function testInsertInvalidUser() {
-		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(TeamCuriosityTest::INVALID_KEY, $this->VALID_EMAIL, $this->loginSource->getLoginSourceId(), $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 	}
@@ -87,7 +87,7 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new user and insert to into mySQL
-		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource->getLoginSourceId(), $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		// edit the User and update it in mySQL
@@ -99,23 +99,24 @@ class UserTest extends TeamCuriosityTest {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertEquals($pdoUser->getUserId(),$user->getUserId());
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL2);
-		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource);
+		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource->getLoginSourceId());
 		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 
 
 	}
 
 /**
- *test updating a user with invalid info
-* @expectedException \PDOException
+ * test updating a user without inserting it
+ *
+ * @expectedException \TypeError
 **/
 	public function testUpdateInvalidUser() {
 		//create a new user
-		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
-		$user->insert($this->getPDO());
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource->getLoginSourceId(), $this->VALID_USERNAME);
 		//change user id to an invalid value
-		$user->setUserId(TeamCuriosityTest::INVALID_KEY);
+		$user->setUserId("INVALID_ID");
 		$user->update($this->getPDO());
+		$this->assertNull($user);
 
 }
 
@@ -126,7 +127,7 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		//create a new User and insert into mySQL
-		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource->getLoginSourceId(), $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		//delete this User from mySQL
@@ -136,14 +137,19 @@ class UserTest extends TeamCuriosityTest {
 		//grab the data from mySQL and enforce the User does not exist
 		$pdoUser = User::getUserByUserId($this->getPDO(), $user->getUserId());
 		$this->assertNull($pdoUser);
-		$user->assertEquals($numRows, $user->getConnection()->getRowCount("User"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("User"));
 
 	}
 
-	//test create user and try to delete it without inserting it
+
+
+	/**
+	 * test create user and try to delete it without inserting it
+	 * @expectedException \PDOException
+	 **/
 	public function testDeleteInvalidUser() {
 		//create a user with a non null user id to watch it fail
-		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource->getLoginSourceId(), $this->VALID_USERNAME);
 		$user->delete($this->getPDO());
 	}
 
@@ -162,20 +168,14 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new User and insert to into mySQL
-		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource->getLoginSourceId(), $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = User::getUserByUserId($this->getPDO(), $user->getUserId());
+		$pdoUser = User::getUserByUserId($this->getPDO(), $user->getUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
-		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\User", $results);
-
-		// grab the result from the array and validate it
-		$pdoUser = $results[0];
-		$this->assertEquals($pdoUser->getUserId(), $user->getUserId());
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
-		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource);
+		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource->getLoginSourceId());
 		$this->assertEquals($pdoUser->getUserName(),$this->VALID_USERNAME);
 
 	}
@@ -187,7 +187,7 @@ class UserTest extends TeamCuriosityTest {
 		$numRows = $this->getConnection()->getRowCount("User");
 
 		// create a new User and insert to into mySQL
-		$user = new User(null, $this->VALID_EMAIL, $this->loginSource, $this->VALID_USERNAME);
+		$user = new User(null, $this->VALID_EMAIL, $this->loginSource->getLoginSourceId(), $this->VALID_USERNAME);
 		$user->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -198,9 +198,9 @@ class UserTest extends TeamCuriosityTest {
 
 		// grab the result from the array and validate it
 		$pdoUser = $results[0];
-		$this->assertEquals($pdoUser->getUserId(), $user->getUserId());
+		$this->assertEquals($pdoUser->getUserId(), $user->GetUserId());
 		$this->assertEquals($pdoUser->getUserEmail(), $this->VALID_EMAIL);
-		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource);
+		$this->assertEquals($pdoUser->getUserLoginId(), $this->loginSource->getLoginSourceId());
 		$this->assertEquals($pdoUser->getUserName(), $this->VALID_USERNAME);
 	}
 

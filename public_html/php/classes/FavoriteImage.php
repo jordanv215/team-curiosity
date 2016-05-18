@@ -261,7 +261,7 @@ class FavoriteImage implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$favoriteImage = new favoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+				$favoriteImage = new favoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"],\DateTime::createFromFormat("Y-m-d H:i:s", $row["favoriteImageDateTime"]));
 				$favoriteImages[$favoriteImages->key()] = $favoriteImage;
 				$favoriteImages->next();
 			} catch(\Exception $exception) {
@@ -299,7 +299,7 @@ class FavoriteImage implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$favoriteImage = new FavoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+				$favoriteImage = new FavoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["favoriteImageDateTime"]));
 				$favoriteImages{$favoriteImages->key()} = $favoriteImage;
 				$favoriteImages->next();
 			}
@@ -377,7 +377,7 @@ class FavoriteImage implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$favoriteImage = new FavoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], $row["favoriteImageDateTime"]);
+				$favoriteImage = new FavoriteImage($row["favoriteImageImageId"], $row["favoriteImageUserId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["favoriteImageDateTime"]));
 				$favoriteImages[$favoriteImages->key()] = $favoriteImage;
 				$favoriteImages->next();
 			} catch(\Exception $exception) {
