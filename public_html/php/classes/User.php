@@ -10,7 +10,7 @@ require_once("Autoload.php");
  * version 1.0.0*
  *
  **/
-class User {
+class User implements \JsonSerializable {
 
 	/**
 	 * id for this user; this is the primary key
@@ -346,5 +346,13 @@ class User {
 		}
 		return ($users);
 	}
-
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return ($fields);
+	}
 }
