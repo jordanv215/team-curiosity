@@ -150,12 +150,12 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo) {
 		//enforce the favoriteNewsArticleNewsArticleId and favoriteNewsArticleUserId are null (ie., don't insert a favoriteNewsArticle that already exists)
-		if($this->favoriteNewsArticleNewsArticleId !== null and $this->favoriteNewsArticleUserId !== null) {
+		if($this->favoriteNewsArticleNewsArticleId === null || $this->favoriteNewsArticleUserId === null) {
 			throw(new \PDOException("not a new FavoriteNewsArticle"));
 		}
 
 		//create query template
-		$query = "INSERT INTO FavoriteNewsArticle(favoriteNewsArticleUserId, favoriteNewsArticleDateTime) VALUES (:favoriteNewsArticleUserId, :favoriteNewsArticleDateTime)";
+		$query = "INSERT INTO FavoriteNewsArticle(favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime) VALUES (:favoriteNewsArticleNewsArticleId, :favoriteNewsArticleUserId, :favoriteNewsArticleDateTime)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
@@ -173,7 +173,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	 **/
 	public function delete(\PDO $pdo) {
 		// enforce the favoriteNewsArticleNewsArticleId and favoriteNewsArticleUserId are not null (i.e., don't delete a favoriteNewsArticle that hasn't been inserted)
-		if($this->favoriteNewsArticleNewsArticleId === null and $this->favoriteNewsArticleUserId === null) {
+		if($this->favoriteNewsArticleNewsArticleId === null || $this->favoriteNewsArticleUserId === null) {
 			throw(new \PDOException("unable to delete a favoriteNewsArticle that does not exist"));
 		}
 
@@ -182,7 +182,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
-		$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoriteNewsArticleNewsArticleId, "favoriteNewArticleUserId" => $this->favoriteNewsArticleUserId];
+		$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId" => $this->favoriteNewsArticleUserId];
 		$statement->execute($parameters);
 	}
 
@@ -195,7 +195,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 	 **/
 	public function update(\PDO $pdo) {
 		// enforce the favoriteNewsArticleNewsArticleId and favoriteNewsArticleUserId are not null (i.e., don't update a FavoriteNewsArticle that hasn't been inserted)
-		if($this->favoriteNewsArticleNewsArticleId === null and $this->favoriteNewsArticleUserId === null) {
+		if($this->favoriteNewsArticleNewsArticleId === null || $this->favoriteNewsArticleUserId === null) {
 			throw(new \PDOException("unable to update a FavoriteNewsArticle that does not exist"));
 		}
 
@@ -262,7 +262,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT favoriteNewsArticleUserId, favoriteNewsArticleNewsArticleId, favoriteNewsArticleDateTime FROM FavoriteNewsArticle WHERE favoriteNewsArticleUserId = :favoriteNewsArticleUserId";
+		$query = "SELECT  favoriteNewsArticleNewsArticleId, favoriteNewsArticleUserId, favoriteNewsArticleDateTime FROM FavoriteNewsArticle WHERE favoriteNewsArticleUserId = :favoriteNewsArticleUserId";
 		$statement = $pdo->prepare($query);
 		//bind the favoriteNewsArticle  user id to the place holder in the template
 		$parameters = array("favoriteNewsArticleUserId" => $favoriteNewsArticleUserId);
@@ -345,7 +345,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			while(($row = $statement->fetch()) !== false) {
 				try {
-					$favoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], $row["favoriteNewsArticleDateTime"]);
+					$favoriteNewsArticle = new FavoriteNewsArticle($row["favoriteNewsArticleNewsArticleId"], $row["favoriteNewsArticleUserId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["favoriteNewsArticleDateTime"]));
 					$favoriteNewsArticles[$favoriteNewsArticles->key()] = $favoriteNewsArticle;
 					$favoriteNewsArticles->next();
 				} catch(\Exception $exception) {
