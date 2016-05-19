@@ -185,30 +185,7 @@ class FavoriteNewsArticle implements \JsonSerializable {
 		$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId" => $this->favoriteNewsArticleUserId];
 		$statement->execute($parameters);
 	}
-
-	/**
-	 * updates this FavoriteNewsArticle in mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function update(\PDO $pdo) {
-		// enforce the favoriteNewsArticleNewsArticleId and favoriteNewsArticleUserId are not null (i.e., don't update a FavoriteNewsArticle that hasn't been inserted)
-		if($this->favoriteNewsArticleNewsArticleId === null || $this->favoriteNewsArticleUserId === null) {
-			throw(new \PDOException("unable to update a FavoriteNewsArticle that does not exist"));
-		}
-
-		//create query template
-		$query = "UPDATE FavoriteNewsArticle SET favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsarticleId, favoriteNewsArticleUserId = :favoriteNewsArticleUserId, favoriteNewsArticleDateTime = :favoriteNewsArticleDateTime WHERE favoriteNewsArticleNewsArticleId = :favoriteNewsArticleNewsArticleId AND favoriteNewsArticleUserId = :favoriteNewsArticleUserId";
-		$statement = $pdo->prepare($query); 
-
-		//bind the member variables to the place holder in the template
-		$formattedDate = $this->favoriteNewsArticleDateTime->format("Y-m-d H:i:s");
-		$parameters = ["favoriteNewsArticleNewsArticleId" => $this->favoriteNewsArticleNewsArticleId, "favoriteNewsArticleUserId" => $this->favoriteNewsArticleUserId, "favoriteNewsArticleDateTime" => $this->favoriteNewsArticleDateTime];
-		$statement->execute($parameters);
-	}
-
+	
 	/**
 	 * gets the FavoriteNewsArticle by favoriteNewsArticleNewsArticle id
 	 *

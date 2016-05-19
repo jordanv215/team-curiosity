@@ -48,13 +48,14 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		// create and insert a Profile to own the test FavoriteNewsArticle
 		$this->user = new User(null, "test@phpunit.de", $this->loginSource->getLoginSourceId(), "Test Test");
 		$this->user->insert($this->getPDO());
-
+		
 		// create and insert a NewsArticle to own the test FavoriteNewsArticle
 		$this->newsArticle = new NewsArticle(null, null, "This is a test", "/test/test");
 		$this->newsArticle->insert($this->getPDO());
 
 		// calculate the date (just use the time the unit test was setup...)
 		$this->VALID_FAVORITENEWSARTICLEDATETIME = new \DateTime();
+		
 	}
 
 	/**
@@ -85,6 +86,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$favoriteNewsArticle = new FavoriteNewsArticle(TeamCuriosityTest::INVALID_KEY, $this->user->getUserId(), $this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->insert($this->getPDO());
 	}
+
 
 	/**
 	 * test creating a FavoriteNewsArticle and then deleting it
