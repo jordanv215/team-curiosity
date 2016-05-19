@@ -20,15 +20,15 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * date and time that this Article was sent, in a PHP DateTime object
 	 * @var \DateTime $commentNewsArticleDateTime
 	 **/
-	private $commentNewsArticleDateTime;
-	/**
-	 * actual textual Content of the commentNewsArticle
-	 * @var string $commentNewsArticleContent
-	 **/
 	private $commentNewsArticleContent;
 	/**
 	 * the actual id of the commentNewsArticleNewsArticleId
 	 * @var int $commentNewsArticleNewsArticleId
+	 **/
+	private $commentNewsArticleDateTime;
+	/**
+	 * actual textual Content of the commentNewsArticle
+	 * @var string $commentNewsArticleContent
 	 **/
 	private $commentNewsArticleNewsArticleId;
 	/**
@@ -49,13 +49,13 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newCommentNewsArticleId = null, $newCommentNewsArticleDateTime = null, string $newCommentNewsArticleContent, int $newCommentNewsArticleNewsArticleId, int $newCommentNewsArticleUserId) {
+	public function __construct(int $newCommentNewsArticleId = null, string $newCommentNewsArticleContent, \DateTime $newCommentNewsArticleDateTime = null,  int $newCommentNewsArticleNewsArticleId, int $newCommentNewsArticleUserId = null) {
 		try {
-			$this->setCommentNewsArticleUserId($newCommentNewsArticleUserId);
 			$this->setCommentNewsArticleId($newCommentNewsArticleId);
-			$this->setCommentNewsArticleDateTime($newCommentNewsArticleDateTime);
 			$this->setCommentNewsArticleContent($newCommentNewsArticleContent);
+			$this->setCommentNewsArticleDateTime($newCommentNewsArticleDateTime);
 			$this->setCommentNewsArticleNewsArticleId($newCommentNewsArticleNewsArticleId);
+			$this->setCommentNewsArticleUserId($newCommentNewsArticleUserId);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -118,7 +118,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \RangeException if $newCommentNewsArticleDateTime is a date that does not exist
 	 **/
 	public
-	function setCommentNewsArticleDateTime($newCommentNewsArticleDateTime = null) {
+	function setCommentNewsArticleDateTime(\DateTime $newCommentNewsArticleDateTime = null) {
 		//base case: if the date is null, use the current date and time
 		if($newCommentNewsArticleDateTime === null) {
 			$this->commentNewsArticleDateTime = new \DateTime();
@@ -126,7 +126,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		}
 		// store the commentNewsArticleDateTime
 		try {
-			$newCommentNewsArticleDateTime = $this->ValidateDate($newCommentNewsArticleDateTime);
+			$newCommentNewsArticleDateTime = $this->validateDate($newCommentNewsArticleDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -332,7 +332,7 @@ class CommentNewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], \DateTime::createFromFormat("Y-m-dH:i:s", $row["commentNewsArticleDateTime"]), $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
+				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentNewsArticleDateTime"]), $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
 				$commentNewsArticles[$commentNewsArticles->key()] = $commentNewsArticle;
 				$commentNewsArticles->next();
 			} catch(\Exception $exception) {

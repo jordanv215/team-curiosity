@@ -1,7 +1,9 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{CommentNewsArticle, NewsArticle, User};
+use Edu\Cnm\TeamCuriosity\{
+	CommentNewsArticle, LoginSource, NewsArticle, User
+};
 
 // grab the project test parameters
 require_once("TeamCuriosityTest.php");
@@ -22,16 +24,16 @@ require_once("../php/classes/Autoload.php");
 class CommentNewsArticleTest extends TeamCuriosityTest {
 	/**
 	 * content of the commentNewsArticle
-	 * @var string $VALID_COMMENTNEWSARTICLE
+	 * @var string $VALID_COMMENTNEWSARTICLECONTENT
 	 *
 	 **/
 protected $VALID_COMMENTNEWSARTICLECONTENT = "PHPUnit test passing";
 	/**
 	 * content of the updated commentNewsArticle
-	 * @var string $VALID_COMMENTNEWSARTICLE2
+	 * @var string $VALID_COMMENTNEWSARTICLECONTENT2
 	 *
 	 **/
-protected $VALID_COMMENTNEWSARTICLE2 = "PHPUnit test still passing";
+protected $VALID_COMMENTNEWSARTICLECONTENT2 = "PHPUnit test still passing";
 	/**
 	 * timestamp of the commentNewsArticle; this starts as null and is assigned later
 	 * @var \DateTime $VALID_COMMENTNEWSARTICLEDATETIME
@@ -45,7 +47,16 @@ protected $VALID_COMMENTNEWSARTICLEDATETIME = null;
 	 * NewsArticle that is commented; this is for foreign key relations
 	 * @var newsArticle $commentNewsArticle
 	 **/
+	protected $loginSource = null;
+
+	/**
+	 * @var User $user
+	 */
 	protected $user = null;
+
+	/**
+	 * @var NewsArticle $newsArticle
+	 */
 	protected $newsArticle = null;
 	/**
 	 *create dependent objects before running each test
@@ -53,13 +64,17 @@ protected $VALID_COMMENTNEWSARTICLEDATETIME = null;
 	public final function setUp() {
 		// run the default setUp() method first
 		parent::setUp();
-
+		
+		// create a login source for the user
+		$this->loginSource = new LoginSource(null, "Test", "Test");
+		$this->loginSource->insert($this->getPDO());
+		
 		// create and insert a user to own the test NewsArticle
-		$this->user = new User(null, "test@phpunit.de", 12345, "Test Test");
+		$this->user = new User(null, "test@phpunit.de", $this->loginSource->getLoginSourceId(), "Test Test");
 		$this->user->insert($this->getPDO());
 		
 		// create and insert a newsArticle to own the test NewsArticle
-		$this->newsArticle = new NewsArticle(null, null, "example news article synopsis", "this/is/a/url");
+		$this->newsArticle = new NewsArticle(null, null, "example news article content", "this/is/a/url");
 		$this->newsArticle->insert($this->getPDO());
 
 		// calculate the date (just use the time the unit test was setup...)
@@ -70,11 +85,11 @@ protected $VALID_COMMENTNEWSARTICLEDATETIME = null;
 /**
  * test inserting a commentNewsArticle that already exists
  *
- * @expectedException /PDOException
+ * @expectedException \TypeError
  **/
 public function testInsertInvalidCommentNewsArticle() {
 	// create a commentNewsArticle with a non null commentNewsArticle id and watch it fail
-	$commentNewsArticle = new CommentNewsArticle(TeamCuriosityTest::INVALID_KEY, $this->commentNewsArticle->getCommentNewsArticleId(), $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID, $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$commentNewsArticle = new CommentNewsArticle(null, null, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
 	$commentNewsArticle->insert($this->getPDO());
 }
 
@@ -86,7 +101,7 @@ public function testUpdateValidCommentNewsArticle() {
 	$numRows = $this->getConnection()->getRowCount("CommentNewsArticle");
 
 	// create a new commentNewsArticle and insert to into mySQL
-	$commentNewsArticle = new CommentNewsArticle(null, $this->commentNewsArticleId->getCommentNewsArticleId(), $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->COMMENTNEWSARTICLENEWSARTICLEID, $this->COMMENTNEWSARTICLEUSERID);
+	$commentNewsArticle = new CommentNewsArticle(null, $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
 	$commentNewsArticle->insert($this->getPDO());
 
 	// edit the commentNewsArticle and update it in mySQL
@@ -96,7 +111,6 @@ public function testUpdateValidCommentNewsArticle() {
 	// grab the data from mySQL and enforce the fields match our expectations
 	$pdoCommentNewsArticle = CommentNewsArticle::getCommentNewsArticleByCommentNewsArticleId($this->getPDO(), $commentNewsArticle->getCommentNewsArticleId());
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentNewsArticle"));
-	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleId(), $this->commentNewsArticle->getCommentNewsArticleId());
 	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleContent(), $this->VALID_COMMENTNEWSARTICLECONTENT2);
 	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleDateTime(), $this->VALID_COMMENTNEWSARTICLEDATETIME);
 }
@@ -104,11 +118,11 @@ public function testUpdateValidCommentNewsArticle() {
 /**
  * test updating a commentNewsArticle that already exists
  *
- * @expectedException /PDOException
+ * @expectedException \TypeError
  **/
 public function testUpdateInvalidCommentNewsArticle() {
 	// create a commentNewsArticle with a non null commentNewsArticle id and watch it fail
-	$commentNewsArticle = new CommentNewsArticle(null, $this->commentNewsArticle->getCommentNewsArticleId(), $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID, $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$commentNewsArticle = new CommentNewsArticle(null, null, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
 	$commentNewsArticle->update($this->getPDO());
 }
 
@@ -120,7 +134,7 @@ public function testDeleteValidNewsArticle() {
 	$numRows = $this->getConnection()->getRowCount("CommentNewsArticle");
 
 	// create a new commentNewsArticle and insert to into mySQL
-	$commentNewsArticle = new CommentNewsArticle(null, $this->commentNewsArticle->getCommentNewsArticleId(), $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID, $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$commentNewsArticle = new CommentNewsArticle(null, $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
 	$commentNewsArticle->insert($this->getPDO());
 
 	// delete the commentNewsArticle from mySQL
@@ -136,11 +150,11 @@ public function testDeleteValidNewsArticle() {
 /**
  * test deleting a commentNewsArticle that does not exist
  *
- * @expectedException /PDOException
+ * @expectedException \TypeError
  **/
 public function testDeleteInvalidCommentNewsArticle() {
 	// create a commentNewsArticle and try to delete it without actually inserting it
-	$commentNewsArticle = new CommentNewsArticle(null, $this->commentNewsArticle->getCommentNewsArticleId(), $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID, $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$commentNewsArticle = new CommentNewsArticle(null, null, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
 	$commentNewsArticle->delete($this->getPDO());
 }
 
@@ -152,21 +166,22 @@ public function testGetValidCommentNewsArticleByCommentNewsArticleId() {
 	$numRows = $this->getConnection()->getRowCount("CommentNewsArticle");
 
 	// create a new commentNewsArticle and insert to into mySQL
-	$commentNewsArticle = new CommentNewsArticle(null, $this->commentNewsArticle->getCommentNewsArticleId(), $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID, $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$commentNewsArticle = new CommentNewsArticle(null, $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
 	$commentNewsArticle->insert($this->getPDO());
 
 	// grab the data from mySQL and enforce the fields match our expectations
-	$pdocommentNewsArticle = commentNewsArticle::getCommentNewsArticleByCommentNewsArticleId($this->getPDO(), $commentNewsArticle->getCommentNewsArticleId());
+	$pdoCommentNewsArticle = CommentNewsArticle::getCommentNewsArticleByCommentNewsArticleId($this->getPDO(), $commentNewsArticle->getCommentNewsArticleId());
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentNewsArticle"));
-	$this->assertEquals($pdocommentNewsArticle->getCommentNewsArticleId(), $this->NewsArticle->getNewsArticleId());
-	$this->assertEquals($pdocommentNewsArticle->getCommentNewsArticleContent(), $this->VALID_COMMENTNEWSARTICLECONTENT);
-	$this->assertEquals($pdocommentNewsArticle->getCommentNewsArticleDateTime(), $this->VALID_COMMENTNEWSARTICLEDATETIME);
-	$this->assertEquals($pdocommentNewsArticle->getCommentNewsArticleNewsArticleId().$this->VALID_COMMENTNEWSARTICLENEWSARTICLEID);
-	$this->assertEquals($pdocommentNewsArticle->getCommentNewsArticleUserId(), $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleContent(), $this->VALID_COMMENTNEWSARTICLECONTENT);
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleDateTime(), $this->VALID_COMMENTNEWSARTICLEDATETIME);
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleNewsArticleId(),$this->newsArticle->getNewsArticleId());
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleUserId(), $this->user->getUserId());
 }
 
 /**
  * test grabbing a commentNewsArticle that does not exist
+ *
+ * 
  **/
 public function testGetInvalidCommentNewsArticleByCommentNewsArticleId() {
 	// grab a profile id that exceeds the maximum allowable profile id
@@ -177,28 +192,28 @@ public function testGetInvalidCommentNewsArticleByCommentNewsArticleId() {
 /**
  * test grabbing a commentNewsArticle by NewsArticle Content
  **/
-public function testGetValidCommentNewsArticleContentByCommentNewsArticleContent() {
+public function testGetValidCommentNewsArticleByCommentNewsArticleContent() {
 	// count the number of rows and save it for later
 	$numRows = $this->getConnection()->getRowCount("CommentNewsArticle");
 
 	// create a new commentNewsArticle and insert to into mySQL
-	$commentNewsArticle = new CommentNewsArticle(null, $this->commentNewsArticleId->getCommentNewsArticleId(), $this->VALID_COMMENTNEWSARTICLEID, $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID, $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$commentNewsArticle = new CommentNewsArticle(null, $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
 	$commentNewsArticle->insert($this->getPDO());
 
 	// grab the data from mySQL and enforce the fields match our expectations
 	$results = CommentNewsArticle::getCommentNewsArticleContentByCommentNewsArticleContent($this->getPDO(), $commentNewsArticle->getCommentNewsArticleContent());
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentNewsArticle"));
 	$this->assertCount(1, $results);
-	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentNewsArticle");
+	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentNewsArticle",$results);
 
 
 	// grab the result from the array and validate it
 	$pdoCommentNewsArticle = $results[0];
-	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleId(), $this->commentNewsArticle->getCommentNewsArticleId());
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleNewsArticleId(), $this->newsArticle->getNewsArticleId());
 	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleContent(), $this->VALID_COMMENTNEWSARTICLECONTENT);
 	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleDateTime(), $this->VALID_COMMENTNEWSARTICLEDATETIME);
-	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleNewsarticleId(), $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID);
-	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleUserId(), $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleNewsarticleId(), $this->newsArticle->getNewsArticleId());
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleUserId(), $this->user->getUserId());
 }
 
 /**
@@ -207,7 +222,7 @@ public function testGetValidCommentNewsArticleContentByCommentNewsArticleContent
 public function testGetInvalidCommentNewsArticleByCommentNewsArticleContent() {
 	// grab a commentNewsArticle by searching for content that does not exist
 	$commentNewsArticle = CommentNewsArticle::getCommentNewsArticleContentByCommentNewsArticleContent($this->getPDO(), "you will find nothing");
-	$this->assertCount(0, $commentNewsArticle);
+	$this->assertCount(0,$commentNewsArticle);
 
 }
 
@@ -219,7 +234,7 @@ public function testGetAllValidCommentNewsArticles() {
 	$numRows = $this->getConnection()->getRowCount("CommentNewsArticle");
 
 	// create a new commentNewsArticle and insert to into mySQL
-	$commentNewsArticle = new CommentNewsArticle(null, $this->commentNewsArticle->getCommentNewsArticleId(), $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID, $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$commentNewsArticle = new CommentNewsArticle(null, $this->VALID_COMMENTNEWSARTICLECONTENT, $this->VALID_COMMENTNEWSARTICLEDATETIME, $this->newsArticle->getNewsArticleId(), $this->user->getUserId());
 	$commentNewsArticle->insert($this->getPDO());
 
 
@@ -227,14 +242,14 @@ public function testGetAllValidCommentNewsArticles() {
 	$results = CommentNewsArticle::getAllCommentNewsArticles($this->getPDO());
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentNewsArticle"));
 	$this->assertCount(1, $results);
-	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentNewsArticle");
+	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentNewsArticle",$results);
 
 	// grab the result from the array and validate it
 	$pdoCommentNewsArticle = $results[0];
-	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleId(), $this->commentNewsArticle->getCommentNewsArticleId());
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleId(), $commentNewsArticle->getCommentNewsArticleId());
 	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleContent(), $this->VALID_COMMENTNEWSARTICLECONTENT);
 	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleDateTime(), $this->VALID_COMMENTNEWSARTICLEDATETIME);
-	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleNewsArticleId(), $this->VALID_COMMENTNEWSARTICLENEWSARTICLEID);
-	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleUserId(), $this->VALID_COMMENTNEWSARTICLEUSERID);
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleNewsArticleId(), $this->newsArticle->getNewsArticleId());
+	$this->assertEquals($pdoCommentNewsArticle->getCommentNewsArticleUserId(), $this->user->getUserId());
 	}
 }
