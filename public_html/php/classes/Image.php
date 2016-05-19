@@ -633,7 +633,7 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getImageByImageSol(\PDO $pdo, int $imageSol) {
+	public static function getImagesByImageSol(\PDO $pdo, int $imageSol) {
 		// sanitize the imageId before searching
 		if($imageSol <= 0) {
 			throw(new \PDOException("image sol is not positive"));
@@ -671,11 +671,32 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 */
-	public static function getImageByImageEarthDate(\PDO $pdo, \DateTime $imageEarthDate) {
+	public static function getImagesByImageEarthDate(\PDO $pdo, \DateTime $imageEarthDate) {
 		// sanitize the imageEarthDate before searching
-		if($imageEarthDate <= 0) {
-			throw(new \PDOException("image earth date is not positive")); // @TODO add this method
+		// TODO: Wait for sanitization method to be written
+
+		// create query template
+		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageEarthDate = :imageEarthDate";
+		$statement = $pdo->prepare($query);
+
+		// bind the image id to the place holder in the template
+		$parameters = array("imageEarthDate" => $imageEarthDate);
+		$statement->execute($parameters);
+
+		//build an array of images
+		$images = new \SplFixedArray(($statement->rowCount()));
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$images[$images->key()] = $image;
+				$images->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
 		}
+		return ($images);
 	}
 		/**
 		 * gets all Images

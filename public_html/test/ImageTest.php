@@ -290,13 +290,13 @@ class ImageTest extends TeamCuriosityTest {
 		$image->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Image::getImageByImageEarthDate($this->getPDO(), $image->getImageEarthDate());
+		$results = Image::getImagesByImageEarthDate($this->getPDO(), $image->getImageEarthDate());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
-		$pdoImage = Image::getImageByImageEarthDate($this->getPDO(), $image->getImageEarthDate());
+		$pdoImage = Image::getImagesByImageEarthDate($this->getPDO(), $image->getImageEarthDate());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
 		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
@@ -322,7 +322,7 @@ class ImageTest extends TeamCuriosityTest {
 		$image->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Image::getImageByImageSol($this->getPDO(), $image->getImageSol());
+		$results = Image::getImagesByImageSol($this->getPDO(), $image->getImageSol());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
