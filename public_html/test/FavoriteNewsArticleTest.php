@@ -119,7 +119,16 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$favoriteNewsArticle = new FavoriteNewsArticle(null, null, $this->VALID_FAVORITENEWSARTICLEDATETIME);
 		$favoriteNewsArticle->delete($this->getPDO());
 	}
-	
+	/**
+	 * test setting the date and time
+	 */
+	public function testSetFavoriteNewsArticleDateTime() {
+		$favoriteNewsArticle = new FavoriteNewsArticle($this->newsArticle->getNewsArticleId(),$this->user->getUserId(),  $this->VALID_FAVORITENEWSARTICLEDATETIME);
+		$newFavoriteNewsArticleDateTime = $this->VALID_FAVORITENEWSARTICLEDATETIME;
+		$favoriteNewsArticle->insert($this->getPDO());
+		$favoriteNewsArticle->setFavoriteNewsArticleDateTime($newFavoriteNewsArticleDateTime);
+
+	}
 	/**
 	 * test grabbing a FavoriteNewsArticle by FavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId
 	 **/
