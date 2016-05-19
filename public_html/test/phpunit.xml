@@ -1,6 +1,6 @@
 <phpunit>
 	<testsuites>
-		<testsuite> name="Team Curiosity Test">
+		<testsuite name="Team Curiosity Test">
 		<file>LoginSourceTest.php</file>
 			<file>UserTest.php</file>
 			<file>ImageTest.php</file>
