@@ -1,7 +1,9 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{User, Image, CommentImage};
+use Edu\Cnm\TeamCuriosity\{
+	LoginSource, User, Image, CommentImage
+};
 
 // grab the test parameters
 require_once("TeamCuriosityTest.php");
@@ -44,6 +46,7 @@ class CommentImageTest extends TeamCuriosityTest {
 	 * @var image Image
 	 **/
 	protected $image = null;
+	protected $loginSource = null;
 
 	/**
 	 * create dependent objects before running test
@@ -53,8 +56,16 @@ class CommentImageTest extends TeamCuriosityTest {
 		parent::setUp();
 
 		// create and insert user to make the comment
-		$this->user = new User(null, "test@phpunit.de", 123456789, "Test Test"); 
+		$this->user = new User(123, "test@phpunit.de", $this->loginSource->getLoginSourceId(), "Test Test");
 		$this->user->insert($this->getPDO());
+		
+		// create and insert image to be commented on
+		$this->image = new Image(null, "TestCamera", "TestDescription", null, "/test/path", 123, "TestTitle", "MIMEtype", "/test/url");
+		$this->image->insert($this->getPDO());
+		
+		// create and insert login source for user
+		$this->loginSource = new LoginSource(234, "123abc", "TestSource");
+		$this->loginSource->insert($this->getPDO());
 
 		// calculate the date, using time the test was set up
 		$this->VALID_COMMENT_IMAGE_DATE_TIME = new \DateTime();
