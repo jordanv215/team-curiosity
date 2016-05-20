@@ -520,7 +520,7 @@ class Image implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the image camera to the place holder in the template
-		$imageCamera = "%imageCamera%";
+		$imageCamera = "%$imageCamera%";
 		$parameters = array("imageCamera" => $imageCamera);
 		$statement->execute($parameters);
 
@@ -673,14 +673,20 @@ class Image implements \JsonSerializable {
 	 */
 	public static function getImagesByImageEarthDate(\PDO $pdo, \DateTime $imageEarthDate) {
 		// sanitize the imageEarthDate before searching
-		// TODO: Wait for sanitization method to be written
+		try {
+			$imageEarthDate = self::validateDate($imageEarthDate);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
 
 		// create query template
 		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageEarthDate = :imageEarthDate";
 		$statement = $pdo->prepare($query);
 
 		// bind the image id to the place holder in the template
-		$parameters = array("imageEarthDate" => $imageEarthDate);
+		$parameters = array("imageEarthDate" => $imageEarthDate->format("Y-m-d H:i:s"));
 		$statement->execute($parameters);
 
 		//build an array of images

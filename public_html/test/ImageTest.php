@@ -296,16 +296,18 @@ class ImageTest extends TeamCuriosityTest {
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
-		$pdoImage = Image::getImagesByImageEarthDate($this->getPDO(), $image->getImageEarthDate());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
-		$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
-		$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
-		$this->assertEquals($pdoImage->getImageEarthDate(), $this->imageEarthDate);
-		$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
-		$this->assertEquals($pdoImage->getImageSol(), $this->VALID_IMAGESOL);
-		$this->assertEquals($pdoImage->getImageTitle(), $this->VALID_IMAGETITLE);
-		$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
-		$this->assertEquals($pdoImage->getImageUrl(), $this->VALID_IMAGEURL);
+		$pdoImages = Image::getImagesByImageEarthDate($this->getPDO(), $image->getImageEarthDate());
+		foreach($pdoImages as $pdoImage) {
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
+			$this->assertEquals($pdoImage->getImageCamera(), $this->VALID_IMAGECAMERA);
+			$this->assertEquals($pdoImage->getImageDescription(), $this->VALID_IMAGEDESCRIPTION);
+			$this->assertEquals($pdoImage->getImageEarthDate(), $this->imageEarthDate);
+			$this->assertEquals($pdoImage->getImagePath(), $this->VALID_IMAGEPATH);
+			$this->assertEquals($pdoImage->getImageSol(), $this->VALID_IMAGESOL);
+			$this->assertEquals($pdoImage->getImageTitle(), $this->VALID_IMAGETITLE);
+			$this->assertEquals($pdoImage->getImageType(), $this->VALID_IMAGETYPE);
+			$this->assertEquals($pdoImage->getImageUrl(), $this->VALID_IMAGEURL);
+		}
 	}
 
 
