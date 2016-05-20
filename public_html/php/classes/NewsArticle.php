@@ -5,13 +5,13 @@ require_once("Autoload.php");
 
 /**
  * News Article
- * 
+ *
  * This class accesses and manipulates the News Article table to provide a feed of scientific news articles related to the Curiosity Mars rover
  * @author Anthony Williams <awilliams144@bcnm.edu>
  * @version 1.0.0
  **/
 class NewsArticle implements \JsonSerializable {
-		use ValidateDate;
+	use ValidateDate;
 	/**
 	 * id for the Article; this is the primary key
 	 * @var int $newsArticleId
@@ -138,7 +138,7 @@ class NewsArticle implements \JsonSerializable {
 		return ($this->newsArticleSynopsis);
 	}
 
-	/** 
+	/**
 	 * mutator method for newsArticleSynopsis
 	 * @param string $newNewsArticleSynopsis new value of News Article Synopsis
 	 * @throws \InvalidArgumentException if $newNewsArticleSynopsis is not a string or insecure
@@ -147,21 +147,20 @@ class NewsArticle implements \JsonSerializable {
 	 **/
 
 	public function setNewsArticleSynopsis(string $newNewsArticleSynopsis) {
-			// verify the newsArticleSynopsis is secure
-			$newNewsArticleSynopsis = trim($newNewsArticleSynopsis);
-			$newNewsArticleSynopsis = filter_var($newNewsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-			if(empty($newNewsArticleSynopsis) === true) {
-				throw(new \InvalidArgumentException("newsArticleSynopsis is empty or insecure"));
-			}
-			// verify the newsArticleSynopsis will fit in the database
-			if(strlen($newNewsArticleSynopsis) > 256) {
-						throw(new \RangeException("newsArticleSynopsis too large"));
-			}
-
-		// store the newsArticleSynopsis;
-			$this->newsArticleSynopsis = $newNewsArticleSynopsis;
+		// verify the newsArticleSynopsis is secure
+		$newNewsArticleSynopsis = trim($newNewsArticleSynopsis);
+		$newNewsArticleSynopsis = filter_var($newNewsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newNewsArticleSynopsis) === true) {
+			throw(new \InvalidArgumentException("newsArticleSynopsis is empty or insecure"));
+		}
+		// verify the newsArticleSynopsis will fit in the database
+		if(strlen($newNewsArticleSynopsis) > 256) {
+			throw(new \RangeException("newsArticleSynopsis too large"));
 		}
 
+		// store the newsArticleSynopsis;
+		$this->newsArticleSynopsis = $newNewsArticleSynopsis;
+	}
 
 
 	/**
@@ -184,21 +183,21 @@ class NewsArticle implements \JsonSerializable {
 
 	public
 	function setNewsArticleUrl(string $newNewsArticleUrl) {
-			// verify the newsArticleUrl is secure
-			$newNewsArticleUrl = trim($newNewsArticleUrl);
-			$newNewsArticleUrl = filter_var($newNewsArticleUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-			if(empty($newNewsArticleUrl) === true) {
-				throw(new \InvalidArgumentException("newsArticleUrl is empty or insecure"));
-			}
-			//verify the newsArticleUrl will fit in the database
-			if(strlen($newNewsArticleUrl) > 256){
-						throw(new \RangeException("newsArticleUrl too large"));
-			}
+		// verify the newsArticleUrl is secure
+		$newNewsArticleUrl = trim($newNewsArticleUrl);
+		$newNewsArticleUrl = filter_var($newNewsArticleUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newNewsArticleUrl) === true) {
+			throw(new \InvalidArgumentException("newsArticleUrl is empty or insecure"));
+		}
+		//verify the newsArticleUrl will fit in the database
+		if(strlen($newNewsArticleUrl) > 256) {
+			throw(new \RangeException("newsArticleUrl too large"));
+		}
 
-			// store the newsArticleUrl;
-			$this->newsArticleUrl = $newNewsArticleUrl;
+		// store the newsArticleUrl;
+		$this->newsArticleUrl = $newNewsArticleUrl;
 
-			}
+	}
 
 	/**
 	 * inserts this Article into mySQL
@@ -284,112 +283,156 @@ class NewsArticle implements \JsonSerializable {
 		$newsArticleSynopsis = trim($newsArticleSynopsis);
 		$newsArticleSynopsis = filter_var($newsArticleSynopsis, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if
-		(empty($newsArticleSynopsis) === true) {
+		(empty($newsArticleSynopsis) === true
+		) {
 			throw(new \PDOException("newsArticleSynopsis is invalid"));
 		}
-				// create query template
-				$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleSynopsis LIKE :newsArticleSynopsis";
-				$statement = $pdo->prepare($query);
+		// create query template
+		$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleSynopsis LIKE :newsArticleSynopsis";
+		$statement = $pdo->prepare($query);
 
-				// bind the newsArticleSynopsis to the place holder in the template
-				$newsArticleSynopsis = "%$newsArticleSynopsis%";
-				$parameters = array("newsArticleSynopsis" => $newsArticleSynopsis);
-				$statement->execute($parameters);
-				// build an array of NewsArticles
-				$newsArticles = new \SplFixedArray($statement->rowCount());
-				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				while(($row = $statement->fetch()) !== false) {
-					try {
-						$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
-						$newsArticles[$newsArticles->key()] = $newsArticle;
-						$newsArticles->next();
-					} catch(\Exception $exception) {
-						// if the row couldn't be converted, rethrow it
-						throw(new \PDOException($exception->getMessage(), 0, $exception));
-					}
-				}
-
-				return ($newsArticles);
-
-			}
-			/**
-			 * gets the newsArticle by newsArticleId
-			 *
-			 * @param \PDO $pdo PDO connection object
-			 * @param int $newsArticleId newsArticleId to search for
-			 * @return NewsArticle|null newsArticle found or null if not found
-			 * @throws \PDOException when mySQL related errors occur
-			 * @throws \TypeError when variables are not the correct data type
-			 **/
-			public
-			static function getNewsArticleByNewsArticleId(\PDO $pdo, int $newsArticleId) {
-				// sanitize the tweetId before searching
-				if($newsArticleId <= 0) {
-					throw(new \PDOException("Article id is not positive"));
-				}
-
-				// create query template
-				$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleId = :newsArticleId";
-				$statement = $pdo->prepare($query);
-
-				// bind the tweet id to the place holder in the template
-				$parameters = array("newsArticleId" => $newsArticleId);
-				$statement->execute($parameters);
-
-				// grab the NewsArticle from mySQL
-				try {
-					$newsArticle = null;
-					$statement->setFetchMode(\PDO::FETCH_ASSOC);
-					$row = $statement->fetch();
-					if($row !== false) {
-						$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
-					}
-				} catch(\Exception $exception) {
-					// if the row couldn't be converted, rethrow it
-					throw(new \PDOException($exception->getMessage(), 0, $exception));
-				}
-				return ($newsArticle);
-			}
-
-			/**
-			 * gets all NewsArticles
-			 *
-			 * @param \PDO $pdo PDO connection object
-			 * @return \SplFixedArray SplFixedArray of NewsArticles found or null if not found
-			 * @throws \PDOException when mySQL related errors occur
-			 * @throws \TypeError when variables are not the correct data type
-			 **/
-			public static function getAllNewsArticles(\PDO $pdo) {
-				// create query template
-				$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle";
-				$statement = $pdo->prepare($query);
-				$statement->execute();
-
-				// build an array of NewsArticles
-				$newsArticles = new \SplFixedArray($statement->rowCount());
-				$statement->setFetchMode(\PDO::FETCH_ASSOC);
-				while(($row = $statement->fetch()) !== false) {
-					try {
-						$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
-						$newsArticles[$newsArticles->key()] = $newsArticle;
-						$newsArticles->next();
-					} catch(\Exception $exception) {
-						// if the row couldn't be converted, rethrow it
-						throw(new \PDOException($exception->getMessage(), 0, $exception));
-					}
-				}
-				return ($newsArticles);
-			}
-
-			/**
-			 * formats the state variables for JSON serialization
-			 *
-			 * @return array resulting state variables to serialize
-			 **/
-			public function jsonSerialize() {
-				$fields = get_object_vars($this);
-				$fields["newsArticleDate"] = intval($this->newsArticleDate->format("U")) * 1000;
-				return ($fields);
+		// bind the newsArticleSynopsis to the place holder in the template
+		$newsArticleSynopsis = "%$newsArticleSynopsis%";
+		$parameters = array("newsArticleSynopsis" => $newsArticleSynopsis);
+		$statement->execute($parameters);
+		// build an array of NewsArticles
+		$newsArticles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticles[$newsArticles->key()] = $newsArticle;
+				$newsArticles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
+
+		return ($newsArticles);
+
+	}
+
+	/**
+	 * gets the newsArticle by newsArticleId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $newsArticleId newsArticleId to search for
+	 * @return NewsArticle|null newsArticle found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getNewsArticleByNewsArticleId(\PDO $pdo, int $newsArticleId) {
+		// sanitize the tweetId before searching
+		if($newsArticleId <= 0) {
+			throw(new \PDOException("Article id is not positive"));
+		}
+
+		// create query template
+		$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleId = :newsArticleId";
+		$statement = $pdo->prepare($query);
+
+		// bind the tweet id to the place holder in the template
+		$parameters = array("newsArticleId" => $newsArticleId);
+		$statement->execute($parameters);
+
+		// grab the NewsArticle from mySQL
+		try {
+			$newsArticle = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($newsArticle);
+	}
+	/**
+	 * gets the newsArticle by newsArticleDate
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param \DateTime $newsArticleDate newsArticleDate to search for
+	 * @return NewsArticle|null newsArticle found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getNewsArticleByNewsArticleDate(\PDO $pdo, \DateTime $newsArticleDate) {
+		// sanitize the newsArticleDate before searching
+		try {
+			$newsArticleDate = self::validateDate($newsArticleDate);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+
+		// create query template
+		$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleDate = :newsArticleDate";
+		$statement = $pdo->prepare($query);
+
+		// bind the tweet id to the place holder in the template
+		$parameters = array("newsArticleDate" => $newsArticleDate->format("Y-m-d H:i:s"));
+		$statement->execute($parameters);
+
+		// grab the NewsArticle from mySQL
+		$newsArticles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticles[$newsArticles->key()] = $newsArticle;
+				$newsArticles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+
+		return ($newsArticles);
+	}
+
+	/**
+	 * gets all NewsArticles
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of NewsArticles found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllNewsArticles(\PDO $pdo) {
+		// create query template
+		$query = "SELECT newsArticleId, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of NewsArticles
+		$newsArticles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$newsArticle = new NewsArticle($row["newsArticleId"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticles[$newsArticles->key()] = $newsArticle;
+				$newsArticles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($newsArticles);
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		$fields["newsArticleDate"] = intval($this->newsArticleDate->format("U")) * 1000;
+		return ($fields);
+	}
+}
 

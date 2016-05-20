@@ -2,6 +2,7 @@
 namespace Edu\Cnm\TeamCuriosity\Test;
 
 use Edu\Cnm\TeamCuriosity\{NewsArticle};
+use MongoDB\BSON\Type;
 
 // grab the project test parameters
 require_once("TeamCuriosityTest.php");
@@ -212,6 +213,43 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$newsArticle = NewsArticle::getNewsArticleByNewsArticleSynopsis($this->getPDO(), "you will find nothing");
 		$this->assertCount(0, $newsArticle);
 		
+	}
+
+	/**
+	 * test grabbing a NewsArticle by NewsArticle Date
+	 **/
+	public function testGetValidNewsArticleByNewsArticleDate() {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("NewsArticle");
+
+		// create a new NewsArticle and insert to into mySQL
+		$newsArticle = new NewsArticle(null,$this->VALID_NEWSARTICLEDATE, $this->VALID_NEWSARTICLESYNOPSIS, $this->VALID_NEWSARTICLEURL);
+		$newsArticle->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = NewsArticle::getNewsArticleByNewsArticleDate($this->getPDO(), $newsArticle->getNewsArticleDate());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("NewsArticle"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\NewsArticle", $results);
+
+		// grab the result from the array and validate it
+		$pdoNewsArticle = $results[0];
+		$this->assertEquals($pdoNewsArticle->getNewsArticleId(), $newsArticle->getNewsArticleId());
+		$this->assertEquals($pdoNewsArticle->getNewsArticleDate(), $this->VALID_NEWSARTICLEDATE);
+		$this->assertEquals($pdoNewsArticle->getNewsArticleSynopsis(), $this->VALID_NEWSARTICLESYNOPSIS);
+		$this->assertEquals($pdoNewsArticle->getNewsArticleUrl(), $this->VALID_NEWSARTICLEURL);
+	}
+
+	/**
+	 * test grabbing a NewsArticle by Date that does not exist
+	 *
+	 * @expectedException \TypeError
+	 **/
+	public function testGetInvalidNewsArticleByNewsArticleDate() {
+		// grab a NewsArticle by searching for a date that does not exist
+		$newsArticle = NewsArticle::getNewsArticleByNewsArticleDate($this->getPDO(), "you will find nothing");
+		$this->assertCount(0, $newsArticle);
+
 	}
 
 	/**
