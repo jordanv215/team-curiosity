@@ -52,7 +52,7 @@ class CommentImage implements \JsonSerializable {
 	 * @throws \TypeError if type hint is violated
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newCommentImageId = null, string $newCommentImageContent, $newCommentImageDateTime = null, int $newCommentImageImageId, int $newCommentImageUserId) {
+	public function __construct(int $newCommentImageId = null, string $newCommentImageContent, \DateTime $newCommentImageDateTime = null, int $newCommentImageImageId, int $newCommentImageUserId) {
 		try {
 			$this->setCommentImageId($newCommentImageId);
 			$this->setCommentImageContent($newCommentImageContent);
@@ -162,7 +162,7 @@ class CommentImage implements \JsonSerializable {
 		}
 		// store the commentImageDateTime
 		try {
-			$newCommentImageDateTime = $this-ValidateDate($newCommentImageDateTime);
+			$newCommentImageDateTime = $this->validateDate($newCommentImageDateTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -279,7 +279,7 @@ class CommentImage implements \JsonSerializable {
 		
 		// bind the member variables to the placeholders in the template
 		$formattedDate = $this->commentImageDateTime->format("Y-m-d H:i:s");
-		$parameters = ["commentImageContent" => $this->commentImageContent, "commentImageDateTime" => $formattedDate, "commentImageImageId => $this->commentImageImageId", "commentImageUserId" => $this->commentImageUserId];
+		$parameters = ["commentImageContent" => $this->commentImageContent, "commentImageDateTime" => $formattedDate, "commentImageImageId" => $this->commentImageImageId, "commentImageUserId" => $this->commentImageUserId];
 		$statement->execute($parameters);
 	}
 	
@@ -305,7 +305,7 @@ class CommentImage implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the comment content to the placeholder in the template
-		$commentImageContent = "%commentImageContent%";
+		$commentImageContent = "%$commentImageContent%";
 		$parameters = array("commentImageContent" => $commentImageContent);
 		$statement->execute($parameters);
 
@@ -314,7 +314,7 @@ class CommentImage implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$commentImage = new CommentImage($row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentImageDateTime"]), $row["commentImageImageId"], $row["commentImageUserId"]);
 				$commentImages[$commentImages->key()] = $commentImage;
 				$commentImages->next();
 			} catch(\Exception $exception) {
@@ -354,7 +354,7 @@ class CommentImage implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentImageDateTime"]), $row["commentImageImageId"], $row["commentImageUserId"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -375,9 +375,8 @@ class CommentImage implements \JsonSerializable {
 	public static function getCommentImageByCommentImageImageId(\PDO $pdo, int $commentImageImageId) {
 		// sanitize input before searching
 		$commentImageImageId = trim($commentImageImageId);
-		$commentImageImageId = filter_var($commentImageImageId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($commentImageImageId) === true) {
-			throw(new \PDOException("image id input is invalid"));
+		if($commentImageImageId === null) {
+			throw(new \PDOException("entry is invalid"));
 		}
 
 		// create query template
@@ -393,7 +392,7 @@ class CommentImage implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentImageDateTime"]), $row["commentImageImageId"], $row["commentImageUserId"]);
 				$commentImages[$commentImages->key()] = $commentImage;
 				$commentImages->next();
 			} catch(\Exception $exception) {
@@ -404,6 +403,46 @@ class CommentImage implements \JsonSerializable {
 		return($commentImages);
 	}
 
+	/**
+	 * gets image comments by commentImageUserId (all the comments by a given user)
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $commentImageUserId id of the user whose comments this method searches for
+	 * @return \SplFixedArray SplFixedArray of comments found
+	 * @throws \PDOException if mySQL-related errors occur
+	 * @throws \TypeError if variables violate type hints
+	 **/
+	public static function getCommentImageByCommentImageUserId(\PDO $pdo, int $commentImageUserId) {
+		// sanitize input before searching
+		$commentImageUserId = trim($commentImageUserId);
+		if($commentImageUserId === null) {
+			throw(new \PDOException("entry is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT commentImageId, commentImageContent, commentImageDateTime, commentImageImageId, commentImageUserId FROM CommentImage WHERE commentImageUserId LIKE :commentImageUserId";
+		$statement = $pdo->prepare($query);
+
+		// bind the image id to the placeholder in the template
+		$parameters = array("commentImageUserId" => $commentImageUserId);
+		$statement->execute($parameters);
+
+		//build an array of image comments
+		$commentImages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentImageDateTime"]), $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImages[$commentImages->key()] = $commentImage;
+				$commentImages->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow the exception
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($commentImages);
+	}
+	
 	/**
 	 * gets all image comments
 	 *
@@ -423,7 +462,7 @@ class CommentImage implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], $row["commentImageDateTime"], $row["commentImageImageId"], $row["commentImageUserId"]);
+				$commentImage = new CommentImage($row["commentImageId"], $row["commentImageContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentImageDateTime"]), $row["commentImageImageId"], $row["commentImageUserId"]);
 				$commentImages[$commentImages->key()] = $commentImage;
 				$commentImages->next();
 			} catch(\Exception $exception) {
