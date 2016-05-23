@@ -34,7 +34,7 @@ try {
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" ||  $method === "PUT") && (empty($id) === true || $id < 0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
@@ -67,17 +67,65 @@ try {
 			throw(new \InvalidArgumentException ("No content for this Image Comment.", 405));
 		}
 
-	//perform the actual put or post
-	if($method === "PUT") {
-		// retrieve the commentImage to update
-		$commentImage = TeamCuriosity::getCommentImageByCommentImageId($pdo, $id);
-		if($commentImage === null) {
-			throw(new RuntimeException("commentImag does not exist", 404));
+		//perform the actual put or post
+		if($method === "PUT") {
+			// retrieve the commentImage to update
+			$commentImage = TeamCuriosity::getCommentImageByCommentImageId($pdo, $id);
+			if($commentImage === null) {
+				throw(new RuntimeException("commentImag does not exist", 404));
+			}
+
+			// put the new commentImage content into the comment and update
+			$commentImage->setCommentImageContent($requestObject->commentImageContent);
+			$commentImage->update($pdo);
+
+			//update reply
+			$reply->message = "Image Content Updated Ok";
+
+		} else if($method === "POST") {
+			//make sure commentImageUserId is available
+			if(empty($requestObject->profileId) === true) {
+				throw(new \InvalidArgumentException ("No User ID.", 405));
+			}
+
+			//create new user and insert into the database
+			$commentImage = new TeamCuriosity\commentImage(null, $requestObject->userId, $requestObject->commentImageContent, null);
+			$commentImage->insert($pdo);
+
+			//update reply
+			$reply->message = "Image Comment created OK";
+		} else if($method === "DELETE") {
+			verifyXsrf();
+
+			// retrieve the image comment to be deleted
+			$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageId($pdo, $id);
+			if($commentImage === null) {
+				throw(new RuntimeException("Image comment does not exist", 404));
+			}
+
+			//delete the comment
+			$commentImage->delete($pdo);
+
+			//update reply
+			$reply->message = "Comment deleted OK";
+		} else {
+			throw (new InvalidArgumentException("Invalid HTTP method request"));
 		}
-
-		// put the new commentImage content into the comment and update
-		$commentImage->set
+		// update reply with exception information
 	}
-	}
-
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+	$reply->trace = $exception->getTraceAsString();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
 }
+
+header("Content-Type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+//encode and return reply to front end caller
+echo json_encode($reply);
