@@ -1,10 +1,10 @@
 <?php
 
-require_once "autoloader.php";
-require_once "/lib/xsrf.php";
-require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
+require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
+require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\TeamCuriosity;
+use Edu\Cnm\TeamCuriosity\CommentImage;
 
 
 /**
@@ -46,18 +46,20 @@ try {
 
 		//get a specific comment or all comments and update reply
 		if(empty($id) === false) {
-			$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageId($pdo, $id);
+			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $id);
 			if($commentImage !== null) {
 				$reply->data = $commentImage;
 			}
+
 		} else {
-			$commentImages = TeamCuriosity\commentImage::getAllCommentImage($pdo);
+			$commentImages = CommentImage::getAllCommentImage($pdo);
 			if($commentImages !== null) {
 				$reply->data = $commentImages;
 			}
 			//WHY IS THIS ERROR HAPPENING IM SO GOD DAMN CONFUSED
-		} else {
-			$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageContent($pdo);
+			// D'awww :( *hug* - dmcdonald21
+		} else{
+			$commentImage = CommentImage::getCommentImageByCommentImageContent($pdo);
 			if($commentImage !== null) {
 				$reply->data = $commentImage;
 			}
@@ -77,7 +79,7 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the commentImage to update
-			$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageId($pdo, $id);
+			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $id);
 			if($commentImage === null) {
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
@@ -96,7 +98,7 @@ try {
 			}
 
 			//create new user and insert into the database
-			$commentImage = new TeamCuriosity\commentImage(null, $requestObject->userId, $requestObject->commentImageContent, null);
+			$commentImage = new CommentImage(null, $requestObject->userId, $requestObject->commentImageContent, null);
 			$commentImage->insert($pdo);
 
 			//update reply
@@ -105,7 +107,7 @@ try {
 			verifyXsrf();
 
 			// retrieve the image comment to be deleted
-			$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageId($pdo, $id);
+			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $id);
 			if($commentImage === null) {
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
