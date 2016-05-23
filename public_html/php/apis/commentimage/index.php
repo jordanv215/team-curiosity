@@ -55,13 +55,14 @@ try {
 			if($commentImages !== null) {
 				$reply->data = $commentImages;
 			}
+			//WHY IS THIS ERROR HAPPENING IM SO GOD DAMN CONFUSED
+		} else {
+			$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageContent($pdo);
+			if($commentImage !== null) {
+				$reply->data = $commentImage;
+			}
 		}
-		/**
-		 * else {
-		$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageContent($pdo);
-		if($commentImage !== null) {
-		$reply->data = $commentImage;
-		 **/
+
 	} else if($method === "PUT" || $method === "POST") {
 
 		verifyXsrf();
