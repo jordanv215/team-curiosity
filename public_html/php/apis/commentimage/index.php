@@ -1,6 +1,6 @@
 <?php
 
-require_once "../../classes/Autoload.php";
+require_once "../../classes/Autoloader.php";
 require_once "/lib/xsrf.php";
 require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
 
@@ -51,9 +51,9 @@ try {
 				$reply->data = $commentImage;
 			}
 		} else {
-			$commentImage = TeamCuriosity\commentImage::getAllCommentImage($pdo);
-			if($commentImage !== null) {
-				$reply->data = $commentImage;
+			$commentImages = TeamCuriosity\commentImage::getAllCommentImage($pdo);
+			if($commentImages !== null) {
+				$reply->data = $commentImages;
 			}
 		}
 	} else if($method === "PUT" || $method === "POST") {
