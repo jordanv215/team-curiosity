@@ -56,6 +56,12 @@ try {
 				$reply->data = $commentImages;
 			}
 		}
+		/**
+		 * else {
+		$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageContent($pdo);
+		if($commentImage !== null) {
+		$reply->data = $commentImage;
+		 **/
 	} else if($method === "PUT" || $method === "POST") {
 
 		verifyXsrf();
