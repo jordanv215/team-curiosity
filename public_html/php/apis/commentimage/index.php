@@ -25,7 +25,7 @@ $reply->data = null;
 
 try {
 	//grab my mySQL Connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/commentimage.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/commentImage.ini");
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -70,9 +70,9 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the commentImage to update
-			$commentImage = TeamCuriosity::getCommentImageByCommentImageId($pdo, $id);
+			$commentImage = TeamCuriosity\commentImage::getCommentImageByCommentImageId($pdo, $id);
 			if($commentImage === null) {
-				throw(new RuntimeException("commentImag does not exist", 404));
+				throw(new RuntimeException("Image comment does not exist", 404));
 			}
 
 			// put the new commentImage content into the comment and update
