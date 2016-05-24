@@ -8,7 +8,7 @@ use Edu\Cnm\TeamCuriosity\CommentImage;
 
 
 /**
- * api for the commentImage class
+ * REST api for the CommentImage class
  *
  * @author Jordan Vinson <jvinson3@cnm.edu>
  **/
@@ -31,11 +31,11 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$commentImageId = filter_input(INPUT_GET, "CommentImageId", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+	if(($method === "DELETE" || $method === "PUT") && (empty($commentImageId) === true || $commentImageId < 0)) {
+		throw(new InvalidArgumentException("Comment id cannot be empty or negative", 405));
 	}
 
 
@@ -45,8 +45,8 @@ try {
 		setXsrfCookie();
 
 		//get a specific comment or all comments and update reply
-		if(empty($id) === false) {
-			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $id);
+		if(empty($commentImageId) === false) {
+			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
 			if($commentImage !== null) {
 				$reply->data = $commentImage;
 			}
@@ -58,7 +58,6 @@ try {
 			}
 		}
 	} else if($method === "PUT" || $method === "POST") {
-
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
@@ -68,10 +67,21 @@ try {
 			throw(new \InvalidArgumentException ("No content for this Image Comment.", 405));
 		}
 
+		//make sure comment image dateTime is available
+		if(empty($requestObject->commentImageDateTime) === true) {
+			throw(new \invalidArgumentException ("No DateTime for this image comment.", 405));
+		}
+
+		//retrieve the image id to update
+		$commentImage = TeamCuriosity\CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
+		if($commentImage === null) {
+			throw(new \RuntimeException("No valid image to update"));
+		}
+
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the commentImage to update
-			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $id);
+			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
 			if($commentImage === null) {
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
@@ -85,7 +95,7 @@ try {
 
 		} else if($method === "POST") {
 			//make sure commentImageUserId is available
-			if(empty($requestObject->userId) === true) {
+			if(empty($requestObject->commentImageId) === true) {
 				throw(new \InvalidArgumentException ("No User ID.", 405));
 			}
 
@@ -99,7 +109,7 @@ try {
 			verifyXsrf();
 
 			// retrieve the image comment to be deleted
-			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $id);
+			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $userId);
 			if($commentImage === null) {
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
