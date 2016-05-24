@@ -85,7 +85,7 @@ try {
 
 		} else if($method === "POST") {
 			//make sure commentImageUserId is available
-			if(empty($requestObject->profileId) === true) {
+			if(empty($requestObject->userId) === true) {
 				throw(new \InvalidArgumentException ("No User ID.", 405));
 			}
 
