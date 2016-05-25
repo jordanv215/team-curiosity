@@ -21,3 +21,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+try {
+	//grab the mySQL connection
+	$pdo = connectToEncryptedMySQL("/etc/apache2/teamcuriosity-mysql/newsArticle.ini");
+	
