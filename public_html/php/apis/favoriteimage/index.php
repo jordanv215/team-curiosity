@@ -4,7 +4,7 @@ require_once "autoloader.php";
 require_once "/lib/xsrf.php";
 require_once("etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\TeamCuriosity\FavoriteImage;
+use Edu\Cnm\TeamCuriosity;
 
 /**
  * api for the FavoriteImage class
@@ -27,7 +27,7 @@ try {
 		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/favoriteImage.ini");
 
 		// determine which HTTP method was used
-		$method = array_key_exists("HTTP_X_METHOD", $_SERVER) ? $_SERVER["HTTP_X_METHOD"] : $_SERVER["REQUEST_METHOD"];
+		$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 		// handle GET request
 		if($method === "GET") {
@@ -35,10 +35,95 @@ try {
 					setXsrfCookie();
 			
 					// get a specific favorite Image or all favorite images and update 
-					if(empty($favoriteImageImageId || $favoriteImageUserId) === false) {
+					if(empty($favoriteImageImageId) === false || empty($favoriteImageUserId) === false) {
 								$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($pdo, $favoriteImageImageId, $favoriteImageUserId);
+								if($favoriteImage !== null) {
+									$reply->data = $favoriteImage;
+								}
+					}  else {
+								$favoriteImages = TeamCuriosity\FavoriteImage::getAllFavoriteImages($pdo);
+								if($favoriteImages !== null) {
+										$reply->data = $favoriteImages;
+								}
 					}
-		}
+	} else if($method === "PUT" || $method === "POST") {
+
+						verifyXsrf();
+						$requestContent = file_get_contents("php://input");
+						$requestObject = json_decode($requestContent);
+
+						//make sure favorite image is available
+						if(empty($requestObject->favoriteImageDateTime) === true) {
+		throw(new \InvalidArgumentException ("No content for Tweet.", 405));
+	}
 
 
+	//perform the actual put or post
+	if($method === "PUT") {
+
+						// retrieve the favorite image to update
+						$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($pdo, $favoriteImageImageId, $favoriteImageUserId);
+						if($favoriteImage === null) {
+							throw(new RuntimeException("FavoriteImage does not exist", 404));
+						}
+
+						// put the new tweet content into the tweet and update
+						$favoriteImage->setFavoriteImageDateTime($requestObject->imageDateTime);
+						$favoriteImage->update($pdo);
+
+						// update reply
+						$reply->message = "Favorite image has been updated";
+
+	} else if($method === "POST") {
+
+			//  make sure favoriteImageImageId and favoriteImageUserId are available
+			if(empty($requestObject->favoriteImageImageId) === true || empty($requestObject->favoriteImageUserId)) {
+					throw(new \InvalidArgumentException ("Id doesn't exist.", 405));
+			}
+
+			// create new favorite image and insert into the database
+			$favoriteImage = new TeamCuriosity\FavoriteImage($requestObject->favoriteImageImageId, $requestObject->favoriteImageUserId, null);
+			$favoriteImage->insert($pdo);
+
+			// update reply
+			$reply->message = "FavoriteImage created OK";
+	}
+
+	} else if($method === "DELETE") {
+			verifyXsrf();
+
+			// retrieve the Tweet to be deleted
+			$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($pdo, $favoriteImageImageId, $favoriteImageUserId);
+			if($favoriteImage === null) {
+				throw(new RuntimeException("FavoriteImage does not exist", 404));
+			}
+
+			// delete favorite image
+			$favoriteImage->delete($pdo);
+
+			// update reply
+			$reply->message = "Favorite image deleted OK";
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
+	}
+
+	// update reply with exception information
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+	$reply->trace = $exception->getTraceAsString();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
 }
+
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+// encode and return reply to front end caller
+echo json_encode($reply);
+
+
+
