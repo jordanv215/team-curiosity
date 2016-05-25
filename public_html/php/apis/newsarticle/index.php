@@ -17,3 +17,4 @@ use Edu\Cnm\TeamCuriosity;
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
+//prepare an empty reply
