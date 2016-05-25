@@ -12,3 +12,7 @@ use Edu\Cnm\TeamCuriosity;
  *
  * @author Anthony Williams <awilliams144@cnm.edu>
  **/
+//verify the session, start if not active
+if(session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
