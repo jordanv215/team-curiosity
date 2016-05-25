@@ -66,6 +66,8 @@ try {
 			// put the new newsArticle synopsis into the newsArticle and update
 			$newsArticle->setNewsArticleSynopsis($requestObject->newsArticleSynopsis);
 			$newsArticle->update($pdo);
+			// update reply
+			$reply->message = "NewsArticle updated OK";
 
 
 
