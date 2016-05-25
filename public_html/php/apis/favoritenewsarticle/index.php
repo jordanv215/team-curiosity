@@ -75,6 +75,13 @@ try {
 				// create new favoriteNewsArticle and insert into the database
 				$favoriteNewsArticle = new TeamCuriosity\FavoriteNewsArticle(null, $requestObject->favoriteNewsArticleNewsArticleId, $requestObject->favoriteNewsArticleDateTime,  $requestObject->favoriteNewsArticleUserId);
 				$favoriteNewsArticle->insert($pdo);
+				// update reply
+				$reply->message = "FavoriteNewsArticle created OK";
+			}
+
+		} else if($method === "DELETE") {
+			verifyXsrf();
+
 		}
 
 
