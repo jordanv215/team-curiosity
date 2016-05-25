@@ -2,15 +2,18 @@
 
 require_once "autoloader.php";
 require_once "/lib/xsrf.php";
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/teamcuriosity-mysql/encrypted-config.php");
 
-use Edu\Cnm\Dmcdonald21\DataDesign;
+use Edu\Cnm\TeamCuriosity;
 
 
 /**
- * api for the Tweet class
+ * api for the NewsArticle class
  *
- * @author Derek Mauldin <derek.e.mauldin@gmail.com>
+ * @author Anthony Williams <awilliams144@cnm.edu>
  **/
 
 //verify the session, start if not active
+if(session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
