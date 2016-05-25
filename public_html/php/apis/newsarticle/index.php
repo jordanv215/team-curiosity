@@ -80,6 +80,14 @@ try {
 			// update reply
 		$reply->message = "NewsArticle created OK";
 	}
+	} else if($method === "DELETE") {
+		verifyXsrf();
+		// retrieve the NewsArticle to be deleted
+		$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $id);
+		if($newsArticle === null) {
+			throw(new RuntimeException("NewsArticle does not exist", 404));
+		}
+
 
 
 
