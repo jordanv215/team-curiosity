@@ -81,6 +81,11 @@ try {
 
 		} else if($method === "DELETE") {
 			verifyXsrf();
+			// retrieve the FavoriteNewsArticle to be deleted
+			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByNewsArticleId($pdo, $id);
+			if($favoriteNewsArticle === null) {
+				throw(new RuntimeException("FavoriteNewsArticle does not exist", 404));
+			}
 
 		}
 
