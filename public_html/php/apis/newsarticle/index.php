@@ -94,6 +94,15 @@ try {
 	   } else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	   }
+      // update reply with exception information
+     } catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+	$reply->trace = $exception->getTraceAsString();
+    } catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+    }
 
 
 
