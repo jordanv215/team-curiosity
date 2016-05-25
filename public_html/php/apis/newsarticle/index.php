@@ -63,6 +63,10 @@ try {
 			if($newsArticle === null) {
 				throw(new RuntimeException("NewsArticle does not exist", 404));
 			}
+			// put the new newsArticle synopsis into the newsArticle and update
+			$newsArticle->setNewsArticleSynopsis($requestObject->newsArticleSynopsis);
+			$newsArticle->update($pdo);
+
 
 
 
