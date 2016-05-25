@@ -13,12 +13,12 @@ use Edu\Cnm\TeamCuriosity\FavoriteImage;
  **/
 
 // verify the session, start if not active
-if(FavoriteImage_status() !== PHP_SESSION_ACTIVE) {
+if(session_status() !== PHP_SESSION_ACTIVE) {
 		session_start();
 }
 
 // prepare an empty reply
-$reply = new FavoriteImage();
+$reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
@@ -30,7 +30,7 @@ try {
 		$method = array_key_exists("HTTP_X_METHOD", $_SERVER) ? $_SERVER["HTTP_X_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 		// handle GET request
-		if($getAllFavoriteImages === "GET") {
+		if($method === "GET") {
 					// set XSRF cookie
 					setXsrfCookie();
 			
