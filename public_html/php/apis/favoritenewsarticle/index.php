@@ -86,7 +86,13 @@ try {
 			if($favoriteNewsArticle === null) {
 				throw(new RuntimeException("FavoriteNewsArticle does not exist", 404));
 			}
-
+      // delete favoriteNewsArticle
+			$favoriteNewsArticle->delete($pdo);
 		}
+		// update reply
+		$reply->message = "FavoriteNesArticle deleted OK";
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
+	}
 
 
