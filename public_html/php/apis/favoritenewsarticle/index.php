@@ -90,7 +90,7 @@ try {
 			$favoriteNewsArticle->delete($pdo);
 		}
 		// update reply
-		$reply->message = "FavoriteNesArticle deleted OK";
+		$reply->message = "FavoriteNewsArticle deleted OK";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
