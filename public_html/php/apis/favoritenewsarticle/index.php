@@ -47,3 +47,8 @@ try {
 				$reply->data = $favoriteNewsArticles;
 			}
 		}
+	} else if($method === "PUT" || $method === "POST") {
+		verifyXsrf();
+		$requestUrl = file_get_contents("php://input");
+		$requestObject = json_decode($requestUrl);
+		
