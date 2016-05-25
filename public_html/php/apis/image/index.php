@@ -31,10 +31,11 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$ImageId = filter_input(INPUT_GET, "ImageId", FILTER_VALIDATE_INT);
+	$imageId = filter_input(INPUT_GET, "imageId", FILTER_VALIDATE_INT);
+	$imageUrl = filter_input(INPUT_GET, "imageUrl", FILTER_VALIDATE_STRING);
 
 	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($ImageId) === true || $ImageId <= 0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($imageId) === true || $imageId <= 0)) {
 		throw(new InvalidArgumentException("Image id cannot be empty or negative", 405));
 	}
 
@@ -46,10 +47,29 @@ try {
 
 		//get a specific image and update reply
 		if(empty($ImageId) === false) {
-			$Image = Image::getImageByImageId($pdo, $ImageId);
-			if($Image !== null) {
-				$reply->data = $Image;
+			$image = Image::getImageByImageId($pdo, $imageId);
+			if($image !== null) {
+				$reply->data = $image;
 			}
+
+		} else if(empty($imageCamera) === false) {
+			$image = Image::getImageByImageCamera($pdo, $imageCamera);
+			if($image !== null) {
+				$reply->data = $image;
+			}
+
+		} else if(empty($imageDescription) === false) {
+			$image = Image::getImageByImageDescription($pdo, $imageDescription);
+			if($image !== null) {
+				$reply->data = $image;
+			}
+
+		} else if(empty($imageTitle) === false) {
+			$image = Image::getImageByImageTitle($pdo, $imageTitle);
+			if($image !== null) {
+				$reply->data = $image;
+			}
+
 
 		} else {
 			$Images = Image::getAllImages($pdo);
@@ -105,14 +125,14 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the Image to update
-			$Image = Edu\Cnm\TeamCuriosity\Image::getImageByImageId($pdo, $ImageId);
-			if($Image === null) {
+			$image = Edu\Cnm\TeamCuriosity\Image::getImageByImageId($pdo, $imageId);
+			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
 			}
 
 			// put the new image functions
-			$Image->setImageTitle($requestObject->imageTitle);
-			$Image->setImageDescription($requestObject->imageDescription);
+			$image->setImageTitle($requestObject->imageTitle);
+			$image->setImageDescription($requestObject->imageDescription);
 			$image->setImageCamera($requestObject->imageCamera);
 			$image->setImageEarthDate($requestObject->imageEarthDate);
 			$image->setImageSol($requestObject->imageSol);
@@ -131,8 +151,8 @@ try {
 			}
 
 			//create new Image and insert into the database
-			$Image = new Image(null, $requestObject->imageId, $requestObject->image, null);
-			$Image->insert($pdo);
+			$image = new Image(null, $requestObject->imageId, $requestObject->image, null);
+			$image->insert($pdo);
 
 			//update reply
 			$reply->message = "Image created OK";
@@ -140,13 +160,13 @@ try {
 			verifyXsrf();
 
 			// retrieve the image comment to be deleted
-			$Image = Image::getImageByImageId($pdo, $userId);
-			if($Image === null) {
+			$image = Image::getImageByImageId($pdo, $userId);
+			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
 			}
 
 			//delete the Image
-			$Image->delete($pdo);
+			$image->delete($pdo);
 
 			//update reply
 			$reply->message = "Image deleted OK";
