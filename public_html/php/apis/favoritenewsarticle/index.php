@@ -35,3 +35,15 @@ try {
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
+		//get a specific favoriteNewsArticle or all favoriteNewsArticles and update reply
+		if(empty($id) === false) {
+			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByNewsArticleId($pdo, $id);
+			if($favoriteNewsArticle !== null) {
+				$reply->data = $favoriteNewsArticle;
+			}
+		} else {
+			$favoriteNewsArticles = TeamCuriosity\FavoriteNewsArticle::getAllFavoriteNewsArticles($pdo);
+			if($favoriteNewsArticles !== null) {
+				$reply->data = $favoriteNewsArticles;
+			}
+		}
