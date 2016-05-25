@@ -89,6 +89,11 @@ try {
 		}
       // delete newsArticle
 		$newsArticle->delete($pdo);
+      // update reply
+		$reply->message = "NewsArticle deleted OK";
+	   } else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
+	   }
 
 
 
