@@ -16,3 +16,15 @@ use Edu\Cnm\TeamCuriosity;
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
+//prepare an empty reply
+$reply = new stdClass();
+$reply->status = 200;
+$reply->data = null;
+try {
+	//grab the mySQL connection
+	$pdo = connectToEncryptedMySQL("/etc/apache2/teamcuriosity-mysql/favoriteNewsArticle.ini");
+	//determine which HTTP method was used
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+//sanitize input
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	
