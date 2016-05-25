@@ -68,7 +68,9 @@ try {
 			$newsArticle->update($pdo);
 			// update reply
 			$reply->message = "NewsArticle updated OK";
+		} else if($method === "POST") {
 
+		
 
 
 
