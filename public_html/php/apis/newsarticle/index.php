@@ -72,7 +72,13 @@ try {
         // make sure newsArticleId is available
 			if(empty($requestObject->newsArticleId) === true) {
 				throw(new \InvalidArgumentException ("No NewsArticle ID.", 405));
-		
+			}
+
+			// create new newsArticle and insert into the database
+			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->NewsArticleId, $requestObject->newsArticleDate, null); $requestObject->newsArticleSynopsis, null); $requestObject->newsArticleUrl, null);
+			$newsArticle->insert($pdo);
+			
+
 
 
 
