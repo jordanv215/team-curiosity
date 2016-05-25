@@ -18,3 +18,6 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 //prepare an empty reply
+$reply = new stdClass();
+$reply->status = 200;
+$reply->data = null;
