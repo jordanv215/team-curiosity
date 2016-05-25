@@ -77,7 +77,9 @@ try {
 			// create new newsArticle and insert into the database
 			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->NewsArticleId, $requestObject->newsArticleDate, null); $requestObject->newsArticleSynopsis, null); $requestObject->newsArticleUrl, null);
 			$newsArticle->insert($pdo);
-			
+			// update reply
+		$reply->message = "NewsArticle created OK";
+	}
 
 
 
