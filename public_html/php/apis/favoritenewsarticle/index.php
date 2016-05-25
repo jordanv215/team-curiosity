@@ -55,6 +55,9 @@ try {
 		if(empty($requestObject->favoriteNewsArticleUrl) === true) {
 			throw(new \InvalidArgumentException ("No Url for FavoriteNewsArticle.", 405));
 		}
-		// put the new favoriteNewsArticle Url into the favoriteNewsArticle and update
+		//perform the actual put or post
+		if($method === "PUT") {
+
+			// put the new favoriteNewsArticle Url into the favoriteNewsArticle and update
 		$favoriteNewsArticle->setFavoriteNewsArticleUrl($requestObject->favoriteNewsArticleUrl);
 		$favoriteNewsArticle->update($pdo)
