@@ -26,3 +26,5 @@ try {
 	$pdo = connectToEncryptedMySQL("/etc/apache2/teamcuriosity-mysql/newsArticle.ini");
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	//sanitize input
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
