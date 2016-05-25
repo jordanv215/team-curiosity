@@ -82,14 +82,10 @@ try {
 			throw(new \InvalidArgumentException ("No type for this Image.", 405));
 		}
 
-		//make sure image description is available
-		if(empty($requestObject->imageDescryption) === true) {
-			throw(new \InvalidArgumentException ("No description for this Image.", 405));
-		}
 
 		//make sure image sol is available
 		if(empty($requestObject->imageSol) === true) {
-			throw(new \InvalidArgumentException ("No Sol for this Image.", 405));
+			throw(new \InvalidArgumentException ("No Mars Sol for this Image.", 405));
 		}
 
 		//make sure image earth date is available
@@ -97,7 +93,7 @@ try {
 			throw(new \InvalidArgumentException ("No Earth date for this Image.", 405));
 		}
 
-		//make sure image url is available
+		//make sure image local path is available
 		if(empty($requestObject->imagePath) === true) {
 			throw(new \InvalidArgumentException ("No path for this Image.", 405));
 		}
@@ -114,9 +110,16 @@ try {
 				throw(new RuntimeException("Image does not exist", 404));
 			}
 
-			// put the new commentImage content into the comment and update
-			$commentImage->setCommentImageContent($requestObject->commentImageContent);
-			$commentImage->update($pdo);
+			// put the new image functions
+			$Image->setImageTitle($requestObject->imageTitle);
+			$Image->setImageDescription($requestObject->imageDescription);
+			$image->setImageCamera($requestObject->imageCamera);
+			$image->setImageEarthDate($requestObject->imageEarthDate);
+			$image->setImageSol($requestObject->imageSol);
+			$image->setImagePath($requestObject->imagePath);
+			$image->setImageType($requestObject->imageObject);
+			$image->setImageUrl($requestObject->imageUrl);
+			$image->update($pdo);
 
 			//update reply
 			$reply->message = "Image Updated Ok";
