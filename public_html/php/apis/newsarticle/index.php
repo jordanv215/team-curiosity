@@ -42,7 +42,7 @@ try {
 			if($newsArticle !== null) {
 				$reply->data = $newsArticle;
 			}
-		}  else {
+		} else {
 			$newsArticles = TeamCuriosity\NewsArticle::getAllNewsArticles($pdo);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
@@ -55,7 +55,7 @@ try {
 //make sure newsArticle synopsis is available
 		if(empty($requestObject->newsArticleSynopsis) === true) {
 			throw(new \InvalidArgumentException ("No synopsis for NewsArticle.", 405));
-	}
+		}
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the newsArticle to update
@@ -69,13 +69,14 @@ try {
 			// update reply
 			$reply->message = "NewsArticle updated OK";
 		} else if($method === "POST") {
-        // make sure newsArticleId is available
+			// make sure newsArticleId is available
 			if(empty($requestObject->newsArticleId) === true) {
 				throw(new \InvalidArgumentException ("No NewsArticle ID.", 405));
 			}
 
 			// create new newsArticle and insert into the database
-			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->NewsArticleId, $requestObject->newsArticleDate, null); $requestObject->newsArticleSynopsis, null); $requestObject->newsArticleUrl, null);
+			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->NewsArticleId, $requestObject->newsArticleDate, null);
+			$requestObject->newsArticleSynopsis; $requestObject->newsArticleUrl;
 			$newsArticle->insert($pdo);
 			// update reply
 		$reply->message = "NewsArticle created OK";
@@ -87,29 +88,29 @@ try {
 		if($newsArticle === null) {
 			throw(new RuntimeException("NewsArticle does not exist", 404));
 		}
-      // delete newsArticle
+		// delete newsArticle
 		$newsArticle->delete($pdo);
-      // update reply
+		// update reply
 		$reply->message = "NewsArticle deleted OK";
-	   } else {
+	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
-	   }
-      // update reply with exception information
-     } catch(Exception $exception) {
+	}
+	// update reply with exception information
+} catch(Exception $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 	$reply->trace = $exception->getTraceAsString();
-    } catch(TypeError $typeError) {
+} catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
-    }
-   header("Content-type: application/json");
-    if($reply->data === null) {
+}
+header("Content-type: application/json");
+if($reply->data === null) {
 	unset($reply->data);
-   }
+}
 
-    // encode and return reply to front end caller
-    echo json_encode($reply);
+// encode and return reply to front end caller
+echo json_encode($reply);
 
 
 
