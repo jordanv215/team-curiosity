@@ -51,4 +51,10 @@ try {
 		verifyXsrf();
 		$requestUrl = file_get_contents("php://input");
 		$requestObject = json_decode($requestUrl);
-		
+		//make sure favoriteNewsArticle Url is available
+		if(empty($requestObject->favoriteNewsArticleUrl) === true) {
+			throw(new \InvalidArgumentException ("No Url for FavoriteNewsArticle.", 405));
+		}
+		// put the new favoriteNewsArticle Url into the favoriteNewsArticle and update
+		$favoriteNewsArticle->setFavoriteNewsArticleUrl($requestObject->favoriteNewsArticleUrl);
+		$favoriteNewsArticle->update($pdo)

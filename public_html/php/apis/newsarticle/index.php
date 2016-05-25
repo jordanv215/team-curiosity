@@ -52,7 +52,7 @@ try {
 		verifyXsrf();
 		$requestSynopsis = file_get_contents("php://input");
 		$requestObject = json_decode($requestSynopsis);
-//make sure newsArticle synopsis is available
+		//make sure newsArticle synopsis is available
 		if(empty($requestObject->newsArticleSynopsis) === true) {
 			throw(new \InvalidArgumentException ("No synopsis for NewsArticle.", 405));
 		}
@@ -76,11 +76,12 @@ try {
 
 			// create new newsArticle and insert into the database
 			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->NewsArticleId, $requestObject->newsArticleDate, null);
-			$requestObject->newsArticleSynopsis; $requestObject->newsArticleUrl;
+			$requestObject->newsArticleSynopsis;
+			$requestObject->newsArticleUrl;
 			$newsArticle->insert($pdo);
 			// update reply
-		$reply->message = "NewsArticle created OK";
-	}
+			$reply->message = "NewsArticle created OK";
+		}
 	} else if($method === "DELETE") {
 		verifyXsrf();
 		// retrieve the newsArticle to be deleted
