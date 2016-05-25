@@ -127,26 +127,26 @@ try {
 				throw(new \InvalidArgumentException ("No User ID.", 405));
 			}
 
-			//create new user and insert into the database
-			$commentImage = new CommentImage(null, $requestObject->userId, $requestObject->commentImageContent, null);
-			$commentImage->insert($pdo);
+			//create new Image and insert into the database
+			$Image = new Image(null, $requestObject->imageId, $requestObject->image, null);
+			$Image->insert($pdo);
 
 			//update reply
-			$reply->message = "Image Comment created OK";
+			$reply->message = "Image created OK";
 		} else if($method === "DELETE") {
 			verifyXsrf();
 
 			// retrieve the image comment to be deleted
-			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $userId);
-			if($commentImage === null) {
-				throw(new RuntimeException("Image comment does not exist", 404));
+			$Image = Image::getImageByImageId($pdo, $userId);
+			if($Image === null) {
+				throw(new RuntimeException("Image does not exist", 404));
 			}
 
-			//delete the comment
-			$commentImage->delete($pdo);
+			//delete the Image
+			$Image->delete($pdo);
 
 			//update reply
-			$reply->message = "Comment deleted OK";
+			$reply->message = "Image deleted OK";
 		} else {
 			throw (new InvalidArgumentException("Invalid HTTP method request"));
 		}
