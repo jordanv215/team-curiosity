@@ -2,7 +2,7 @@
 
 require_once "autoloader.php";
 require_once "/lib/xsrf.php";
-require_once("/etc/apache2/teamcuriosity-mysql/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity;
 
@@ -13,38 +13,38 @@ use Edu\Cnm\TeamCuriosity;
  **/
 
 // verify the session, start if not active
-if(getAllCommentNewsArticles_status() !== PHP_SESSION_ACTIVE) {
+if(session_status() !== PHP_SESSION_ACTIVE) {
 		session_start();
 }
 
 // prepare an empty reply
-$reply = new commentNewsArticle();
-$reply->status = 1024;
+$reply = new stdClass();
+$reply->status = 200;
 $reply->data = null;
 
 try {
 	// grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/teamcuriosity-mysql/commentNewsArticle.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/commentNewsArticle.ini");
 
 	// determine which HTTP method was used
-	$commentNewsArticles = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_server["REQUEST_METHOD"];
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_server["REQUEST_METHOD"];
 
 	// sanitize input
-	$commentNewsArticlesId = filter_int(INT_GET, "commentNewsArticlesId" ,FILTER_VALIDATE_INT);
+	$commentNewsArticleId = filter_input(INPUT_GET, "commentNewsArticleId" ,FILTER_VALIDATE_INT);
 
 	// make sure the id is valid for methods that require it
-	if(($commentNewsArticles === "DELETE" || $commentNewsArticles === "PUT") && (empty($commentNewsArticlesId) === true || $commentNewsArticleId < 0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($commentNewsArticleId) === true || $commentNewsArticleId < 0)) {
 		throw(new InvalidArgumentException("commentNewsArticleId cannot be empty or negative", 405));
 	}
 
 	// handle GET request - if commentNewsArticleId is present, that commentNewsArticle is returned, otherwise all commentNewsArticles are returned
-	if($commentNewsArticles === "GET") {
+	if($method === "GET") {
 		// set XSRF cookie
 		setXsrfCookie();
 
 		// get a specific commentNewsArticle or all commentNewsArticles and update reply
-		if(empty($commentNewsArticlesId) === false) {
-				$commentNewsArticles = TeamCuriosity\CommentNewsArticle::getCommentNewsArticleByCommentNewsArticleId($pdo, $commentNewsArticlesId);
+		if(empty($commentNewsArticleId) === false) {
+				$commentNewsArticle = TeamCuriosity\CommentNewsArticle::getCommentNewsArticleByCommentNewsArticleId($pdo, $commentNewsArticleId);
 				if($commentNewsArticle !== null) {
 						$reply->data = $commentNewsArticle;
 				}
@@ -54,7 +54,7 @@ try {
 								$reply->data = $commentNewsArticles;
 						}
 				}
-		} else if($commentNewsArticles === "PUT" || $commentNewsArticles === "POST") {
+		} else if($method === "PUT" || $method === "POST") {
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php:input");
@@ -66,9 +66,9 @@ try {
 		}
 
 		// perform the actual put or post
-		if($commentNewsArticle === "PUT") {
+		if($method === "PUT") {
 			// retrieve the commentNewsArticle to update
-			$commentNewsArticle = TeamCuriosity\CommentNewsArticle::getCommentNewsArticleByCommentNewsArticleId($pdo, $commentNewsArticlesId);
+			$commentNewsArticle = TeamCuriosity\CommentNewsArticle::getCommentNewsArticleByCommentNewsArticleId($pdo, $commentNewsArticleId);
 			if($commentNewsArticle === null) {
 				throw(new RuntimeException("CommentNewsArticle does not exist", 404));
 			}
@@ -78,7 +78,7 @@ try {
 			$commentNewsArticle->update($pdo);
 			// update reply
 			$reply->message = "CommentNewsArticle has been updated";
-		} else if($commentNewsArticle === "POST") {
+		} else if($method === "POST") {
 
 			// make sure commentNewsArticle id is available
 			if(empty($requestObject->commentNewsArticleId) === true) {
@@ -92,7 +92,7 @@ try {
 			// update reply
 			$reply->message = "CommentNewsArticle has been created";
 		}
-		} else if($commentNewsArticle === "DELETE") {
+		} else if($method === "DELETE") {
 					verifyXsrf();
 
 					// retrieve the CommentNewsArticle to be deleted
