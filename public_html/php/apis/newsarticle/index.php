@@ -36,3 +36,17 @@ try {
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
+		//get a specific NewsArticle or all NewsArticles and update reply
+		if(empty($id) === false) {
+			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $id);
+			if($newsArticle !== null) {
+				$reply->data = $newsArticle;
+			}
+		}  else {
+			$newsArticles = TeamCuriosity\NewsArticle::getAllNewsArticles($pdo);
+			if($newsArticles !== null) {
+				$reply->data = $newsArticles;
+			}
+		}
+	} else if($method === "PUT" || $method === "POST") {
+
