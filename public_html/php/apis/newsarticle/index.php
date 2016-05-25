@@ -69,7 +69,9 @@ try {
 			// update reply
 			$reply->message = "NewsArticle updated OK";
 		} else if($method === "POST") {
-
+        // make sure newsArticleId is available
+			if(empty($requestObject->newsArticleId) === true) {
+				throw(new \InvalidArgumentException ("No NewsArticle ID.", 405));
 		
 
 
