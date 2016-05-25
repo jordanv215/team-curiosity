@@ -32,4 +32,7 @@ try {
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
-
+// handle GET request - if id is present, that NewsArticle is returned, otherwise all NewsArticles are returned
+	if($method === "GET") {
+		//set XSRF cookie
+		setXsrfCookie();
