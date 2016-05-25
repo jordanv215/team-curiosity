@@ -62,8 +62,12 @@ try {
 			if($favoriteNewsArticle === null) {
 				throw(new RuntimeException("FavoriteNewsArticle does not exist", 404));
 			}
-		
-
 			// put the new favoriteNewsArticle Url into the favoriteNewsArticle and update
 		$favoriteNewsArticle->setFavoriteNewsArticleUrl($requestObject->favoriteNewsArticleUrl);
-		$favoriteNewsArticle->update($pdo)
+		$favoriteNewsArticle->update($pdo);
+			// update reply
+			$reply->message = "FavoriteNewsArticle updated OK";
+
+		} else if($method === "POST"){
+		}
+	}
