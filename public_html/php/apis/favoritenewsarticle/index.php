@@ -73,8 +73,8 @@ try {
 			if(empty($requestObject->favoriteNewsArticleUserId) === true) {
 				throw(new \InvalidArgumentException ("No FavoriteNewsArticleUser ID.", 405));
 				// create new favoriteNewsArticle and insert into the database
-				$favoriteNewsArticle = new TeamCuriosity\FavoriteNewsArticle(null, $requestObject->favoriteNewsArticleNewsArticleId, $requestObject->favoriteNewsArticleDateTime,  $requestObject->favoriteNewsArticleUserId);
-				$favoriteNewsArticle->insert($pdo);
+				$favoriteNewsArticle = new TeamCuriosity\FavoriteNewsArticle(null, $requestObject->favoriteNewsArticleNewsArticleId); $requestObject->favoriteNewsArticleDateTime;  $requestObject->favoriteNewsArticleUserId;
+				$favoriteNewsArticle->insert($pdo); 
 				// update reply
 				$reply->message = "FavoriteNewsArticle created OK";
 			}
