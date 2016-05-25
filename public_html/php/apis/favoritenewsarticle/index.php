@@ -57,6 +57,12 @@ try {
 		}
 		//perform the actual put or post
 		if($method === "PUT") {
+			// retrieve the favoriteNewsArticle to update
+			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByNewsArticleId($pdo, $id);
+			if($favoriteNewsArticle === null) {
+				throw(new RuntimeException("FavoriteNewsArticle does not exist", 404));
+			}
+		
 
 			// put the new favoriteNewsArticle Url into the favoriteNewsArticle and update
 		$favoriteNewsArticle->setFavoriteNewsArticleUrl($requestObject->favoriteNewsArticleUrl);
