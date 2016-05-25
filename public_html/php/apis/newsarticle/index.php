@@ -58,5 +58,13 @@ try {
 	}
 		//perform the actual put or post
 		if($method === "PUT") {
+			// retrieve the newsArticle to update
+			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $id);
+			if($newsArticle === null) {
+				throw(new RuntimeException("NewsArticle does not exist", 404));
+			}
+
+
+
 
 
