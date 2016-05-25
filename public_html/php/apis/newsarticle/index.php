@@ -82,11 +82,13 @@ try {
 	}
 	} else if($method === "DELETE") {
 		verifyXsrf();
-		// retrieve the NewsArticle to be deleted
+		// retrieve the newsArticle to be deleted
 		$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $id);
 		if($newsArticle === null) {
 			throw(new RuntimeException("NewsArticle does not exist", 404));
 		}
+      // delete newsArticle
+		$newsArticle->delete($pdo);
 
 
 
