@@ -25,7 +25,7 @@ $reply->data = null;
 
 try {
 	//grab my mySQL Connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/commentImage.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -34,7 +34,7 @@ try {
 	$commentImageId = filter_input(INPUT_GET, "CommentImageId", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($commentImageId) === true || $commentImageId < 0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($commentImageId) === true || $commentImageId <= 0)) {
 		throw(new InvalidArgumentException("Comment id cannot be empty or negative", 405));
 	}
 
@@ -82,7 +82,7 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the commentImage to update
-			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
+			$commentImage = Edu\Cnm\TeamCuriosity\CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
 			if($commentImage === null) {
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
