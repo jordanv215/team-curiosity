@@ -56,5 +56,7 @@ try {
 		if(empty($requestObject->newsArticleSynopsis) === true) {
 			throw(new \InvalidArgumentException ("No synopsis for NewsArticle.", 405));
 	}
+		//perform the actual put or post
+		if($method === "PUT") {
 
 
