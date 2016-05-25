@@ -7,7 +7,7 @@ require_once("Autoload.php");
  * News Article
  *
  * This class accesses and manipulates the News Article table to provide a feed of scientific news articles related to the Curiosity Mars rover
- * @author Anthony Williams <awilliams144@bcnm.edu>
+ * @author Anthony Williams <awilliams144@cnm.edu>
  * @version 1.0.0
  **/
 class NewsArticle implements \JsonSerializable {
