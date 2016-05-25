@@ -50,9 +50,11 @@ try {
 		}
 	} else if($method === "PUT" || $method === "POST") {
 		verifyXsrf();
-		$requestContent = file_get_contents("php://input");
-		$requestObject = json_decode($requestContent);
-
+		$requestSynopsis = file_get_contents("php://input");
+		$requestObject = json_decode($requestSynopsis);
+//make sure newsArticle synopsis is available
+		if(empty($requestObject->newsArticleSynopsis) === true) {
+			throw(new \InvalidArgumentException ("No synopsis for NewsArticle.", 405));
 	}
 
 
