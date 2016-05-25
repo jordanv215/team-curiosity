@@ -49,11 +49,11 @@ try {
 		}
 	} else if($method === "PUT" || $method === "POST") {
 		verifyXsrf();
-		$requestUrl = file_get_contents("php://input");
-		$requestObject = json_decode($requestUrl);
-		//make sure favoriteNewsArticle Url is available
-		if(empty($requestObject->favoriteNewsArticleUrl) === true) {
-			throw(new \InvalidArgumentException ("No Url for FavoriteNewsArticle.", 405));
+		$requestUserId = file_get_contents("php://input");
+		$requestObject = json_decode($requestUserId);
+		//make sure favoriteNewsArticle UserId is available
+		if(empty($requestObject->favoriteNewsArticleUserId) === true) {
+			throw(new \InvalidArgumentException ("No UserId for FavoriteNewsArticle.", 405));
 		}
 		//perform the actual put or post
 		if($method === "PUT") {
@@ -62,12 +62,19 @@ try {
 			if($favoriteNewsArticle === null) {
 				throw(new RuntimeException("FavoriteNewsArticle does not exist", 404));
 			}
-			// put the new favoriteNewsArticle Url into the favoriteNewsArticle and update
-		$favoriteNewsArticle->setFavoriteNewsArticleUrl($requestObject->favoriteNewsArticleUrl);
+			// put the new favoriteNewsArticle DateTime into the favoriteNewsArticle and update
+		$favoriteNewsArticle->setFavoriteNewsArticleDateTime($requestObject->favoriteNewsArticleDateTime);
 		$favoriteNewsArticle->update($pdo);
 			// update reply
 			$reply->message = "FavoriteNewsArticle updated OK";
 
 		} else if($method === "POST"){
+			//  make sure favoriteNewsArticleUserId is available
+			if(empty($requestObject->favoriteNewsArticleUserId) === true) {
+				throw(new \InvalidArgumentException ("No FavoriteNewsArticleUser ID.", 405));
+				// create new favoriteNewsArticle and insert into the database
+				$favoriteNewsArticle = new TeamCuriosity\FavoriteNewsArticle(null, $requestObject->favoriteNewsArticleNewsArticleId, $requestObject->favoriteNewsArticleDateTime,  $requestObject->favoriteNewsArticleUserId);
+				$favoriteNewsArticle->insert($pdo);
 		}
-	}
+
+
