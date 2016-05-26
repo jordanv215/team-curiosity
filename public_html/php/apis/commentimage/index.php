@@ -72,12 +72,6 @@ try {
 			throw(new \invalidArgumentException ("No DateTime for this image comment.", 405));
 		}
 
-		/**retrieve the image id to update
-		$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
-		if($commentImage === null) {
-			throw(new \RuntimeException("No valid image to update"));
-		}
-		**/
 
 		//perform the actual put or post
 		if($method === "PUT") {

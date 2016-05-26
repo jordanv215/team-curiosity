@@ -33,6 +33,8 @@ try {
 	//sanitize input
 	$imageId = filter_input(INPUT_GET, "imageId", FILTER_VALIDATE_INT);
 	$imageUrl = filter_input(INPUT_GET, "imageUrl", FILTER_VALIDATE_STRING);
+	$imageTitle = filter_input(INPUT_GET, "imageTitle", FILTER_VALIDATE_STING);
+	$imageEarthDate = filter_input(INPUT_GET, "imageEarthDate", FILTER_VALIDATE_DATETIME);
 
 
 	//make sure the id is valid for methods that require it
