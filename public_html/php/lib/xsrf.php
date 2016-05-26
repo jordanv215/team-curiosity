@@ -3,7 +3,8 @@
  * this if block exists because apache_request_headers() is not portable across web servers
  * this will clone apache_request_headers()'s functionality if the web server doesn't support apache_request_headers()
  * (e.g., non Apache web servers, Apache web servers with apache_request_headers() disabled)
- *
+ * 
+ * @see https://bootcamp-coders.cnm.edu/class-materials/security/csrf/
  * @see http://php.net/manual/en/function.apache-request-headers.php apache_request_headers()
  **/
 if(function_exists("apache_request_headers") === false) {

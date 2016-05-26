@@ -16,6 +16,8 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
  * 4. Have all table specific tests include this class.
  *
  * *NOTE*: Tables must be added in the order they were created in step (2).
+ *
+ * @see https://bootcamp-coders.cnm.edu/class-materials/unit-testing/phpunit/
  **/
 abstract class TeamCuriosityTest extends \PHPUnit_Extensions_Database_TestCase {
 	/**
