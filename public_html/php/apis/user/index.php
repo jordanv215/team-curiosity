@@ -1,7 +1,7 @@
 <?php
 
-require_once "../../classes/Autoload.php";
-require_once "file/path/here"; // @TODO add xsrf.php file here ---------------------------------------
+require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
+require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
 
 use Edu\Cnm\TeamCuriosity;
