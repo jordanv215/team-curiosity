@@ -91,42 +91,41 @@ try {
 			// update the reply
 			$reply->message = "Login source successfully created";
 
-		} else if($method === "DELETE") {
-			verifyXsrf();
-
-			// retrieve the login source to delete
-			$loginSource = TeamCuriosity\LoginSource::getLoginSourceByLoginSourceId($pdo, $loginSourceId);
-			if($loginSource === null) {
-				throw(new \RuntimeException("No valid login source to delete"));
-			}
-
-			// delete login source
-			$loginSource->delete($pdo);
-
-			// update the reply
-			$reply->message = "Login source successfully deleted";
-		} else {
-			throw(new \InvalidArgumentException("Invalid HTTP method request"));
 		}
+	} else if($method === "DELETE") {
+		verifyXsrf();
+
+		// retrieve the login source to delete
+		$loginSource = TeamCuriosity\LoginSource::getLoginSourceByLoginSourceId($pdo, $loginSourceId);
+		if($loginSource === null) {
+			throw(new \RuntimeException("No valid login source to delete"));
+		}
+
+		// delete login source
+		$loginSource->delete($pdo);
+
+		// update the reply
+		$reply->message = "Login source successfully deleted";
+	} else {
+		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
-		// update the reply with exception information
-	}
-catch
-	(Exception $exception) {
-		$reply->status = $exception->getCode();
-		$reply->message = $exception->getMessage();
-		$reply->trace = $exception->getTraceAsString();
-	} catch(TypeError $typeError) {
-		$reply->status = $typeError->getCode();
-		$reply->message = $typeError->getMessage();
-	}
+	// update the reply with exception information
+} catch
+(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+	$reply->trace = $exception->getTraceAsString();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
+}
 
 
-	header("Content-type: application/json");
-	if($reply->data === null) {
-		unset($reply->data);
-	}
-	
-	// encode and return the reply to the frontend caller
-	echo json_encode($reply);
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+// encode and return the reply to the frontend caller
+echo json_encode($reply);
 
