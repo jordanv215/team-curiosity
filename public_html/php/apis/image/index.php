@@ -34,6 +34,7 @@ try {
 	$imageId = filter_input(INPUT_GET, "imageId", FILTER_VALIDATE_INT);
 	$imageUrl = filter_input(INPUT_GET, "imageUrl", FILTER_VALIDATE_STRING);
 
+
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($imageId) === true || $imageId <= 0)) {
 		throw(new InvalidArgumentException("Image id cannot be empty or negative", 405));
