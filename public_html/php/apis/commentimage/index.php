@@ -75,9 +75,12 @@ try {
 
 		//perform the actual put or post
 		if($method === "PUT") {
+
 			// retrieve the commentImage to update
 			$commentImage = Edu\Cnm\TeamCuriosity\CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
 			if($commentImage === null) {
+
+
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
 
@@ -89,22 +92,25 @@ try {
 			$reply->message = "Image Content Updated Ok";
 
 		} else if($method === "POST") {
-			//make sure commentImageUserId is available
+
+			//make sure commentImageId is available
 			if(empty($requestObject->commentImageId) === true) {
-				throw(new \InvalidArgumentException ("No User ID.", 405));
+				throw(new \InvalidArgumentException ("No image ID.", 405));
 			}
 
 			//create new user and insert into the database
-			$commentImage = new CommentImage(null, $requestObject->userId, $requestObject->commentImageContent, null);
+			$commentImage = new Edu\Cnm\TeamCuriosity\CommentImage(null, $requestObject->imageId, $requestObject->commentImageContent, null);
 			$commentImage->insert($pdo);
 
 			//update reply
 			$reply->message = "Image Comment created OK";
+
+
 		} else if($method === "DELETE") {
 			verifyXsrf();
 
 			// retrieve the image comment to be deleted
-			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $userId);
+			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $imageId);
 			if($commentImage === null) {
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
@@ -117,6 +123,9 @@ try {
 		} else {
 			throw (new InvalidArgumentException("Invalid HTTP method request"));
 		}
+
+
+
 		// update reply with exception information
 	}
 } catch(Exception $exception) {
