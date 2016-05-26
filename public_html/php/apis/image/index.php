@@ -148,9 +148,9 @@ try {
 			$reply->message = "Image Updated Ok";
 
 		} else if($method === "POST") {
-			//make sure commentImageUserId is available
-			if(empty($requestObject->commentImageId) === true) {
-				throw(new \InvalidArgumentException ("No User ID.", 405));
+			//make sure imageId is available
+			if(empty($requestObject->imageId) === true) {
+				throw(new \InvalidArgumentException ("No image ID.", 405));
 			}
 
 			//create new Image and insert into the database
