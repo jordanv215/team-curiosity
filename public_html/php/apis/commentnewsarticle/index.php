@@ -24,10 +24,10 @@ $reply->data = null;
 
 try {
 	// grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/commentNewsArticle.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
 
 	// determine which HTTP method was used
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_server["REQUEST_METHOD"];
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	// sanitize input
 	$commentNewsArticleId = filter_input(INPUT_GET, "commentNewsArticleId" ,FILTER_VALIDATE_INT);
