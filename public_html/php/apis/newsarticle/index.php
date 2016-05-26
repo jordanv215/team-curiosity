@@ -1,8 +1,8 @@
 <?php
 
-require_once "(dirname(__DIR__, 2) . \"/classes/autoloader.php";
-require_once "(dirname(__DIR__, 2) . \"/lib/xsrf.php";
-require_once("/etc/apache2/teamcuriosity-mysql/encrypted-config.php");
+require_once (dirname(__DIR__, 2) . "/classes/Autoload.php");
+require_once (dirname(__DIR__, 2) . "/lib/xsrf.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity;
 
@@ -23,7 +23,7 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/teamcuriosity-mysql/newsArticle.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
