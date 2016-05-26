@@ -384,6 +384,86 @@ class CommentNewsArticle implements \JsonSerializable {
 	}
 
 	/**
+	 * gets news article comments by commentNewsArticleNewsArticleId (all the comments on a given news article)
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $commentNewsArticleNewsArticleId id of the article whose comments this method searches for
+	 * @return \SplFixedArray SplFixedArray of comments found
+	 * @throws \PDOException if mySQL-related errors occur
+	 * @throws \TypeError if variables violate type hints
+	 **/
+	public static function getCommentNewsArticleByCommentNewsArticleNewsArticleId(\PDO $pdo, int $commentNewsArticleNewsArticleId) {
+		// sanitize input before searching
+		$commentNewsArticleNewsArticleId = trim($commentNewsArticleNewsArticleId);
+		if($commentNewsArticleNewsArticleId === null) {
+			throw(new \PDOException("entry is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle WHERE commentNewsArticleNewsArticleId LIKE :commentNewsArticleNewsArticleId";
+		$statement = $pdo->prepare($query);
+
+		// bind the id to the placeholder in the template
+		$parameters = array("commentNewsArticleNewsArticleId" => $commentNewsArticleNewsArticleId);
+		$statement->execute($parameters);
+
+		//build an array of news article comments
+		$commentNewsArticles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentNewsArticleDateTime"]), $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
+				$commentNewsArticles[$commentNewsArticles->key()] = $commentNewsArticle;
+				$commentNewsArticles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow the exception
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($commentNewsArticles);
+	}
+
+	/**
+	 * gets news article comments by commentNewsArticleUserId (all the comments by a given user)
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $commentNewsArticleUserId id of the user whose comments this method searches for
+	 * @return \SplFixedArray SplFixedArray of comments found
+	 * @throws \PDOException if mySQL-related errors occur
+	 * @throws \TypeError if variables violate type hints
+	 **/
+	public static function getCommentNewsArticleByCommentNewsArticleUserId(\PDO $pdo, int $commentNewsArticleUserId) {
+		// sanitize input before searching
+		$commentNewsArticleUserId = trim($commentNewsArticleUserId);
+		if($commentNewsArticleUserId === null) {
+			throw(new \PDOException("entry is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT commentNewsArticleId, commentNewsArticleContent, commentNewsArticleDateTime, commentNewsArticleNewsArticleId, commentNewsArticleUserId FROM CommentNewsArticle WHERE commentNewsArticleUserId LIKE :commentNewsArticleUserId";
+		$statement = $pdo->prepare($query);
+
+		// bind the id to the placeholder in the template
+		$parameters = array("commentNewsArticleUserId" => $commentNewsArticleUserId);
+		$statement->execute($parameters);
+
+		// build an array of news article comments
+		$commentNewsArticles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$commentNewsArticle = new CommentNewsArticle($row["commentNewsArticleId"], $row["commentNewsArticleContent"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentNewsArticleDateTime"]), $row["commentNewsArticleNewsArticleId"], $row["commentNewsArticleUserId"]);
+				$commentNewsArticles[$commentNewsArticles->key()] = $commentNewsArticle;
+				$commentNewsArticles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow the exception
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($commentNewsArticles);
+	}
+
+	/**
 	 * gets all commentNewsArticles
 	 *
 	 * @param \PDO $pdo PDO connection object
