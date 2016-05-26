@@ -39,6 +39,13 @@ try {
 			$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($pdo, $favoriteImageImageId, $favoriteImageUserId);
 			if($favoriteImage !== null) {
 				$reply->data = $favoriteImage;
+
+			} else if (empty($favoriteImageImageId) === false) {
+				$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageImageId($pdo, $favoriteImageImageId);
+				$reply->data = $favoriteImage;
+			} else if (empty($favoriteImageUserId) === false) {
+				$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageUserId($pdo, $favoriteImageUserId);
+				$reply->data = $favoriteImage;
 			}
 
 	} else  {
