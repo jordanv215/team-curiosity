@@ -137,7 +137,7 @@ try {
 			$image->setImageEarthDate($requestObject->imageEarthDate);
 			$image->setImageSol($requestObject->imageSol);
 			$image->setImagePath($requestObject->imagePath);
-			$image->setImageType($requestObject->imageObject);
+			$image->setImageType($requestObject->imageType);
 			$image->setImageUrl($requestObject->imageUrl);
 			$image->update($pdo);
 
