@@ -159,7 +159,7 @@ try {
 		} else if($method === "DELETE") {
 			verifyXsrf();
 
-			// retrieve the image comment to be deleted
+			// retrieve the image to be deleted
 			$image = Image::getImageByImageId($pdo, $userId);
 			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
