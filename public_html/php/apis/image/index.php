@@ -145,13 +145,8 @@ try {
 			$reply->message = "Image Updated Ok";
 
 		} else if($method === "POST") {
-			//make sure imageId is available
-			if(empty($requestObject->imageId) === true) {
-				throw(new \InvalidArgumentException ("No image ID.", 405));
-			}
-
 			//create new Image and insert into the database
-			$image = new Image(null, $requestObject->imageId, $requestObject->image, null);
+			$image = new Image(null, $requestObject->imageCamera, $requestObject->imageDescription, null, $requestObject->imagePath, $requestObject->imageSol, $requestObject->imageTitle, $requestObject->imageType, $requestObject->imageUrl);
 			$image->insert($pdo);
 
 			//update reply
