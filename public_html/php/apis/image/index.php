@@ -146,7 +146,7 @@ try {
 
 		} else if($method === "POST") {
 			//create new Image and insert into the database
-			$image = new Image(null, $requestObject->imageCamera, $requestObject->imageDescription, null, $requestObject->imagePath, $requestObject->imageSol, $requestObject->imageTitle, $requestObject->imageType, $requestObject->imageUrl);
+			$image = new Image(null, $requestObject->imageCamera, $requestObject->imageDescription, $requestObject->imageEarthDate, $requestObject->imagePath, $requestObject->imageSol, $requestObject->imageTitle, $requestObject->imageType, $requestObject->imageUrl);
 			$image->insert($pdo);
 
 			//update reply
