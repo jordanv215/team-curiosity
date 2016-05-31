@@ -80,11 +80,6 @@ try {
 			$reply->message = "CommentNewsArticle has been updated";
 		} else if($method === "POST") {
 
-			// make sure commentNewsArticle id is available
-			if(empty($requestObject->commentNewsArticleId) === true) {
-				throw(new \InvalidArgumentException("No CommentNewsArticle ID", 405));
-			}
-
 			// create new commentNewsArticle and insert into the database
 			$commentNewsArticle = new TeamCuriosity\CommentNewsArticle(null, $requestObject->commentNewsArticleContent, null, $requestObject->commentNewsArticleNewsArticleId, $requestObject->commentNewsArticleUserId);
 			$commentNewsArticle->insert($pdo);
