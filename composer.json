@@ -1,5 +1,9 @@
 {
   "require": {
-    "hybridauth/hybridauth": "2.6.0"
+    "league/oauth2-facebook": "~1.4.1",
+    "league/oauth2-google": "~1.0.1",
+    "league/oauth2-instagram": "~0.2.2",
+    "rtheunissen/oauth2-reddit": "~1.2.3",
+    "mmerian/phpcrawl": "~0.8.3"
   }
 }
