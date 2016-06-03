@@ -16,3 +16,9 @@ body { width: 100%;}
 .sfooter-content {
 	flex: 1 0 auto;
 }
+
+
+.navbar {
+	background-color: crimson;
+	color: azure;
+}
