@@ -33,12 +33,17 @@ try {
 	$favoriteImageImageId = filter_input(INPUT_GET, "favoriteImageImageId" ,FILTER_VALIDATE_INT);
 	$favoriteImageUserId = filter_input(INPUT_GET, "favoriteImageUserId" ,FILTER_VALIDATE_INT);
 
+	//make sure the IDs are valid for methods that require them
+	if(($method === "DELETE" || $method === "PUT") && ((empty($favoriteImageImageId) === true || $favoriteImageImageId < 0) || (empty($favoriteImageUserId) === true || $favoriteImageUserId < 0))) {
+		throw(new InvalidArgumentException("IDs cannot be empty or negative", 405));
+	}
+	
 	// handle GET request
 	if($method === "GET") {
 		// set XSRF cookie
 		setXsrfCookie();
 
-		// get a specific favorite Image or all favorite images and update
+		// get a specific FavoriteImage or all FavoriteImages and update
 		if(empty($favoriteImageImageId) === false && empty($favoriteImageUserId) === false) {
 			$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageImageIdAndFavoriteImageUserId($pdo, $favoriteImageImageId, $favoriteImageUserId);
 			if($favoriteImage !== null) {
