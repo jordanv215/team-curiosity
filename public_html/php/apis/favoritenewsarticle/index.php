@@ -41,7 +41,7 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get a specific favoriteNewsArticle, all favorites on an image, all favorites by a user, or all favoriteNewsArticles, and update reply
+		//get a specific favoriteNewsArticle, all favorites on an article, all favorites by a user, or all favoriteNewsArticles, and update reply
 		if((empty($favoriteNewsArticleNewsArticleId) === false) && empty($favoriteNewsArticleUserId) === false) {
 			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId($pdo, $favoriteNewsArticleNewsArticleId, $favoriteNewsArticleUserId);
 			if($favoriteNewsArticle !== null) {

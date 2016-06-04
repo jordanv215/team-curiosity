@@ -52,6 +52,7 @@ try {
 			} else if (empty($favoriteImageImageId) === false) {
 				$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageImageId($pdo, $favoriteImageImageId);
 				$reply->data = $favoriteImage;
+
 			} else if (empty($favoriteImageUserId) === false) {
 				$favoriteImage = TeamCuriosity\FavoriteImage::getFavoriteImageByFavoriteImageUserId($pdo, $favoriteImageUserId);
 				$reply->data = $favoriteImage;
@@ -71,12 +72,12 @@ try {
 				$requestObject = json_decode($requestContent);
 
 				//  make sure favoriteImageImageId and favoriteImageUserId are available
-				if(empty($requestObject->favoriteImageImageId) === true || empty($requestObject->favoriteImageUserId)) {
-					throw(new \InvalidArgumentException ("Id doesn't exist.", 405));
+				if(empty($requestObject->favoriteImageImageId) === true || empty($requestObject->favoriteImageUserId) === true) {
+					throw(new \InvalidArgumentException ("FavoriteImage doesn't exist.", 405));
 				}
 
 				// create new favorite image and insert into the database
-				$favoriteImage = new TeamCuriosity\FavoriteImage($requestObject->favoriteImageImageId, $requestObject->favoriteImageUserId, null);
+				$favoriteImage = new TeamCuriosity\FavoriteImage($requestObject->favoriteImageImageId, $requestObject->favoriteImageUserId, $requestObject->favoriteImageDateTime);
 				$favoriteImage->insert($pdo);
 
 				// update reply
