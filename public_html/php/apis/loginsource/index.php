@@ -31,6 +31,7 @@ try {
 
 	// sanitize input
 	$loginSourceId = filter_input(INPUT_GET, "loginSourceId", FILTER_VALIDATE_INT);
+	$loginSourceProvider = filter_input(INPUT_GET, "loginSourceProvider", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	// ensure the input is valid
 	if(($method === "DELETE" || $method === "PUT") && (empty($loginSourceId) === true || $loginSourceId <= 0)) {
@@ -50,6 +51,11 @@ try {
 			if($loginSource !== null) {
 				$reply->data = $loginSource;
 			}
+		} else if(empty($loginSourceProvider) === false) {
+			$loginSource = TeamCuriosity\LoginSource::getLoginSourceByLoginSourceProvider($pdo, $loginSourceProvider);
+			if($loginSource !== null) {
+				$reply->data = $loginSource;
+			}
 		} else {
 			$loginSources = TeamCuriosity\LoginSource::getAllLoginSources($pdo);
 			if($loginSources !== null) {
@@ -63,8 +69,8 @@ try {
 		$requestObject = json_decode($requestContent);
 
 		// make sure login source api key is present
-		if(empty($requestObject->loginSourceApiKey) === true) {
-			throw(new \InvalidArgumentException("No api key to update"));
+		if(empty($requestObject->loginSourceId) === true) {
+			throw(new \InvalidArgumentException("No login source to update"));
 		}
 
 		if($method === "PUT") {
@@ -76,7 +82,7 @@ try {
 			}
 
 			// add the new data and update
-			$loginSource->setLoginSourceApiKey($requestObject->loginSourceApiKey);
+			$loginSource->setLoginSourceProvider($requestObject->loginSourceProvider);
 			$loginSource->update($pdo);
 
 			// update the reply
@@ -85,7 +91,7 @@ try {
 		} else if($method === "POST") {
 
 			// create new login source and insert into table
-			$loginSource = new TeamCuriosity\LoginSource(null, $requestObject->loginSourceApiKey, $requestObject->loginSourceProvider);
+			$loginSource = new TeamCuriosity\LoginSource(null, $requestObject->loginSourceProvider);
 			$loginSource->insert($pdo);
 
 			// update the reply
