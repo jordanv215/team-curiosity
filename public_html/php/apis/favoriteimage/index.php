@@ -34,7 +34,7 @@ try {
 	$favoriteImageUserId = filter_input(INPUT_GET, "favoriteImageUserId" ,FILTER_VALIDATE_INT);
 
 	//make sure the IDs are valid for methods that require them
-	if(($method === "DELETE" || $method === "PUT") && ((empty($favoriteImageImageId) === true || $favoriteImageImageId < 0) || (empty($favoriteImageUserId) === true || $favoriteImageUserId < 0))) {
+	if(($method === "DELETE") && ((empty($favoriteImageImageId) === true || $favoriteImageImageId < 0) || (empty($favoriteImageUserId) === true || $favoriteImageUserId < 0))) {
 		throw(new InvalidArgumentException("IDs cannot be empty or negative", 405));
 	}
 	

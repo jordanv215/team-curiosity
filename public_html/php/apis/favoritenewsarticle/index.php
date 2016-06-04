@@ -32,26 +32,37 @@ try {
 	$favoriteNewsArticleUserId = filter_input(INPUT_GET, "favoriteNewsArticleUserId", FILTER_VALIDATE_INT);
 
 	//make sure the IDs are valid for methods that require them
-	if(($method === "DELETE" || $method === "PUT") && ((empty($favoriteNewsArticleNewsArticleId) === true || $favoriteNewsArticleNewsArticleId < 0) || (empty($favoriteNewsArticleUserId) === true || $favoriteNewsArticleUserId < 0))) {
+	if(($method === "DELETE") && ((empty($favoriteNewsArticleNewsArticleId) === true || $favoriteNewsArticleNewsArticleId < 0) || (empty($favoriteNewsArticleUserId) === true || $favoriteNewsArticleUserId < 0))) {
 		throw(new InvalidArgumentException("IDs cannot be empty or negative", 405));
 	}
 
-	// handle GET request - if id is present, that favoriteNewsArticle is returned, otherwise all favoriteNewsArticles are returned
+	// handle GET request
 	if($method === "GET") {
 		//set XSRF cookie
 		setXsrfCookie();
-		//get a specific favoriteNewsArticle or all favoriteNewsArticles and update reply
-		if(empty($id) === false) {
-			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleId($pdo, $id);
+
+		//get a specific favoriteNewsArticle, all favorites on an image, all favorites by a user, or all favoriteNewsArticles, and update reply
+		if((empty($favoriteNewsArticleNewsArticleId) === false) && empty($favoriteNewsArticleUserId) === false) {
+			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId($pdo, $favoriteNewsArticleNewsArticleId, $favoriteNewsArticleUserId);
 			if($favoriteNewsArticle !== null) {
 				$reply->data = $favoriteNewsArticle;
 			}
-		} else {
-			$favoriteNewsArticles = TeamCuriosity\FavoriteNewsArticle::getAllFavoriteNewsArticles($pdo);
-			if($favoriteNewsArticles !== null) {
-				$reply->data = $favoriteNewsArticles;
+		} else if(empty($favoriteNewsArticleNewsArticleId) === false) {
+			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleId($pdo, $favoriteNewsArticleNewsArticleId);
+			if($favoriteNewsArticle !== null) {
+				$reply->data = $favoriteNewsArticle;
 			}
-		}
+		} else if(empty($favoriteNewsArticleUserId) === false) {
+			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleUserId($pdo, $favoriteNewsArticleUserId);
+			if($favoriteNewsArticle !== null) {
+				$reply->data = $favoriteNewsArticle;
+
+		} else {
+				$favoriteNewsArticles = TeamCuriosity\FavoriteNewsArticle::getAllFavoriteNewsArticles($pdo);
+				if($favoriteNewsArticles !== null) {
+					$reply->data = $favoriteNewsArticles;
+				}
+			}
 	} else if($method === "POST") {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
@@ -68,23 +79,18 @@ try {
 
 		//perform the actual post
 
-		 if($method === "POST") {
-			//  make sure favoriteNewsArticleUserId is available
-			if(empty($requestObject->favoriteNewsArticleUserId) === true) {
-				throw(new \InvalidArgumentException ("No FavoriteNewsArticleUser ID.", 405));
 				// create new favoriteNewsArticle and insert into the database
-				$favoriteNewsArticle = new TeamCuriosity\FavoriteNewsArticle(null, $requestObject->favoriteNewsArticleNewsArticleId);
-				$requestObject->favoriteNewsArticleDateTime;
-				$requestObject->favoriteNewsArticleUserId;
+				$favoriteNewsArticle = new TeamCuriosity\FavoriteNewsArticle($requestObject->favoriteNewsArticleNewsArticleId, $requestObject->favoriteNewsArticleUserId, $requestObject->favoriteNewsArticleDateTime);
 				$favoriteNewsArticle->insert($pdo);
 				// update reply
 				$reply->message = "FavoriteNewsArticle created OK";
-			}
+
 
 		} else if($method === "DELETE") {
 			verifyXsrf();
+			
 			// retrieve the FavoriteNewsArticle to be deleted
-			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByNewsArticleId($pdo, $id);
+			$favoriteNewsArticle = TeamCuriosity\FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleIdAndFavoriteNewsArticleUserId($pdo, $favoriteNewsArticleNewsArticleId, $favoriteNewsArticleUserId);
 			if($favoriteNewsArticle === null) {
 				throw(new RuntimeException("FavoriteNewsArticle does not exist", 404));
 			}
