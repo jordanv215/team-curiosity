@@ -62,9 +62,14 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// make sure user email is present
-		if(empty($requestObject->userEmail) === true) {
-			throw(new \InvalidArgumentException("No email to update"));
+		// make sure user login id is present
+		if(empty($requestObject->userLoginId) === true) {
+			throw(new \InvalidArgumentException("No login id to update"));
+		}
+
+		// make sure user name is present
+		if(empty($requestObject->userName) === true) {
+			throw(new \InvalidArgumentException("No name to update"));
 		}
 
 		if($method === "PUT") {
@@ -77,6 +82,12 @@ try {
 
 			// add the new data and update
 			$user->setUserEmail($requestObject->userEmail);
+			$user->update($pdo);
+
+			$user->setUserLoginId($requestObject->userLoginId);
+			$user->update($pdo);
+
+			$user->setUserName($requestObject->userName);
 			$user->update($pdo);
 
 			// update the reply
