@@ -102,12 +102,6 @@ try {
 			throw(new \InvalidArgumentException ("No type for this Image.", 405));
 		}
 
-
-		//make sure image sol is available
-		if(empty($requestObject->imageSol) === true) {
-			throw(new \InvalidArgumentException ("No Mars Sol for this Image.", 405));
-		}
-
 		//make sure image earth date is available
 		if(empty($requestObject->imageEarthDate) === true) {
 			throw(new \InvalidArgumentException ("No Earth date for this Image.", 405));
