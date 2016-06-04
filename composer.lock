@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f1446c43c98069457bec53284d526802",
-    "content-hash": "3f096594dbccd82d2d6c0d7564ae359e",
+    "hash": "37971b6eb57e8845ae5e8f7fa1113bac",
+    "content-hash": "174461b5fde95c164ed4339c0e84f40f",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -529,39 +529,6 @@
                 "oauth2"
             ],
             "time": "2016-04-14 02:15:44"
-        },
-        {
-            "name": "mmerian/phpcrawl",
-            "version": "0.8.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mmerian/phpcrawl.git",
-                "reference": "d9c84beeaaa666b5910a6005db689a74cb6894b0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mmerian/phpcrawl/zipball/d9c84beeaaa666b5910a6005db689a74cb6894b0",
-                "reference": "d9c84beeaaa666b5910a6005db689a74cb6894b0",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "libs"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-v2"
-            ],
-            "authors": [
-                {
-                    "name": "Uwe Hunfeld",
-                    "email": "phpcrawl@cuab.de"
-                }
-            ],
-            "description": "PHPCrawl is a webcrawler/webspider-library written in PHP. It supports filters, limiters, cookie-handling, robots.txt-handling, multiprocessing and much more.",
-            "time": "2015-01-31 11:00:11"
         },
         {
             "name": "psr/http-message",
