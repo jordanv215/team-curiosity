@@ -40,7 +40,8 @@ class Image implements \JsonSerializable {
 	private $imagePath;
 	/**
 	 * Martian date on which the image was captured; represents number of days since the rover landed on Mars
-	 * @var int $imageSol
+	 * not provided for featured images as of this version
+	 * @var int|null $imageSol
 	 **/
 	private $imageSol;
 	/**
@@ -67,7 +68,7 @@ class Image implements \JsonSerializable {
 	 * @param string|null $newImageDescription string containing description of image
 	 * @param \DateTime $newImageEarthDate date and time image was taken
 	 * @param string $newImagePath local uniform resource identifier(uri) of image
-	 * @param int $newImageSol martian solar day that image was taken (number of days since rover landed)
+	 * @param int|null $newImageSol martian solar day that image was taken (number of days since rover landed)
 	 * @param string $newImageTitle title of image
 	 * @param string $newImageType MIME file format of image
 	 * @param string $newImageUrl uniform resource locator(url) of image source
@@ -244,7 +245,7 @@ class Image implements \JsonSerializable {
 
 	/**mutator method for image path
 	 *
-	 * @param string $newImagePath new value of image path
+	 * @param string $newImagePath new value of image file path
 	 * @throws \InvalidArgumentException if $newImagePath is not a string or insecure
 	 * @throws \RangeException if $newImagePath is > 256 characters
 	 * @throw \TypeError if $newImagePath is not a string
@@ -269,7 +270,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * accessor method for image sol
 	 *
-	 * @return int $imageSol number of Martian solar days since rover landed at time of image capture
+	 * @return int|null $imageSol number of Martian solar days since rover landed at time of image capture
 	 */
 	public function getImageSol() {
 		return ($this->imageSol);
@@ -278,12 +279,12 @@ class Image implements \JsonSerializable {
 	/**
 	 * mutator method for image sol
 	 *
-	 * @param int $newImageSol new value of image sol
+	 * @param int|null $newImageSol new value of image sol
 	 * @throws \RangeException if $newImageId is not positive
 	 * @throws \TypeError if $newImageId is not an integer
 	 **/
 	public function setImageSol(int $newImageSol) {
-		// verify the image sole is positive
+		// verify the image sol is positive
 		if($newImageSol <= 0) {
 			throw(new \RangeException("image sol is not positive"));
 		}
@@ -338,7 +339,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * mutator method for image type
 	 *
-	 * @param string $newImageType new value of image type
+	 * @param string $newImageType new value of image MIME type
 	 * @throws \InvalidArgumentException if $newImageType is not a string
 	 * @throws \RangeException if $newImageType is > 10 characters
 	 * @throws \TypeError if $newImageType is not a string
@@ -358,7 +359,7 @@ class Image implements \JsonSerializable {
 	/**
 	 * accessor method for image url
 	 *
-	 * @return string value of image source url
+	 * @return string value of full-size image source url
 	 **/
 	public function getImageUrl() {
 		return ($this->imageUrl);
@@ -367,7 +368,7 @@ class Image implements \JsonSerializable {
 	/**
 	 *  mutator method for image url
 	 *
-	 * @param string $newImageUrl new value of image source url
+	 * @param string $newImageUrl new value of full-size image source url
 	 * @throws \InvalidArgumentException if $newImageUrl is not a string or insecure
 	 * @throws \RangeException if $newImageUrl is > 256 characters
 	 * @throws \TypeError if $newImageUrl is not a string

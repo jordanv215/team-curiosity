@@ -306,9 +306,9 @@ class User implements \JsonSerializable {
 	 * gets all users
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @return \SplFixedArray SplFixedArray of UserIds found or null if not found
+	 * @return \SplFixedArray SplFixedArray of users found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
+	 * @throws \TypeError when variables are not the correct data types
 	 **/
 	public
 	static function getAllUsers(\PDO $pdo) {
