@@ -39,9 +39,22 @@
 				  crossorigin="anonymous"></script>
 
 	</head>
+
 	<body>
 
-
+		<div class="container-fluid text-center">
+			<div class="jumbotron">
+				<h1>Weather Bar</h1>
+				<p>Sky conditions, air pressure, max and min temp, earth date, sol date</p>
+			</div>
+			<p>This will be our weather bar, which is placed under the top navbar</p>
+			<p>I thought a Jumbotron would be good because it gives a lot of space, and we could put background images in here that portay types of weather.</p>
+		</div>
+<!--these columbs will contain our two image carousels. They aren't centered right now, but they're there for future needs and they're the same width.-->
+		<div class="border row">
+			<div class="border col-lg-6">.col-lg-6</div>
+			<div class="border col-lg-6">.col-lg-6</div>
+		</div>
 		<!-- navbar -->
 		<nav class="navbar navbar-inverse">
 			<div class="container ng-1">
@@ -61,13 +74,12 @@
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Search
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-							<li><a href="#">News</a></li>
+								<li><a href="#">News</a></li>
 								<li><a href="#">Images</a></li>
-						</ul>
+							</ul>
 					</ul>
 				</div>
 			</div>
 		</nav>
-
-
-
+<!--this footer is just a copy of the navbar used in the placeholder-header. It will be at the bottom of the page once we add carousels into the main area.-->
+	</body>

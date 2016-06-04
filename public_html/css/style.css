@@ -17,8 +17,14 @@ body { width: 100%;}
 	flex: 1 0 auto;
 }
 
-
+/* this doesn't work because bootstrap has a default navbar. We need to change this to the right colors when we decide which to use */
 .navbar {
 	background-color: crimson;
 	color: azure;
+}
+
+
+.jumbotron {
+	background-color: orangered;
+	color: black;
 }
