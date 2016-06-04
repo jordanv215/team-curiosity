@@ -43,7 +43,7 @@ class User implements \JsonSerializable {
 	 * @param int|null $newUserId id of this user or null if a new user
 	 * @param int $newUserLoginId login source id of the person logging in to this site
 	 * @param string $newUserName username of new user
-	 * @param string|null $newUserEmail email login info of user or null
+	 * @param string|null $newUserEmail email address of user or null
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -165,7 +165,7 @@ class User implements \JsonSerializable {
 
 	/** accessor method for user email
 	 *
-	 * @return string value for email
+	 * @return string|null value of email
 	 **/
 	public function getUserEmail() {
 		return ($this->userEmail);
@@ -174,8 +174,7 @@ class User implements \JsonSerializable {
 	/**
 	 * mutator method for userEmail
 	 *
-	 * @param string $newUserEmail new value for user email
-	 * @throws \InvalidArgumentException if $newUserEmail is not a string or is insecure
+	 * @param string|null $newUserEmail new value for user email or null if not provided
 	 * @throws \RangeException if $newUserEmail is > 128 characters
 	 * @throws \TypeError if $newUserEmail is not a string
 	 **/
@@ -183,9 +182,6 @@ class User implements \JsonSerializable {
 		// verify that the email is secure
 		$newUserEmail = trim($newUserEmail);
 		$newUserEmail = filter_var($newUserEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newUserEmail) === true) {
-			throw(new \InvalidArgumentException("email is empty or insecure"));
-		}
 
 		// verify that email will fit in the database field
 		if(strlen($newUserEmail) > 128) {
@@ -305,16 +301,6 @@ class User implements \JsonSerializable {
 		}
 		return ($user);
 	}
-
-	/**
-	 * Specify data which should be serialized to JSON
-	 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-	 * @return mixed data which can be serialized by <b>json_encode</b>,
-	 * which is a value of any type other than a resource.
-	 * @since 5.4.0
-	 */
-
-
 
 	/**
 	 * gets all users
