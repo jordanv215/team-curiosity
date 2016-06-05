@@ -18,6 +18,11 @@ class NewsArticle implements \JsonSerializable {
 	 **/
 	private $newsArticleId;
 	/**
+	 * title of the news article
+	 * @var string $newsArticleTitle
+	 **/
+	private $newsArticleTitle;
+	/**
 	 * date and time that this Article was sent, in a PHP DateTime object
 	 * @var \DateTime|null $newsArticleDate
 	 **/
@@ -36,6 +41,7 @@ class NewsArticle implements \JsonSerializable {
 	/**
 	 * constructor for this NewsArticle
 	 * @param int|null $newNewsArticleId id of this NewsArticle or Null if a new NewsArticle
+	 * @param string $newNewsArticleTitle title of this NewsArticle
 	 * @param \DateTime|string|null $newNewsArticleDate Date and Time NewsArticle was sent or null if set to current Date and Time
 	 * @param string $newNewsArticleSynopsis string containing a brief synopsis
 	 * @param string $newNewsArticleUrl string containing the location to newsArticleUrl
@@ -44,9 +50,10 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newNewsArticleId = null, \DateTime $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl) {
+	public function __construct(int $newNewsArticleId = null, string $newNewsArticleTitle, \DateTime $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl) {
 		try {
 			$this->setNewsArticleId($newNewsArticleId);
+			$this->setNewsArticleTitle($newNewsArticleTitle);
 			$this->setNewsArticleDate($newNewsArticleDate);
 			$this->setNewsArticleSynopsis($newNewsArticleSynopsis);
 			$this->setNewsArticleUrl($newNewsArticleUrl);
@@ -95,6 +102,38 @@ class NewsArticle implements \JsonSerializable {
 
 		//convert and store the newsArticleId
 		$this->newsArticleId = $newNewsArticleId;
+	}
+
+	/**
+	 * accessor method for newsArticleTitle
+	 *
+	 * @return string value of newsArticleTitle
+	 **/
+	public function getNewsArticleTitle() {
+		return ($this->newsArticleTitle);
+	}
+
+	/**
+	 * mutator method for newsArticleTitle
+	 * @param string $newNewsArticleTitle
+	 * @throws \InvalidArgumentException if $newNewsArticleTitle is not a string or is insecure
+	 * @throws \RangeException if $newNewsArticleTitle is > 128 characters
+	 * @throws \TypeError if $newNewsArticleTitle is not a string
+	 **/
+	public function setNewsArticleTitle(string $newNewsArticleTitle) {
+		// verify the newsArticleTitle is secure
+		$newNewsArticleTitle = trim($newNewsArticleTitle);
+		$newNewsArticleTitle = filter_var($newNewsArticleTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newNewsArticleTitle) === true) {
+			throw(new \InvalidArgumentException("newsArticleTitle is empty or insecure"));
+		}
+		// verify the newsArticleTitle will fit in the database
+		if(strlen($newNewsArticleTitle) > 128) {
+			throw(new \RangeException("newsArticleTitle is too large"));
+		}
+
+		// store the newsArticleTitle;
+		$this->newsArticleTitle = $newNewsArticleTitle;
 	}
 
 	/**

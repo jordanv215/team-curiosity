@@ -114,8 +114,18 @@ if($reply->data === null) {
 echo json_encode($reply);
 
 
+/**
+ * Utilize rss-php extension to retrieve news article objects from NASA RSS feed
+ *
+ * @see https://github.com/dg/rss-php
+ **/
 
+$url = "http://mars.nasa.gov/rss/news.cfm?s=msl";
+$rss = Feed::loadRss($url);
 
-
-
-
+foreach($rss->item as $item) {
+	$newsArticleTitle = $item->title;
+	$newsArticleUrl = $item->link;
+	$newsArticleDate = $item->pubDate;
+	$newsArticleSynopsis = $item->description;
+}
