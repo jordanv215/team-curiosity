@@ -6,6 +6,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 
 use Edu\Cnm\TeamCuriosity\CommentImage;
+use Edu\Cnm\TeamCuriosity\ValidateDate;
 
 
 /**
@@ -32,7 +33,11 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$commentImageId = filter_input(INPUT_GET, "CommentImageId", FILTER_VALIDATE_INT);
+	$commentImageId = filter_input(INPUT_GET, "commentImageId", FILTER_VALIDATE_INT);
+	$commentImageContent = filter_input(INPUT_GET, "commentImageContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$commentImageDateTime = filter_input(INPUT_GET, "commentImageDateTime", validateDate());
+	$commentImageImageId = filter_input(INPUT_GET, "commentImageImageId", FILTER_VALIDATE_INT);
+	$commentImageUserId = filter_input(INPUT_GET, "commentImageUserId", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($commentImageId) === true || $commentImageId <= 0)) {
@@ -40,8 +45,9 @@ try {
 	}
 
 
-	//handle GET request - if id is present, that image comment is returned, otherwise all image comments are returned
+	//handle GET request
 	if($method === "GET") {
+
 		//set XSRF cookie
 		setXsrfCookie();
 
@@ -51,7 +57,21 @@ try {
 			if($commentImage !== null) {
 				$reply->data = $commentImage;
 			}
-
+		} else if(empty($commentImageContent) === false) {
+			$commentImages = CommentImage::getCommentImageByCommentImageContent($pdo, $commentImageContent);
+			if($commentImages !== null) {
+				$reply->data = $commentImages;
+			}
+		} else if(empty($commentImageImageId) === false) {
+			$commentImages = CommentImage::getCommentImageByCommentImageImageId($pdo, $commentImageImageId);
+			if($commentImages !== null) {
+				$reply->data = $commentImages;
+			}
+		} else if(empty($commentImageUserId) === false) {
+			$commentImages = CommentImage::getCommentImageByCommentImageUserId($pdo, $commentImageUserId);
+			if($commentImages !== null) {
+				$reply->data = $commentImages;
+			}
 		} else {
 			$commentImages = CommentImage::getAllCommentImage($pdo);
 			if($commentImages !== null) {
@@ -63,16 +83,10 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//make sure comment image content is available
-		if(empty($requestObject->commentImageContent) === true) {
-			throw(new \InvalidArgumentException ("No content for this Image Comment.", 405));
+		//make sure comment image is available
+		if(empty($requestObject->commentImageId) === true) {
+			throw(new \InvalidArgumentException ("No Image Comment to update", 405));
 		}
-
-		//make sure comment image dateTime is available
-		if(empty($requestObject->commentImageDateTime) === true) {
-			throw(new \invalidArgumentException ("No DateTime for this image comment.", 405));
-		}
-
 
 		//perform the actual put or post
 		if($method === "PUT") {
@@ -80,17 +94,18 @@ try {
 			// retrieve the commentImage to update
 			$commentImage = Edu\Cnm\TeamCuriosity\CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
 			if($commentImage === null) {
-
-
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
 
 			// put the new commentImage content into the comment and update
 			$commentImage->setCommentImageContent($requestObject->commentImageContent);
+			$commentImage->setCommentImageDateTime($requestObject->commentImageDateTime);
+			$commentImage->setCommentImageImageId($requestObject->commentImageImageId);
+			$commentImage->setCommentImageUserId($requestObject->commentImageUserId);
 			$commentImage->update($pdo);
 
 			//update reply
-			$reply->message = "Image Content Updated Ok";
+			$reply->message = "Image Updated Ok";
 
 		} else if($method === "POST") {
 
@@ -99,8 +114,8 @@ try {
 				throw(new \InvalidArgumentException ("No image ID.", 405));
 			}
 
-			//create new user and insert into the database
-			$commentImage = new Edu\Cnm\TeamCuriosity\CommentImage(null, $requestObject->imageId, $requestObject->commentImageContent, null);
+			//create new image comment and insert into the database
+			$commentImage = new Edu\Cnm\TeamCuriosity\CommentImage(null, $requestObject->commentImageContent, null, $requestObject->commentImageImageId, $requestObject->commentImageUserId);
 			$commentImage->insert($pdo);
 
 			//update reply
@@ -111,7 +126,7 @@ try {
 			verifyXsrf();
 
 			// retrieve the image comment to be deleted
-			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $imageId);
+			$commentImage = CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
 			if($commentImage === null) {
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}

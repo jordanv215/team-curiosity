@@ -162,7 +162,7 @@ try {
 			verifyXsrf();
 
 			// retrieve the image to be deleted
-			$image = Image::getImageByImageId($pdo, $userId);
+			$image = Image::getImageByImageId($pdo, $imageId);
 			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
 			}
