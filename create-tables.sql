@@ -45,6 +45,7 @@ CREATE TABLE Image (
 
 CREATE TABLE NewsArticle (
 	newsArticleId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	newsArticleTitle VARCHAR(128) NOT NULL,
 	newsArticleDate DATETIME NOT NULL,
 	newsArticleSynopsis VARCHAR(256) NOT NULL,
 	newsArticleUrl VARCHAR(256) NOT NULL,
