@@ -310,7 +310,7 @@ class CommentNewsArticle implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getCommentNewsArticleContentByCommentNewsArticleContent(\PDO $pdo, string $commentNewsArticleContent) {
+	public static function getCommentNewsArticleByCommentNewsArticleContent(\PDO $pdo, string $commentNewsArticleContent) {
 		//sanitize the description before searching
 		$commentNewsArticleContent = trim($commentNewsArticleContent);
 		$commentNewsArticleContent = filter_var($commentNewsArticleContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);

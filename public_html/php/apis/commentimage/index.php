@@ -6,7 +6,6 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 
 use Edu\Cnm\TeamCuriosity\CommentImage;
-use Edu\Cnm\TeamCuriosity\ValidateDate;
 
 
 /**
@@ -35,7 +34,6 @@ try {
 	//sanitize input
 	$commentImageId = filter_input(INPUT_GET, "commentImageId", FILTER_VALIDATE_INT);
 	$commentImageContent = filter_input(INPUT_GET, "commentImageContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$commentImageDateTime = filter_input(INPUT_GET, "commentImageDateTime", validateDate());
 	$commentImageImageId = filter_input(INPUT_GET, "commentImageImageId", FILTER_VALIDATE_INT);
 	$commentImageUserId = filter_input(INPUT_GET, "commentImageUserId", FILTER_VALIDATE_INT);
 
