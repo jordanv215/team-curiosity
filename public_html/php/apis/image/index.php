@@ -5,6 +5,7 @@ require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity\Image;
+use Edu\Cnm\TeamCuriosity\ValidateDate;
 
 
 /**
@@ -32,6 +33,11 @@ try {
 
 	//sanitize input
 	$imageId = filter_input(INPUT_GET, "imageId", FILTER_VALIDATE_INT);
+	$imageCamera = filter_input(INPUT_GET, "imageCamera", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$imageDescription = filter_input(INPUT_GET, "imageDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$imageEarthDate = filter_input(INPUT_GET, "imageEarthDate", validateDate());
+	$imageSol = filter_input(INPUT_GET, "imageSol", FILTER_VALIDATE_INT);
+	$imageTitle = filter_input(INPUT_GET, "imageTitle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
 	//make sure the id is valid for methods that require it
@@ -46,35 +52,44 @@ try {
 		setXsrfCookie();
 
 		//get a specific image and update reply
-		if(empty($ImageId) === false) {
+		if(empty($imageId) === false) {
 			$image = Image::getImageByImageId($pdo, $imageId);
 			if($image !== null) {
 				$reply->data = $image;
 			}
 
 		} else if(empty($imageCamera) === false) {
-			$image = Image::getImageByImageCamera($pdo, $imageCamera);
-			if($image !== null) {
-				$reply->data = $image;
+			$images = Image::getImageByImageCamera($pdo, $imageCamera);
+			if($images !== null) {
+				$reply->data = $images;
+			}
+		} else if(empty($imageDescription) === false) {
+			$images = Image::getImageByImageDescription($pdo, $imageDescription);
+			if($images !== null) {
+				$reply->data = $images;
+			}
+		} else if(empty($imageEarthDate) === false) {
+			$images = Image::getImagesByImageEarthDate($pdo, $imageEarthDate);
+			if($images !== null) {
+				$reply->data = $images;
 			}
 
-		} else if(empty($imageDescription) === false) {
-			$image = Image::getImageByImageDescription($pdo, $imageDescription);
-			if($image !== null) {
-				$reply->data = $image;
+		} else if(empty($imageSol) === false) {
+			$images = Image::getImageByImageSol($pdo, $imageSol);
+			if($images !== null) {
+				$reply->data = $images;
 			}
 
 		} else if(empty($imageTitle) === false) {
-			$image = Image::getImageByImageTitle($pdo, $imageTitle);
-			if($image !== null) {
-				$reply->data = $image;
+			$images = Image::getImageByImageTitle($pdo, $imageTitle);
+			if($images !== null) {
+				$reply->data = $images;
 			}
 
-
 		} else {
-			$Images = Image::getAllImages($pdo);
-			if($Images !== null) {
-				$reply->data = $Images;
+			$images = Image::getAllImages($pdo);
+			if($images !== null) {
+				$reply->data = $images;
 			}
 		}
 	} else if($method === "PUT" || $method === "POST") {
@@ -94,12 +109,12 @@ try {
 
 		//make sure image camera is available
 		if(empty($requestObject->imageCamera) === true) {
-			throw(new \InvalidArgumentException ("No listen camera for this Image.", 405));
+			throw(new \InvalidArgumentException ("No camera for this Image.", 405));
 		}
 
 		//make sure image type is available
 		if(empty($requestObject->imageType) === true) {
-			throw(new \InvalidArgumentException ("No type for this Image.", 405));
+			throw(new \InvalidArgumentException ("No MIME type for this Image.", 405));
 		}
 
 		//make sure image earth date is available
@@ -109,11 +124,8 @@ try {
 
 		//make sure image local path is available
 		if(empty($requestObject->imagePath) === true) {
-			throw(new \InvalidArgumentException ("No path for this Image.", 405));
+			throw(new \InvalidArgumentException ("No file path for this Image.", 405));
 		}
-
-
-
 
 
 		//perform the actual put or post
@@ -145,6 +157,7 @@ try {
 
 			//update reply
 			$reply->message = "Image created OK";
+
 		} else if($method === "DELETE") {
 			verifyXsrf();
 
