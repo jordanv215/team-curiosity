@@ -5,6 +5,7 @@ require_once (dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity;
+use Edu\Cnm\TeamCuriosity\ValidateDate;
 
 
 /**
@@ -17,30 +18,57 @@ use Edu\Cnm\TeamCuriosity;
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
+
 //prepare an empty reply
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 try {
+
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+
 	//sanitize input
-	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$newsArticleId = filter_input(INPUT_GET, "newsArticleId", FILTER_VALIDATE_INT);
+	$newsArticleTitle = filter_input(INPUT_GET, "newsArticleTitle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$newsArticleDate = filter_input(INPUT_GET, "newsArticleDate", validateDate());
+	$newsArticleSynopsis = filter_input(INPUT_GET, "newsArticleSynopsis", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$newsArticleUrl = filter_input(INPUT_GET, "newsArticleUrl", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
 	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($newsArticleId) === true || $newsArticleId < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
-// handle GET request - if id is present, that NewsArticle is returned, otherwise all NewsArticles are returned
+
+	// handle GET request
 	if($method === "GET") {
+
 		//set XSRF cookie
 		setXsrfCookie();
-		//get a specific NewsArticle or all NewsArticles and update reply
-		if(empty($id) === false) {
-			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $id);
+
+		//get a specific NewsArticle, multiple NewsArticles, or all NewsArticles, and update reply
+		if(empty($newsArticleId) === false) {
+			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle !== null) {
 				$reply->data = $newsArticle;
+			}
+		} else if (empty($newsArticleTitle) === false) {
+			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleTitle($pdo, $newsArticleTitle);
+			if($newsArticles !== null) {
+				$reply->data = $newsArticles;
+			}
+		} else if (empty($newsArticleDate) === false) {
+			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleDate($pdo, $newsArticleDate);
+			if($newsArticles !== null) {
+				$reply->data = $newsArticles;
+			}
+		} else if (empty($newsArticleSynopsis) === false) {
+			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleSynopsis($pdo, $newsArticleSynopsis);
+			if($newsArticles !== null) {
+				$reply->data = $newsArticles;
 			}
 		} else {
 			$newsArticles = TeamCuriosity\NewsArticle::getAllNewsArticles($pdo);
@@ -50,52 +78,62 @@ try {
 		}
 	} else if($method === "PUT" || $method === "POST") {
 		verifyXsrf();
-		$requestSynopsis = file_get_contents("php://input");
-		$requestObject = json_decode($requestSynopsis);
-		//make sure newsArticle synopsis is available
-		if(empty($requestObject->newsArticleSynopsis) === true) {
-			throw(new \InvalidArgumentException ("No synopsis for NewsArticle.", 405));
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
+
+		//make sure newsArticle is available
+		if(empty($requestObject->newsArticleId) === true) {
+			throw(new \InvalidArgumentException ("No NewsArticle to update", 405));
 		}
+
 		//perform the actual put or post
 		if($method === "PUT") {
+
 			// retrieve the newsArticle to update
-			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $id);
+			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle === null) {
 				throw(new RuntimeException("NewsArticle does not exist", 404));
 			}
 			// put the new newsArticle synopsis into the newsArticle and update
+			$newsArticle->setNewsArticleTitle($requestObject->newsArticleTitle);
+			$newsArticle->setNewsArticleDate($requestObject->newsArticleDate);
 			$newsArticle->setNewsArticleSynopsis($requestObject->newsArticleSynopsis);
+			$newsArticle->setNewsArticleUrl($requestObject->newsArticleUrl);
 			$newsArticle->update($pdo);
+
 			// update reply
 			$reply->message = "NewsArticle updated OK";
 		} else if($method === "POST") {
+
 			// make sure newsArticleId is available
 			if(empty($requestObject->newsArticleId) === true) {
 				throw(new \InvalidArgumentException ("No NewsArticle ID.", 405));
 			}
 
 			// create new newsArticle and insert into the database
-			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->NewsArticleId, $requestObject->newsArticleDate, null);
-			$requestObject->newsArticleSynopsis;
-			$requestObject->newsArticleUrl;
+			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->newsArticleTitle, null, $requestObject->newsArticleSynopsis, $requestObject->newsArticleUrl);
 			$newsArticle->insert($pdo);
+
 			// update reply
 			$reply->message = "NewsArticle created OK";
 		}
 	} else if($method === "DELETE") {
 		verifyXsrf();
+
 		// retrieve the newsArticle to be deleted
-		$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $id);
+		$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 		if($newsArticle === null) {
 			throw(new RuntimeException("NewsArticle does not exist", 404));
 		}
 		// delete newsArticle
 		$newsArticle->delete($pdo);
+
 		// update reply
 		$reply->message = "NewsArticle deleted OK";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
+
 	// update reply with exception information
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();

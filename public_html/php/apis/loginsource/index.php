@@ -68,7 +68,7 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		// make sure login source api key is present
+		// make sure login source is present
 		if(empty($requestObject->loginSourceId) === true) {
 			throw(new \InvalidArgumentException("No login source to update"));
 		}
