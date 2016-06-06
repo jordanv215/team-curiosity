@@ -43,7 +43,7 @@
 
 
 		<!-- navbar -->
-		<?php require_once("public_html/php/templates/header.php");>
+		<?php require_once("public_html/php/templates/header.php");?>
 		<nav class="navbar navbar-inverse">
 			<div class="container ng-1">
 				<div class="navbar-header">
@@ -63,13 +63,10 @@
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">Search
 								<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-							<li><a href="#">News</a></li>
+								<li><a href="#">News</a></li>
 								<li><a href="#">Images</a></li>
-						</ul>
+							</ul>
 					</ul>
 				</div>
 			</div>
 		</nav>
-
-
-
