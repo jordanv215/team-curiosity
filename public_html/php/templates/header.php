@@ -1,2 +1,17 @@
-<?php
-// Template for the header incl. the logo, nav icons, and search dropdown
+<div class="container">
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-body">
+					<p>test test test test</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</div>
