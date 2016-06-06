@@ -42,18 +42,28 @@
 
 	<body>
 
-		<div class="container-fluid text-center">
-			<div class="jumbotron">
-				<h1>Weather Bar</h1>
-				<p>Sky conditions, air pressure, max and min temp, earth date, sol date</p>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-3">
+					<div class="big-box">image</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="big-box">image</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="row">
+						<div class="col-xs-6"><div class="mini-box">1</div></div>
+						<div class="col-xs-6"><div class="mini-box">2</div></div>
+						<div class="col-xs-6"><div class="mini-box">3</div></div>
+						<div class="col-xs-6"><div class="mini-box">4</div></div>
+					</div>
+				</div>
 			</div>
-			<p>This will be our weather bar, which is placed under the top navbar</p>
-			<p>I thought a Jumbotron would be good because it gives a lot of space, and we could put background images in here that portay types of weather.</p>
 		</div>
 <!--these columbs will contain our two image carousels. They aren't centered right now, but they're there for future needs and they're the same width.-->
 		<div class="border row">
-			<div class="border col-lg-6">.col-lg-6</div>
-			<div class="border col-lg-6">.col-lg-6</div>
+			<div class="border col-lg-6">carousel1</div>
+			<div class="border col-lg-6">carousel2</div>
 		</div>
 		<!-- navbar -->
 		<nav class="navbar navbar-inverse">
