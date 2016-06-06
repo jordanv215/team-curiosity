@@ -94,7 +94,7 @@ try {
 				throw(new RuntimeException("CommentNewsArticle does not exist", 404));
 			}
 
-			// put the new commentNewsArticle content into the commentNewsArticle and update
+			// edit the fields in the commentNewsArticle and update the table
 			$commentNewsArticle->setCommentNewsArticleContent($requestObject->commentNewsArticleContent);
 			$commentNewsArticle->setCommentNewsArticleDateTime($requestObject->commentNewsArticleDateTime);
 			$commentNewsArticle->setCommentNewsArticleNewsArticleId($requestObject->commentNewsArticleNewsArticleId);

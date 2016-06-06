@@ -186,6 +186,8 @@ try {
 	$reply->message = $typeError->getMessage();
 }
 
+
+
 header("Content-Type: application/json");
 if($reply->data === null) {
 	unset($reply->data);
