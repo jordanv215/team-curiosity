@@ -44,14 +44,14 @@
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-4">
-					<img class="img-responsive-1" src="../public_html/image/mars.png" alt="mars" height="300px" width="500px">
+				<div class="col-xs-4 img-1">
+					<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
 				</div>
-				<div class="col-xs-4">
-					<img class="img-responsive-2" src="../public_html/image/mars.png" alt="mars" height="300px" width="500px">
+				<div class="col-xs-4 img-1">
+					<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
 				</div>
-				<div class="col-xs-4">
-					<img class="img-responsive-3" src="../public_html/image/mars.png" alt="mars" height="300px" width="500px">
+				<div class="col-xs-4 img-1">
+					<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
 				</div>
 			</div>
 		</div>
