@@ -44,10 +44,22 @@
 			<nav class="navbar navbar-inverse navbar-fixed-bottom">
 				<div class="container">
 					<div class="navbar-footer">
-						<p class="navbar-text">2016 Copyright RedRovr</p>
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand">SOCIAL MEDIA LOGIN</a>
+						</div>
+					<div class="collapse navbar-collapse" id="myNavbar">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a>redrovrdotio@gmail.com</a></li>
+							<li><a>2016 Copyright RedRovr</a></li>
+						</ul>
 					</div>
 				</div>
 			</nav>
 		</footer>
 	</body>
 </html>
+
