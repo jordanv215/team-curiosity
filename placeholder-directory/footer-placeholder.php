@@ -53,7 +53,8 @@
 						</div>
 					<div class="collapse navbar-collapse" id="myNavbar">
 						<ul class="nav navbar-nav navbar-right">
-							<li><a>redrovrdotio@gmail.com</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#myModal">About</a></li>
+							<li><a>redrovrdotio@gmail.com </a></li>
 							<li><a>2016 Copyright RedRovr</a></li>
 						</ul>
 					</div>
@@ -62,4 +63,15 @@
 		</footer>
 	</body>
 </html>
+<!--
+						<img class="img-circle" src="image/wrench-idk.png" alt="wrench" height="100" width="100" data-toggle="modal" data-target="#myModal">
+<div class="container">
 
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-body">
+					<img src="image/car-and-me-for-website.jpg" alt="my 74 charger" width="1024px" height="682px">
