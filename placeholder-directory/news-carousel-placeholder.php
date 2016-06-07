@@ -42,56 +42,31 @@
 	<body>
 
 
+		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			</ol>
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-	<!-- Indicators -->
-	<ol class="carousel-indicators">
-		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-		<li data-target="#myCarousel" data-slide-to="1"></li>
-		<li data-target="#myCarousel" data-slide-to="2"></li>
-		<li data-target="#myCarousel" data-slide-to="3"></li>
-	</ol>
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner" role="listbox">
+				<div class="item active">
+					<div class="carousel-header">
+						<h3>{{newsArticle.title}}</h3>
+						<p>{{newsArticle.description}}</p>
+					</div>
+				</div>
 
-	<!-- Wrapper for slides -->
-	<div class="carousel-inner" role="listbox">
-		<div class="item active">
-			<div class="carousel-header">
-				<h3>Trump Elected God-King of Mars</h3>
-				<p>After a full year of violent outbursts and downright stupidity, somehow, Trump has been elected the God-King of the planet Mars. Only the future will tell whether this was a good choice or not for the Martian people. (click here to read more)</p>
+				<!-- Left and right controls -->
+				<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
 			</div>
 		</div>
-
-		<div class="item">
-			<div class="carousel-header">
-				<h3>Trump Builds Giant Wall Around Mars-Phobos Space Border</h3>
-				<p>Phobosians riot as Trump makes their own president pay for the wall that completely blocks them off from Mars. God-King Trump has not commented on the situation, but did ask for our passports when we told him we were from New Marsico. (click here to read more)</p>
-			</div>
-		</div>
-
-		<div class="item">
-			<div class="carousel-header">
-				<h3>Tragedy on Mars</h3>
-				<p>Tragedy struck on Mars today as Trump, the beloved God-King of the planet, passed away. Sources say his heart stopped, although there were no signs of heart attack, or any indication that he was sick. (click to read more)</p>
-			</div>
-		</div>
-
-		<div class="item">
-			<div class="carousel-header">
-				<h3>Autopsy Shows God-King Trump's Heart Caused by 100% Solid Stone Heart</h3>
-				<p>3 days after the death of Trump was announced, the autopsy has finally finished, concluding that the widely popular God-King had a sort of heart attack when his heart turned completely to stone. Sources and witnesses say that Trump was in the middle of arguing with the homeless about why a $1 million dollar loan is a regular thing, when he dropped and never moved again. (click here to read more)</p>
-			</div>
-		</div>
-	</div>
-
-	<!-- Left and right controls -->
-	<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
-	</a>
-	<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
-	</a>
-</div>
 	</body>
 </html>
