@@ -9,6 +9,7 @@
 
 				<!-- angular view directive -->
 				<div ng-view></div>
+				
 			</div>
 		</main>
 	</div><!-- sfooter content -->
