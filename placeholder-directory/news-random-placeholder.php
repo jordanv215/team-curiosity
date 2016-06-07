@@ -42,7 +42,7 @@
 
 	<body>
 	<h3>Random News</h3>
-		<div class="container-fluid">
+		<div class="container">
 			<div class="row">
 				<div class="col-xs-3 news-random">
 					<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
