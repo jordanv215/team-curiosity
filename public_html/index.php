@@ -1,11 +1,13 @@
+<!-- head utils contains the entire <head> tag -->
+<?php require_once("php/templates/head-utils.php");?>
 
-	<body>
-	<header>
-
-	</header>
-	<footer>
-
-	</footer>
+<body class="sfooter">
+	<div class="sfooter-content">
 		
-	</body>
+	</div><!-- sfooter content -->
+	
+	<!-- footer gets inserted -->
+	<?php require_once("php/templates/footer.php");?>
+	
+</body>
 </html>
