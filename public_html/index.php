@@ -4,6 +4,13 @@
 <body class="sfooter">
 	<div class="sfooter-content">
 		<?php require_once("php/templates/header.php");?>
+		<main>
+			<div class="container">
+
+				<!-- angular view directive -->
+				<div ng-view></div>
+			</div>
+		</main>
 	</div><!-- sfooter content -->
 	
 	<!-- footer gets inserted -->
