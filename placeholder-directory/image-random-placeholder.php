@@ -42,7 +42,7 @@
 
 	<body>
 
-		<div class="container-fluid">
+		<div class="container">
 			<div class="row">
 				<div class="col-xs-4 img-1">
 					<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
