@@ -3,7 +3,7 @@
 
 <body class="sfooter">
 	<div class="sfooter-content">
-		
+		<?php require_once("php/templates/header.php");?>
 	</div><!-- sfooter content -->
 	
 	<!-- footer gets inserted -->
