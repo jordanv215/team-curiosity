@@ -7,3 +7,8 @@
 	height: 200px;
 	width: auto;
 }
+
+/* this is for the modal used in news, image, and about */
+.modal-dialog {
+	width: 75%;
+}
