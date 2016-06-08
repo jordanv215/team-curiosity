@@ -5,7 +5,7 @@ app.service("ImageService", function($http, IMAGE_ENDPOINT) {
 	}
 
 
-	this.fetchNews = function() {
+	this.fetchImage = function() {
 		return($http.get(getUrl()))
 	}
 });
