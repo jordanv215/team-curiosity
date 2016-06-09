@@ -1,4 +1,5 @@
-<header>
+<header ng-controller="navController">
+	<bootstrap-breakpoint></bootstrap-breakpoint>
 <div class="jumbotron">
 		<div class="col-lg-12">
 		<div class="text-center">
@@ -10,14 +11,14 @@
 	<nav class="navbar navbar-inverse">
 		<div>
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" ng-collapse="!navCollapsed">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="#"><img id="logo" src="image/icon-take2.png"> </a>
 			</div>
-			<div class="collapse navbar-collapse" id="myNavbar">
+			<div class="collapse navbar-collapse" id="myNavbar" uib-collapse="navCollapsed">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="home">Home</a></li>
 					<li><a href="images">Images</a></li>
