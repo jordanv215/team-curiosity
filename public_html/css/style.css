@@ -26,9 +26,9 @@ body { width: 100%;}
 /* Remove the jumbotron's default bottom margin */
 .jumbotron {
 	margin-bottom: 0;
-	height: 100%;
-	width: auto;
+	min-height: 350px;
 	background-image: url(../image/mars-landscape.jpg);
+	background-size: cover;
 }
 
 /* Add a gray background color and some padding to the footer */
