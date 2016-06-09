@@ -4,7 +4,7 @@ app.controller("homeController", ["$scope", "WeatherService", function($scope, W
 	$scope.getWeather = function() {
 		WeatherService.fetchWeather()
 			.then(function(result) {
-				if(result.status === 200) {
+				if(result.data.status === 200) {
 					$scope.weather = result.data.data;
 				} else {
 					console.log("couldn't load weather data: " + result.data.message);
