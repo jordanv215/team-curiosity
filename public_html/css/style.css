@@ -7,6 +7,12 @@
 html { display: flex;}
 body { width: 100%;}
 
+.home {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
 .sfooter {
 	display: flex;
 	flex-direction: column;
@@ -15,11 +21,11 @@ body { width: 100%;}
 
 .sfooter-content {
 	flex: 1 0 auto;
+	margin: 0;
 }
 /* TEST TEST TEST TEST */
 /* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {
-	margin-bottom: 50px;
 	border-radius: 0;
 }
 
@@ -34,5 +40,5 @@ body { width: 100%;}
 /* Add a gray background color and some padding to the footer */
 footer {
 	background-color: #f2f2f2;
-	padding: 25px;
+	/*padding: 25px;*/
 }
