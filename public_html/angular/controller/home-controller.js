@@ -1,4 +1,4 @@
-app.controller("HomeController", ["$scope", "WeatherService", function($scope, WeatherService) {
+app.controller("homeController", ["$scope", "WeatherService", function($scope, WeatherService) {
 	$scope.weather = [];
 	
 	$scope.getWeather = function() {
@@ -15,4 +15,4 @@ app.controller("HomeController", ["$scope", "WeatherService", function($scope, W
 	if($scope.weather.length === 0) {
 		$scope.weather = $scope.getWeather();
 	}
-}]);
+}]);	

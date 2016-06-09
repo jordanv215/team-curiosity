@@ -1,4 +1,4 @@
-app.controller("HeaderController", ["$scope", "GoogleService", function($scope, GoogleService) {
+app.controller("searchController", ["$scope", "GoogleService", function($scope, GoogleService) {
 	$scope.header = [];
 
 	/**

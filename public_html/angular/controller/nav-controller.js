@@ -1,4 +1,4 @@
-app.controller("NavController", ["$http", "$scope", function($http, $scope) {
+app.controller("navController", ["$http", "$scope", function($http, $scope) {
 	$scope.breakpoint = null;
 
 }]);

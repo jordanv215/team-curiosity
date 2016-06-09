@@ -1,4 +1,4 @@
-app.controller("NewsController", ["$scope", "NewsService", function($scope, NewsService) {
+app.controller("newsController", ["$scope", "NewsService", function($scope, NewsService) {
 	$scope.news = [];
 
 	$scope.getNews = function() {
