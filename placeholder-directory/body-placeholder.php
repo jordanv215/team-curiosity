@@ -44,19 +44,19 @@
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
 
 		<!--loading Angular app files -->
-		<script src="../public_html/angular/redrovr.js"></script>
-		<script src="../public_html/angular/services/weather-service.js"></script>
-		<script src="../public_html/angular/controller/home-controller.js"></script>
+		<script src="angular/redrovr.js"></script>
+		<script src="angular/services/weather-service.js"></script>
+		<script src="angular/controller/home-controller.js"></script>
 		<title>RedRovr.io</title>
 
 	</head>
 
 	<body>
 
-			<div class="row" ng-controller="home-controller">
+			<div class="row" ng-controller="HomeController">
 				<div class="col-xs-12">
 					<div class="col-xs-3">
-						<div class="big-box">{{max_temp}}</div>
+						<div class="big-box">{{soles.max_temp}}</div>
 						<div class="mini-box">High</div>
 					</div><!-- column for max temperature-->
 					<div class="col-xs-3">
