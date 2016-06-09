@@ -1,4 +1,4 @@
-app.constant("WEATHER_ENDPOINT", "../../php/apis/weather/");
+app.constant("WEATHER_ENDPOINT", "php/apis/weather/");
 app.service("WeatherService", function($http, WEATHER_ENDPOINT) {
 	function getUrl() {
 		

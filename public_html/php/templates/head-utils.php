@@ -20,6 +20,9 @@
 		<script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
+		<!-- FontAwesome minified -------------->
+
+		<link type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" />
 
 		<!-- OUR CUSTOM CSS -->
 		<link rel="stylesheet" href="css/style.css" type="text/css">

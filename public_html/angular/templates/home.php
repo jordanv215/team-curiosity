@@ -1,22 +1,25 @@
 <?php require_once("header.php");?>
-	<div class="row">
+<div class="row" ng-if="weather == null">
+	<h2 class="text-center"><i class="fa fa-space-shuttle fa-spin" aria-hidden="true"></i> Loading weather data&hellip;</h2>
+</div>
+	<div class="row" ng-if="weather != null">
 		<div class="col-xs-12">
 			<div class="col-xs-3">
-				<div class="big-box" ng-controller="homeController">{{ weather.max_temp }}</div>
+				<div class="big-box">{{ weather.max_temp }}F</div>
 				<div class="mini-box">High</div>
 			</div><!-- column for max temperature-->
 			<div class="col-xs-3">
-				<div class="big-box">-90</div>
+				<div class="big-box">{{ weather.min_temp }}F</div>
 				<div class="mini-box">Low</div>
 			</div><!-- column for min_temp-->
 			<div class="col-xs-3">
-				<div class="mini-box">Sol 1280</div>
-				<div class="row">750</div>
+				<div class="mini-box">Sol {{ weather.sol }}</div>
+				<div class="row">{{ weather.pressure }}</div>
 				<div class="mini-box">Pressure (Pa)</div>
 			</div>
 			<div class="col-xs-3">
-				<div class="mini-box">2016-06-05</div>
-				<div class="row">Sunny</div>
+				<div class="mini-box">{{ weather.terrestrial_date }}</div>
+				<div class="row">{{ weather.atmo_opacity }}</div>
 				<div class="mini-box">Sky</div>
 			</div>
 		</div><!--main weather column -->

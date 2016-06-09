@@ -10,7 +10,7 @@
 
 
 				<!-- angular view directive -->
-				<?php require_once("angular/templates/home.php");?>
+				<div ng-view></div>
 				</main>
 			</div>
 

@@ -28,7 +28,7 @@ app.config(function($routeProvider, $locationProvider) {
 
 		// otherwise redirect to home
 		.otherwise({
-			redirectTo: "/"
+			redirectTo: '/'
 		});
 
 	//use the HTML5 History API
