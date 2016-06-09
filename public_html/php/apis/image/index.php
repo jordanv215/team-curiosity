@@ -194,6 +194,16 @@ try {
 }
 
 
+public function NasaCall() {
+	$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
+	$apiKey = ""; // how is this accessed again?
+	$camera = "";
+	$earthDate = "";
+	$sol = "";
+}
+
+
+
 
 header("Content-Type: application/json");
 if($reply->data === null) {
