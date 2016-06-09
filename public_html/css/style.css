@@ -30,6 +30,17 @@ body { width: 100%;}
 	width: 100%;
 }
 
+#logo {
+	height: 3rem;
+}
+
+.navbar .navbar-default .navbar-inverse .navbar-brand .navbar-collapse .navbar-header .navbar-nav .navbar-right .navbar-toggle {
+	background-image: none;
+		background-color: #d4653d;
+
+	}
+
+
 /* Remove the jumbotron's default bottom margin */
 .jumbotron {
 	margin-bottom: 0;
@@ -44,6 +55,7 @@ body { width: 100%;}
 .navbar {
 	border-radius: 0;
 }
+
 
 /* Add a gray background color and some padding to the footer */
 footer {
