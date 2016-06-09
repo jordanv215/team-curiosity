@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="col-xs-3">
-				<div class="big-box">10</div>
+				<div class="big-box">{{max_temp}}</div>
 				<div class="mini-box">High</div>
 			</div><!-- column for max temperature-->
 			<div class="col-xs-3">

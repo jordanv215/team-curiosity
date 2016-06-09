@@ -8,6 +8,7 @@
 		<!-- sets viewport width to device width, scaling 1:1 -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
+		<base href="<?php echo dirname($_SERVER["PHP_SELF"]) . "/"; ?>">
 
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -39,5 +40,15 @@
 
 		<!--loading Angular app files -->
 		<script src="angular/redrovr.js"></script>
+		<script src="angular/directives/bootstrap-breakpoint.js"></script>
+		<script src="angular/services/weather-service.js"></script>
+		<script src="angular/services/image-service.js"></script>
+		<script src="angular/services/news-service.js"></script>
+		<script src="angular/services/login-service.js"></script>
+		<script src="angular/controller/nav-controller.js"></script>
+		<script src="angular/controller/search-controller.js"></script>
+		<script src="angular/controller/home-controller.js"></script>
+		<script src="angular/controller/images-controller.js"></script>
+		<script src="angular/controller/news-controller.js"></script>
 		<title>RedRovr</title>
 	</head>
