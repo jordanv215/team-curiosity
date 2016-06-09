@@ -4,14 +4,14 @@
 <body class="sfooter">
 	<div class="sfooter-content">
 		<main>
-			<div class="container">
+			<div class="container-fluid">
 
 
 
 
 				<!-- angular view directive -->
 				<?php require_once("angular/templates/home.php");?>
-				
+
 			</div>
 		</main>
 	</div><!-- sfooter content -->
