@@ -1,9 +1,8 @@
 
-
+<?php require_once("../../php/templates/head-utils.php");?>
 	<div class="jumbotron">
 		<div class="container text-center">
-			<h1>Online Store</h1>
-			<p>Mission, Vission & Values</p>
+			<h1>Red Rovr</h1>
 		</div>
 	</div>
 
