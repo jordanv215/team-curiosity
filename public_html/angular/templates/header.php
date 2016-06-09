@@ -1,13 +1,13 @@
 	
-<div class="jumbotron container-fluid">
+<div class="jumbotron">
 		<div class="col-lg-12">
-		<div class="container-fluid text-center">
+		<div class="text-center">
 			<h1>Red Rovr</h1>
 		</div>
 	</div>
 </div>
 	<nav class="navbar navbar-inverse">
-		<div class="container-fluid">
+		<div>
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
 					<span class="icon-bar"></span>
