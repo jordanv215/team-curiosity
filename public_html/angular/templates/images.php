@@ -1,3 +1,5 @@
+<header ng-include="/image-full.php">
+</header>
 <div class="container">
 	<div class="row">
 		<div class="col-xs-4 img-1">

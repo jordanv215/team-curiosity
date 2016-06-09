@@ -1,3 +1,5 @@
+<header ng-include="/news-full.php">
+</header>
 <div id="newsCarousel" class="carousel slide" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
