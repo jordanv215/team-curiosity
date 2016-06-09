@@ -1,4 +1,4 @@
-<div class="container">
+
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="col-xs-3">
@@ -21,7 +21,6 @@
 			</div>
 		</div><!--main weather column -->
 	</div><!-- row for weather-->
-</div>
 <!--these columns will contain our two content carousels. They aren't centered right now, but they're there for future needs and they're the same width.-->
 <div id="imageCarousel" class="carousel slide" data-ride="carousel">
 	<!-- Indicators -->
