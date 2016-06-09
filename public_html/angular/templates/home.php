@@ -5,16 +5,16 @@
 	<div class="row" ng-if="weather != null">
 		<div class="col-xs-12">
 			<div class="col-xs-3">
-				<div class="big-box">{{ weather.max_temp }}F</div>
+				<div class="big-box">{{ weather.max_temp }} &deg;F</div>
 				<div class="mini-box">High</div>
 			</div><!-- column for max temperature-->
 			<div class="col-xs-3">
-				<div class="big-box">{{ weather.min_temp }}F</div>
+				<div class="big-box">{{ weather.min_temp }} &deg;F</div>
 				<div class="mini-box">Low</div>
 			</div><!-- column for min_temp-->
 			<div class="col-xs-3">
 				<div class="mini-box">Sol {{ weather.sol }}</div>
-				<div class="row">{{ weather.pressure }}</div>
+				<div class="row">{{ weather.pressure }} Pa</div>
 				<div class="mini-box">Pressure (Pa)</div>
 			</div>
 			<div class="col-xs-3">
