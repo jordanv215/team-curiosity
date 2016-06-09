@@ -38,6 +38,7 @@
 
 		<!--loading Angular app files -->
 		<script src="angular/redrovr.js"></script>
+		<script src="angular/route-config.js"></script>
 		<script src="angular/directives/bootstrap-breakpoint.js"></script>
 		<script src="angular/services/weather-service.js"></script>
 		<script src="angular/services/image-service.js"></script>
@@ -48,6 +49,7 @@
 		<script src="angular/controller/home-controller.js"></script>
 		<script src="angular/controller/images-controller.js"></script>
 		<script src="angular/controller/news-controller.js"></script>
+		<script src="angular/controller/about-controller.js"></script>
 		
 		<title>RedRovr</title>
 	</head>
