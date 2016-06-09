@@ -1,4 +1,4 @@
-	
+<header>
 <div class="jumbotron">
 		<div class="col-lg-12">
 		<div class="text-center">
@@ -32,3 +32,4 @@
 			</div>
 		</div>
 	</nav>
+</header>
