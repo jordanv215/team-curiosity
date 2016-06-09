@@ -34,7 +34,7 @@ try {
 	//sanitize input
 	$newsArticleId = filter_input(INPUT_GET, "newsArticleId", FILTER_VALIDATE_INT);
 	$newsArticleTitle = filter_input(INPUT_GET, "newsArticleTitle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$newsArticleDate = filter_input(INPUT_GET, "newsArticleDate", validateDate());
+	$newsArticleDate = filter_input(INPUT_GET, "newsArticleDate", FILTER_VALIDATE_INT);
 	$newsArticleSynopsis = filter_input(INPUT_GET, "newsArticleSynopsis", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$newsArticleUrl = filter_input(INPUT_GET, "newsArticleUrl", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -60,8 +60,9 @@ try {
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
-		} else if (empty($newsArticleDate) === false) {
-			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleDate($pdo, $newsArticleDate);
+		} else if(empty($newsArticleDate) === false) {
+			$actualDate = DateTime::createFromFormat("U", $newsArticleDate / 1000);
+			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleDate($pdo, $actualDate);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
@@ -166,12 +167,10 @@ foreach($rss->item as $item) { // does all of this need to be put in a function 
 	$newsArticleSynopsis = $item->description;
 
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+	
+	$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
 
-	$query = "SELECT * FROM NewsArticle";
-	$statement = $pdo->prepare($query);
-
-
-
+	$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 	if($newsArticleUrl === "newsArticleUrl") {
 		// grab row and add to array
 		// somehow

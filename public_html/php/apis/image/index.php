@@ -5,7 +5,6 @@ require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity\Image;
-use Edu\Cnm\TeamCuriosity\ValidateDate;
 
 
 /**
@@ -35,7 +34,7 @@ try {
 	$imageId = filter_input(INPUT_GET, "imageId", FILTER_VALIDATE_INT);
 	$imageCamera = filter_input(INPUT_GET, "imageCamera", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$imageDescription = filter_input(INPUT_GET, "imageDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$imageEarthDate = filter_input(INPUT_GET, "imageEarthDate", validateDate());
+	$imageEarthDate = filter_input(INPUT_GET, "imageEarthDate", FILTER_VALIDATE_INT);
 	$imageSol = filter_input(INPUT_GET, "imageSol", FILTER_VALIDATE_INT);
 	$imageTitle = filter_input(INPUT_GET, "imageTitle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$imageUrl = filter_input(INPUT_GET, "imageUrl", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -70,7 +69,8 @@ try {
 				$reply->data = $images;
 			}
 		} else if(empty($imageEarthDate) === false) {
-			$images = Image::getImagesByImageEarthDate($pdo, $imageEarthDate);
+			$actualDate = DateTime::createFromFormat("U", $imageEarthDate / 1000);
+			$images = Image::getImagesByImageEarthDate($pdo, $actualDate);
 			if($images !== null) {
 				$reply->data = $images;
 			}
