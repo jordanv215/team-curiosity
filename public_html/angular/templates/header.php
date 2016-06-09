@@ -1,11 +1,12 @@
 
 <?php require_once("../../php/templates/head-utils.php");?>
 	<div class="jumbotron container-fluid">
+		<div class="col-lg-12">
 		<div class="container-fluid text-center">
 			<h1>Red Rovr</h1>
 		</div>
 	</div>
-
+</div>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
