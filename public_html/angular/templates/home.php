@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="col-xs-3">
-				<div class="big-box">{{ weather.max_temp }}</div>
+				<div class="big-box" ng-controller="homeController">{{ weather.max_temp }}</div>
 				<div class="mini-box">High</div>
 			</div><!-- column for max temperature-->
 			<div class="col-xs-3">

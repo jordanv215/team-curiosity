@@ -1,5 +1,6 @@
 app.controller("homeController", ["$scope", "WeatherService", function($scope, WeatherService) {
 	$scope.weather = [];
+	console.log("floof")
 	
 	$scope.getWeather = function() {
 		WeatherService.fetchWeather()
