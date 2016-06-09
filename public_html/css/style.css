@@ -16,15 +16,20 @@ body { width: 100%;}
 .sfooter-content {
 	flex: 1 0 auto;
 }
-
-/* this doesn't work because bootstrap has a default navbar. We need to change this to the right colors when we decide which to use */
+/* TEST TEST TEST TEST */
+/* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {
-	background-color: crimson;
-	color: azure;
+	margin-bottom: 50px;
+	border-radius: 0;
 }
 
-
+/* Remove the jumbotron's default bottom margin */
 .jumbotron {
-	background-color: orangered;
-	color: black;
+	margin-bottom: 0;
+}
+
+/* Add a gray background color and some padding to the footer */
+footer {
+	background-color: #f2f2f2;
+	padding: 25px;
 }

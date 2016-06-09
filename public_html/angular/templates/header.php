@@ -1,29 +1,45 @@
-<header>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Bootstrap Example</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../../css/style.css" type="text/css">
+	<body>
+
+	<div class="jumbotron">
+		<div class="container text-center">
+			<h1>Online Store</h1>
+			<p>Mission, Vission & Values</p>
+		</div>
+	</div>
+
 	<nav class="navbar navbar-inverse">
-		<div class="container ng-1">
+		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">REDROVR</a>
+				<a class="navbar-brand" href="#">Logo</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Home</a></li>
+					<li><a href="#">Products</a></li>
+					<li><a href="#">Deals</a></li>
+					<li><a href="#">Stores</a></li>
+					<li><a href="#">Contact</a></li>
+				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href data-toggle="modal" data-target="#about-modal">About</a></li>
-					<li><a>Images</a></li>
-					<li><a>News</a></li>
-					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">Search
-							<span class="caret"></span></a>
-						<div class="dropdown-menu">
-							search here
-						</div>
+					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-</header>
+	</body>
+</html>
+
 
 <?php require_once("../../php/templates/about-modal.php");?>
