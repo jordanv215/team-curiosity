@@ -38,6 +38,7 @@ try {
 	$imageEarthDate = filter_input(INPUT_GET, "imageEarthDate", validateDate());
 	$imageSol = filter_input(INPUT_GET, "imageSol", FILTER_VALIDATE_INT);
 	$imageTitle = filter_input(INPUT_GET, "imageTitle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$imageUrl = filter_input(INPUT_GET, "imageUrl", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
 	//make sure the id is valid for methods that require it
@@ -75,13 +76,19 @@ try {
 			}
 
 		} else if(empty($imageSol) === false) {
-			$images = Image::getImageByImageSol($pdo, $imageSol);
+			$images = Image::getImagesByImageSol($pdo, $imageSol);
 			if($images !== null) {
 				$reply->data = $images;
 			}
 
 		} else if(empty($imageTitle) === false) {
 			$images = Image::getImageByImageTitle($pdo, $imageTitle);
+			if($images !== null) {
+				$reply->data = $images;
+			}
+
+		} else if(empty($imageUrl) === false) {
+			$images = Image::getImageByImageUrl($pdo, $imageUrl);
 			if($images !== null) {
 				$reply->data = $images;
 			}
