@@ -159,6 +159,22 @@ foreach($rss->item as $item) {
 	$newsArticleUrl = $item->link;
 	$newsArticleDate = $item->pubDate;
 	$newsArticleSynopsis = $item->description;
+
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+
+	$query = "SELECT * FROM NewsArticle";
+	$statement = $pdo->prepare($query);
+
+
+
+	if($newsArticleUrl === "newsArticleUrl") {
+		// grab row and add to array
+	}
+
+	else {
+		$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
+		
+	}
 }
 
 header("Content-type: application/json");
