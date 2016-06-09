@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>Bootstrap Example</title>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="../../css/style.css" type="text/css">
-	<body>
+
 
 	<div class="jumbotron">
 		<div class="container text-center">
@@ -38,8 +32,7 @@
 			</div>
 		</div>
 	</nav>
-	</body>
-</html>
+
 
 
 <?php require_once("../../php/templates/about-modal.php");?>
