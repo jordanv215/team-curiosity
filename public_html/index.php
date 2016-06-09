@@ -3,17 +3,17 @@
 
 <body class="sfooter">
 	<div class="sfooter-content">
-		<main>
-			<div class="container-fluid">
+			<div>
+				<main>
 
 
 
 
 				<!-- angular view directive -->
 				<?php require_once("angular/templates/home.php");?>
-
+				</main>
 			</div>
-		</main>
+
 	</div><!-- sfooter content -->
 	
 	<!-- footer gets inserted -->

@@ -7,11 +7,6 @@
 html { display: flex;}
 body { width: 100%;}
 
-.home {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-}
 
 .sfooter {
 	display: flex;
@@ -23,10 +18,17 @@ body { width: 100%;}
 	flex: 1 0 auto;
 	margin: 0;
 }
-/* TEST TEST TEST TEST */
-/* Remove the navbar's default rounded borders and increase the bottom margin */
-.navbar {
-	border-radius: 0;
+
+.container-fluid
+
+.main {
+	margin: 0;
+}
+
+.home {
+	margin: 0;
+	padding: 0;
+	width: 100%;
 }
 
 /* Remove the jumbotron's default bottom margin */
@@ -35,6 +37,12 @@ body { width: 100%;}
 	min-height: 350px;
 	background-image: url(../image/mars-landscape.jpg);
 	background-size: cover;
+}
+
+/* TEST TEST TEST TEST */
+/* Remove the navbar's default rounded borders and increase the bottom margin */
+.navbar {
+	border-radius: 0;
 }
 
 /* Add a gray background color and some padding to the footer */
