@@ -2,7 +2,7 @@
 <div class="jumbotron">
 		<div class="col-lg-12">
 		<div class="text-center">
-			<img class="img-circle" src="image/et-face.PNG" alt="rover" height="200" width="200">
+			<img class="img-circle" src="image/et-face.PNG" alt="rover" height="150" width="150">
 			<h1>Red Rovr</h1>
 		</div>
 	</div>
