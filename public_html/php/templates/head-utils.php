@@ -50,5 +50,6 @@
 		<script src="angular/controller/home-controller.js"></script>
 		<script src="angular/controller/images-controller.js"></script>
 		<script src="angular/controller/news-controller.js"></script>
+		
 		<title>RedRovr</title>
 	</head>

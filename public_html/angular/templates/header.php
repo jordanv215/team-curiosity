@@ -1,6 +1,5 @@
-
-<?php require_once("../../php/templates/head-utils.php");?>
-	<div class="jumbotron container-fluid">
+	
+<div class="jumbotron container-fluid">
 		<div class="col-lg-12">
 		<div class="container-fluid text-center">
 			<h1>Red Rovr</h1>
@@ -32,7 +31,3 @@
 			</div>
 		</div>
 	</nav>
-
-
-
-<?php require_once("../../php/templates/about-modal.php");?>

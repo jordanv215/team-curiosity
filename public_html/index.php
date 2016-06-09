@@ -6,8 +6,11 @@
 		<main>
 			<div class="container">
 
+
+
+
 				<!-- angular view directive -->
-				<div ng-view></div>
+				<?php require_once("angular/templates/home.php");?>
 				
 			</div>
 		</main>
