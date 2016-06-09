@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="redRovr" lang="en">
 	<head>
-		<title>RedRovr.io</title>
 
 		<meta charset="utf-8">
 
@@ -37,12 +36,22 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 				  integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 				  crossorigin="anonymous"></script>
+		<!--Angular JS Libraries-->
+		<?php $ANGULAR_VERSION = "1.5.6";?>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/<?php echo $ANGULAR_VERSION;?>/angular.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/<?php echo $ANGULAR_VERSION;?>/angular-messages.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/<?php echo $ANGULAR_VERSION;?>/angular-route.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
+
+		<!--loading Angular app files -->
+		<script src="angular/redrovr.js"></script>
+		<title>RedRovr.io</title>
 
 	</head>
 
 	<body>
 
-			<div class="row">
+			<div class="row" ng-controller="home-controller">
 				<div class="col-xs-12">
 					<div class="col-xs-3">
 						<div class="big-box">{{}}</div>
