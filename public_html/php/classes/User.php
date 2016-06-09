@@ -31,6 +31,12 @@ class User implements \JsonSerializable {
 	private $userLoginId;
 
 	/**
+	 * user id key from login provider
+	 * @var string $userProviderKey
+	 **/
+	private $userProviderKey;
+
+	/**
 	 * username for this user;
 	 * @var string $userName
 	 **/
@@ -41,19 +47,21 @@ class User implements \JsonSerializable {
 	 * constructor for this user
 	 *
 	 * @param int|null $newUserId id of this user or null if a new user
-	 * @param int $newUserLoginId login source id of the person logging in to this site
-	 * @param string $newUserName username of new user
 	 * @param string|null $newUserEmail email address of user or null
+	 * @param int $newUserLoginId login source id of the person logging in to this site
+	 * @param string $newUserProviderKey user id key from login provider
+	 * @param string $newUserName username of new user
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newUserId = null, string $newUserEmail, int $newUserLoginId = null, string $newUserName) {
+	public function __construct(int $newUserId = null, string $newUserEmail, int $newUserLoginId = null, string $newUserProviderKey, string $newUserName) {
 		try {
 			$this->setUserId($newUserId);
 			$this->setUserEmail($newUserEmail);
 			$this->setUserLoginId($newUserLoginId);
+			$this->setUserProviderKey($newUserProviderKey);
 			$this->setUserName($newUserName);
 		} catch
 		(\InvalidArgumentException $invalidArgument) {
@@ -190,6 +198,40 @@ class User implements \JsonSerializable {
 
 		//store user email
 		$this->userEmail = $newUserEmail;
+	}
+
+	/**
+	 * accessor method for user provider key
+	 *
+	 * @return string value of user provider key
+	 **/
+	public function getUserProviderKey() {
+		return ($this->userProviderKey);
+	}
+
+	/**
+	 * mutator method for userProviderKey
+	 *
+	 * @param string $newUserProviderKey new value for userProviderKey
+	 * @throws \InvalidArgumentException if value is not a string or is insecure
+	 * @throws \RangeException if $newUserProviderKey is > 96 characters
+	 * @throws \TypeError if $newUserProviderKey is not a string
+	 **/
+	public function setUserProviderKey(string $newUserProviderKey) {
+		// verify the user provider key is secure
+		$newUserProviderKey = trim($newUserProviderKey);
+		$newUserProviderKey = filter_var($newUserProviderKey, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newUserProviderKey) === true) {
+			throw(new \InvalidArgumentException("user provider key is empty or insecure"));
+		}
+
+		// verify the user provider key will fit in the database field
+		if(strlen($newUserProviderKey) > 96) {
+			throw(new \RangeException("user name is too long"));
+		}
+
+		//store the user name
+		$this->userName = $newUserName;
 	}
 
 	/**

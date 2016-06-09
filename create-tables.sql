@@ -17,6 +17,7 @@ CREATE TABLE User (
 	userId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	userEmail VARCHAR(128),
 	userLoginId INT UNSIGNED NOT NULL,
+	userProviderKey VARCHAR(96) NOT NULL,
 	userName VARCHAR(128) NOT NULL,
 	INDEX(userName),
 	UNIQUE(userEmail),

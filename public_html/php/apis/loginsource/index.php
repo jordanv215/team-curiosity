@@ -16,8 +16,8 @@ use Edu\Cnm\TeamCuriosity;
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
-//this } might cause a problem, documentation doesn't show there there is a brace in between session start and the body of the source.
-	$provider = new \League\OAuth2\Client\Provider\Facebook([
+
+	$provider = new \League\OAuth2\Client\Provider\Facebook ([
 		'clientId'          => '{facebook-app-id}',
 		'clientSecret'      => '{facebook-app-secret}',
 		'redirectUri'       => 'https://example.com/callback-url',

@@ -43,7 +43,7 @@
 
 
 		<!-- navbar -->
-		<?php require_once(dirname(__DIR__) . "/public_html/php/templates/header.php");?>
+
 		<nav class="navbar navbar-inverse">
 			<div class="container ng-1">
 				<div class="navbar-header">
