@@ -154,7 +154,7 @@ try {
 $url = "http://mars.nasa.gov/rss/news.cfm?s=msl";
 $rss = Feed::loadRss($url);
 
-foreach($rss->item as $item) {
+foreach($rss->item as $item) { // does all of this need to be put in a function to be called on page load?
 	$newsArticleTitle = $item->title;
 	$newsArticleUrl = $item->link;
 	$newsArticleDate = $item->pubDate;
@@ -169,11 +169,14 @@ foreach($rss->item as $item) {
 
 	if($newsArticleUrl === "newsArticleUrl") {
 		// grab row and add to array
+		// somehow
 	}
 
 	else {
 		$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
-		
+		// wat
+		// how to access insert from here
+		// does this whole thing need to be rewritten again?
 	}
 }
 
