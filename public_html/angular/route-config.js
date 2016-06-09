@@ -20,6 +20,12 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl : 'angular/templates/news.php'
 		})
 
+		// route for the about page
+		.when('/about', {
+			controller  : 'aboutController',
+			templateUrl : 'angular/templates/about.php'
+		})
+
 		// otherwise redirect to home
 		.otherwise({
 			redirectTo: "/"
