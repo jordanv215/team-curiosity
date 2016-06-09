@@ -1,7 +1,7 @@
 
 <?php require_once("../../php/templates/head-utils.php");?>
-	<div class="jumbotron">
-		<div class="container text-center">
+	<div class="jumbotron container-fluid">
+		<div class="container-fluid text-center">
 			<h1>Red Rovr</h1>
 		</div>
 	</div>
@@ -19,14 +19,14 @@
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#">Products</a></li>
-					<li><a href="#">Deals</a></li>
-					<li><a href="#">Stores</a></li>
+					<li><a href="#">Images</a></li>
+					<li><a href="#">News</a></li>
+					<li><a href="#">About</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-search"></span> Search</a></li>
 				</ul>
 			</div>
 		</div>
