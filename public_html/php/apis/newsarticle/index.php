@@ -70,6 +70,11 @@ try {
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
+		} else if (empty($newsArticleUrl) === false) {
+			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
+			if($newsArticles !== null) {
+				$reply->data = $newsArticles;
+			}
 		} else {
 			$newsArticles = TeamCuriosity\NewsArticle::getAllNewsArticles($pdo);
 			if($newsArticles !== null) {
