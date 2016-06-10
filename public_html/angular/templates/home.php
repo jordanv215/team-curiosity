@@ -28,9 +28,8 @@
 
 <!-- Red Rovr on background -->
 <div class="container-fluid bg-1 text-center">
-	<h1 class="margin">RED ROVR</h1>
+	<h1 class="rr-splash">redrovr</h1>
 	
-	<h2>KEEPING MARS FRESH</h2>
 </div
 
 

@@ -24,6 +24,9 @@
 
 		<link type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" />
 
+		<!-- Google fonts ---------------------->
+		<link href='https://fonts.googleapis.com/css?family=Nova+Square' rel='stylesheet' type='text/css'>
+
 		<!-- OUR CUSTOM CSS -->
 		<link rel="stylesheet" href="css/style.css" type="text/css">
 
