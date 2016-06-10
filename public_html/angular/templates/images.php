@@ -1,3 +1,4 @@
+<?php require_once("header.php");?>
 <header ng-include="/image-full.php">
 </header>
 <div class="container">

@@ -16,7 +16,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"><img id="logo" src="image/icon-take2.png"> </a>
+				<a class="navbar-brand" href="home"><img id="logo" src="image/icon-take2.png"> </a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar" uib-collapse="navCollapsed">
 				<ul class="nav navbar-nav">

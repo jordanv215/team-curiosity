@@ -1,3 +1,4 @@
+<?php require_once("header.php");?>
 <header ng-include="/news-full.php">
 </header>
 <div id="newsCarousel" class="carousel slide" data-ride="carousel">
