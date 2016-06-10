@@ -39,6 +39,10 @@ body { width: 100%;}
 	color: rgb(0, 0, 0);
 }
 
+#logo {
+	height: 3rem;
+}
+
 /* TEST TEST TEST TEST */
 /* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {

@@ -1,6 +1,6 @@
 <?php require_once("header.php");?>
 <div class="row" ng-if="weather == null" id="earth">
-	<h2 class="text-center"><i class="fa fa-space-shuttle fa-spin" aria-hidden="true"></i> Loading weather data&hellip;</h2>
+	<h2 class="text-center"><i class="fa fa-globe fa-spin" aria-hidden="true"></i> Loading weather data&hellip;</h2>
 </div>
 	<div class="row" ng-if="weather != null" id="weather">
 		<div class="col-xs-12">
