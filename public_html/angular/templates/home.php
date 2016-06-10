@@ -24,7 +24,11 @@
 			</div>
 		</div><!--main weather column -->
 	</div><!-- row for weather-->
-<!--these columns will contain our two content carousels. They aren't centered right now, but they're there for future needs and they're the same width.-->
+
+<!-----------/// Carousels for home page ///------------->
+<div class="row carousel-row">
+
+<!--// Image carousel: left on desktop //-->
 
 <div class="col-md-6">
 	<div id="imageCarousel" class="carousel slide" data-ride="carousel">
@@ -98,7 +102,7 @@
 			</div>
 		</div>
 	</div>
-
+</div>
 
 
 

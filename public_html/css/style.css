@@ -49,6 +49,10 @@ body { width: 100%;}
 	border-radius: 0;
 }
 
+header > nav > .navbar, .navbar-inverse {
+	margin-bottom: 0;
+}
+
 /* Add a gray background color and some padding to the footer */
 footer {
 	background-color: #f2f2f2;
@@ -67,6 +71,7 @@ footer {
 	GradientType=0);
 	padding-top: 10px;
 	padding-bottom: 5px;
+	height: 12rem;
 }
 
 #temp {
@@ -94,9 +99,21 @@ footer {
 	background: linear-gradient(to bottom, #43a2a7 0%, #dfdfdf 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#43a2a7', endColorstr='#dfdfdf',
 	GradientType=0 );
+	height: 12rem;
 }
 
+.carousel-row {
+	padding: 0 2rem;
+}
 
 #imageCarousel {
-	max-height: 15rem;
+	height: 35rem;
+}
+
+.carousel-inner {
+	height: 35rem;
+}
+
+.carousel-inner > img {
+	height: 35rem;
 }
