@@ -67,7 +67,7 @@
 			<span class="sr-only">Next</span>
 		</a>
 	</div>
-
+</div>
 	<!-- Wrapper for slides -->
 
 	<div class="col-md-6">
