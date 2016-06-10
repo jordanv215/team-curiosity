@@ -7,6 +7,8 @@
 html { display: flex;}
 body { width: 100%;}
 
+
+
 body {
 	background: url(../image/rover-selfie.jpg) no-repeat center center fixed;
 	-moz-background-size: cover;
@@ -14,6 +16,7 @@ body {
 	-webkit-background-size: cover;
 	background-size: cover;
 }
+
 
 .sfooter {
 	display: flex;
