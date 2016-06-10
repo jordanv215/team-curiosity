@@ -124,3 +124,9 @@ footer {
 .carousel-inner > img {
 	height: 35rem;
 }
+
+.bg-1 {
+	background-color: transparent;
+	height: 70rem;
+
+}
