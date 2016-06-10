@@ -26,10 +26,10 @@
 	</div><!-- row for weather-->
 
 
-<!-- container 1 -->
+<!-- Red Rovr on background -->
 <div class="container-fluid bg-1 text-center">
 	<h3 class="margin">RED ROVR</h3>
-	<img class="img-circle" src="../public_html/image/et-face.PNG" alt="roverface" height="300" width="300">
+	<img class="img-circle" src="../public_html/image/mars-noback.png" alt="mars" height="300" width="300">
 	<h3>KEEPING MARS FRESH</h3>
 </div
 
