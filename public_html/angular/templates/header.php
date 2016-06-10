@@ -11,7 +11,7 @@
 	<nav class="navbar navbar-inverse">
 		<div>
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" ng-collapse="!navCollapsed">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" ng-click="!navCollapsed">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
