@@ -30,24 +30,10 @@ body { width: 100%;}
 	width: 100%;
 }
 
-#logo {
-	height: 3rem;
-}
-
-.navbar .navbar-default .navbar-inverse .navbar-brand .navbar-collapse .navbar-header .navbar-nav .navbar-right .navbar-toggle {
-	background-image: none;
-		background-color: #d4653d;
-
-	}
-
-.header {
-
-}
-
 /* Remove the jumbotron's default bottom margin */
 .jumbotron {
 	margin-bottom: 0;
-	height: 30rem;
+	min-height: 300px;
 	background-image: url(../image/mars-landscape.jpg);
 	background-size: cover;
 	color: rgb(0, 0, 0);
@@ -58,7 +44,6 @@ body { width: 100%;}
 .navbar {
 	border-radius: 0;
 }
-
 
 /* Add a gray background color and some padding to the footer */
 footer {
@@ -105,4 +90,9 @@ footer {
 	background: linear-gradient(to bottom, #43a2a7 0%, #dfdfdf 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#43a2a7', endColorstr='#dfdfdf',
 	GradientType=0 );
+}
+
+
+#imageCarousel {
+	max-height: 15rem;
 }
