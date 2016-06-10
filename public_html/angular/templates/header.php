@@ -1,13 +1,5 @@
 <header ng-controller="navController">
 	<bootstrap-breakpoint></bootstrap-breakpoint>
-<div class="jumbotron">
-		<div class="col-lg-12">
-		<div class="text-center">
-			<img class="img-circle" src="image/et-face.PNG" alt="rover" height="150" width="150">
-			<h1>Red Rovr</h1>
-		</div>
-	</div>
-</div>
 	<nav class="navbar navbar-inverse">
 		<div>
 			<div class="navbar-header">
