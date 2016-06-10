@@ -26,6 +26,8 @@
 
 		<!-- Google fonts ---------------------->
 		<link href='https://fonts.googleapis.com/css?family=Nova+Square' rel='stylesheet' type='text/css'>
+		<!--test for weather -->
+		<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
 		<!-- OUR CUSTOM CSS -->
 		<link rel="stylesheet" href="css/style.css" type="text/css">

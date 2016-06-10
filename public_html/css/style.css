@@ -10,7 +10,7 @@ body { width: 100%;}
 
 
 body {
-	background: url(../image/rover-selfie.jpg) no-repeat center center fixed;
+	background: linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.42)), url(../image/rover-selfie.jpg) no-repeat center center fixed;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	-webkit-background-size: cover;
@@ -42,9 +42,13 @@ body {
 
 .rr-splash {
 	font-family: 'Nova Square', cursive;
-	font-size: 11rem;
+	font-size: 15rem;
 	color: #ffffff;
 	font-weight: 500;
+}
+
+#weather, #earth {
+	font-family: 'Montserrat', sans-serif;
 }
 
 #logo {
