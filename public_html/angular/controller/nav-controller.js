@@ -6,4 +6,6 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 	$scope.$watch("breakpoint", function() {
 		$scope.navCollapsed = ($scope.breakpoint === "xs");
 	});
+
 }]);
+

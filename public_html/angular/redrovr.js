@@ -1,2 +1,2 @@
-var app = angular.module("redRovr", ["ngRoute", "ui.bootstrap", "ngMessages"]);
+var app = angular.module("redRovr", ["ngRoute", "ui.bootstrap", "ngAnimate", "ngMessages"]);
 
