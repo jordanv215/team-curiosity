@@ -1,25 +1,23 @@
-<header>
+<header ng-controller="navController">
 	<bootstrap-breakpoint></bootstrap-breakpoint>
 	<nav class="navbar navbar-inverse">
+		<div>
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"
-						  ng-click="navCollapsed = !navCollapsed">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" ng-click="!navCollapsed">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="home"><img id="logo" src="image/icon-take2.png"> </a>
 			</div>
-			<ul class="collapse navbar-collapse" id="myNavbar" uib-collapse="navCollapsed">
+			<div class="collapse navbar-collapse" id="myNavbar" uib-collapse="navCollapsed">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="home">Home</a></li>
 					<li><a href="images">Images</a></li>
 					<li><a href="news">News</a></li>
 					<li><a href="about">About</a></li>
-					<li><a href="contact">Contact</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Login</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-search"></span> Search</a>
 						<ul class="dropdown-menu">
@@ -34,7 +32,8 @@
 									</span></li>
 							<li class="text-center"><button type="button" class="btn btn-sm btn-info" ng-click="search()">Search</button></li>
 						</ul>
-					</li>
-				</ul>
+			</div>
+		</div>
 	</nav>
 </header>
+

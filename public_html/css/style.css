@@ -170,6 +170,6 @@ footer {
 	padding-top: 15rem;
 }
 
-#curiosity {
-	border: 5px;
+.panel-custom-gray > .panel-body {
+	background-color: darkgray;
 }

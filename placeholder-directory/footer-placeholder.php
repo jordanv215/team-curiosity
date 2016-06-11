@@ -40,26 +40,33 @@
 
 	</head>
 	<body>
-		<footer>
-			<nav class="navbar navbar-inverse navbar-fixed-bottom">
-				<div class="container">
-					<div class="navbar-footer">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="#">SOCIAL MEDIA LOGIN</a>
-						</div>
-					<div class="collapse navbar-collapse" id="myNavbar">
-						<ul class="nav navbar-nav navbar-right">
-							<li><a>redrovrdotio@gmail.com </a></li>
-							<li><a>2016 Copyright RedRovr</a></li>
-						</ul>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel panel-danger">
+					<div class="panel-heading">
+						<h3 class="panel-title">About<em>Curiosity</em></h3>
+					</div>
+					<div class="panel-body">
+						Curiosity is a car-sized, six-wheeled robot destined for Gale Crater on Mars.
+Its mission: to see if Mars ever could have supported small life forms called microbes...and if humans could survive there someday!
+In addition to super-human senses that help us understand Mars as a habitat for life, Curiosity's parts are similar to what a human would need to explore Mars (body, brains, eyes, arm, legs, etc.). Check it out though--sometimes they are located in odd places!
 					</div>
 				</div>
-			</nav>
-		</footer>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">About Us</h3>
+					</div>
+					<div class="panel-body">
+						about us
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</body>
 </html>
 

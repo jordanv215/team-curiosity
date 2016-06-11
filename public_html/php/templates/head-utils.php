@@ -54,7 +54,6 @@
 		<script src="angular/services/news-service.js"></script>
 		<script src="angular/services/login-service.js"></script>
 		<script src="angular/controller/nav-controller.js"></script>
-		<script src="angular/controller/search-controller.js"></script>
 		<script src="angular/controller/home-controller.js"></script>
 		<script src="angular/controller/images-controller.js"></script>
 		<script src="angular/controller/news-controller.js"></script>
