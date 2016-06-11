@@ -1,20 +1,6 @@
 <?php require_once("header.php");?>
 <header ng-include="/image-full.php">
 </header>
-<div class="container">
-	<div class="row">
-		<div class="col-xs-4 img-1">
-			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
-		</div>
-		<div class="col-xs-4 img-1">
-			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
-		</div>
-		<div class="col-xs-4 img-1">
-			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
-		</div>
-	</div>
-</div>
-
 <div id="imageCarousel" class="carousel slide" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
@@ -38,4 +24,18 @@
 		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		<span class="sr-only">Next</span>
 	</a>
+</div>
+
+<div class="random-img-wrapper">
+	<div class="row">
+		<div class="col-xs-4 img-1">
+			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
+		</div>
+		<div class="col-xs-4 img-1">
+			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
+		</div>
+		<div class="col-xs-4 img-1">
+			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
+		</div>
+	</div>
 </div>

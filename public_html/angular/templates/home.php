@@ -15,12 +15,12 @@
 			<div class="col-xs-6 col-md-3">
 				<div class="mini-box" id="date">Sol {{ weather.sol }}</div>
 				<div class="row" id="pressure">{{ weather.pressure }} Pa</div>
-				<div class="mini-box" id="sky">Pressure</div>
+				<div class="mini-box">Pressure</div>
 			</div>
 			<div class="col-xs-6 col-md-3">
 				<div class="mini-box" id="date">{{ weather.terrestrial_date }}</div>
 				<div class="row" id="pressure">{{ weather.atmo_opacity }}</div>
-				<div class="mini-box" id="sky">Sky</div>
+				<div class="mini-box">Sky</div>
 			</div>
 		</div><!--main weather column -->
 	</div><!-- row for weather-->
