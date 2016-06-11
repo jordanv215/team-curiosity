@@ -1,9 +1,9 @@
 <?php require_once("header.php");?>
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
-		<div class="panel panel-danger panel-custom-gray">
+		<div class="panel panel-primary panel-transparent">
 			<div class="panel-heading">
-				<h3 class="panel-title">About<em>Curiosity</em></h3>
+				<h3 class="panel-title">About <em>Curiosity</em></h3>
 			</div>
 			<div class="panel-body">
 				Curiosity is a car-sized, six-wheeled robot destined for Gale Crater on Mars.

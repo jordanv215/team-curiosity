@@ -166,10 +166,31 @@ footer {
 
 .bg-1 {
 	background-color: transparent;
-	height: 70rem;
+	height: 50rem;
 	padding-top: 15rem;
 }
 
-.panel-custom-gray > .panel-body {
-	background-color: darkgray;
+.panel-transparent {
+	background: none;
 }
+
+.panel-transparent .panel-heading{
+	background: rgba(122, 130, 136, 0.2)!important;
+	font-family: 'Montserrat', sans-serif;
+	color: black;
+}
+
+.panel-transparent .panel-body{
+	background: rgba(46, 51, 56, 0.2)!important;
+	font-family: 'Montserrat', sans-serif;
+	color: #cbcbcb;
+}
+
+
+.panel-custom-gray > .panel-body {
+	color: white;
+	background-color: transparent;
+	font-size: 150%;
+	font-family: 'Montserrat', sans-serif;
+}
+
