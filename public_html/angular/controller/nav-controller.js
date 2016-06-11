@@ -1,4 +1,11 @@
 app.controller("navController", ["$http", "$scope", function($http, $scope) {
+
+	// collapse the navbar if the screen is changed to a extra small screen
+	$scope.$watch("breakpoint", function() {
+		$scope.navCollapsed = ($scope.breakpoint === "xs");
+	});
+	
+	
 	$scope.breakpoint = null;
 	$scope.navCollapsed = null;
 	$scope.header = [];
@@ -96,10 +103,6 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 		return "";
 	}
 
-	// collapse the navbar if the screen is changed to a extra small screen
-	$scope.$watch("breakpoint", function() {
-		$scope.navCollapsed = ($scope.breakpoint === "xs");
-	});
 
 }]);
 

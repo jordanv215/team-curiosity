@@ -29,30 +29,3 @@
 	</div>
 </div>
 </div>
-<h3>Random News</h3>
-<div class="container">
-	<div class="row">
-		<div class="col-xs-3 news-random">
-			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
-		</div>
-		<div class="col-xs-9">
-			<p>News-1</p>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-3 news-random">
-			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
-		</div>
-		<div class="col-xs-9">
-			<p>News-2</p>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-3 news-random">
-			<img class="img-responsive" src="../public_html/image/mars.png" alt="mars">
-		</div>
-		<div class="col-xs-9">
-			<p>News-3</p>
-		</div>
-	</div>
-</div>
