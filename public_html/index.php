@@ -5,12 +5,12 @@
 	<div class="sfooter-content">
 			<div>
 				<main>
+					<div>
 
-
-
-
-				<!-- angular view directive -->
-				<div ng-view></div>
+						<!-- angular view directive -->
+						<div ng-view></div>
+						
+					</div>
 				</main>
 			</div>
 

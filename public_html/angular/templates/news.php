@@ -1,6 +1,7 @@
 <?php require_once("header.php");?>
 <header ng-include="/news-full.php">
 </header>
+<div class="row carousel-row">
 <div id="newsCarousel" class="carousel slide" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
@@ -27,7 +28,7 @@
 		</a>
 	</div>
 </div>
-
+</div>
 <h3>Random News</h3>
 <div class="container">
 	<div class="row">

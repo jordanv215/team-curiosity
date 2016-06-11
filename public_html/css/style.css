@@ -34,6 +34,10 @@ body {
 	margin: 0;
 }
 
+.container-fluid {
+
+}
+
 .home {
 	margin: 0;
 	padding: 0;
@@ -45,14 +49,22 @@ body {
 	font-size: 15rem;
 	color: #ffffff;
 	font-weight: 500;
+	text-align: center;
 }
-
+.rr-splash-wrapper {
+	width: 800px;
+	max-width: 60%;
+	text-align: center;
+}
 #weather, #earth, .navbar {
 	font-family: 'Montserrat', sans-serif;
 }
 
 #logo {
-	height: 3rem;
+	position: relative;
+	bottom: 75%;
+	height: 5rem;
+
 }
 
 .img-circle {
@@ -69,6 +81,10 @@ header > nav > .navbar, .navbar-inverse {
 footer {
 	background-color: #f2f2f2;
 	/*padding: 25px;*/
+}
+
+.rr-copy {
+	text-align: center;
 }
 
 /* Add background color for weather bar */
@@ -142,7 +158,10 @@ footer {
 
 .random-img-wrapper {
 	margin: 3rem;
+}
 
+#newsCarousel {
+	background: rgba(15, 15, 15, 0.2);
 }
 
 .bg-1 {
