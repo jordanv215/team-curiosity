@@ -18,8 +18,7 @@
 					<li><a href="about">About</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Login</a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-search"></span></a></li>
 				</ul>
 			</div>
 		</div>

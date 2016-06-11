@@ -1,6 +1,7 @@
 <?php require_once("header.php");?>
 <header ng-include="/image-full.php">
 </header>
+<div class="row carousel-row">
 <div id="imageCarousel" class="carousel slide" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
@@ -24,6 +25,7 @@
 		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		<span class="sr-only">Next</span>
 	</a>
+</div>
 </div>
 
 <div class="random-img-wrapper">

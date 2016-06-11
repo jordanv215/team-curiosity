@@ -119,6 +119,11 @@ footer {
 	color: whitesmoke;
 }
 
+#earth > h2 {
+	font-size: 1.5rem;
+}
+
+
 .carousel-row {
 	padding: 0 2rem;
 }

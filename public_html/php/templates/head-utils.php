@@ -60,5 +60,5 @@
 		<script src="angular/controller/about-controller.js"></script>
 
 		<link rel="icon" href="image/favicon-take1.png">
-		<title>RedRovr</title>
+		<title>redrovr</title>
 	</head>
