@@ -64,7 +64,7 @@
 			</div>
 			
 			<div class="item">
-				<img src="../public_html/image/rover-selfie" alt="selfie">
+				<img src="../public_html/image/selfie-optimized.jpg" alt="selfie">
 			</div>
 
 		</div>

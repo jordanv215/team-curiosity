@@ -14,7 +14,7 @@
 </div>
 <div class="row about-lower">
 	<div class="col-md-8 col-md-offset-2">
-		<div class="panel panel-primary">
+		<div class="panel panel-primary panel-transparent">
 			<div class="panel-heading">
 				<h3 class="panel-title">About Us</h3>
 			</div>

@@ -103,6 +103,10 @@ header > nav > .navbar, .navbar-inverse {
 	border-color: #8B3626;
 }
 
+.navbar-right {
+	padding-right: 2rem;
+}
+
 /* Add a gray background color and some padding to the footer */
 footer {
 	background-color: #f2f2f2;
@@ -194,8 +198,13 @@ footer {
 
 /*---------------------------------*/
 
+#imageCarousel, #imageCarousel > .inner, #imageCarousel > .inner > .item {
+	border-radius: 10px;
+}
+
 #imageCarousel, #newsCarousel {
-	margin-bottom: 10rem;
+	margin: 10rem 0;
+	border-radius: 10px;
 }
 
 @media(min-width: 993px) {
@@ -219,7 +228,7 @@ footer {
 /*---------------------------------*/
 
 #imageCarousel, #newsCarousel > .carousel-inner {
-
+  border-radius: 10px;
 }
 
 @media(min-width: 993px) {
@@ -244,6 +253,7 @@ footer {
 
 #imageCarousel > .carousel-inner > .item > img {
 	margin-bottom: 10rem;
+	border-radius: 10px;
 }
 
 @media(min-width: 993px) {
@@ -268,6 +278,7 @@ footer {
 
 #imageCarouselSplash > .carousel-inner > .item > img {
 	margin-bottom: 10rem;
+	border-radius: 10px;
 }
 
 @media(min-width: 993px) {
@@ -290,11 +301,14 @@ footer {
 /*----------------------------------*/
 
 #newsCarousel, #newsCarouselSplash {
-	background: rgba(15, 15, 15, 0.2);
+	background: rgba(15, 15, 15, 0.5);
+	color: whitesmoke;
+	border-radius: 10px;
 }
 
 #imageCarouselSplash, #newsCarouselSplash {
 	margin-bottom: 10rem;
+	border-radius: 10px;
 }
 
 @media(min-width: 993px) {
@@ -338,13 +352,13 @@ footer {
 }
 
 .panel-transparent .panel-heading{
-	background: rgba(122, 130, 136, 0.2)!important;
+	background: rgba(122, 130, 136, 0.4)!important;
 	font-family: 'Montserrat', sans-serif;
 	color: black;
 }
 
 .panel-transparent .panel-body{
-	background: rgba(46, 51, 56, 0.2)!important;
+	background: rgba(46, 51, 56, 0.4)!important;
 	font-family: 'Montserrat', sans-serif;
 	color: #cbcbcb;
 }
