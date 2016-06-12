@@ -1,5 +1,6 @@
+
 <footer>
-	<nav class="navbar navbar-inverse navbar-fixed-bottom">
+	<nav class="navbar navbar-inverse">
 		<div class="row">
 				<div class="col-xs-4"></div>
 				<div class="col-xs-4 rr-copy navbar-text">

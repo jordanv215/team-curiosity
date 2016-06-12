@@ -1,5 +1,5 @@
 <?php require_once("header.php");?>
-<div class="row">
+<div class="row about-upper">
 	<div class="col-md-8 col-md-offset-2">
 		<div class="panel panel-primary panel-transparent">
 			<div class="panel-heading">
@@ -12,7 +12,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row about-lower">
 	<div class="col-md-8 col-md-offset-2">
 		<div class="panel panel-primary">
 			<div class="panel-heading">

@@ -197,6 +197,16 @@ footer {
 	padding-top: 15rem;
 }
 
+.about-upper {
+	margin: 7rem auto 0;
+	width: 95%;
+}
+
+.about-lower {
+	margin: 0 auto;
+	width: 95%;
+}
+
 .panel-transparent {
 	background: none;
 }
