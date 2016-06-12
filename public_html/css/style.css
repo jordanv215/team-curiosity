@@ -62,8 +62,8 @@ body {
 
 #logo {
 	position: relative;
-	bottom: 75%;
-	height: 5rem;
+	bottom: 50%;
+	height: 4rem;
 
 }
 
@@ -142,26 +142,35 @@ footer {
 
 .carousel-row {
 	padding: 0 2rem;
+	margin: 10rem auto;
 }
 
-#imageCarousel {
+#imageCarousel, #newsCarousel {
+	height: 50rem;
+	margin-bottom: 10rem;
+}
+
+#imageCarousel, #newsCarousel > .carousel-inner {
+	height: 50rem;
+}
+
+#imageCarousel > .carousel-inner > .item > img {
+	height: 50rem;
+	margin-bottom: 10rem;
+}
+
+#imageCarouselSplash > .carousel-inner > .item > img {
 	height: 35rem;
+	margin-bottom: 10rem;
 }
 
-.carousel-inner {
-	height: 35rem;
-}
-
-.carousel-inner > img {
-	height: 35rem;
-}
-
-.random-img-wrapper {
-	margin: 3rem;
-}
-
-#newsCarousel {
+#newsCarousel, #newsCarouselSplash {
 	background: rgba(15, 15, 15, 0.2);
+}
+
+#imageCarouselSplash, #newsCarouselSplash {
+	height: 35rem;
+	margin-bottom: 10rem;
 }
 
 .bg-1 {
