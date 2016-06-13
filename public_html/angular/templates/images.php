@@ -1,5 +1,7 @@
 <?php require_once("header.php");?>
 
+
+
 <div class="row carousel-row">
 <div id="imageCarousel" class="carousel slide" data-ride="carousel">
 	<!-- Indicators -->
@@ -10,9 +12,40 @@
 	<!-- Wrapper for slides -->
 	<div class="carousel-inner" role="listbox">
 		<div class="item active">
-			<img src="../public_html/image/mars.png" alt="Mars">
+			<img src="../public_html/image/above-shot.jpg" alt="Above-Mars">
+			<div class="carousel-caption">
+				<h3>Orbit Shot</h3>
+				<p>This picture was taken by an orbiting satellite around Mars.</p>
+			</div>
+		</div>
+		
+		
+
+		<div class="item">
+			<img src="../public_html/image/mars-landscape.jpg" alt="landscape-mars">
+			<div class="carousel-caption">
+				<h3>Sand and Rock</h3>
+				<p>Here you can see a wideshot picture of the landscape of Mars' surface, covered in sand dunes and bits of rock.</p>
+			</div>
 		</div>
 
+		<div class="item">
+			<img src="../public_html/image/sunset.gif" alt="Mars-sunset">
+			<div class="carousel-caption">
+				<h3>A Sunset On Mars</h3>
+				<p>Due to atmospheric differences between Earth and Mars, sunsets look a bit more bland and unexciting on the Red Planet.</p>
+			</div>
+		</div>
+
+
+		<div class="item">
+			<img src="../public_html/image/selfie-optimized.jpg" alt="selfie">
+			<div class="carousel-caption">
+				<h3>Rover Selfie</h3>
+				<p>The Curiosity Rover takes a full-shot selfie while traveling on the surface of Mars. I'd like to see 10 year olds with $700 iPhones compete with that.</p>
+			</div>
+		</div>
+		
 	</div>
 
 	<!-- Left and right controls -->
