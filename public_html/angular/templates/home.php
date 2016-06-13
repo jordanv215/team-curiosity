@@ -16,7 +16,7 @@
 		</div><!-- column for min_temp-->
 		<div class="col-xs-3">
 			<div class="mini-box" id="date">Sol {{ weather.sol }}</div>
-			<div class="row" id="pressure">{{ weather.pressure }} Pa</div>
+			<div class="row" id="pressure">{{ weather.pressure }} <small>Pa</small></div>
 			<div class="mini-box weather-label">Pressure</div>
 		</div>
 		<div class="col-xs-3">

@@ -187,19 +187,26 @@ footer {
 
 @media(max-width: 768px) {
 	#temp {
-		font-size: 2rem;
+		font-size: 2.5rem;
 	}
 	#pressure {
-		font-size: 1.3rem;
+		font-size: 1.5rem;
 	}
 	#sky {
 		font-size: .5rem;
 	}
 	#date {
-		font-size: .8rem;
+		font-size: 1rem;
 	}
-	#weather-label {
+	.weather-label {
 		font-size: 1.2rem;
+	}
+	#earth {
+		height: 7rem;
+	}
+	#weather {
+		height: 6rem;
+		padding-top: .5rem;
 	}
 }
 
