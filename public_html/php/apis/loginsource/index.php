@@ -17,6 +17,18 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
+$config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
+$keys = $config["authkeys"];
+$clientId = $keys->reddit->clientId;
+
+$min = 100000;
+$max = 1000000;
+$state = random_int($min, $max);
+
+$redirectUri = 
+
+
+https://www.reddit.com/api/v1/authorize.compact?client_id=$&response_type=code&state=$&redirect_uri=$&duration=3600&scope=identity
 // create an empty reply
 $reply = new stdClass();
 $reply->status = 200;
