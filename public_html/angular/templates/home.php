@@ -6,23 +6,23 @@
 </div>
 <div class="container-fluid">
 	<div class="row" ng-if="weather != null" id="weather">
-		<div class="col-xs-6 col-sm-3">
+		<div class="col-xs-3">
 			<div class="big-box" id="temp">{{ weather.max_temp }} &deg;<small>F</small></div>
-			<div class="mini-box">High</div>
+			<div class="mini-box weather-label">High</div>
 		</div><!-- column for max temperature-->
-		<div class="col-xs-6 col-sm-3">
+		<div class="col-xs-3">
 			<div class="big-box" id="temp">{{ weather.min_temp }} &deg;<small>F</small></div>
-			<div class="mini-box">Low</div>
+			<div class="mini-box weather-label">Low</div>
 		</div><!-- column for min_temp-->
-		<div class="col-xs-6 col-sm-3">
+		<div class="col-xs-3">
 			<div class="mini-box" id="date">Sol {{ weather.sol }}</div>
 			<div class="row" id="pressure">{{ weather.pressure }} Pa</div>
-			<div class="mini-box">Pressure</div>
+			<div class="mini-box weather-label">Pressure</div>
 		</div>
-		<div class="col-xs-6 col-sm-3">
+		<div class="col-xs-3">
 			<div class="mini-box" id="date">{{ weather.terrestrial_date }}</div>
 			<div class="row" id="pressure">{{ weather.atmo_opacity }}</div>
-			<div class="mini-box">Sky</div>
+			<div class="mini-box weather-label">Sky</div>
 		</div>
 	</div><!-- row for weather-->
 </div>

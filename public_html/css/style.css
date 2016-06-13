@@ -184,6 +184,25 @@ footer {
 	font-size: 1.5rem;
 }
 
+
+@media(max-width: 768px) {
+	#temp {
+		font-size: 2rem;
+	}
+	#pressure {
+		font-size: 1.3rem;
+	}
+	#sky {
+		font-size: .5rem;
+	}
+	#date {
+		font-size: .8rem;
+	}
+	#weather-label {
+		font-size: 1.2rem;
+	}
+}
+
 /*------------------// Carousel styles //--------------------*/
 
 .carousel-row {
@@ -358,6 +377,9 @@ footer {
 		height: 20rem;
 	}
 }
+
+
+
 
 .news-header {
 	text-align: center;
