@@ -21,7 +21,12 @@
 				<h3 class="panel-title">About Us</h3>
 			</div>
 			<div class="panel-body">
+				<div class="col-md-6">
 				<p>The project now known as redrovr began as the creation of four aspiring web developers, taking the dive into the world of code and design. Each brought a unique set of skills and ideas to contribute to the creative process. The results are now displayed here, and we hope that our efforts can make it a little easier to enjoy and appreciate the wonder of exploring the universe.</p>
+				</div>
+				<div class="col-md-6">
+				<img src="../public_html/image/deep-dive-group.jpg" alt="group pic" width="500rem" length="500rem">
+				</div>
 			</div>
 		</div>
 	</div>
