@@ -11,8 +11,18 @@
 				<a class="navbar-brand" href="home"><img id="logo" src="image/icon-border.png"> </a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar" uib-collapse="navCollapsed">
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="home">Home</a></li>
+				<script>
+					$('.navbar li').click(function(e) {
+						$('.navbar li.active').removeClass('active');
+						var $this = $(this);
+						if (!$this.hasClass('active')) {
+							$this.addClass('active');
+						}
+						e.preventDefault();
+					});
+				</script>
+				<ul class="nav navbar-nav menu">
+					<li><a href="home">Home</a></li>
 					<li><a href="images">Images</a></li>
 					<li><a href="news">News</a></li>
 					<li><a href="about">About</a></li>
