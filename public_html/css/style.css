@@ -441,8 +441,8 @@ footer {
 	padding-top: 2rem;
 	padding-right: 5rem;
 	position: relative;
-	bottom: -30%;
-	transform: translateY(30%);
+	bottom: -40%;
+	transform: translateY(40%);
 }
 
 @media(max-width: 768px) {

@@ -7,7 +7,7 @@
 	</div
 </div-->
 
-
+<div class="container-fluid">
 <div class="row heading-row">
 	<div >
 	<h1 class="col-sm-6 txt-2">redrovr</h1>
@@ -16,6 +16,7 @@
 	<h2 class="col-sm-6 txt-3">Images</h2>
 	</div>
 	<hr style="clear:both;" id="heading-hr"/>
+</div>
 </div>
 
 <div class="row carousel-row">

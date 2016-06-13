@@ -1,5 +1,5 @@
 <?php require_once("header.php");?>
-
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-6">
 	<h1 class="txt-2">redrovr</h1>
@@ -8,6 +8,7 @@
 	<h2 class="txt-3">News</h2>
 				</div>
 	<hr style="clear:both;" id="heading-hr"/>
+	</div>
 
 <!--<header ng-include="/news-full.php">-->
 <!--</header>-->
