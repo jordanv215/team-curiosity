@@ -39,7 +39,7 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 	function disabled(data) {
 		var date = data.date,
 			mode = data.mode;
-		return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+		return mode === "day" && (date.getDay() === 0 || date.getDay() === 6);
 	}
 
 	$scope.toggleMin = function() {
@@ -88,7 +88,7 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 	function getDayClass(data) {
 		var date = data.date,
 			mode = data.mode;
-		if (mode === 'day') {
+		if (mode === "day") {
 			var dayToCheck = new Date(date).setHours(0,0,0,0);
 
 			for (var i = 0; i < $scope.events.length; i++) {
@@ -102,7 +102,6 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 
 		return "";
 	}
-
 
 }]);
 

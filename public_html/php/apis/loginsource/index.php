@@ -17,69 +17,6 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
-	$provider = new \League\OAuth2\Client\Provider\Facebook ([
-		'clientId'          => '{facebook-app-id}',
-		'clientSecret'      => '{facebook-app-secret}',
-		'redirectUri'       => 'https://example.com/callback-url',
-		'graphApiVersion'   => 'v2.6',
-	]);
-
-	if (!isset($_GET['code'])) {
-
-		// If we don't have an authorization code then get one
-		$authUrl = $provider->getAuthorizationUrl([
-			'scope' => ['email', '...', '...'],
-		]);
-		$_SESSION['oauth2state'] = $provider->getState();
-
-		echo '<a href="'.$authUrl.'">Log in with Facebook!</a>';
-		exit;
-
-// Check given state against previously stored one to mitigate CSRF attack
-	} elseif (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state'])) {
-
-		unset($_SESSION['oauth2state']);
-		echo 'Invalid state.';
-		exit;
-
-	}
-
-// Try to get an access token (using the authorization code grant)
-	$token = $provider->getAccessToken('authorization_code', [
-		'code' => $_GET['code']
-	]);
-
-// Optional: Now you have a token you can look up a users profile data
-	try {
-
-		// We got an access token, let's now get the user's details
-		$user = $provider->getResourceOwner($token);
-
-		// Use these details to create a new profile
-		printf('Hello %s!', $user->getFirstName());
-
-		echo '<pre>';
-		var_dump($user);
-		# object(League\OAuth2\Client\Provider\FacebookUser)#10 (1) { ...
-		echo '</pre>';
-
-	} catch (\Exception $e) {
-
-		// Failed to get user details
-		exit('Oh dear...');
-	}
-
-	echo '<pre>';
-// Use this to interact with an API on the users behalf
-	var_dump($token->getToken());
-# string(217) "CAADAppfn3msBAI7tZBLWg...
-
-// The time (in epoch time) when an access token will expire
-	var_dump($token->getExpires());
-# int(1436825866)
-	echo '</pre>';
-
-
 // create an empty reply
 $reply = new stdClass();
 $reply->status = 200;
@@ -194,6 +131,50 @@ header("Content-type: application/json");
 if($reply->data === null) {
 	unset($reply->data);
 }
+
+use TeamCuriosity\OAuth2\Client\Provider\Reddit;
+$reddit = new Reddit([
+	'client_Id'      => 'p-_k1lQpvSBZGQ',
+	'clientSecret'  => '73dn0d7-kWFnQPhySFJCUSVOIo0',
+	'response_type' => 'code',
+	'state'         => 'A chosen string',
+	'redirectUri'   => 'https://www.redrovr.io',
+	'duration'      => 'temporary or permanent',
+	'userAgent'     => 'web:redrovr:1.0, (by /u/TeamCuriosity)',
+	'scopes'        => ['identity'],
+]);
+
+// request an access token
+$url = $reddit->getAuthorizationUrl([
+	'duration' => $duration, // "permanent" or "temporary" by default
+]);
+
+$accessToken = $reddit->getAccessToken('authorization_code', [
+	'access_denied' => $error,
+	'code'          => $code,
+	'state'         => $state
+]);
+
+// refreshing an access token
+// include the following information in your POST data(NOT as part of the URL "grant_type=refresh_token&refresh_token=TOKEN"
+
+$grant_type = 'refresh_token';
+$refreshToken = $reddit->getAccessToken('refresh_token', [
+	'refresh_token'=> $accessToken->refreshToken
+]);
+$accessToken->accessToken = $refreshToken->accessToken;
+$accessToken->expires = $refreshToken->expires;
+
+// Remember to re-store the refreshed access token at this point
+
+// using the access token
+
+$reddit->getHeaders($token);
+$client = $reddit->getHttpClient();
+
+
+
+
 
 // encode and return the reply to the frontend caller
 echo json_encode($reply);
