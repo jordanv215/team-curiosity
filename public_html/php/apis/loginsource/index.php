@@ -127,58 +127,6 @@ try {
 }
 
 
-header("Content-type: application/json");
-if($reply->data === null) {
-	unset($reply->data);
-}
-
-use TeamCuriosity\OAuth2\Client\Provider\Reddit;
-$reddit = new Reddit([
-	'client_Id'      => 'p-_k1lQpvSBZGQ',
-	'clientSecret'  => '73dn0d7-kWFnQPhySFJCUSVOIo0',
-	'response_type' => 'code',
-	'state'         => 'A chosen string',
-	'redirectUri'   => 'https://www.redrovr.io',
-	'duration'      => 'temporary or permanent',
-	'userAgent'     => 'web:redrovr:1.0, (by /u/TeamCuriosity)',
-	'scopes'        => ['identity'],
-]);
-
-// request an access token
-$url = $reddit->getAuthorizationUrl([
-	'duration' => $duration, // "permanent" or "temporary" by default
-]);
-
-$accessToken = $reddit->getAccessToken('authorization_code', [
-	'access_denied' => $error,
-	'code'          => $code,
-	'state'         => $state
-]);
-
-// refreshing an access token
-// include the following information in your POST data(NOT as part of the URL "grant_type=refresh_token&refresh_token=TOKEN"
-
-$grant_type = 'refresh_token';
-$refreshToken = $reddit->getAccessToken('refresh_token', [
-	'refresh_token'=> $accessToken->refreshToken
-]);
-$accessToken->accessToken = $refreshToken->accessToken;
-$accessToken->expires = $refreshToken->expires;
-
-// Remember to re-store the refreshed access token at this point
-// "refresh_token" will only be present if one was requested. You may now make API requests to reddit's servers on behalf of that user, by including the following header in your HTTP requests:
-
-//Authorization: bearer TOKEN
-
-// using the access token
-
-$reddit->getHeaders($token);
-$client = $reddit->getHttpClient();
-
-
-
-
-
 // encode and return the reply to the frontend caller
 echo json_encode($reply);
 

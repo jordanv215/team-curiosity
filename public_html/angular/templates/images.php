@@ -38,7 +38,6 @@
 			</div>
 		</div>
 		
-		
 
 		<div class="item">
 			<div style="background:url(../public_html/image/mars-landscape.jpg) center center;
