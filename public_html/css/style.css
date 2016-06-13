@@ -393,9 +393,18 @@ footer {
 
 
 .txt-2 {
-	font-size: 60%;
+	font-size: 500%;
 	font-family: 'Nova Square', cursive;
 	color: #ffffff;
-	text-align: left;
-	padding-top: 3rem;
+	text-align: center;
+	padding-top: 6rem;
+}
+
+
+.txt-3 {
+	font-size: 300%;
+	font-family: 'Nova Square', cursive;
+	color: #983434;
+	text-align: center;
+	padding-top: 6rem;
 }

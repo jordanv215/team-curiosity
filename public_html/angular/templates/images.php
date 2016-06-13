@@ -1,9 +1,17 @@
 <?php require_once("header.php");?>
 
-<div class="container-fluid">
+<!--div class="container-fluid">
 	<div class="txt-2">
-		<h3 class="rr-splash">redrovr Images</h3>
+		<h3 class="txt-2">redrovr</h3>
+		<h3 class="txt-3">Images</h3>
 	</div
+</div-->
+
+
+<div class="container-fluid">
+	<h1 class="txt-2" style="text-align:left;float:left;">redrovr</h1>
+	<h2 class="txt-3" style="text-align:right;float:right;">Images</h2>
+	<hr style="clear:both;"/>
 </div>
 
 <div class="row carousel-row">
