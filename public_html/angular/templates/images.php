@@ -1,7 +1,7 @@
 <?php require_once("header.php");?>
 
 <div class="container-fluid">
-	<div class="txt-2 rr-splash-wrapper">
+	<div class="txt-2">
 		<h3 class="rr-splash">redrovr Images</h3>
 	</div
 </div>
