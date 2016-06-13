@@ -35,12 +35,25 @@ body {
 }
 
 
-.main {
+main {
 	margin: 0;
+	padding-top: 50px;
 }
 
 .container-fluid {
 
+}
+
+/*---------------// Search box styles //------------------*/
+
+@media screen and (min-width: 768px) {
+	.nav-search-container {
+		width: 40rem;
+	}
+}
+​
+.nav-search-container {
+	padding: 15px;
 }
 
 /*---------------// Home page styles //-------------------*/
