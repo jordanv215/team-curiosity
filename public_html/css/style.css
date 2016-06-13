@@ -263,7 +263,6 @@ footer {
 }
 
 /*---------------------------------*/
-
 #imageCarousel > .carousel-inner > .item > img {
 	margin-bottom: 10rem;
 	border-radius: 10px;
@@ -296,18 +295,36 @@ footer {
 
 @media(min-width: 993px) {
 	#imageCarouselSplash > .carousel-inner > .item > img {
-		height: 35rem;
+		height: 50rem;
+	}
+	.slider-size {
+		height: 50rem;
+	}
+	#imageCarousel > .carousel-inner > .item > .slider-size  {
+		height: 50rem;
 	}
 }
 
 @media(max-width: 992px) {
 	#imageCarouselSplash > .carousel-inner > .item > img {
-		height: 25rem;
+		height: 30rem;
+	}
+	.slider-size {
+		height: 30rem;
+	}
+	#imageCarousel > .carousel-inner > .item > .slider-size {
+		height: 30rem;
 	}
 }
 
 @media(max-width: 768px) {
 	#imageCarouselSplash > .carousel-inner > .item > img {
+		height: 20rem;
+	}
+	.slider-size {
+		height: 20rem;
+	}
+	#imageCarousel > .carousel-inner > .item > .slider-size {
 		height: 20rem;
 	}
 }
@@ -436,4 +453,12 @@ footer {
 
 #heading-hr {
 	width: 95%;
+}
+
+
+
+.carousel {
+	width:100%;
+	margin:0 auto; /* center your carousel if other than 100% */
+
 }

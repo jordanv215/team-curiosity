@@ -28,20 +28,25 @@
 	<!-- Wrapper for slides -->
 	<div class="carousel-inner" role="listbox">
 		<div class="item active">
-			<img src="../public_html/image/above-shot.jpg" alt="Above-Mars">
+			<!--img src="../public_html/image/above-shot.jpg" alt="Above-Mars"-->
+			<div style="background:url(../public_html/image/above-shot.jpg) center center;
+          background-size:cover;" class="slider-size">
 			<div class="carousel-caption">
 				<h3>Orbit Shot</h3>
 				<p>This picture was taken by an orbiting satellite around Mars.</p>
+			</div>
 			</div>
 		</div>
 		
 		
 
 		<div class="item">
-			<img src="../public_html/image/mars-landscape.jpg" alt="landscape-mars">
+			<div style="background:url(../public_html/image/mars-landscape.jpg) center center;
+          background-size:cover;" class="slider-size">
 			<div class="carousel-caption">
 				<h3>Sand and Rock</h3>
 				<p>Here you can see a wideshot picture of the landscape of Mars' surface, covered in sand dunes and bits of rock.</p>
+				</div>
 			</div>
 		</div>
 
@@ -65,11 +70,11 @@
 	</div>
 
 	<!-- Left and right controls -->
-	<a class="left carousel-control" href="#imageCarousel" role="button" data-slide="prev">
+	<a class="left carousel-control" href="javascript:void(0)" role="button" data-slide="prev" data-target="#imageCarousel">
 		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 		<span class="sr-only">Previous</span>
 	</a>
-	<a class="right carousel-control" href="#imageCarousel" role="button" data-slide="next">
+	<a class="right carousel-control" href="javascript:void(0)"  role="button" data-slide="next" data-target="#imageCarousel">
 		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		<span class="sr-only">Next</span>
 	</a>
