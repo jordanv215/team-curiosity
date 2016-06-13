@@ -378,3 +378,11 @@ footer {
 	font-family: 'Montserrat', sans-serif;
 }
 
+
+.txt-2 {
+	font-family: 'Nova Square', cursive;
+	color: #ffffff;
+	font-size: 60%;
+	text-align: left;
+	padding-top: 3rem;
+}
