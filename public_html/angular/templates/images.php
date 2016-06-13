@@ -51,19 +51,23 @@
 		</div>
 
 		<div class="item">
-			<img src="../public_html/image/sunset.gif" alt="Mars-sunset">
+			<div style="background:url(../public_html/image/sunset.gif) center center;
+          background-size:cover;" class="slider-size">
 			<div class="carousel-caption">
 				<h3>A Sunset On Mars</h3>
 				<p>Due to atmospheric differences between Earth and Mars, sunsets look a bit more bland and unexciting on the Red Planet.</p>
+				</div>
 			</div>
 		</div>
 
 
 		<div class="item">
-			<img src="../public_html/image/selfie-optimized.jpg" alt="selfie">
+			<div style="background:url(../public_html/image/selfie-optimized.jpg) center center;
+          background-size:cover;" class="slider-size">
 			<div class="carousel-caption">
 				<h3>Rover Selfie</h3>
 				<p>The Curiosity Rover takes a full-shot selfie while traveling on the surface of Mars. I'd like to see 10 year olds with $700 iPhones compete with that.</p>
+				</div>
 			</div>
 		</div>
 		
