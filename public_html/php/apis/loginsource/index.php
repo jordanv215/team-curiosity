@@ -166,6 +166,9 @@ $accessToken->accessToken = $refreshToken->accessToken;
 $accessToken->expires = $refreshToken->expires;
 
 // Remember to re-store the refreshed access token at this point
+// "refresh_token" will only be present if one was requested. You may now make API requests to reddit's servers on behalf of that user, by including the following header in your HTTP requests:
+
+//Authorization: bearer TOKEN
 
 // using the access token
 

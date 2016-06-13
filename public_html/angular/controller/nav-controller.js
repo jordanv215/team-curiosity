@@ -8,11 +8,11 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 	
 	$scope.breakpoint = null;
 	$scope.navCollapsed = null;
-	$scope.header = [];
+	/*$scope.header = [];
 	// load the array on first view
 	if($scope.header.length === 0) {
 		$scope.header = $scope.searchHeader();
-	}
+	}*/
 	$scope.today = function() {
 		$scope.dt = new Date();
 	};
@@ -29,17 +29,16 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 	};
 
 	$scope.dateOptions = {
-		dateDisabled: disabled,
-		formatYear: "yy",
+		dateDisabled: false,
+		formatYear: 'yyyy',
 		maxDate: new Date(),
-		minDate: new Date(2011, 11,26),
+		minDate: new Date(),
 		startingDay: 1
 	};
+
 	// Disable weekend selection
 	function disabled(data) {
-		var date = data.date,
-			mode = data.mode;
-		return mode === "day" && (date.getDay() === 0 || date.getDay() === 6);
+
 	}
 
 	$scope.toggleMin = function() {
@@ -61,7 +60,10 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 		$scope.dt = new Date(year, month, day);
 	};
 
-	$scope.format = "yyyy/MM/dd";
+	$scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+	$scope.format = $scope.formats[0];
+	$scope.altInputFormats = ['M!/d!/yyyy'];
+
 	$scope.popup1 = {
 		opened: false
 	};
@@ -77,18 +79,18 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 	$scope.events = [
 		{
 			date: tomorrow,
-			status: "full"
+			status: 'full'
 		},
 		{
 			date: afterTomorrow,
-			status: "partially"
+			status: 'partially'
 		}
 	];
 
 	function getDayClass(data) {
 		var date = data.date,
 			mode = data.mode;
-		if (mode === "day") {
+		if (mode === 'day') {
 			var dayToCheck = new Date(date).setHours(0,0,0,0);
 
 			for (var i = 0; i < $scope.events.length; i++) {
@@ -100,8 +102,7 @@ app.controller("navController", ["$http", "$scope", function($http, $scope) {
 			}
 		}
 
-		return "";
+		return '';
 	}
-
 }]);
 
