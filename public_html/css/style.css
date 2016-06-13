@@ -329,6 +329,13 @@ footer {
 	}
 }
 
+.slide {
+	border-radius: 10px;
+}
+.carousel-indicators {
+	border-radius: 10px;
+}
+
 /*------------------// About page styles //-----------------*/
 
 .bg-1 {
