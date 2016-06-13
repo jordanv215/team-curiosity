@@ -8,10 +8,14 @@
 </div-->
 
 
-<div class="container-fluid">
-	<h1 class="txt-2" style="text-align:left;float:left;">redrovr</h1>
-	<h2 class="txt-3" style="text-align:right;float:right;">Images</h2>
-	<hr style="clear:both;"/>
+<div class="row heading-row">
+	<div >
+	<h1 class="col-sm-6 txt-2">redrovr</h1>
+	</div>
+	<div>
+	<h2 class="col-sm-6 txt-3">Images</h2>
+	</div>
+	<hr style="clear:both;" id="heading-hr"/>
 </div>
 
 <div class="row carousel-row">

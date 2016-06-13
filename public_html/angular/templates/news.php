@@ -1,11 +1,14 @@
 <?php require_once("header.php");?>
 
-<div class="container-fluid">
-	<h1 class="txt-2" style="text-align:left;float:left;">redrovr</h1>
-	<h2 class="txt-3" style="text-align:right;float:right;">News</h2>
-	<hr style="clear:both;"/>
-	
-</div>
+	<div class="row">
+		<div class="col-sm-6">
+	<h1 class="txt-2">redrovr</h1>
+			</div>
+			<div class="col-sm-6">
+	<h2 class="txt-3">News</h2>
+				</div>
+	<hr style="clear:both;" id="heading-hr"/>
+
 <!--<header ng-include="/news-full.php">-->
 <!--</header>-->
 <div class="row carousel-row">

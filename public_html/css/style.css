@@ -391,13 +391,17 @@ footer {
 	font-family: 'Montserrat', sans-serif;
 }
 
+.heading-row {
+	width: auto;
+}
 
 .txt-2 {
 	font-size: 500%;
 	font-family: 'Nova Square', cursive;
 	color: #ffffff;
-	text-align: center;
-	padding-top: 6rem;
+	text-align: left;
+	padding-top: 2rem;
+	padding-left: 5rem;
 }
 
 
@@ -405,6 +409,31 @@ footer {
 	font-size: 300%;
 	font-family: 'Nova Square', cursive;
 	color: #983434;
-	text-align: center;
-	padding-top: 6rem;
+	text-align: right;
+	padding-top: 2rem;
+	padding-right: 5rem;
+	position: relative;
+	bottom: -30%;
+	transform: translateY(30%);
+}
+
+@media(max-width: 768px) {
+	.txt-2 {
+		text-align: center;
+		padding-left: 3rem;
+		padding-top: 1rem;
+	}
+	.txt-3 {
+		text-align: center;
+		position: relative;
+		bottom: 30%;
+		transform: translateY(-30%);
+		padding-right: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
+#heading-hr {
+	width: 95%;
 }
