@@ -1,29 +1,31 @@
 <?php require_once("header.php");?>
-<div class="row" ng-if="weather == null" id="earth">
-	<h2 class="text-center"><i class="fa fa-globe fa-spin" aria-hidden="true"></i> Loading weather data&hellip;</h2>
+<div class="container-fluid">
+	<div class="row" ng-if="weather == null" id="earth">
+		<h2 class="text-center"><i class="fa fa-globe fa-spin" aria-hidden="true"></i> Loading weather data&hellip;</h2>
+	</div>
 </div>
+<div class="container-fluid">
 	<div class="row" ng-if="weather != null" id="weather">
-		<div class="col-xs-12">
-			<div class="col-xs-6 col-sm-3">
-				<div class="big-box" id="temp">{{ weather.max_temp }} &deg;<small>F</small></div>
-				<div class="mini-box">High</div>
-			</div><!-- column for max temperature-->
-			<div class="col-xs-6 col-sm-3">
-				<div class="big-box" id="temp">{{ weather.min_temp }} &deg;<small>F</small></div>
-				<div class="mini-box">Low</div>
-			</div><!-- column for min_temp-->
-			<div class="col-xs-6 col-sm-3">
-				<div class="mini-box" id="date">Sol {{ weather.sol }}</div>
-				<div class="row" id="pressure">{{ weather.pressure }} Pa</div>
-				<div class="mini-box">Pressure</div>
-			</div>
-			<div class="col-xs-6 col-sm-3">
-				<div class="mini-box" id="date">{{ weather.terrestrial_date }}</div>
-				<div class="row" id="pressure">{{ weather.atmo_opacity }}</div>
-				<div class="mini-box">Sky</div>
-			</div>
-		</div><!--main weather column -->
+		<div class="col-xs-6 col-sm-3">
+			<div class="big-box" id="temp">{{ weather.max_temp }} &deg;<small>F</small></div>
+			<div class="mini-box">High</div>
+		</div><!-- column for max temperature-->
+		<div class="col-xs-6 col-sm-3">
+			<div class="big-box" id="temp">{{ weather.min_temp }} &deg;<small>F</small></div>
+			<div class="mini-box">Low</div>
+		</div><!-- column for min_temp-->
+		<div class="col-xs-6 col-sm-3">
+			<div class="mini-box" id="date">Sol {{ weather.sol }}</div>
+			<div class="row" id="pressure">{{ weather.pressure }} Pa</div>
+			<div class="mini-box">Pressure</div>
+		</div>
+		<div class="col-xs-6 col-sm-3">
+			<div class="mini-box" id="date">{{ weather.terrestrial_date }}</div>
+			<div class="row" id="pressure">{{ weather.atmo_opacity }}</div>
+			<div class="mini-box">Sky</div>
+		</div>
 	</div><!-- row for weather-->
+</div>
 
 
 <!-- Red Rovr on background -->
