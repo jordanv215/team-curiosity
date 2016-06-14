@@ -23,18 +23,18 @@
 	<div class="carousel-inner" role="listbox">
 		<div class="item active">
 			<div class="carousel-header">
-				<h3 class="news-header">Second Cycle of Martian Seasons Completing for Curiosity Rover</h3>
-				<p class="news-content">date</p>
-				<p class="news-content">NASA's Curiosity Mars rover has completed its second Martian year since landing in 2012, recording environmental patterns through two full cycles of Martian seasons.</p>
+				<h3 class="news-header">{{}}</h3>
+				<p class="news-content">{{date}}</p>
+				<p class="news-content">{{NASA's Curiosity Mars rover has completed its second Martian year since landing in 2012, recording environmental patterns through two full cycles of Martian seasons.}}</p>
 				<div class="news-content">
 					<a href="http://mars.jpl.nasa.gov/msl/news/whatsnew/index.cfm?FuseAction=ShowNews&NewsID=1908" target="_blank">Read more&hellip;</a>					</div>
 			</div>
 		</div>
 		<div class="item">
 			<div class="carousel-header">
-				<h3 class="news-header">Curiosity Mars Rover Crosses Rugged Plateau</h3>
+				<h3 class="news-header">{{Curiosity Mars Rover Crosses Rugged Plateau}}</h3>
 				</div>
-				<p class="news-content">NASA's Curiosity Mars rover has nearly finished crossing a stretch of the most rugged and difficult-to-navigate terrain encountered during the mission's 44 months on Mars.</p>
+				<p class="news-content">{{NASA's Curiosity Mars rover has nearly finished crossing a stretch of the most rugged and difficult-to-navigate terrain encountered during the mission's 44 months on Mars.}}</p>
 				<div class="news-content">
 					<a href="http://mars.jpl.nasa.gov/msl/news/whatsnew/index.cfm?FuseAction=ShowNews&NewsID=1908" target="_blank">Read more&hellip;</a>
 				
