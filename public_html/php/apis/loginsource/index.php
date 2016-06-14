@@ -28,7 +28,7 @@ $state = random_int($min, $max);
 $redirectUri = 
 
 
-https://www.reddit.com/api/v1/authorize.compact?client_id=$&response_type=code&state=$&redirect_uri=$&duration=3600&scope=identity
+"https://www.reddit.com/api/v1/authorize.compact?client_id=$&response_type=code&state=$&redirect_uri=$&duration=3600&scope=identity";
 // create an empty reply
 $reply = new stdClass();
 $reply->status = 200;
