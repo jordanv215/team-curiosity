@@ -64,12 +64,13 @@ try {
 			$data = curl_exec($curl);
 			curl_close($curl);
 			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
+			$namespaces = $xml->getNamespaces(true);
 
 			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = $item->title;
 				$newsArticleDate = $item->pubDate;
-				$newsArticleSynopsis = (string)$item->{'media:description'}->attributes()->type='plain';
+				$newsArticleSynopsis = (string)$item->children($namespaces['media'])->description;
 				$newsArticleUrl = $item->link;
 				$newsArticleTitle = (trim($newsArticleTitle));
 				$newsArticleUrl = (trim($newsArticleUrl));
