@@ -72,17 +72,18 @@ try {
 				$newsArticleDate = $item->pubDate;
 				$newsArticleSynopsis = $item->description;
 				$newsArticleUrl = $item->link;
-
-
+				var_dump((string) trim($newsArticleDate));
+				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string) trim($newsArticleDate));
+				var_dump($newsArticleDate);
 				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
 
-				$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
+				$newsArticle = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($newsArticle === null) {
 					$newsArticle->insert($pdo);
 
 				}
 			}
-			TeamCuriosity\NewsArticle::getNewsArticles($pdo);
+			$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
 		}
 		else if(empty($newsArticleId) === false) {
 			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
