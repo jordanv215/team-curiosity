@@ -16,8 +16,8 @@ public function getLastRan() {
 		fwrite($fh, $this->timeRan);
 		fclose($fh);
 		}
-
-		// this space (hah..) is where the actual NASA API call will occur
+		
+		$image = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl()
 	}
 	else {
 		public function getImages(\PDO $pdo, int $imageId) {
