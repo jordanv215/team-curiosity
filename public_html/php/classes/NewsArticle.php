@@ -548,6 +548,26 @@ class NewsArticle implements \JsonSerializable {
 		return ($newsArticles);
 	}
 
+	public static function getNewsArticles(\PDO $pdo) {
+		$query = "SELECT * FROM NewsArticle ORDER BY newsArticleDate DESC LIMIT 25";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		// build an array of NewsArticles
+		$newsArticles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticles[$newsArticles->key()] = $newsArticle;
+				$newsArticles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($newsArticles);
+	}
+
 	/**
 	 * formats the state variables for JSON serialization
 	 *

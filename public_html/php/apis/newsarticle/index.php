@@ -1,7 +1,7 @@
 <?php
 
-require_once (dirname(__DIR__, 2) . "/classes/Autoload.php");
-require_once (dirname(__DIR__, 2) . "/lib/xsrf.php");
+require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
+require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity;
@@ -50,12 +50,46 @@ try {
 		setXsrfCookie();
 
 		//get a specific NewsArticle, multiple NewsArticles, or all NewsArticles, and update reply
-		if(empty($newsArticleId) === false) {
+		if(isset($_GET["top25"]) === true) {
+			$curl = curl_init();
+			curl_setopt_array($curl, Array(
+				CURLOPT_URL => 'http://mars.nasa.gov/rss/news.cfm?s=msl',
+				CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+				CURLOPT_TIMEOUT => 120,
+				CURLOPT_CONNECTTIMEOUT => 30,
+				CURLOPT_RETURNTRANSFER => TRUE,
+				CURLOPT_ENCODING => 'UTF-8'
+			));
+
+			$data = curl_exec($curl);
+			curl_close($curl);
+			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
+
+			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+
+			foreach($xml->channel->item as $item) {
+				$newsArticleTitle = $item->title;
+				$newsArticleDate = $item->pubDate;
+				$newsArticleSynopsis = $item->description;
+				$newsArticleUrl = $item->link;
+
+
+				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
+
+				$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
+				if($newsArticle === null) {
+					$newsArticle->insert($pdo);
+
+				}
+			}
+			TeamCuriosity\NewsArticle::getNewsArticles($pdo);
+		}
+		else if(empty($newsArticleId) === false) {
 			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle !== null) {
 				$reply->data = $newsArticle;
 			}
-		} else if (empty($newsArticleTitle) === false) {
+		} else if(empty($newsArticleTitle) === false) {
 			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleTitle($pdo, $newsArticleTitle);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
@@ -66,12 +100,12 @@ try {
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
-		} else if (empty($newsArticleSynopsis) === false) {
+		} else if(empty($newsArticleSynopsis) === false) {
 			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleSynopsis($pdo, $newsArticleSynopsis);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
-		} else if (empty($newsArticleUrl) === false) {
+		} else if(empty($newsArticleUrl) === false) {
 			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
@@ -140,6 +174,9 @@ try {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
+
+
+
 	// update reply with exception information
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
@@ -148,60 +185,6 @@ try {
 } catch(TypeError $typeError) {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
-}
-
-$curl = curl_init();
-curl_setopt_array($curl, Array(
-	CURLOPT_URL            => 'http://mars.nasa.gov/rss/news.cfm?s=msl',
-	CURLOPT_USERAGENT      => 'spider',
-	CURLOPT_TIMEOUT        => 120,
-	CURLOPT_CONNECTTIMEOUT => 30,
-	CURLOPT_RETURNTRANSFER => TRUE,
-	CURLOPT_ENCODING       => 'UTF-8'
-));
-$data = curl_exec($curl);
-curl_close($curl);
-$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
-
-
-foreach ($xml->channel->item as $item) {
-	$newsArticleTitle = $item->title;
-	$newsArticleDate = $item->pubDate;
-	$newsArticleSynopsis = $item->description;
-	$newsArticleUrl = $item->link;
-}
-
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
-	
-	$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
-
-$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
-if($newsArticleUrl === "newsArticleUrl") {
-	public function getNewsArticles(\PDO $pdo) {
-		$query = "SELECT * FROM NewsArticle WHERE newsArticleId > MAX(newsArticleId) - 25";
-		$statement = $pdo->prepare($query);
-		$statement->execute();
-		// build an array of NewsArticles
-		$newsArticles = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
-				$newsArticles[$newsArticles->key()] = $newsArticle;
-				$newsArticles->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		return ($newsArticles);
-	}
-}
-
-
-else {
-	$newsArticle = TeamCuriosity\NewsArticle::insert($pdo);
-	getNewsArticles($pdo);
 }
 header("Content-type: application/json");
 if($reply->data === null) {

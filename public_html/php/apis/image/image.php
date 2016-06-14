@@ -16,12 +16,18 @@ public function getLastRan() {
 		fwrite($fh, $this->timeRan);
 		fclose($fh);
 		}
-		
-		$image = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl()
+		public function NasaCall() {
+			$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
+			$apiKey = ""; // how is this accessed again?
+			$camera = "";
+			$earthDate = "";
+			$sol = "";
+		}
+		$image = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo,)
 	}
 	else {
 		public function getImages(\PDO $pdo, int $imageId) {
-			$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageId > length(Image) - 25";
+			$query = "SELECT * FROM Image WHERE imageId > MAX(imageId) - 25";
 			$statement = $pdo->prepare($query);
 			$parameters = array("imageId" => $imageId);
 			$statement->execute($parameters);
