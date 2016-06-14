@@ -17,7 +17,7 @@
 	</div>
 	<hr style="clear:both;" id="heading-hr"/>
 </div>
-</div>
+
 
 <div class="row carousel-row">
 <div id="imageCarousel" class="carousel slide" data-ride="carousel">
@@ -82,5 +82,6 @@
 		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		<span class="sr-only">Next</span>
 	</a>
+</div>
 </div>
 </div>

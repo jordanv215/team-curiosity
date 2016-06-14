@@ -11,25 +11,14 @@ curl_setopt_array($curl, Array(
 $data = curl_exec($curl);
 curl_close($curl);
 $xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
-//die('<pre>' . print_r($xml], TRUE) . '</pre>');
-?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<title></title>
-		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	</head>
-	<body>
 
-		<?php foreach ($xml->channel->item as $item) {
-			$creator = $item->children('dc', TRUE);
-			echo '<h2>' . $item->title . '</h2>';
-			echo '<p>Created: ' . $item->pubDate . '</p>';
-			echo '<p>Author: ' . $creator . '</p>';
-			echo '<p>' . $item->description . '</p>';
-			echo '<p><a href="' . $item->link . '">Read more: ' . $item->title . '</a></p>';
-		}
-		?>
 
-	</body>
-</html>
+foreach ($xml->channel->item as $item) {
+	echo $item->title;
+	echo '<br>';
+	echo $item->pubDate;
+	echo $item->description;
+	echo $item->link;
+	echo '<br><br>';
+	}
+
