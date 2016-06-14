@@ -69,13 +69,16 @@ try {
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = $item->title;
 				$newsArticleDate = $item->pubDate;
-				$newsArticleSynopsis = $item->description;
+				$newsArticleSynopsis = (string)$item->{'media:description'}->attributes()->type='plain';
 				$newsArticleUrl = $item->link;
+				$newsArticleTitle = (trim($newsArticleTitle));
+				$newsArticleUrl = (trim($newsArticleUrl));
+				//$newsArticleSynopsis = ((string) trim($newsArticleSynopsis));
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string) trim($newsArticleDate));
 				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
 
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
-				if($news === null) {
+				if(empty($news) === true) {
 					$newsArticle->insert($pdo);
 
 				}
