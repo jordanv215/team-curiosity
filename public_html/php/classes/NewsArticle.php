@@ -549,7 +549,7 @@ class NewsArticle implements \JsonSerializable {
 	}
 
 	public static function getNewsArticles(\PDO $pdo) {
-		$query = "SELECT * FROM NewsArticle ORDER BY newsArticleDate DESC LIMIT 25";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle ORDER BY newsArticleDate DESC LIMIT 25";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		// build an array of NewsArticles

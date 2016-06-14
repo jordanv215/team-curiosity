@@ -66,19 +66,16 @@ try {
 			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 
 			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
-
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = $item->title;
 				$newsArticleDate = $item->pubDate;
 				$newsArticleSynopsis = $item->description;
 				$newsArticleUrl = $item->link;
-				var_dump((string) trim($newsArticleDate));
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string) trim($newsArticleDate));
-				var_dump($newsArticleDate);
 				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
 
-				$newsArticle = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
-				if($newsArticle === null) {
+				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
+				if($news === null) {
 					$newsArticle->insert($pdo);
 
 				}
