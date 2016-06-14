@@ -518,3 +518,10 @@ footer {
 	margin:0 auto; /* center your carousel if other than 100% */
 
 }
+
+.carousel-caption {
+	color: white;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
+}
+

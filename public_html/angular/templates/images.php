@@ -61,7 +61,7 @@
 		</div>
 
 
-		<div class="item">
+		<div class="item ng-click">
 			<div style="background:url(../public_html/image/selfie-optimized.jpg) center center;
           background-size:cover;" class="slider-size">
 			<div class="carousel-caption">
