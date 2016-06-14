@@ -19,4 +19,5 @@ app.service("NewsService", function($http, NEWS_ENDPOINT) {
 	this.fetchNews = function() {
 		return($http.get(getUrl()))
 	}
+	
 });

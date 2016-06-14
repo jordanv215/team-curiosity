@@ -150,40 +150,59 @@ try {
 	$reply->message = $typeError->getMessage();
 }
 
+$curl = curl_init();
+curl_setopt_array($curl, Array(
+	CURLOPT_URL            => 'http://mars.nasa.gov/rss/news.cfm?s=msl',
+	CURLOPT_USERAGENT      => 'spider',
+	CURLOPT_TIMEOUT        => 120,
+	CURLOPT_CONNECTTIMEOUT => 30,
+	CURLOPT_RETURNTRANSFER => TRUE,
+	CURLOPT_ENCODING       => 'UTF-8'
+));
+$data = curl_exec($curl);
+curl_close($curl);
+$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 
-/**
- * Utilize rss-php extension to retrieve news article objects from NASA RSS feed
- *
- * @see https://github.com/dg/rss-php
- **/
 
-$url = "http://mars.nasa.gov/rss/news.cfm?s=msl";
-$rss = Feed::loadRss($url);
-
-foreach($rss->item as $item) { // does all of this need to be put in a function to be called on page load?
+foreach ($xml->channel->item as $item) {
 	$newsArticleTitle = $item->title;
-	$newsArticleUrl = $item->link;
 	$newsArticleDate = $item->pubDate;
 	$newsArticleSynopsis = $item->description;
+	$newsArticleUrl = $item->link;
+}
 
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
 	
 	$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
 
-	$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
-	if($newsArticleUrl === "newsArticleUrl") {
-		// grab row and add to array
-		// somehow
-	}
-
-	else {
-		$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
-		// wat
-		// how to access insert from here
-		// does this whole thing need to be rewritten again?
+$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
+if($newsArticleUrl === "newsArticleUrl") {
+	public function getNewsArticles(\PDO $pdo) {
+		$query = "SELECT * FROM NewsArticle WHERE newsArticleId > MAX(newsArticleId) - 25";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		// build an array of NewsArticles
+		$newsArticles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticles[$newsArticles->key()] = $newsArticle;
+				$newsArticles->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($newsArticles);
 	}
 }
 
+
+else {
+	$newsArticle = TeamCuriosity\NewsArticle::insert($pdo);
+	getNewsArticles($pdo);
+}
 header("Content-type: application/json");
 if($reply->data === null) {
 	unset($reply->data);
