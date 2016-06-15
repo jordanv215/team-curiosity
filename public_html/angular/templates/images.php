@@ -142,6 +142,81 @@
 			</div>
 		</div>
 
+		<div class="item">
+			<div style="background:url(../public_html/image/tracks.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curious Tracks</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/destination-crater.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curiosity's Landing Site</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/martian-crystals.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Crystal-Laden Martian Rock - Examined by Curiosity's Laser Instrument</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/martian-moonrise.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curiosity Snaps a Photo of Phobos Rising Into the Night Sky</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/mars-drill.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curiosity Begins Drilling</p>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="item">
+			<div style="background:url(../public_html/image/iron-meteroite.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>An Iron Meteorite Found On the Surface</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/drill-site.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<h3>One of Curiosity's Many Drilling Sites</h3>
+					<p>One of Curiosity's many tools is a large drill. The machine uses the drill to take samples and view rock structures beneath the surface of the planet.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/mars-surface-long-drive.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curiosity Takes a Shot While On It's Longest Drive to Date</p>
+				</div>
+			</div>
+		</div>
+
+
 
 
 
