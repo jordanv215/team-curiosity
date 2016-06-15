@@ -34,7 +34,7 @@
           background-size:cover;" class="slider-size">
 			<div class="carousel-caption">
 				<h3>Orbit Shot</h3>
-				<p>This picture was taken by an orbiting satellite around Mars.</p>
+				<p>Rover tracks at "the Kimberley" -April 2014</p>
 			</div>
 			</div>
 		</div>
@@ -61,17 +61,91 @@
 		</div>
 
 
-		<div class="item ng-click">
+		<div class="item">
 			<div style="background:url(../public_html/image/selfie-optimized.jpg) center center;
           background-size:cover;" class="slider-size">
-
 			<div class="carousel-caption">
 				<h3>Rover Selfie</h3>
-				<p>The Curiosity Rover takes a full-shot selfie while traveling on the surface of Mars. I'd like to see 10 year olds with $700 iPhones compete with that.</p>
+				<p>The Curiosity Rover takes a full-shot selfie while traveling on the surface of Mars.</p>
 				</div>
 			</div>
 		</div>
-		
+
+<!--begin picture adding for demo-->
+		<div class="item">
+			<div style="background:url(../public_html/image/ciriosity-orbit-tracks.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<h3>Tracks</h3>
+					<p>A colored image of the surface, showing Curiosity's left over tracks.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/contact.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<h3>Landing on Mars!</h3>
+					<p>Mars Science Laboratory Team celebrates as Curiosity lands safely on the surface of Mars and images begin coming in. -Aug. 5, 2012</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/selfie-2.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<h3>Curiosity Self-Portrait at 'Windjana' Drilling Site</h3>
+					<p>Taken on Sol 613, beginning drilling.</p>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="item">
+			<div style="background:url(../public_html/image/stars-and-stripes.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<h3>Curiosity's Stars and Stripes</h3>
+					<p>A view of the American flag medallion mounted on the Curiosity</p>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="item">
+			<div style="background:url(../public_html/image/wheels-and-destination.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curiosity Snaps a Moving Photo of It's Wheels</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/whale-rock.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<h3>"Whale Rock" - Proof of Ancient Lake</h3>
+					<p>Whale Rock is covered in cross-bedding, which results from water passing over it.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/stream-flow-evidence.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>This Image Shows Evidence of Stream Flow</p>
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<!--end added pictures for demo-->
 	</div>
 
 	<!-- Left and right controls -->
