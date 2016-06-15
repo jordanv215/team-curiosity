@@ -62,8 +62,20 @@
 
 
 		<div class="item ng-click">
+			<!--swipebox begin-->
+
+			<!--swipebox ends (if no work, remove this code from previous carousel image call-->
+			<a href="../public_html/image/selfie-optimized.jpg" class="swipebox" title="My Caption">
 			<div style="background:url(../public_html/image/selfie-optimized.jpg) center center;
           background-size:cover;" class="slider-size">
+				<script type="text/javascript">
+					( function( $ ) {
+
+						$( '.swipebox' ).swipebox();
+
+					} )( jQuery );
+				</script>
+			</a>
 			<div class="carousel-caption">
 				<h3>Rover Selfie</h3>
 				<p>The Curiosity Rover takes a full-shot selfie while traveling on the surface of Mars. I'd like to see 10 year olds with $700 iPhones compete with that.</p>
