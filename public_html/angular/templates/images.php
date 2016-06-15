@@ -299,8 +299,21 @@
 			</div>
 		</div>
 
+		<div class="item">
+			<div style="background:url(../public_html/image/rover-movement.gif) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+			</div>
+		</div>
 
-
+			<div class="item">
+				<div style="background:url(../public_html/image/moving-water.gif) center center;
+          background-size:cover;" class="slider-size">
+					<div class="carousel-caption">
+						<p>Mars Proves there is Flowing Water on Today's Mars!</p>
+					</div>
+				</div>
+			</div>
 
 
 
