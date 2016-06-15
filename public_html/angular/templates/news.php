@@ -21,7 +21,7 @@
 
 	<!-- Wrapper for slides -->
 	<div class="carousel-inner" role="listbox" >
-		<div class="item" ng-class="{active: $index == 0}" ng-repeat="news in news">
+		<div class="item active" ng-class="{active: $index == 0}" ng-repeat="news in news">
 			<div class="carousel-header">
 				<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 				</div>

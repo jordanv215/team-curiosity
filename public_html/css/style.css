@@ -495,7 +495,7 @@ footer {
 	}
 }
 
-/* . carousel-row > #newsCarousel > .carousel-inner > .item > .carousel-header > h3 {
+ .carousel-row > #newsCarousel > .carousel-inner > .item > .carousel-header > h3 {
 	text-align: center;
 	font-size: 3rem;
 
@@ -506,7 +506,7 @@ footer {
 	font-size: 2rem;
 	color: whitesmoke;
 	padding: 0 5rem;
-}*/
+}
 
 
 #heading-hr {

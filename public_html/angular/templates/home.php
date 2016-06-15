@@ -99,7 +99,7 @@
 		<div id="newsCarouselSplash" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
-				<li data-target="#newsCarouselSplash" data-slide-to="0" class="active"></li>
+				<li data-target="#newsCarouselSplash" data-slide-to="$index" class="active" ng-repeat="news in news"></li>
 			</ol>
 
 			<!-- Wrapper for slides -->
@@ -114,8 +114,8 @@
 							<a href=" {{ news.newsArticleUrl }} " target="_blank">Read more&hellip;</a>
 						</div>
 					</div>
-				
 
+			</div>
 				<!-- Left and right controls -->
 				<a class="left carousel-control" href="#newsCarouselSplash" role="button" data-slide="prev">
 					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -125,7 +125,7 @@
 					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				</a> 
-			</div>
+
 		</div>
 	</div>
 </div>
