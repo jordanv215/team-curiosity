@@ -73,9 +73,9 @@ try {
 				$newsArticleSynopsis = $item->children("media", true)->description;
 				$newsArticleUrl = $item->link;
 
-				echo $newsArticleTitle;
-				echo $newsArticleDate;
-				echo $newsArticleSynopsis;
+				echo $newsArticleTitle, "<br>";
+				echo $newsArticleDate, "<br>";
+				echo $newsArticleSynopsis, "<br>";
 				echo $newsArticleUrl;
 								//$newsArticleSynopsis = ((string) trim($newsArticleSynopsis));
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string) trim($newsArticleDate));
