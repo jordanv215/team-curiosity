@@ -212,7 +212,9 @@ footer {
 
 /*------------------// Carousel styles //--------------------*/
 
-.carousel-indicators li { visibility: hidden; }
+.carousel-indicators li {
+	visibility: hidden;
+}
 
 .carousel-row {
 	padding: 0 2rem;
