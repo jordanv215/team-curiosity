@@ -15,4 +15,5 @@ app.controller("imagesController", ["$scope", "ImagesService", function($scope, 
 	if($scope.images.length === 0) {
 		$scope.images = $scope.getImages();
 	}
+	data.local="#imageCarousel"
 }]);
