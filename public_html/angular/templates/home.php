@@ -95,7 +95,7 @@
 	<!--------// News carousel: right on desktop //-------------->
 	<!-- Wrapper for slides -->
 
-	<div class="col-md-6">
+	<div class="col-md-6" ngController="homeController">
 		<div id="newsCarouselSplash" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
@@ -104,33 +104,24 @@
 
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
-				<div class="item active">
+				<div class="item" ng-class="{active: $index == 0}" ng-repeat="news in news">
 					<div class="carousel-header">
-						<h3 class="news-header">Second Cycle of Martian Seasons Completing for Curiosity Rover</h3>
+						<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 						</div>
-						<p class="news-content">May 11, 2016</p>
-						<p class="news-content">NASA's Curiosity Mars rover has completed its second Martian year since landing in 2012, recording environmental patterns through two full cycles of Martian seasons.</p>
+						<p class="news-content">{{ news.newsArticleDate | date }}</p>
+						<p class="news-content">{{ news.newsArticleSynopsis }}</p>
 						<div class="news-content">
-							<a href="http://mars.jpl.nasa.gov/msl/news/whatsnew/index.cfm?FuseAction=ShowNews&NewsID=1908" target="_blank">Read more&hellip;</a>
+							<a href=" {{ news.newsArticleUrl }} " target="_blank">Read more&hellip;</a>
 						</div>
 					</div>
 				
-				<div class="item">
-					<div class="carousel-header">
-						<h3 class="news-header">Curiosity Mars Rover Crosses Rugged Plateau</h3>
-						<p class="news-content">April 27, 2016</p>
-						<p class="news-content">NASA's Curiosity Mars rover has nearly finished crossing a stretch of the most rugged and difficult-to-navigate terrain encountered during the mission's 44 months on Mars.</p>
-						<div class="news-content">
-							<a<a href="http://mars.jpl.nasa.gov/msl/news/whatsnew/index.cfm?FuseAction=ShowNews&NewsID=1908" target="_blank">Read more&hellip;</a>
-						</div>
-					</div>
-				</div>
+
 				<!-- Left and right controls -->
-				<a class="left carousel-control" href="#imageCarouselSplash" role="button" data-slide="prev" data-target="#imageCarousel">
+				<a class="left carousel-control" href="#newsCarouselSplash" role="button" data-slide="prev">
 					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 					<span class="sr-only">Previous</span>
 				</a>
-				<a class="right carousel-control" href="#imageCarouselSplash" role="button" data-slide="next" data-target="#imageCarousel">
+				<a class="right carousel-control" href="#newsCarouselSplash" role="button" data-slide="next">
 					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				</a> 
