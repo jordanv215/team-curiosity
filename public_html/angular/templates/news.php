@@ -20,25 +20,16 @@
 	</ol>
 
 	<!-- Wrapper for slides -->
-	<div class="carousel-inner" role="listbox">
-		<div class="item active">
-			<div class="carousel-header">
-				<h3 class="news-header">Second Cycle of Martian Seasons Completing for Curiosity Rover</h3>
-				<p class="news-content">May 11, 2016</p>
-				<p class="news-content">NASA's Curiosity Mars rover has completed its second Martian year since landing in 2012, recording environmental patterns through two full cycles of Martian seasons.</p>
-				<div class="news-content">
-					<a href="http://mars.jpl.nasa.gov/msl/news/whatsnew/index.cfm?FuseAction=ShowNews&NewsID=1908" target="_blank">Read more&hellip;</a>	
-				</div>
-			</div>
-		</div>
-		<div class="item">
+	<div class="carousel-inner" role="listbox" >
+		<div class="item" ng-class="{active: $index == 0}" ng-repeat="news in news">
 			<div class="carousel-header">
 				<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 				</div>
-				<p class="news-content">{{ news.newsArticleDate }}</p>
+				<p class="news-content">{{ news.newsArticleDate | date }}</p>
 				<p class="news-content">{{ news.newsArticleSynopsis }}</p>
 				<div class="news-content">
-					<a href=" {{ news.newsArticleUrl }} " target="_blank">Read more&hellip;</a>
+					<a href=" {{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
+				</div>
 			</div>
 		</div>
 

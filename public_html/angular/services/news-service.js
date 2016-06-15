@@ -10,9 +10,10 @@ app.service("NewsService", function($http, NEWS_ENDPOINT) {
 		return(http.get(getUrl() + newsArticleUrl));
 	}
 
-	function top25() {
-		return($http.get(getUrl()) + "?top25");
-	}
+	
+	this.top25 = function() {
+		return($http.get(getUrl() + "?top25"));
+	};
 
 
 	this.all = function() {
