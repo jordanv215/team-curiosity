@@ -31,6 +31,7 @@
 		<div class="item active">
 			<!--img src="../public_html/image/above-shot.jpg" alt="Above-Mars"-->
 			<div style="background:url(../public_html/image/above-shot.jpg) center center;
+			background-size:cover;" class="slider-size" onclick="slideBox('slide-1');" id="slide-1">
           background-size:cover;" class="slider-size">
 			<div class="carousel-caption">
 				<h3>Orbit Shot</h3>
@@ -42,7 +43,7 @@
 
 		<div class="item">
 			<div style="background:url(../public_html/image/mars-landscape.jpg) center center;
-          background-size:cover;" class="slider-size">
+          background-size:cover;" class="slider-size" onclick="slideBox('slide-2');" id="slide-2">
 			<div class="carousel-caption">
 				<h3>Sand and Rock</h3>
 				<p>Here you can see a wideshot picture of the landscape of Mars' surface, covered in sand dunes and bits of rock.</p>
@@ -52,7 +53,7 @@
 
 		<div class="item">
 			<div style="background:url(../public_html/image/sunset.gif) center center;
-          background-size:cover;" class="slider-size">
+          background-size:cover;" class="slider-size" onclick="slideBox('slide-3');" id="slide-3">
 			<div class="carousel-caption">
 				<h3>A Sunset On Mars</h3>
 				<p>Due to atmospheric differences between Earth and Mars, sunsets look a bit more bland and unexciting on the Red Planet.</p>
@@ -63,7 +64,7 @@
 
 		<div class="item">
 			<div style="background:url(../public_html/image/selfie-optimized.jpg) center center;
-          background-size:cover;" class="slider-size">
+          background-size:cover;" class="slider-size" onclick="slideBox('slide-4');" id="slide-4">
 			<div class="carousel-caption">
 				<h3>Rover Selfie</h3>
 				<p>The Curiosity Rover takes a full-shot selfie while traveling on the surface of Mars.</p>
@@ -317,8 +318,6 @@
 
 
 
-
-
 		<!--end added pictures for demo-->
 	</div>
 
@@ -331,24 +330,19 @@
 		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		<span class="sr-only">Next</span>
 	</a>
-
-
 </div>
 </div>
 	<!--begin modal -->
-	<div class="modal fade modal-fullscreen force-fullscreen" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+	<div class="modal fade modal-fullscreen force-fullscreen" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Modal title</h4>
+
 				</div>
-				<div class="modal-body">
-					<p>One fine body…</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<div class="modal-body" id="imgModalImage">
+
+					</div>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->

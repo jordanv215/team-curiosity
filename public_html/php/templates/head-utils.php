@@ -45,11 +45,10 @@
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/<?php echo $ANGULAR_VERSION;?>/angular-animate.min.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
 
+		
 
-		<!--swipebox-->
-		<script src="lib/jquery-2.0.3.js"></script>
-		<script src="src/js/jquery.swipebox.js"></script>
-		<link rel="stylesheet" href="src/css/swipebox.css">
+		<!--custom js-->
+			<script src="js/carousel-box.js"></script>
 
 		<!--loading Angular app files -->
 		<script src="angular/redrovr.js"></script>
