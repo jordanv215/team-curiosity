@@ -6,7 +6,9 @@ app.service("NewsService", function($http, NEWS_ENDPOINT) {
 	function getUrlForId(newsArticleId) {
 		return(getUrl() + newsArticleId);
 	}
-
+	function getUrlForUrl(newsArticleUrl) {
+		return(getUrl() + newsArticleUrl);
+	}
 	this.all = function() {
 		return($http.get(getUrl()));
 	};

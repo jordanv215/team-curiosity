@@ -17,6 +17,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
+//-----------------------------------------------------------------
 $config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
 $keys = $config["authkeys"];
 $clientId = $keys->reddit->clientId;
@@ -29,7 +30,9 @@ $redirectUri =
 
 setcookie("reddit_login_nonce", $state);
 header("Location: " . "https://www.reddit.com/api/v1/authorize.compact?client_id=". $clientId ."&response_type=code&state=". $state ."&redirect_uri=". $redirectUri ."&duration=3600&scope=identity");
+//------------------------------------------------------------
 // commenting in api finds
+
 $config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
 $keys = $config["authkeys"];
 $clientId = $keys->reddit->clientId;
@@ -146,7 +149,7 @@ function user_identity($access_token)
 
 	curl_close($ch);
 }
-//this is the end of the copied code for this section
+//--------------this is the end of the copied code for this section-------------------------------------
 
 
 

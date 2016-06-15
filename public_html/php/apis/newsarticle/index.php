@@ -64,17 +64,20 @@ try {
 			$data = curl_exec($curl);
 			curl_close($curl);
 			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
-			$namespaces = $xml->getNamespaces(true);
+			$xml->channel->item->children("http://search.yahoo.com/mrss/");
 
 			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = $item->title;
 				$newsArticleDate = $item->pubDate;
-				$newsArticleSynopsis = (string)$item->children($namespaces['media'])->description;
+				$newsArticleSynopsis = $item->children("media", true)->description;
 				$newsArticleUrl = $item->link;
-				$newsArticleTitle = (trim($newsArticleTitle));
-				$newsArticleUrl = (trim($newsArticleUrl));
-				//$newsArticleSynopsis = ((string) trim($newsArticleSynopsis));
+
+				echo $newsArticleTitle;
+				echo $newsArticleDate;
+				echo $newsArticleSynopsis;
+				echo $newsArticleUrl;
+								//$newsArticleSynopsis = ((string) trim($newsArticleSynopsis));
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string) trim($newsArticleDate));
 				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
 
