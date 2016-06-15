@@ -12,7 +12,7 @@
 
 <!--<header ng-include="/news-full.php">-->
 <!--</header>-->
-<div class="row carousel-row">
+<div class="row carousel-row" ngController="newsController">
 <div id="newsCarousel" class="carousel slide" data-ride="carousel">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
@@ -33,12 +33,12 @@
 		</div>
 		<div class="item">
 			<div class="carousel-header">
-				<h3 class="news-header">Curiosity Mars Rover Crosses Rugged Plateau</h3>
+				<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 				</div>
-				<p class="news-content">April 27, 2016</p>
-				<p class="news-content">NASA's Curiosity Mars rover has nearly finished crossing a stretch of the most rugged and difficult-to-navigate terrain encountered during the mission's 44 months on Mars.</p>
+				<p class="news-content">{{ news.newsArticleDate }}</p>
+				<p class="news-content">{{ news.newsArticleSynopsis }}</p>
 				<div class="news-content">
-					<a href="http://mars.jpl.nasa.gov/msl/news/whatsnew/index.cfm?FuseAction=ShowNews&NewsID=1908" target="_blank">Read more&hellip;</a>
+					<a href=" {{ news.newsArticleUrl }} " target="_blank">Read more&hellip;</a>
 			</div>
 		</div>
 

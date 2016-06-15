@@ -4,11 +4,17 @@ app.service("NewsService", function($http, NEWS_ENDPOINT) {
 		return(NEWS_ENDPOINT);
 	}
 	function getUrlForId(newsArticleId) {
-		return(getUrl() + newsArticleId);
+		return($http.get(getUrl() + newsArticleId));
 	}
 	function getUrlForUrl(newsArticleUrl) {
-		return(getUrl() + newsArticleUrl);
+		return(http.get(getUrl() + newsArticleUrl));
 	}
+
+	function top25() {
+		return($http.get(getUrl()) + "?top25");
+	}
+
+
 	this.all = function() {
 		return($http.get(getUrl()));
 	};
