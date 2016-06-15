@@ -281,7 +281,24 @@
 			</div>
 		</div>
 
-		
+		<div class="item">
+			<div style="background:url(../public_html/image/phobos-deimos-comparison.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>A Comparison of Phobos, Mars' Moon, and Earth's Moon</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/mars-moon-phobos-solar-eclipse.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Phobos Causes a Solar Eclipse of Mars</p>
+				</div>
+			</div>
+		</div>
+
 
 
 
