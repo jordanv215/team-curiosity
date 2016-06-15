@@ -178,15 +178,6 @@
 			</div>
 		</div>
 
-		<div class="item">
-			<div style="background:url(../public_html/image/mars-drill.jpg) center center;
-          background-size:cover;" class="slider-size">
-				<div class="carousel-caption">
-					<p>Curiosity Begins Drilling</p>
-				</div>
-			</div>
-		</div>
-
 
 		<div class="item">
 			<div style="background:url(../public_html/image/iron-meteroite.jpg) center center;
@@ -215,6 +206,84 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/panorama.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curiosity Takes a Panorama</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/parachute.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Parachute Used for Curiosity Landing</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/pathway.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curiosity's Path</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/labels.jpg) center center;
+          background-size:cover;" class="slider-size">
+			</div>
+		</div>
+
+
+		<div class="item">
+			<div style="background:url(../public_html/image/rock-garden.jpg) center center;
+          background-size:cover;" class="slider-size">
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/mars-flower.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>A Transparent Rock Feature Dubbed a "Flower"</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/earth-moon.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<p>Curiosity Takes a Sky Shot Displaying Earth and Our Moon from the Surface of Mars</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/martian-spoon.jpg) center center;
+          background-size:cover;" class="slider-size">
+				<div class="carousel-caption">
+					<h3>A Spoon on Mars?</h3>
+					<p>Nope. Just a rock.</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="item">
+			<div style="background:url(../public_html/image/mars-explorer-gif.gif) center center;
+          background-size:cover;" class="slider-size">
+			</div>
+		</div>
+
+		
+
+
 
 
 
