@@ -485,35 +485,33 @@ class NewsArticle implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $newsArticleUrl News Article URL to search for
-	 * @return \SplFixedArray SplFixedArray of NewsArticles found
+	 * @return NewsArticle if found or null if none
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getNewsArticleByNewsArticleUrl(\PDO $pdo, string $newsArticleUrl) {
 
 		// create query template
-		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleUrl LIKE :newsArticleUrl";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleUrl = :newsArticleUrl";
 		$statement = $pdo->prepare($query);
-
+		$newsArticleUrl = trim($newsArticleUrl);
 		// bind the newsArticleUrl to the place holder in the template
-		$newsArticleUrl = "%$newsArticleUrl%";
 		$parameters = array("newsArticleUrl" => $newsArticleUrl);
 		$statement->execute($parameters);
-		// build an array of NewsArticles
-		$newsArticles = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
+
+		try {
+			$newsArticle = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
 				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
-				$newsArticles[$newsArticles->key()] = $newsArticle;
-				$newsArticles->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 
-		return ($newsArticles);
+		return ($newsArticle);
 
 	}
 	

@@ -18,7 +18,7 @@ public function getLastRan() {
 		}
 		public function NasaCall() {
 			$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
-			$apiKey = ""; // how is this accessed again?
+			$apiKey =;
 			$camera = "";
 			$earthDate = "";
 			$sol = "";

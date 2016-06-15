@@ -44,7 +44,7 @@ $username = "redrovr";
 
 if(isset($_GET["error"]))
 {
-	//error occured
+	//error occurred
 	echo $_GET["error"];
 }
 else

@@ -5,7 +5,6 @@ require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity;
-use Edu\Cnm\TeamCuriosity\ValidateDate;
 
 
 /**
@@ -72,17 +71,11 @@ try {
 				$newsArticleDate = $item->pubDate;
 				$newsArticleSynopsis = $item->children("media", true)->description;
 				$newsArticleUrl = $item->link;
-
-				echo $newsArticleTitle, "<br>";
-				echo $newsArticleDate, "<br>";
-				echo $newsArticleSynopsis, "<br>";
-				echo $newsArticleUrl;
-								//$newsArticleSynopsis = ((string) trim($newsArticleSynopsis));
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string) trim($newsArticleDate));
 				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
 
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
-				if(empty($news) === true) {
+				if($news === null) {
 					$newsArticle->insert($pdo);
 
 				}
