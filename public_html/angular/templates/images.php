@@ -32,7 +32,6 @@
 			<!--img src="../public_html/image/above-shot.jpg" alt="Above-Mars"-->
 			<div style="background:url(../public_html/image/above-shot.jpg) center center;
 			background-size:cover;" class="slider-size" onclick="slideBox('slide-1');" id="slide-1">
-          background-size:cover;" class="slider-size">
 			<div class="carousel-caption">
 				<h3>Orbit Shot</h3>
 				<p>Rover tracks at "the Kimberley" -April 2014</p>
@@ -337,6 +336,9 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
+					<a href="https://www.reddit.com/" target="_blank"><i class="fa fa-reddit-alien fa-2x"></i></a>
+					<a href="#" target="_blank"><i class="fa fa-heart fa-2x"></i></a>
+					<a href="#" target="_blank"><i class="fa fa-commenting fa-2x"></i></a>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
 				</div>

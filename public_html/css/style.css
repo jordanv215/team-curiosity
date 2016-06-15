@@ -525,6 +525,20 @@ footer {
 	font-size: 3rem;
 	color: white;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-
 }
+
+
+.fa-heart {
+	color: pink;
+}
+
+
+.fa-reddit-alien {
+	color: deepskyblue;
+}
+
+.fa-commenting {
+	color: black;
+}
+
 
