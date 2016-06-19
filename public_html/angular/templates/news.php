@@ -21,14 +21,14 @@
 
 	<!-- Wrapper for slides -->
 	<div class="carousel-inner" role="listbox" >
-		<div class="item" ng-class="{active: $index == 0}" ng-repeat="newsArticle in news">
+		<div class="item" ng-class="{active: $index == 0}" ng-repeat="news in news">
 			<div class="carousel-header">
-				<h3 class="news-header">{{ newsArticle.newsArticleTitle }}</h3>
+				<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 				</div>
-				<p class="news-content">{{ newsArticle.newsArticleDate | date }}</p>
-				<p class="news-content">{{ newsArticle.newsArticleSynopsis }}</p>
+				<p class="news-content">{{ news.newsArticleDate | date }}</p>
+				<p class="news-content">{{ news.newsArticleSynopsis }}</p>
 				<div class="news-content">
-					<a href="{{ newsArticle.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
+					<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 				</div>
 			</div>
 		</div>
