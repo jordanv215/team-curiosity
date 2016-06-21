@@ -94,7 +94,7 @@
 	<!--------// News carousel: right on desktop //-------------->
 	<!-- Wrapper for slides -->
 
-	<div class="col-md-6" ngController="newsController">
+	<div class="col-md-6" ngController="homeController">
 		<div id="newsCarouselSplash" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
