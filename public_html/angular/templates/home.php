@@ -39,7 +39,6 @@
 <div class="row carousel-row">
 
 <!------// Image carousel: left on desktop //------->
-
 <div class="col-md-6">
 	<div id="imageCarouselSplash" class="carousel slide" data-ride="carousel">
 		<!-- Indicators -->
@@ -95,23 +94,23 @@
 	<!--------// News carousel: right on desktop //-------------->
 	<!-- Wrapper for slides -->
 
-	<div class="col-md-6" ngController="homeController">
+	<div class="col-md-6" ngController="newsController">
 		<div id="newsCarouselSplash" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
-				<li data-target="#newsCarouselSplash" data-slide-to="$index" class="active" ng-repeat="newsArticle in news"></li>
+				<li data-target="#newsCarouselSplash" data-slide-to="$index" class="active"></li>
 			</ol>
 
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
-				<div class="item" ng-class="{active: $index == 0}" ng-repeat="newsArticle in news">
+				<div class="item" ng-class="{active: $index == 0}" ng-repeat="news in news">
 					<div class="carousel-header">
-						<h3 class="news-header">{{ newsArticle.newsArticleTitle }}</h3>
+						<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 						</div>
-						<p class="news-content">{{ newsArticle.newsArticleDate | date }}</p>
-						<p class="news-content">{{ newsArticle.newsArticleSynopsis }}</p>
+						<p class="news-content">{{ news.newsArticleDate | date }}</p>
+						<p class="news-content">{{ news.newsArticleSynopsis }}</p>
 						<div class="news-content">
-							<a href="{{ newsArticle.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
+							<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 						</div>
 					</div>
 
@@ -124,8 +123,7 @@
 				<a class="right carousel-control" href="#newsCarouselSplash" role="button" data-slide="next">
 					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
-				</a> 
-
+				</a>
 		</div>
 	</div>
 </div>
