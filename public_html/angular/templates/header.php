@@ -44,7 +44,7 @@
 									</div>
 
 									<div class="form-group">
-										<button type="button" class="btn btn-sm btn-info" ng-click="search()">Search</button>
+										<button type="button" class="btn btn-sm btn-info" ng-click="open()">Search</button>
 									</div>
 								</form>
 							</div>

@@ -42,31 +42,19 @@
 	<body>
 
 
-		<div id="myCarousel" class="carousel slide" data-ride="carousel">
-			<!-- Indicators -->
-			<ol class="carousel-indicators">
-				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			</ol>
-
-			<!-- Wrapper for slides -->
-			<div class="carousel-inner" role="listbox">
-				<div class="item active">
-					<div class="carousel-header">
-						<h3>{{newsArticle.title}}</h3>
-						<p>{{newsArticle.description}}</p>
-					</div>
-				</div>
-
-				<!-- Left and right controls -->
-				<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-					<span class="sr-only">Previous</span>
-				</a>
-				<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-					<span class="sr-only">Next</span>
-				</a>
+		<div ng-controller="newsController">
+			<div class="item" style="height: 300px">
+				<uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+					<uib-slide ng-class="{active: $index == 0}" ng-repeat="news in news">
+						<div class="carousel-header">
+							<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
+						</div>
+						<p class="news-content">{{ news.newsArticleDate | date }}</p>
+						<p class="news-content">{{ news.newsArticleSynopsis }}</p>
+						<div class="news-content">
+							<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
+						</div>
+					</uib-slide>
+				</uib-carousel>
 			</div>
 		</div>
-	</body>
-</html>

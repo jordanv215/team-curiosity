@@ -41,30 +41,91 @@
 
 	<body>
 
-		<div id="myCarousel" class="carousel slide" data-ride="carousel">
-	<!-- Indicators -->
-	<ol class="carousel-indicators">
-		<li data-target="#imageCarousel" data-slide-to="0" class="active"></li>
-			</ol>
-
-	<!-- Wrapper for slides -->
-	<div class="carousel-inner" role="listbox">
-		<div class="item active">
-			<img src="../public_html/image/mars.png" alt="Mars">
+		<div ng-controller="CarouselDemoCtrl">
+			<div style="height: 305px">
+				<uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+					<uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+						<img ng-src="{{slide.image}}" style="margin:auto;">
+					</uib-slide>
+				</uib-carousel>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<button type="button" class="btn btn-info" ng-click="addSlide()">Add Slide</button>
+					<button type="button" class="btn btn-info" ng-click="randomize()">Randomize slides</button>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="noWrapSlides">
+							Disable Slide Looping
+						</label>
+					</div>
+				</div>
+				<div class="col-md-6">
+					Interval, in milliseconds: <input type="number" class="form-control" ng-model="myInterval">
+					<br />Enter a negative number or 0 to stop the interval.
+				</div>
+			</div>
 		</div>
-
-	</div>
-
-	<!-- Left and right controls -->
-	<a class="left carousel-control" href="#imageCarousel" role="button" data-slide="prev">
-		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
-	</a>
-	<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
-	</a>
-	</div>
-
 	</body>
 </html>
+
+<!-- This is controller for Angular carousel for images -->
+
+
+angular.module('ui.bootstrap.demo', ['ngAnimate', 'ui.bootstrap']);
+angular.module('ui.bootstrap.demo').controller('CarouselDemoCtrl', function ($scope) {
+$scope.myInterval = 5000;
+$scope.noWrapSlides = false;
+$scope.active = 0;
+var slides = $scope.slides = [];
+var currIndex = 0;
+
+$scope.addSlide = function() {
+var newWidth = 600 + slides.length + 1;
+slides.push({
+image: 'http://lorempixel.com/' + newWidth + '/300',
+id: currIndex++
+});
+};
+
+$scope.randomize = function() {
+var indexes = generateIndexesArray();
+assignNewIndexesToSlides(indexes);
+};
+
+for (var i = 0; i < 4; i++) {
+$scope.addSlide();
+}
+
+// Randomize logic below
+
+function assignNewIndexesToSlides(indexes) {
+for (var i = 0, l = slides.length; i < l; i++) {
+slides[i].id = indexes.pop();
+}
+}
+
+function generateIndexesArray() {
+var indexes = [];
+for (var i = 0; i < currIndex; ++i) {
+indexes[i] = i;
+}
+return shuffle(indexes);
+}
+
+// http://stackoverflow.com/questions/962802#962890
+function shuffle(array) {
+var tmp, current, top = array.length;
+
+if (top) {
+while (--top) {
+current = Math.floor(Math.random() * (top + 1));
+tmp = array[current];
+array[current] = array[top];
+array[top] = tmp;
+}
+}
+
+return array;
+}
+});
