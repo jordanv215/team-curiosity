@@ -36,9 +36,22 @@ if(isset($_GET["top25"]) === true) {
 			// to get most recent items, we need the highest sol value available
 			// initial API call is only for this purpose
 			// please, let there be a better way to do this...
-			$queryUrl = "$baseUrl" . "?sol=0" . "&api_key=" . "$apiKey";
-			$queryResult = json_decode($queryUrl);
+			$query = file_get_contents("$baseUrl" . "?sol=0" . "&api_key=" . "$apiKey");
+			$queryResult = json_decode($query, true);
 			$maxSol = $queryResult["photos"][0]->rover->max_sol;
+			
+			// now we make the actual call to retrieve the most recent images
+			$call = file_get_contents("$baseUrl" . "?sol=" . "$maxSol" . "&api_key=" . "$apiKey");
+			$callResult = json_decode($call, true);
+
+			foreach($callResult->photos->item as $item) {
+				$imageSol = $item["sol"];
+				$imageCamera = $item["camera"]["name"];
+				$imageEarthDate = $item["earth_date"];
+				$imageUrl = $item["img_src"];
+				$imageTitle = preg_match($item["img_src"], ); // regex here to grab filename string & image "size group"
+				$imageType = substr($item["img_src"], -3);
+			}
 
 		}
 
