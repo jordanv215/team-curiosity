@@ -1,13 +1,13 @@
-app.controller("sresultController", ["$scope", "SresultService", function($scope, sresultService) {
+app.controller("resultController", ["$scope", "resultService", function($scope, resultService) {
 	$scope.myInterval = 5000;
 	$scope.noWrapSlides = false;
 	$scope.active = 0;
-	var sresults = $scope.sresults = [];
+	var results = $scope.results = [];
 	var currIndex = 0;
 
-	$scope.addSresult= function() {
+	$scope.addResult= function() {
 		var newWidth = 600 + sresults.length + 1;
-		sresults.push({
+		results.push({
 			image: 'http://lorempixel.com/' + newWidth + '/300',
 			id: currIndex++
 		});
@@ -15,11 +15,11 @@ app.controller("sresultController", ["$scope", "SresultService", function($scope
 
 	$scope.randomize = function() {
 		var indexes = generateIndexesArray();
-		assignNewIndexesToSresults(indexes);
+		assignNewIndexesToResults(indexes);
 	};
 
 	for (var i = 0; i < 4; i++) {
-		$scope.addSresult();
+		$scope.addResult();
 	}
 
 

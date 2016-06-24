@@ -44,7 +44,7 @@
 									</div>
 
 									<div class="form-group">
-										<button type="button" class="btn btn-sm btn-info" ng-click="open1()"><a href="sresult.php" target="_blank">Search by date</a></button>
+										<button type="button" class="btn btn-sm btn-info" data-target="result" ng-click="open1()"><a href="result">Search by date</a></button>
 									</div>
 								</form>
 							</div>

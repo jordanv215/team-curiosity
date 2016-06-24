@@ -26,9 +26,9 @@ app.config(function($routeProvider, $locationProvider) {
 			templateUrl : 'angular/templates/about.php'
 		})
 		// route for the sresult page
-		.when('/sresult', {
-			controller : 'sresultController',
-			templateUrl : 'angular/templates/sresult.php'
+		.when('/result', {
+			controller : 'resultController',
+			templateUrl : 'angular/templates/result.php'
 		})
 
 		// otherwise redirect to home
