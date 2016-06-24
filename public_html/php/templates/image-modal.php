@@ -18,7 +18,7 @@
 <div ng-controller="ModalDemoCtrl">
 	<script type="text/ng-template" id="myModalContent.html">
 		<div class="modal-header">
-			<h3 class="modal-title">I'm a modal!</h3>
+			<h3 class="modal-title">Rate or Comment</h3>
 		</div>
 		<div class="modal-body">
 			<ul>
@@ -34,7 +34,7 @@
 	</script>
 
 
-	<button type="button" class="btn btn-default" ng-click="open('lg')">Large modal</button>
+	<button type="button" class="btn btn-default" ng-click="open('lg')">Login to rate or comment</button>
 	<div ng-show="selected">Selection from a modal: {{ selected }}</div>
 </div>
 
@@ -42,7 +42,7 @@
 angular.module('ui.bootstrap.demo', ['ngAnimate', 'ui.bootstrap']);
 angular.module('ui.bootstrap.demo').controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
 
-$scope.items = ['item1', 'item2', 'item3'];
+$scope.items = ['Login with Facebook', 'Login with Google', 'Login with Instragram', 'Login with Reddit'];
 
 $scope.animationsEnabled = true;
 
