@@ -30,6 +30,7 @@
 					<div class="news-content">
 						<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 					</div>
+					<div class="text-center"><a href="news-modal.php">Rate or Comment</a></div>
 				</div>
 			</div>
 
