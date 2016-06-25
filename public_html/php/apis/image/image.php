@@ -3,13 +3,17 @@
 // this will be run upon loading of the Image view? Home view? wat? location TBD based on speed of execution
 
 
+
+$reply = new stdClass();
+$reply->status = 200;
+$reply->data = null;
+
 // if the parameter exists, proceed
 if(isset($_GET["top25"]) === true) {
 
 
 	// check when NASA api was last called
-	public
-	function getLastRan() {
+function getLastRan() {
 		$fh = fopen('php/last-ran.txt', 'r+');
 		$time = fgets($fh);
 		fclose($fh);
@@ -17,7 +21,7 @@ if(isset($_GET["top25"]) === true) {
 	}
 
 	// proceed only if API not called within last hour (to avoid unnecessary calls & optimize retrieval speed)
-	if(time() - $this->time > 3600) {
+	if(time() - ($this->time) > 3600) {
 		$timeRan = time();
 
 		// mark the time that the API call is being run
@@ -28,7 +32,6 @@ if(isset($_GET["top25"]) === true) {
 		}
 
 		// grab json with last 25 items (NASA default/maximum per page)
-		public
 		function NasaCall() {
 			$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
 			$config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
@@ -86,6 +89,13 @@ if(isset($_GET["top25"]) === true) {
 								$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, ($savePath . $imageTitle), $imageSol, $imageTitle, $imageType, $imageUrl);
 								$entry = $this->insert($entry);
 							}
+						} catch(Exception $exception) {
+							$reply->status = $exception->getCode();
+							$reply->message = $exception->getMessage();
+							$reply->trace = $exception->getTraceAsString();
+						} catch(TypeError $typeError) {
+							$reply->status = $typeError->getCode();
+							$reply->message = $typeError->getMessage();
 						}
 
 				} else continue;
