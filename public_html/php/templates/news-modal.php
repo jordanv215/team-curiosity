@@ -1,8 +1,8 @@
 <!-- ui.bootstrap.modal -->
-<div ng-controller="ModalDemoCtrl">
+<div ng-controller="NewsController">
 	<script type="text/ng-template" id="myModalContent.html">
 		<div class="modal-header">
-			<h3 class="modal-title">Rate or Comment</h3>
+			<h3 class="modal-title">Comment or Favorite</h3>
 		</div>
 		<div class="modal-body">
 			<ul>
@@ -18,7 +18,7 @@
 	</script>
 
 
-	<button type="button" class="btn btn-default" ng-click="open('lg')">Login to rate or comment</button>
+	<button type="button" class="btn btn-default" ng-click="open('lg')">Login to comment or favorite</button>
 	<div ng-show="selected">Selection from a modal: {{ selected }}</div>
 </div>
 

@@ -54,7 +54,68 @@
 						<div class="news-content">
 							<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 						</div>
+						<div class="text-center"><a href="news-modal.php">Click to comment or favorite</a></div>
+			</div>
 					</uib-slide>
 				</uib-carousel>
 			</div>
 		</div>
+
+		<!-- This is controller for Angular carousel for news -->
+
+
+		app.controller("newsController", ["$scope", "NewsService", function($scope, NewsService) {
+		$scope.myInterval = 5000;
+		$scope.noWrapSlides = false;
+		$scope.active = 0;
+		var news = $scope.news = [];
+		var currIndex = 0;
+
+		$scope.addNew = function() {
+		var newWidth = 600 + news.length + 1;
+		news.push({
+		id: currIndex++
+		});
+		};
+
+		$scope.randomize = function() {
+		var indexes = generateIndexesArray();
+		assignNewIndexesToNews(indexes);
+		};
+
+		for (var i = 0; i < 25; i++) {
+		$scope.addNew();
+		}
+
+		// Randomize logic below
+
+		function assignNewIndexesToNews(indexes) {
+		for (var i = 0, l = news.length; i < l; i++) {
+		news[i].id = indexes.pop();
+		}
+		}
+
+		function generateIndexesArray() {
+		var indexes = [];
+		for (var i = 0; i < currIndex; ++i) {
+		indexes[i] = i;
+		}
+		return shuffle(indexes);
+		}
+
+		// http://stackoverflow.com/questions/962802#962890
+		function shuffle(array) {
+		var tmp, current, top = array.length;
+
+		if (top) {
+		while (--top) {
+		current = Math.floor(Math.random() * (top + 1));
+		tmp = array[current];
+		array[current] = array[top];
+		array[top] = tmp;
+		}
+		}
+
+		return array;
+		}
+		});

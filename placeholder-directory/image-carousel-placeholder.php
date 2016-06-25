@@ -72,8 +72,7 @@
 <!-- This is controller for Angular carousel for images -->
 
 
-angular.module('ui.bootstrap.demo', ['ngAnimate', 'ui.bootstrap']);
-angular.module('ui.bootstrap.demo').controller('CarouselDemoCtrl', function ($scope) {
+app.controller("imagesController", ["$scope", "ImagesService", function($scope, ImagesService) {
 $scope.myInterval = 5000;
 $scope.noWrapSlides = false;
 $scope.active = 0;

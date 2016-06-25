@@ -72,7 +72,7 @@
 		</div>
 
 <!--begin picture adding for demo-->
-		<div class="item">
+		<div class="item" ng-click="open('lg')">
 			<div style="background:url(../public_html/image/ciriosity-orbit-tracks.jpg) center center;
           background-size:cover;" class="slider-size">
 				<div class="carousel-caption">
