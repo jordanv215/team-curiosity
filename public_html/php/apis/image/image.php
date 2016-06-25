@@ -49,7 +49,9 @@ if(isset($_GET["top25"]) === true) {
 				$imageCamera = $item["camera"]["name"];
 				$imageEarthDate = $item["earth_date"];
 				$imageUrl = $item["img_src"];
-				$imageTitle = preg_match($item["img_src"], ); // regex here to grab filename string & image "size group"
+				$pattern = '/_(F\w+)_\./';
+				$str = preg_match($pattern, $item["img_src"]);
+				$imageTitle = print_r($str[0]);
 				$imageType = substr($item["img_src"], -3);
 			}
 
