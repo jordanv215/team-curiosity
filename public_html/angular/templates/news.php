@@ -9,9 +9,7 @@
 				</div>
 	<hr style="clear:both;" id="heading-hr"/>
 	</div>
-
-<!--<header ng-include="/news-full.php">-->
-<!--</header>-->
+	
 	<div ng-controller="newsController">
 		<div style="height: 300px">
 			<uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">

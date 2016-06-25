@@ -6,6 +6,7 @@
 // if the parameter exists, proceed
 if(isset($_GET["top25"]) === true) {
 
+
 	// check when NASA api was last called
 	public
 	function getLastRan() {
@@ -16,7 +17,7 @@ if(isset($_GET["top25"]) === true) {
 	}
 
 	// proceed only if API not called within last hour (to avoid unnecessary calls & optimize retrieval speed)
-	if(time() - $this->time > 60) {
+	if(time() - $this->time > 3600) {
 		$timeRan = time();
 
 		// mark the time that the API call is being run
@@ -32,6 +33,7 @@ if(isset($_GET["top25"]) === true) {
 			$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
 			$config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
 			$apiKey = $config["authkeys"]->nasa->secretKey;
+			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
 
 			// to get most recent items, we need the highest sol value available
 			// initial API call is only for this purpose
@@ -45,68 +47,54 @@ if(isset($_GET["top25"]) === true) {
 			$callResult = json_decode($call, true);
 
 			foreach($callResult->photos->item as $item) {
-				$imageSol = $item["sol"];
-				$imageCamera = $item["camera"]["name"];
-				$imageEarthDate = $item["earth_date"];
 				$imageUrl = $item["img_src"];
-				$pattern = '/_(F\w+)_\./';
-				$str = preg_match($pattern, $item["img_src"]);
-				$ext = substr($item["img_src"], -3);
-				if($ext === "JPG" || $ext === "jpg" || $ext === "JPEG" || $ext === "jpeg") {
-					$imageType = "image/jpeg";
-				} else continue;
-				$imageTitle = print_r($str[0]);
-				if($imageTitle !== null) {
-					try {
-						$w = 800;
-						header('Content-type: image/jpeg');
-						list($width, $height) = getimagesize($imageUrl);
-						$prop = $w / $width;
-						$newWidth = $width * $prop;
-						$newHeight = $height * $prop;
+				// check if image already exists locally
+				$duplicate = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
+				if($duplicate === null) {
+					// grab data fields
+					$imageSol = $item["sol"];
+					$imageCamera = $item["camera"]["name"];
+					$imageEarthDate = $item["earth_date"];
+					$pattern = '/_(F\w+)_\./';
+					$str = preg_match($pattern, $item["img_src"]);
+					$ext = substr($item["img_src"], -3);
+					if($ext === "JPG" || $ext === "jpg" || $ext === "JPEG" || $ext === "jpeg") {
+						$imageType = "image/jpeg";
+					} else continue;
+					$imageTitle = print_r($str[0]);
+					if($imageTitle !== null) {
+						try {
+							// resample image @ width: 800px & quality: 90%
+							$w = 800;
+							header('Content-type: image/jpeg');
+							list($width, $height) = getimagesize($imageUrl);
+							$prop = $w / $width;
+							$newWidth = $width * $prop;
+							$newHeight = $height * $prop;
 
-						$image_p = imagecreatetruecolor($newWidth, $newHeight);
-						$image = imagecreatefromjpeg($imageUrl);
-						imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+							$image_p = imagecreatetruecolor($newWidth, $newHeight);
+							$image = imagecreatefromjpeg($imageUrl);
+							imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-						imagejpeg($image_p, null, 90);
+							imagejpeg($image_p, null, 90);
 
-						if($_FILES['image']['name']) {
-							$savePath = "/var/www/html/public_html/red-rover";
-							move_uploaded_file($_FILES['image']['tmp_name'], $savePath . $imageTitle);
-							$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, ($savePath . $imageTitle), $imageSol, $imageTitle, $imageType, $imageUrl);
-							$entry = $this->insert($entry);
+							if($_FILES['image']['name']) {
+								// store file on disk
+								$savePath = "/var/www/html/public_html/red-rover";
+								move_uploaded_file($_FILES['image']['tmp_name'], $savePath . $imageTitle);
+								// add to database
+								$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, ($savePath . $imageTitle), $imageSol, $imageTitle, $imageType, $imageUrl);
+								$entry = $this->insert($entry);
+							}
 						}
-					}
 
 				} else continue;
 
-			}
-
-		}
-
-		$image = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
-	} else {
-		public
-		function getImages(\PDO $pdo, int $imageId) {
-			$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image WHERE imageId > MAX(imageId) - 25";
-			$statement = $pdo->prepare($query);
-			$parameters = array("imageId" => $imageId);
-			$statement->execute($parameters);
-
-			$images = new \SplFixedArray($statement->rowCount());
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
-				try {
-					$image = new Edu\Cnm\TeamCuriosity\Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
-					$images[$images->key()] = $image;
-					$images->next();
-				} catch(\Exception $exception) {
-					// if the row couldn't be converted, rethrow it
-					throw(new \PDOException($exception->getMessage(), 0, $exception));
 				}
 			}
-			return ($images);
 		}
+
+	} else {
+
 	}
 }

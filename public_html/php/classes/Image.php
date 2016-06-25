@@ -530,7 +530,7 @@ class Image implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"],\DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
 				$images[$images->key()] = $image;
 				$images->next();
 			} catch(\Exception $exception) {
@@ -732,7 +732,7 @@ class Image implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"],\DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
 				$images[$images->key()] = $image;
 				$images->next();
 			} catch(\Exception $exception) {
@@ -743,14 +743,14 @@ class Image implements \JsonSerializable {
 		return ($images);
 	}
 
-		/**
-		 * gets all Images
-		 *
-		 * @param \PDO $pdo
-		 * @return \SplFixedArray SplFixedArray of Images found
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError when variables are not the correct data type
-		 **/
+	/**
+	 * gets all Images
+	 *
+	 * @param \PDO $pdo
+	 * @return \SplFixedArray SplFixedArray of Images found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
 
 	public static function getAllImages(\PDO $pdo) {
 		// create query template
@@ -774,6 +774,27 @@ class Image implements \JsonSerializable {
 		return ($images);
 	}
 
+	public static
+	function getImages(\PDO $pdo) {
+		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image ORDER BY imageEarthDate DESC LIMIT 25";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		$images = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
+				$images[$images->key()] = $image;
+				$images->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($images);
+	}
+
 	/**
 	 * format the state variables for JSON serialization
 	 *
@@ -782,7 +803,7 @@ class Image implements \JsonSerializable {
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
 		$fields["imageEarthDate"] = intval($this->imageEarthDate->format("U")) * 1000;
-		return($fields);
+		return ($fields);
 	}
 }
 
