@@ -13,9 +13,9 @@
 <!--<header ng-include="/news-full.php">-->
 <!--</header>-->
 	<div ng-controller="newsController">
-		<div class="item" style="height: 300px">
-			<uib-carousel  interval="myInterval" no-wrap="noWrapNews">
-				<uib-slide ng-repeat="news in news" index=["0"]>
+		<div style="height: 300px">
+			<uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+				<uib-slide ng-repeat="news in news" index="active">
 					<div class="carousel-header">
 						<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 					</div>
@@ -25,7 +25,7 @@
 						<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 					</div>
 					<div class="text-center"><a href="news-modal.php">Click to comment or favorite</a></div>
-		</div>
+
 		</uib-slide>
 		</uib-carousel>
 	</div>
