@@ -14,8 +14,8 @@
 <!--</header>-->
 	<div ng-controller="newsController">
 		<div class="item" style="height: 300px">
-			<uib-carousel active="active" interval="myInterval" no-wrap="noWrapNews">
-				<uib-slide ng-repeat="news in news track by news.id" index="news.id">
+			<uib-carousel  interval="myInterval" no-wrap="noWrapNews">
+				<uib-slide ng-repeat="news in news" index=["0"]>
 					<div class="carousel-header">
 						<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 					</div>
