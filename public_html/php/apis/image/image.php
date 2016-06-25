@@ -39,7 +39,7 @@ if(isset($_GET["top25"]) === true) {
 			$query = file_get_contents("$baseUrl" . "?sol=0" . "&api_key=" . "$apiKey");
 			$queryResult = json_decode($query, true);
 			$maxSol = $queryResult["photos"][0]->rover->max_sol;
-			
+
 			// now we make the actual call to retrieve the most recent images
 			$call = file_get_contents("$baseUrl" . "?sol=" . "$maxSol" . "&api_key=" . "$apiKey");
 			$callResult = json_decode($call, true);
@@ -52,14 +52,35 @@ if(isset($_GET["top25"]) === true) {
 				$pattern = '/_(F\w+)_\./';
 				$str = preg_match($pattern, $item["img_src"]);
 				$ext = substr($item["img_src"], -3);
-					if($ext === "JPG" || $ext === "jpg" || $ext=== "JPEG" || $ext === "jpeg") {
-						$imageType = "image/jpeg";
-					}
+				if($ext === "JPG" || $ext === "jpg" || $ext === "JPEG" || $ext === "jpeg") {
+					$imageType = "image/jpeg";
+				} else continue;
 				$imageTitle = print_r($str[0]);
 				if($imageTitle !== null) {
-					$imageFile = 
-					$image = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, null, $imageSol, $imageTitle, $this->imageType, $imageUrl);
-				}
+					try {
+						$w = 800;
+						header('Content-type: image/jpeg');
+						list($width, $height) = getimagesize($imageUrl);
+						$prop = $w / $width;
+						$newWidth = $width * $prop;
+						$newHeight = $height * $prop;
+
+						$image_p = imagecreatetruecolor($newWidth, $newHeight);
+						$image = imagecreatefromjpeg($imageUrl);
+						imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+						imagejpeg($image_p, null, 90);
+
+						if($_FILES['image']['name']) {
+							$savePath = "/var/www/html/public_html/red-rover";
+							move_uploaded_file($_FILES['image']['tmp_name'], $savePath . $imageTitle);
+							$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, ($savePath . $imageTitle), $imageSol, $imageTitle, $imageType, $imageUrl);
+							$entry = $this->insert($entry);
+						}
+					}
+
+				} else continue;
+
 			}
 
 		}
