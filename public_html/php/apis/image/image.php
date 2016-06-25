@@ -51,8 +51,15 @@ if(isset($_GET["top25"]) === true) {
 				$imageUrl = $item["img_src"];
 				$pattern = '/_(F\w+)_\./';
 				$str = preg_match($pattern, $item["img_src"]);
+				$ext = substr($item["img_src"], -3);
+					if($ext === "JPG" || $ext === "jpg" || $ext=== "JPEG" || $ext === "jpeg") {
+						$imageType = "image/jpeg";
+					}
 				$imageTitle = print_r($str[0]);
-				$imageType = substr($item["img_src"], -3);
+				if($imageTitle !== null) {
+					$imageFile = 
+					$image = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, null, $imageSol, $imageTitle, $this->imageType, $imageUrl);
+				}
 			}
 
 		}
