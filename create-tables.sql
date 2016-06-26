@@ -32,7 +32,7 @@ CREATE TABLE Image (
 	imageCamera VARCHAR(64) NOT NULL,
 	imageDescription VARCHAR(5000),
 	imageEarthDate DATETIME NOT NULL,
-	imagePath VARCHAR(256),
+	imagePath VARCHAR(256) NOT NULL,
 	imageSol SMALLINT UNSIGNED,
 	imageTitle VARCHAR(128) NOT NULL,
 	imageType VARCHAR(10) NOT NULL,

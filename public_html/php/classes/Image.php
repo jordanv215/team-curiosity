@@ -774,6 +774,13 @@ class Image implements \JsonSerializable {
 		return ($images);
 	}
 
+	/**
+	 * gets 25 most recent images
+	 * @param \PDO $pdo
+	 * @return \SplFixedArray of Images found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
 	public static
 	function getImages(\PDO $pdo) {
 		$query = "SELECT imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl FROM Image ORDER BY imageEarthDate DESC LIMIT 25";
@@ -793,6 +800,18 @@ class Image implements \JsonSerializable {
 			}
 		}
 		return ($images);
+	}
+
+	/**
+	 * gets a random image from the database
+	 *
+	 * @param \PDO $pdo
+	 * @return Image
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+	public static function getRandomImage(\PDO $pdo) {
+		
 	}
 
 	/**

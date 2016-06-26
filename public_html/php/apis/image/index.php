@@ -11,6 +11,7 @@ use Edu\Cnm\TeamCuriosity\Image;
  * REST api for the Image class
  *
  * @author Jordan Vinson <jvinson3@cnm.edu>
+ * @author Kai Garrott <kai@kaigarrott.com>
  **/
 
 //verify the session, start if not active
@@ -99,47 +100,49 @@ try {
 							if($duplicate === null) {
 								// grab data fields
 								$imageSol = $item["sol"];
-								$cameras = $item["camera"]["name"];
-								if (strpos($cameras, ("MAHLI" || "FHAZ" || "RHAZ" || "NAVCAM"))){
-								$imageEarthDate = $item["earth_date"];
-								$pattern = '/_(F\w+)_\./';
-								$str = preg_match($pattern, $item["img_src"]);
-								$ext = substr($item["img_src"], -3);
-								if($ext === "JPG" || $ext === "jpg" || $ext === "JPEG" || $ext === "jpeg") {
-									$imageType = "image/jpeg";
-								} else continue;
-								$imageTitle = print_r($str[0]);
-								if($imageTitle !== null) {
-									// resample image @ width: 800px & quality: 90%
-									$w = 800;
-									header('Content-type: image/jpeg');
-									list($width, $height) = getimagesize($imageUrl);
-									$prop = $w / $width;
-									$newWidth = $width * $prop;
-									$newHeight = $height * $prop;
+								$camera = $item["camera"]["name"];
+								if(strpos($camera, ("MAHLI" || "FHAZ" || "RHAZ" || "NAVCAM"))) {
+									$imageCamera = $camera;
+									$imageEarthDate = $item["earth_date"];
+									$imageEarthDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($imageEarthDate));
+									$pattern = '/_(F\w+)_\./';
+									$str = preg_match($pattern, $item["img_src"]);
+									$ext = substr($item["img_src"], -4);
+									if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg") {
+										$imageType = "image/jpeg";
+									} else continue;
+									$imageTitle = print_r($str[0]);
+									if($imageTitle !== null) {
+										// resample image @ width: 800px & quality: 90%
+										$w = 800;
+										header('Content-type: image/jpeg');
+										list($width, $height) = getimagesize($imageUrl);
+										$prop = $w / $width;
+										$newWidth = $width * $prop;
+										$newHeight = $height * $prop;
 
-									$image_p = imagecreatetruecolor($newWidth, $newHeight);
-									$image = imagecreatefromjpeg($imageUrl);
-									imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+										$image_p = imagecreatetruecolor($newWidth, $newHeight);
+										$image = imagecreatefromjpeg($imageUrl);
+										imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-									imagejpeg($image_p, null, 90);
+										imagejpeg($image_p, null, 90);
 
-									if($_FILES['image']['name']) {
-										// store file on disk
-										$savePath = "/var/www/html/public_html/red-rover";
-										move_uploaded_file($_FILES['image']['tmp_name'], $savePath . $imageTitle);
-										// add to database
-										$imagePath = $savePath . $imageTitle . ".jpg";
-										$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
-										$entry = $this->insert($entry);
-										return $entry;
+										if($_FILES['image']['name']) {
+											// store file on disk
+											$savePath = "/var/www/html/public_html/red-rover";
+											move_uploaded_file($_FILES['image']['tmp_name'], $savePath . $imageTitle);
+											// add to database
+											$imagePath = $savePath . $imageTitle . "jpg";
+											$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
+											$entry = $this->insert($entry);
+											return $entry;
 
-									}
+										}
 
 
-								} else continue;
+									} else continue;
 
-							}
+								}
 							}
 						}
 					}
