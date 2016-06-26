@@ -23,3 +23,4 @@ app.controller("newsController", ["$scope", "NewsService", function($scope, News
 		$scope.news = $scope.getNews();
 	}
 }]);
+

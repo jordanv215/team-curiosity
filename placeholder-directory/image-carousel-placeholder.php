@@ -128,3 +128,23 @@ array[top] = tmp;
 return array;
 }
 });
+
+<!-- bootstrap modal from images.php with javascript code -->
+<!--begin modal -->
+<div class="modal fade modal-fullscreen force-fullscreen" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header h4">Comment or Favorite
+				<a href="https://www.reddit.com/" target="_blank"><i class="fa fa-reddit-alien fa-2x"></i></a>
+				<a href="#" target="_blank"><i class="fa fa-heart fa-2x"></i></a>
+				<a href="#" target="_blank"><i class="fa fa-commenting fa-2x"></i></a>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+			</div>
+			<div class="modal-body" id="imgModalImage">
+
+			</div>
+		</div>
+	</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

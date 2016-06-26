@@ -18,31 +18,28 @@
 <div ng-controller="ModalDemoCtrl">
 	<script type="text/ng-template" id="myModalContent.html">
 		<div class="modal-header">
-			<h3 class="modal-title">Rate or Comment</h3>
+			<h3 class="modal-title">Comment or Favorite</h3>
+			<a href="https://www.reddit.com/" target="_blank"><i class="fa fa-reddit-alien fa-2x"></i></a>
+			<a href="#" target="_blank"><i class="fa fa-heart fa-2x"></i></a>
+			<a href="#" target="_blank"><i class="fa fa-commenting fa-2x"></i></a>
+			<a href="#" target="_blank"><i class="fa fa-commenting fa-2x"></i></a>
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		</div>
 		<div class="modal-body">
-			<ul>
-				<li ng-repeat="item in items">
-					<a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-				</li>
-			</ul>
-			Selected: <b>{{ selected.item }}</b>
-		</div>
+				
+			</div>
 		<div class="modal-footer">
 			<button class="btn btn-warning" type="button" ng-click="cancel()">Close</button>
 		</div>
 	</script>
-
-
-	<button type="button" class="btn btn-default" ng-click="open('lg')">Login to rate or comment</button>
-	<div ng-show="selected">Selection from a modal: {{ selected }}</div>
+	
 </div>
 
 <!-- controller for image modal-->
 angular.module('ui.bootstrap.demo', ['ngAnimate', 'ui.bootstrap']);
 angular.module('ui.bootstrap.demo').controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
 
-$scope.items = ['Login with Facebook', 'Login with Google', 'Login with Instragram', 'Login with Reddit'];
+$scope.items = [];
 
 $scope.animationsEnabled = true;
 

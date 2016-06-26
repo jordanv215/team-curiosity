@@ -6,7 +6,7 @@ app.controller("resultController", ["$scope", "resultService", function($scope, 
 	var currIndex = 0;
 
 	$scope.addResult= function() {
-		var newWidth = 600 + sresults.length + 1;
+		var newWidth = 600 + results.length + 1;
 		results.push({
 			image: 'http://lorempixel.com/' + newWidth + '/300',
 			id: currIndex++

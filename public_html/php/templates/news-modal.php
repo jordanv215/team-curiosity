@@ -26,7 +26,7 @@
 angular.module('ui.bootstrap.demo', ['ngAnimate', 'ui.bootstrap']);
 angular.module('ui.bootstrap.demo').controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
 
-$scope.items = ['Login with Facebook', 'Login with Google', 'Login with Instragram', 'Login with Reddit'];
+$scope.items = [];
 
 $scope.animationsEnabled = true;
 
