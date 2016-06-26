@@ -3,7 +3,6 @@ app.controller("newsController", ["$scope", "NewsService", function($scope, News
 	$scope.noWrapSlides = false;
 	$scope.active = 0;
 	var news = $scope.news = [];
-	var slides = $scope.slides = [];
 	var currIndex = 0;
 
 	$scope.getNews = function() {
