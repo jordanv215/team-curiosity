@@ -22,7 +22,7 @@
 					<div class="news-content">
 						<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 					</div>
-					<div class="text-center"><a href="news-modal.php">Click to comment or favorite</a></div>
+					<div class="text-center"><a href="article">Click to comment or favorite</a></div>
 
 		</uib-slide>
 		</uib-carousel>

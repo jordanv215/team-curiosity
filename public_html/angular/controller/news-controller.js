@@ -15,7 +15,11 @@ app.controller("newsController", ["$scope", "NewsService", function($scope, News
 				}
 			});
 	};
-	
+	function assignIndexes(indexes){
+		for (var i = 0, l = news.length; i< l; i++) {
+			 news[i].id = indexes.pop();
+		}
+	}
 
 	// load the array on first view
 	if($scope.news.length === 0) {

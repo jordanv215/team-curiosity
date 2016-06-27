@@ -30,6 +30,16 @@ app.config(function($routeProvider, $locationProvider) {
 			controller : 'resultController',
 			templateUrl : 'angular/templates/result.php'
 		})
+		// route for the article page
+		.when('/article', {
+			controller : 'articleController', 
+			templateUrl : 'angular/templates/article.php'
+		})
+		// route for the image page
+		.when('/image', {
+			controller : 'imageController',
+			templateUrl : 'angular/templates/image.php'
+		})
 
 		// otherwise redirect to home
 		.otherwise({
