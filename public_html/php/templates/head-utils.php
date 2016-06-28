@@ -8,6 +8,9 @@
 		<!-- sets viewport width to device width, scaling 1:1 -->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
+		<!-- for google sign -->
+		<meta name="google-signin-client_id" content="148844505760-ul88sbvg1kppr9emjv1a2bhef0lghjvk.apps.googleusercontent.com">
+
 		<base href="<?php echo dirname($_SERVER["PHP_SELF"]) . "/";?>"/>
 
 		<!-- Latest compiled and minified CSS -->
@@ -36,7 +39,8 @@
 		<script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
+		<!-- google signin -->
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<!--Angular JS Libraries-->
 		<?php $ANGULAR_VERSION = "1.5.6";?>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/<?php echo $ANGULAR_VERSION;?>/angular.min.js"></script>

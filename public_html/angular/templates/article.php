@@ -73,28 +73,41 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="googleModalLabel">Log in with your Google Account</h4>
+				<h4 class="modal-title" id="googleModalLabel">Log in to your Google Account</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-group">
-					<input type="text" id="username" placeholder="Enter your gmail" value="" class="form-control login-field">
-					<i class="fa fa-envelope-o login-field-icon"></i>
-				</div>
+				<div id="my-signin2"></div>
+				<script>
+					function onSuccess(googleUser) {
+						console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+					}
+					function onFailure(error) {
+						console.log(error);
+					}
+					function renderButton() {
+						gapi.signin2.render('my-signin2', {
+							'scope': 'profile email',
+							'width': 240,
+							'height': 50,
+							'longtitle': true,
+							'theme': 'dark',
+							'onsuccess': onSuccess,
+							'onfailure': onFailure
+						});
+					}
+				</script>
 
-				<div class="form-grouop">
-					<input type="text" id="login-pass" placeholder="Password" value="" class="form-control login-field">
-					<i class="fa fa-lock login-field-icon"></i>
-				</div>
-
-				<a href="#" class="btn btn-success modal-login-btn">Log in</a>
-				<a href="#" class="login-link text-center">Forgot your password?</a>
-			</div>
-			<div class="text-center">OR</div>
-
-			<div class="form-group modal-register-btn text-center">
-				<button class="btn btn-default">Sign Up using Google</button>
-			</div>
+				<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 			<div class="modal-footer">
+				<botton type="button" class="btn btn-info"><a href="#" onclick="signOut();">Sign out with Google</a>
+					<script>
+						function signOut() {
+							var auth2 = gapi.auth2.getAuthInstance();
+							auth2.signOut().then(function () {
+								console.log('User signed out.');
+							});
+						}
+					</script></botton>
 				<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
 			</div>
 		</div>
