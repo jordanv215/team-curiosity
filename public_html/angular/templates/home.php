@@ -112,6 +112,9 @@
 						<div class="news-content">
 							<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 						</div>
+						<div class="news-thumb">
+							<img class="img-responsive" src="{{ news.newsArticleThumbPath }}" />
+						</div>
 					</div>
 
 			</div>

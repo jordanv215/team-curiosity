@@ -37,6 +37,11 @@ class NewsArticle implements \JsonSerializable {
 	 * @var string $newsArticleUrl
 	 **/
 	private $newsArticleUrl;
+	/**
+	 * the local filepath of the thumbnail image for the Article
+	 * @var string $newsArticleThumbPath
+	 **/
+	private $newsArticleThumbPath;
 
 	/**
 	 * constructor for this NewsArticle
@@ -45,18 +50,20 @@ class NewsArticle implements \JsonSerializable {
 	 * @param \DateTime|string|null $newNewsArticleDate Date and Time NewsArticle was sent or null if set to current Date and Time
 	 * @param string $newNewsArticleSynopsis string containing a brief synopsis
 	 * @param string $newNewsArticleUrl string containing the location to newsArticleUrl
+	 * @param string $newNewsArticleThumbPath string containing filepath of thumbnail image on disk
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newNewsArticleId = null, string $newNewsArticleTitle, \DateTime $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl) {
+	public function __construct(int $newNewsArticleId = null, string $newNewsArticleTitle, \DateTime $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl, string $newNewsArticleThumbPath) {
 		try {
 			$this->setNewsArticleId($newNewsArticleId);
 			$this->setNewsArticleTitle($newNewsArticleTitle);
 			$this->setNewsArticleDate($newNewsArticleDate);
 			$this->setNewsArticleSynopsis($newNewsArticleSynopsis);
 			$this->setNewsArticleUrl($newNewsArticleUrl);
+			$this->setNewsArticleThumbPath($newNewsArticleThumbPath);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			// rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -239,6 +246,42 @@ class NewsArticle implements \JsonSerializable {
 	}
 
 	/**
+	 * accessor method for newsArticleThumbPath
+	 *
+	 * @return string value of newsArticleThumbPath
+	 **/
+	public
+	function getNewsArticleThumbPath() {
+		return ($this->newsArticleThumbPath);
+	}
+
+	/**
+	 * mutator method for newsArticleThumbPath
+	 * @param string $newNewsArticleThumbPath new value of newsArticleThumbPath
+	 * @throws \InvalidArgumentException if $newNewsArticleThumbPath is not a string or is insecure
+	 * @throws \RangeException if $newNewsArticleThumbPath is > 256 characters
+	 * @throws \TypeError if $newNewsArticleThumbPath is not a string
+	 **/
+
+	public
+	function setNewsArticleThumbPath(string $newNewsArticleThumbPath) {
+		// verify the newsArticleThumbPath is secure
+		$newNewsArticleThumbPath = trim($newNewsArticleThumbPath);
+		$newNewsArticleThumbPath = filter_var($newNewsArticleThumbPath, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newNewsArticleThumbPath) === true) {
+			throw(new \InvalidArgumentException("newsArticleThumbPath is empty or insecure"));
+		}
+		//verify the newsArticleUrl will fit in the database
+		if(strlen($newNewsArticleThumbPath) > 256) {
+			throw(new \RangeException("newsArticleThumbPath too large"));
+		}
+
+		// store the newsArticleUrl;
+		$this->newsArticleUrl = $newNewsArticleThumbPath;
+
+	}
+	
+	/**
 	 * inserts this Article into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
@@ -252,11 +295,11 @@ class NewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO NewsArticle(newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl) VALUES(:newsArticleTitle, :newsArticleDate, :newsArticleSynopsis, :newsArticleUrl)";
+		$query = "INSERT INTO NewsArticle(newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath) VALUES(:newsArticleTitle, :newsArticleDate, :newsArticleSynopsis, :newsArticleUrl, :newsArticleThumbPath)";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["newsArticleTitle" => $this->newsArticleTitle, "newsArticleDate" => $formattedDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl];
+		$parameters = ["newsArticleTitle" => $this->newsArticleTitle, "newsArticleDate" => $formattedDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleThumbPath" => $this->newsArticleThumbPath];
 		$statement->execute($parameters);
 
 		// update the null articleId with what mySQL just gave us
@@ -300,11 +343,11 @@ class NewsArticle implements \JsonSerializable {
 			throw(new \PDOException("unable to update a NewsArticle that does not exist"));
 		}
 		// create query template
-		$query = "UPDATE NewsArticle SET newsArticleTitle = :newsArticleTitle, newsArticleDate = :newsArticleDate, newsArticleSynopsis = :newsArticleSynopsis, newsArticleUrl = :newsArticleUrl";
+		$query = "UPDATE NewsArticle SET newsArticleTitle = :newsArticleTitle, newsArticleDate = :newsArticleDate, newsArticleSynopsis = :newsArticleSynopsis, newsArticleUrl = :newsArticleUrl, newsArticleThumbPath = :newsArticleThumbPath";
 		$statement = $pdo->prepare($query);
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
-		$parameters = ["newsArticleTitle" => $this->newsArticleTitle, "newsArticleDate" => $formattedDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl];
+		$parameters = ["newsArticleTitle" => $this->newsArticleTitle, "newsArticleDate" => $formattedDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleThumbPath" => $this->newsArticleThumbPath];
 		$statement->execute($parameters);
 	}
 
@@ -327,7 +370,7 @@ class NewsArticle implements \JsonSerializable {
 			throw(new \PDOException("newsArticleSynopsis is invalid"));
 		}
 		// create query template
-		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleSynopsis LIKE :newsArticleSynopsis";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleSynopsis LIKE :newsArticleSynopsis";
 		$statement = $pdo->prepare($query);
 
 		// bind the newsArticleSynopsis to the place holder in the template
@@ -339,7 +382,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"], $row["newsArticleThumbPath"]);
 				$newsArticles[$newsArticles->key()] = $newsArticle;
 				$newsArticles->next();
 			} catch(\Exception $exception) {
@@ -368,7 +411,7 @@ class NewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleId = :newsArticleId";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleId = :newsArticleId";
 		$statement = $pdo->prepare($query);
 
 		// bind the tweet id to the place holder in the template
@@ -381,7 +424,7 @@ class NewsArticle implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"], $row["newsArticleThumbPath"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -409,7 +452,7 @@ class NewsArticle implements \JsonSerializable {
 			throw(new \PDOException("newsArticleTitle is invalid"));
 		}
 		// create query template
-		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleTitle LIKE :newsArticleTitle";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleTitle LIKE :newsArticleTitle";
 		$statement = $pdo->prepare($query);
 
 		// bind the newsArticleTitle to the place holder in the template
@@ -421,7 +464,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"], $row["newsArticleThumbPath"]);
 				$newsArticles[$newsArticles->key()] = $newsArticle;
 				$newsArticles->next();
 			} catch(\Exception $exception) {
@@ -455,7 +498,7 @@ class NewsArticle implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleDate = :newsArticleDate";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleDate = :newsArticleDate";
 		$statement = $pdo->prepare($query);
 
 		// bind the tweet id to the place holder in the template
@@ -467,7 +510,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"], $row["newsArticleThumbPath"]);
 				$newsArticles[$newsArticles->key()] = $newsArticle;
 				$newsArticles->next();
 			} catch(\Exception $exception) {
@@ -492,7 +535,7 @@ class NewsArticle implements \JsonSerializable {
 	public static function getNewsArticleByNewsArticleUrl(\PDO $pdo, string $newsArticleUrl) {
 
 		// create query template
-		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle WHERE newsArticleUrl = :newsArticleUrl";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleUrl = :newsArticleUrl";
 		$statement = $pdo->prepare($query);
 		$newsArticleUrl = trim($newsArticleUrl);
 		// bind the newsArticleUrl to the place holder in the template
@@ -504,7 +547,7 @@ class NewsArticle implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"], $row["newsArticleThumbPath"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
@@ -526,7 +569,7 @@ class NewsArticle implements \JsonSerializable {
 	 **/
 	public static function getAllNewsArticles(\PDO $pdo) {
 		// create query template
-		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -535,7 +578,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"], $row["newsArticleThumbPath"]);
 				$newsArticles[$newsArticles->key()] = $newsArticle;
 				$newsArticles->next();
 			} catch(\Exception $exception) {
@@ -547,7 +590,7 @@ class NewsArticle implements \JsonSerializable {
 	}
 
 	public static function getNewsArticles(\PDO $pdo) {
-		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl FROM NewsArticle ORDER BY newsArticleDate DESC LIMIT 25";
+		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle ORDER BY newsArticleDate DESC LIMIT 25";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		// build an array of NewsArticles
@@ -555,7 +598,7 @@ class NewsArticle implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"]);
+				$newsArticle = new NewsArticle($row["newsArticleId"], $row["newsArticleTitle"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["newsArticleDate"]), $row["newsArticleSynopsis"], $row["newsArticleUrl"], $row["newsArticleThumbPath"]);
 				$newsArticles[$newsArticles->key()] = $newsArticle;
 				$newsArticles->next();
 			} catch(\Exception $exception) {

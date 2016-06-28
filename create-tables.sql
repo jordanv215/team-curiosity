@@ -52,6 +52,7 @@ CREATE TABLE NewsArticle (
 	newsArticleDate DATETIME NOT NULL,
 	newsArticleSynopsis VARCHAR(256) NOT NULL,
 	newsArticleUrl VARCHAR(256) NOT NULL,
+	newsArticleThumbPath VARCHAR(256) NOT NULL,
 	INDEX(newsArticleTitle),
 	INDEX(newsArticleDate),
 	INDEX(newsArticleSynopsis),

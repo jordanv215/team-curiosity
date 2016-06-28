@@ -111,7 +111,8 @@ try {
 									if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg") {
 										$imageType = "image/jpeg";
 									} else continue;
-									$imageTitle = print_r($str[0]);
+									$titleStr = print_r($str);
+									$imageTitle = substr($titleStr, 0, -1);
 									if($imageTitle !== null) {
 										// resample image @ width: 800px & quality: 90%
 										$w = 800;
@@ -130,9 +131,9 @@ try {
 										if($_FILES['image']['name']) {
 											// store file on disk
 											$savePath = "/var/www/html/public_html/red-rover";
-											move_uploaded_file($_FILES['image']['tmp_name'], $savePath . $imageTitle);
+											move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
 											// add to database
-											$imagePath = $savePath . $imageTitle . "jpg";
+											$imagePath = $savePath ."/". $imageTitle . "jpg";
 											$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
 											$entry = $this->insert($entry);
 											return $entry;

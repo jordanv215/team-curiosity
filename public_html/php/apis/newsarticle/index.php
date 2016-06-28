@@ -11,6 +11,7 @@ use Edu\Cnm\TeamCuriosity;
  * api for the NewsArticle class
  *
  * @author Anthony Williams <awilliams144@cnm.edu>
+ * @author Kai Garrott <kai@kaigarrott.com>
  **/
 
 //verify the session, start if not active
@@ -36,6 +37,7 @@ try {
 	$newsArticleDate = filter_input(INPUT_GET, "newsArticleDate", FILTER_VALIDATE_INT);
 	$newsArticleSynopsis = filter_input(INPUT_GET, "newsArticleSynopsis", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$newsArticleUrl = filter_input(INPUT_GET, "newsArticleUrl", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$newsArticleThumbPath = filter_input(INPUT_GET, "newsArticleThumbPath", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($newsArticleId) === true || $newsArticleId < 0)) {
@@ -71,18 +73,49 @@ try {
 				$newsArticleDate = $item->pubDate;
 				$newsArticleSynopsis = $item->children("media", true)->description;
 				$newsArticleUrl = $item->link;
-				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string) trim($newsArticleDate));
-				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl);
+				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
+				$thumbUrl = $item->children("media", true)->thumbnail->attributes("url");
+				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, null);
 
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
-					$newsArticle->insert($pdo);
+
+					$pattern = '/-(PIA\w+)-/';
+					$str = preg_match($pattern, $thumbUrl);
+					$ext = substr($thumbUrl, -4);
+					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg") {
+
+						$thumbStr = print_r($str[0]);
+						$thumbTitle = substr($thumbStr, 1, -1);
+
+						$w = 400;
+						header('Content-type: image/jpeg');
+						list($width, $height) = getimagesize($thumbUrl);
+						$prop = $w / $width;
+						$newWidth = $width * $prop;
+						$newHeight = $height * $prop;
+
+						$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
+						$thumb = imagecreatefromjpeg($thumbUrl);
+						imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+						imagejpeg($thumb_p, null, 90);
+
+						if($_FILES['image']['name']) {
+							// store file on disk
+							$savePath = "/var/www/html/public_html/red-rover"; // @TODO: CHANGE TO NEWS-THUMBS DIRECTORY
+							$addr = $savePath . "/" . $thumbTitle . ".jpg";
+							move_uploaded_file($_FILES['image']['tmp_name'], $addr);
+							// add to database
+							$this->newsArticleThumbPath = $addr;
+
+							$newsArticle->insert($pdo);
+						}
+					} else continue;
 
 				}
+				$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
 			}
-			$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
-		}
-		else if(empty($newsArticleId) === false) {
+		} else if(empty($newsArticleId) === false) {
 			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle !== null) {
 				$reply->data = $newsArticle;
@@ -171,8 +204,6 @@ try {
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
-
-
 
 
 	// update reply with exception information
