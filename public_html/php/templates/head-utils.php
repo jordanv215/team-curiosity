@@ -50,11 +50,10 @@
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/<?php echo $ANGULAR_VERSION;?>/angular-touch.min.js"
 
-		
-
 		<!--custom js-->
 			<script src="js/carousel-box.js"></script>
-
+			<script src="js/google-signin.js" type="text/javascript"></script>
+		
 		<!--loading Angular app files -->
 		<script src="angular/redrovr.js"></script>
 		<script src="angular/route-config.js"></script>

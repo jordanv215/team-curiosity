@@ -75,7 +75,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="googleModalLabel">Log in to your Google Account</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" id="googleModal">
 				<div id="my-signin2"></div>
 				<script>
 					function onSuccess(googleUser) {
@@ -109,6 +109,7 @@
 						}
 					</script></botton>
 				<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+			</div>	
 			</div>
 		</div>
 	</div>
