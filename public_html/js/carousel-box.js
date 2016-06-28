@@ -2,10 +2,10 @@ function slideBox(id) {
 
 	// create array of image paths
 	var images = [
-		"image/above-shot.jpg",
-		"image/mars-landscape.jpg",
-		"image/sunset.gif",
-		"image/selfie-optimized.jpg"
+		"img/above-shot.jpg",
+		"img/mars-landscape.jpg",
+		"img/sunset.gif",
+		"img/selfie-optimized.jpg"
 		
 	];
 

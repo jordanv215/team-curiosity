@@ -49,31 +49,31 @@
 		<!-- Wrapper for slides -->
 		<div class="carousel-inner" role="listbox">
 			<div class="item active">
-				<div style="background:url(../public_html/image/sunset.gif) center center;
+				<div style="background:url(../public_html/img/sunset.gif) center center;
           background-size:cover;" class="slider-size">
 					</div>
 			</div>
 
 			<div class="item">
-				<div style="background:url(../public_html/image/mars-landscape.jpg) center center;
+				<div style="background:url(../public_html/img/mars-landscape.jpg) center center;
           background-size:cover;" class="slider-size">
 					</div>
 			</div>
 			
 			<div class="item">
-				<div style="background:url(../public_html/image/above-shot.jpg) center center;
+				<div style="background:url(../public_html/img/above-shot.jpg) center center;
           background-size:cover;" class="slider-size">
 				</div>
 			</div>
 
 			<div class="item">
-				<div style="background:url(../public_html/image/mt-sharp.jpg) center center;
+				<div style="background:url(../public_html/img/mt-sharp.jpg) center center;
           background-size:cover;" class="slider-size">
 				</div>
 			</div>
 			
 			<div class="item">
-				<div style="background:url(../public_html/image/selfie-optimized.jpg) center center;
+				<div style="background:url(../public_html/img/selfie-optimized.jpg) center center;
           background-size:cover;" class="slider-size">
 				</div>
 			</div>

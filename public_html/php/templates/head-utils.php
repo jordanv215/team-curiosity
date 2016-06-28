@@ -65,6 +65,6 @@
 		<script src="angular/controller/news-controller.js"></script>
 		<script src="angular/controller/about-controller.js"></script>
 
-		<link rel="icon" href="image/favicon-take1.png"/>
+		<link rel="icon" href="img/favicon-take1.png"/>
 		<title>redrovr</title>
 	</head>

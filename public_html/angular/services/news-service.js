@@ -9,7 +9,6 @@ app.service("NewsService", function($http, NEWS_ENDPOINT) {
 	function getUrlForUrl(newsArticleUrl) {
 		return(http.get(getUrl() + newsArticleUrl));
 	}
-
 	
 	this.top25 = function() {
 		return($http.get(getUrl() + "?top25"));

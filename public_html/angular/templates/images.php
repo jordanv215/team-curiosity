@@ -1,11 +1,5 @@
 <?php require_once("header.php");?>
 
-<!--div class="container-fluid">
-	<div class="txt-2">
-		<h3 class="txt-2">redrovr</h3>
-		<h3 class="txt-3">Images</h3>
-	</div
-</div-->
 
 <div class="container-fluid">
 <div class="row heading-row">
