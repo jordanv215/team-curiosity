@@ -130,7 +130,7 @@ try {
 
 										if($_FILES['image']['name']) {
 											// store file on disk
-											$savePath = "/var/www/html/public_html/red-rover";
+											$savePath = "/var/www/html/media";
 											move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
 											// add to database
 											$imagePath = $savePath . "/" . $imageTitle . "jpg";

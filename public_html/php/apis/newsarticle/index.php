@@ -102,7 +102,7 @@ try {
 
 						if($_FILES['image']['name']) {
 							// store file on disk
-							$savePath = "/var/www/html/public_html/red-rover"; // @TODO: CHANGE TO NEWS-THUMBS DIRECTORY
+							$savePath = "/var/www/html/media/news-thumbs";
 							$addr = $savePath . "/" . $thumbTitle . ".jpg";
 							move_uploaded_file($_FILES['image']['tmp_name'], $addr);
 							// add to database
