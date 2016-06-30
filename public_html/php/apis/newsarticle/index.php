@@ -26,7 +26,7 @@ $reply->data = null;
 try {
 
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -67,7 +67,7 @@ try {
 			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$xml->channel->item->children("http://search.yahoo.com/mrss/");
 
-			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+			$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = $item->title;
 				$newsArticleDate = $item->pubDate;

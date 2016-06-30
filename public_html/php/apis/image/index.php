@@ -2,7 +2,7 @@
 
 require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity\Image;
 
@@ -26,7 +26,7 @@ $reply->data = null;
 
 try {
 	//grab my mySQL Connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -78,9 +78,9 @@ try {
 					// grab json with last 25 items (NASA default/maximum per page)
 					function NasaCall() {
 						$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
-						$config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
+						$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
 						$apiKey = $config["authkeys"]->nasa->secretKey;
-						$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+						$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 
 						// to get most recent items, we need the highest sol value available
 						// initial API call is only for this purpose
@@ -133,7 +133,7 @@ try {
 											$savePath = "/var/www/html/public_html/red-rover";
 											move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
 											// add to database
-											$imagePath = $savePath ."/". $imageTitle . "jpg";
+											$imagePath = $savePath . "/" . $imageTitle . "jpg";
 											$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
 											$entry = $this->insert($entry);
 											return $entry;

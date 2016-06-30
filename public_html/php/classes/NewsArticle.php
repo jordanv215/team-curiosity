@@ -56,7 +56,7 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newNewsArticleId = null, string $newNewsArticleTitle, \DateTime $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl, string $newNewsArticleThumbPath) {
+	public function __construct(int $newNewsArticleId = null, string $newNewsArticleTitle, \DateTime $newNewsArticleDate = null, string $newNewsArticleSynopsis, string $newNewsArticleUrl, string $newNewsArticleThumbPath = null) {
 		try {
 			$this->setNewsArticleId($newNewsArticleId);
 			$this->setNewsArticleTitle($newNewsArticleTitle);
@@ -264,7 +264,7 @@ class NewsArticle implements \JsonSerializable {
 	 **/
 
 	public
-	function setNewsArticleThumbPath(string $newNewsArticleThumbPath) {
+	function setNewsArticleThumbPath(string $newNewsArticleThumbPath = null) {
 		// verify the newsArticleThumbPath is secure
 		$newNewsArticleThumbPath = trim($newNewsArticleThumbPath);
 		$newNewsArticleThumbPath = filter_var($newNewsArticleThumbPath, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);

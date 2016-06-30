@@ -2,7 +2,7 @@
 
 require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
-require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
+require_once "/etc/apache2/redrovr-conf/encrypted-config.php";
 
 use Edu\Cnm\TeamCuriosity;
 
@@ -24,7 +24,7 @@ $reply->data = null;
 
 try {
 	// connect to mySQL
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 
 	// determine the HTTP method used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];

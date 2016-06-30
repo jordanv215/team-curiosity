@@ -2,9 +2,10 @@
 
 require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity;
+
 
 /**
  * REST API for the LoginSource class of the redrovr project
@@ -18,22 +19,24 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 //-----------------------------------------------------------------
-$config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
+$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
 $keys = $config["authkeys"];
+
+if $redditLogin === 1 {
 $clientId = $keys->reddit->clientId;
 
 $min = 100000;
 $max = 1000000;
 $state = random_int($min, $max);
 
-$redirectUri = 
+$redirectUri =
 
-setcookie("reddit_login_nonce", $state);
-header("Location: " . "https://www.reddit.com/api/v1/authorize.compact?client_id=". $clientId ."&response_type=code&state=". $state ."&redirect_uri=". $redirectUri ."&duration=3600&scope=identity");
+	setcookie("reddit_login_nonce", $state);
+header("Location: " . "https://www.reddit.com/api/v1/authorize.compact?client_id=" . $clientId . "&response_type=code&state=" . $state . "&redirect_uri=" . $redirectUri . "&duration=3600&scope=identity");
 //------------------------------------------------------------
 // commenting in api finds
 
-$config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
+$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
 $keys = $config["authkeys"];
 $clientId = $keys->reddit->clientId;
 
@@ -42,33 +45,31 @@ $clientSecret = $keys->reddit->clientSecret;
 
 $username = "redrovr";
 
-if(isset($_GET["error"]))
-{
+if(isset($_GET["error"])) {
 	//error occurred
 	echo $_GET["error"];
-}
-else
-{
+} else
 	//validate nonce
-	if($_COOKIE["reddit_login_nonce"] == $_GET["state"])
-	{
+	if($_COOKIE["reddit_login_nonce"] == $_GET["state"]) {
 		//valid nonce
 
 		//now make a post request with one time code to generate access token
 		$url = "https://www.reddit.com/api/v1/access_token";
-		$fields = array("grant_type" => "authorization_code", "code" => $_GET["code"], "redirect_uri" => "http://redrovr.io");
+		$fields = array("grant_type" => "authorization_code", "code" => $_GET["code"], "redirect_uri" => "https://redrovr.io");
 
-		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+		foreach($fields as $key => $value) {
+			$fields_string .= $key . '=' . $value . '&';
+		}
 		rtrim($fields_string, '&');
 
 		$ch = curl_init();
 
-		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_POST, count($fields));
-		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
 		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($ch, CURLOPT_USERPWD, $client_id.":".$client_secret);
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($ch, CURLOPT_USERPWD, $client_id . ":" . $client_secret);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 		$result = curl_exec($ch);
 		$result = json_decode($result);
@@ -77,82 +78,44 @@ else
 
 		//this is the access token which will used to retrieve user information. You can store this token in database and use it in future.
 		$access_token = $result->access_token;
-	}
-	else
-	{
+	} else {
 		//invalid nonce
 		echo "Please try to login again";
 	}
 }
 // this is the next section of the found api data
-function user_identity($access_token)
-{
+function user_identity($access_token) {
 	//lets retrieve username of the logged in user
 	$user_info_url = "https://oauth.reddit.com/api/v1/me";
 	$username = "redrovr";
 
 	$ch = curl_init();
-	curl_setopt($ch,CURLOPT_URL,$user_info_url);
-	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: bearer ".$access_token, "User-Agent: redrovr/1.0 by ".$username));
-	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+	curl_setopt($ch, CURLOPT_URL, $user_info_url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: bearer " . $access_token, "User-Agent: redrovr/1.0 by " . $username));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 
 	$result = curl_exec($ch);
 	$result = json_decode($result);
 
-	if(isset($result->error))
-	{
-		//access token has expired. Use the refresh token to get a new access token and then make REST api calls.
-		$url = "https://ssl.reddit.com/api/v1/access_token";
-		$fields = array("grant_type" => "refresh_token", "refresh_token" => $refresh_token);
+	if(isset($result->error)) {
+		return;
 
-		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-		rtrim($fields_string, '&');
-
-		$ch = curl_init();
-
-		curl_setopt($ch,CURLOPT_URL, "https://ssl.reddit.com/api/v1/access_token");
-		curl_setopt($ch,CURLOPT_POST, count($fields));
-		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-		curl_setopt($ch, CURLOPT_USERPWD, $client_id.":".$client_secret);
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-
-		$result = curl_exec($ch);
-		$result = json_decode($result);
-
-		//new access token
-		$access_token = $result->access_token;
-
-		curl_close($ch);
-
-		$user_info_url = "https://oauth.reddit.com/api/v1/me";
-
-		$ch = curl_init();
-		curl_setopt($ch,CURLOPT_URL,$user_info_url);
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: bearer ".$access_token, "User-Agent: flairbot/1.0 by ".$username));
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-
-
-		$result = curl_exec($ch);
-		curl_close($ch);
-
-		$result = json_decode($result);
-		echo $user_name = $result->name;
 	}
-	else
-	{
-		echo $user_name = $result->name;
-	}
+} else if ($googleLogin === 1) {
 
-	curl_close($ch);
+	// TODO: Google login code goes here
+
+} else if ($instagramLogin === 1) {
+
+	// TODO: Instagram login code goes here
+
+} else if ($facebookLogin === 1) {
+
+	// TODO: Facebook login code goes here
+
 }
-//--------------this is the end of the copied code for this section-------------------------------------
-
-
-
 
 
 
@@ -163,7 +126,7 @@ $reply->data = null;
 
 try {
 	// connect to mySQL
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 
 	// determine the HTTP method used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
