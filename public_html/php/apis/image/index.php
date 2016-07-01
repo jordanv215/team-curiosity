@@ -121,7 +121,6 @@ try {
 										$prop = $w / $width;
 										$newWidth = $width * $prop;
 										$newHeight = $height * $prop;
-
 										$image_p = imagecreatetruecolor($newWidth, $newHeight);
 										$image = imagecreatefromjpeg($imageUrl);
 										imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
@@ -138,13 +137,13 @@ try {
 											$entry = $this->insert($entry);
 											return $entry;
 
-										}
+										} else continue;
 
 
 									} else continue;
 
-								}
-							}
+								} else continue;
+							} else continue;
 						}
 					}
 

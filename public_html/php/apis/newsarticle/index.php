@@ -2,7 +2,7 @@
 
 require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 
 use Edu\Cnm\TeamCuriosity;
 
@@ -83,7 +83,20 @@ try {
 					$pattern = '/-(PIA\w+)-/';
 					$str = preg_match($pattern, $thumbUrl);
 					$ext = substr($thumbUrl, -4);
-					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg") {
+					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
+
+						switch($ext) {
+							case (".JPG" || ".jpg" || ".JPEG" || ".jpeg"):
+								$e = ".jpg";
+								break;
+							case (".GIF" || ".gif"):
+								$e = ".gif";
+								break;
+							case (".PNG" || ".png"):
+								$e = ".png";
+								break;
+							default: continue 2;
+						}
 
 						$thumbStr = print_r($str[0]);
 						$thumbTitle = substr($thumbStr, 1, -1);
@@ -103,18 +116,20 @@ try {
 						if($_FILES['image']['name']) {
 							// store file on disk
 							$savePath = "/var/www/html/media/news-thumbs";
-							$addr = $savePath . "/" . $thumbTitle . ".jpg";
+							$addr = $savePath . "/" . $thumbTitle . $e;
 							move_uploaded_file($_FILES['image']['tmp_name'], $addr);
 							// add to database
 							$this->newsArticleThumbPath = $addr;
 
 							$newsArticle->insert($pdo);
-						}
+						} else continue;
 					} else continue;
 
-				}
-				$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
+				} else continue;
 			}
+				// grab 25 most recent articles from table
+				$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
+
 		} else if(empty($newsArticleId) === false) {
 			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle !== null) {
