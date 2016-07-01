@@ -74,11 +74,12 @@ try {
 				$newsArticleSynopsis = $item->children("media", true)->description;
 				$newsArticleUrl = $item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
-				$thUrl = $item->children("media", true)->thumbnail;
-				foreach($thUrl[0]->attributes() as $attr) {
-					$thumbUrl = (string)$attr[0];
+				$thUrl = $item->children("media", true)->thumbnail->attributes("url");
+				$thumbUrl = "";
+				foreach($thUrl as $attr) {
+					$thumbUrl = $attr;
 				}
-
+				//$thumbUrl = ;
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
 
@@ -118,7 +119,8 @@ try {
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagepng($thumb_p, null, 90);
 								break;
-							default: continue;
+							default:
+								continue;
 						}
 
 						if($_FILES['image']['name']) {
@@ -136,8 +138,8 @@ try {
 
 				} else continue;
 			}
-				// grab 25 most recent articles from table
-				$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
+			// grab 25 most recent articles from table
+			$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
 
 		} else if(empty($newsArticleId) === false) {
 			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);

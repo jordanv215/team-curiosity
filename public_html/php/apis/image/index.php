@@ -58,7 +58,7 @@ try {
 
 			// check when NASA api was last called
 			function getLastRan() {
-				$fh = fopen('php/last-ran.txt', 'r+');
+				$fh = fopen('/etc/apache2/redrovr-conf/last-ran.txt', 'r+');
 				$time = fgets($fh);
 				fclose($fh);
 
@@ -70,7 +70,7 @@ try {
 					// mark the time that the API call is being run
 					function setTimeRan() {
 						$timeRan = time();
-						$fh = fopen('php/last-ran.txt', 'w+');
+						$fh = fopen('/etc/apache2/redrovr-conf/last-ran.txt', 'w+');
 						fwrite($fh, $timeRan);
 						fclose($fh);
 					}
@@ -148,6 +148,10 @@ try {
 					}
 
 				}
+			}
+			$image = Image::getImages($pdo);
+			if($image !== null) {
+				$reply->data = $image;
 			}
 		} //get a specific image and update reply
 		else if(empty($imageId) === false) {
