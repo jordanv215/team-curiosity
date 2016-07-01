@@ -74,8 +74,10 @@ try {
 				$newsArticleSynopsis = $item->children("media", true)->description;
 				$newsArticleUrl = $item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
-				$thumbUrl = $item->children("media", true)->thumbnail->attributes("url", true);
-				print_r($thumbUrl);
+				$thUrl = $item->children("media", true)->thumbnail;
+				foreach($thUrl[0]->attributes() as $attr) {
+					$thumbUrl = (string)$attr[0];
+				}
 
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
