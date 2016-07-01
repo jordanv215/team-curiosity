@@ -10,7 +10,7 @@ use Edu\Cnm\TeamCuriosity;
 /**
  * REST API for the LoginSource class of the redrovr project
  *
- * @author Kai Garrott <garrottkai@gmail.com>
+ * @author Kai Garrott <kai@kaigarrott.com>
  **/
 
 // verify active session, start if none
@@ -18,11 +18,12 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
+
 //-----------------------------------------------------------------
 $config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
 $keys = $config["authkeys"];
 
-if $redditLogin === 1 {
+if ($redditLogin === 1) {
 $clientId = $keys->reddit->clientId;
 
 $min = 100000;
@@ -39,10 +40,7 @@ header("Location: " . "https://www.reddit.com/api/v1/authorize.compact?client_id
 $config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
 $keys = $config["authkeys"];
 $clientId = $keys->reddit->clientId;
-
-
 $clientSecret = $keys->reddit->clientSecret;
-
 $username = "redrovr";
 
 if(isset($_GET["error"])) {

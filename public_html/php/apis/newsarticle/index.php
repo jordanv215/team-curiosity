@@ -116,7 +116,7 @@ try {
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagepng($thumb_p, null, 90);
 								break;
-							default: continue 2;
+							default: continue;
 						}
 
 						if($_FILES['image']['name']) {
@@ -186,11 +186,12 @@ try {
 			if($newsArticle === null) {
 				throw(new RuntimeException("NewsArticle does not exist", 404));
 			}
-			// put the new newsArticle synopsis into the newsArticle and update
+			// put the new newsArticle data into the newsArticle and update
 			$newsArticle->setNewsArticleTitle($requestObject->newsArticleTitle);
 			$newsArticle->setNewsArticleDate($requestObject->newsArticleDate);
 			$newsArticle->setNewsArticleSynopsis($requestObject->newsArticleSynopsis);
 			$newsArticle->setNewsArticleUrl($requestObject->newsArticleUrl);
+			$newsArticle->setNewsArticleThumbPath($requestObject->newsArticleThumbPath);
 			$newsArticle->update($pdo);
 
 			// update reply
