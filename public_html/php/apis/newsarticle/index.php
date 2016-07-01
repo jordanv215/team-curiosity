@@ -74,8 +74,8 @@ try {
 				$newsArticleSynopsis = $item->children("media", true)->description;
 				$newsArticleUrl = $item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
-				$thumbUrl = $item->children("media", true)->thumbnail->attributes("url");
-				$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, null);
+				$thumbUrl = $item->children("media", true)->thumbnail->attributes("url", true);
+				print_r($thumbUrl);
 
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
@@ -125,7 +125,8 @@ try {
 							$addr = $savePath . "/" . $thumbTitle . $e;
 							move_uploaded_file($_FILES['image']['tmp_name'], $addr);
 							// add to database
-							$this->newsArticleThumbPath = $addr;
+							$newsArticleThumbPath = $addr;
+							$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
 
 							$newsArticle->insert($pdo);
 						} else continue;
