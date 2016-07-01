@@ -85,22 +85,8 @@ try {
 					$ext = substr($thumbUrl, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
 
-						switch($ext) {
-							case (".JPG" || ".jpg" || ".JPEG" || ".jpeg"):
-								$e = ".jpg";
-								break;
-							case (".GIF" || ".gif"):
-								$e = ".gif";
-								break;
-							case (".PNG" || ".png"):
-								$e = ".png";
-								break;
-							default: continue 2;
-						}
-
 						$thumbStr = print_r($str[0]);
 						$thumbTitle = substr($thumbStr, 1, -1);
-
 						$w = 400;
 						header('Content-type: image/jpeg');
 						list($width, $height) = getimagesize($thumbUrl);
@@ -108,10 +94,30 @@ try {
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
 
-						$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-						$thumb = imagecreatefromjpeg($thumbUrl);
-						imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-						imagejpeg($thumb_p, null, 90);
+						switch($ext) {
+							case (".JPG" || ".jpg" || ".JPEG" || ".jpeg"):
+								$e = ".jpg";
+								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
+								$thumb = imagecreatefromjpeg($thumbUrl);
+								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+								imagejpeg($thumb_p, null, 90);
+								break;
+							case (".GIF" || ".gif"):
+								$e = ".gif";
+								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
+								$thumb = imagecreatefromgif($thumbUrl);
+								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+								imagegif($thumb_p, null);
+								break;
+							case (".PNG" || ".png"):
+								$e = ".png";
+								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
+								$thumb = imagecreatefrompng($thumbUrl);
+								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+								imagepng($thumb_p, null, 90);
+								break;
+							default: continue 2;
+						}
 
 						if($_FILES['image']['name']) {
 							// store file on disk
