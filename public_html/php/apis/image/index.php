@@ -56,101 +56,110 @@ try {
 		if(isset($_GET["top25"]) === true) {
 
 			// check when NASA api was last called
-			$lf = "/etc/apache2/redrovr-conf/last-ran.txt";
+			$lf = "/var/www/html/conf/last-ran.txt";
+			$time = "";
+
 			function getLastRan($lf) {
 				$fh = fopen($lf, "r+");
 				$time = fgets($fh);
 				fclose($fh);
+				return $time;
+			}
 
-				// proceed only if API not called within last hour (to avoid unnecessary calls & optimize retrieval speed)
-				if((empty($time === true)) || (time() - ($time) > 3600)) {
+			getLastRan($lf);
+
+			// proceed only if API not called within last hour (to avoid unnecessary calls & optimize retrieval speed)
+			if((empty($time === true)) || (time() - ($time) > 3600)) {
 
 
-					// mark the time that the API call is being run
-					function setTimeRan($lf) {
-						$timeRan = time();
-						$fh = fopen($lf, "w+");
-						fwrite($fh, $timeRan);
-						fclose($fh);
-					}
+				// mark the time that the API call is being run
+				function setTimeRan($lf) {
+					$timeRan = time();
+					$fh = fopen($lf, "w+");
+					fwrite($fh, $timeRan);
+					fclose($fh);
+				}
 
-					// grab json with last 25 items (NASA default/maximum per page)
-					function NasaCall() {
-						$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
-						$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
-						$apiKey = $config["authkeys"]->nasa->secretKey;
-						$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
+				setTimeRan($lf);
 
-						// to get most recent items, we need the highest sol value available
-						// initial API call is only for this purpose
-						// please, let there be a better way to do this...
-						$query = file_get_contents("$baseUrl" . "?sol=0" . "&api_key=" . "$apiKey");
-						$queryResult = json_decode($query, true);
-						$maxSol = $queryResult["photos"][0]->rover->max_sol;
+				// grab json with last 25 items (NASA default/maximum per page)
+				function NasaCall() {
+					$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
+					$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
+					$apiKey = $config["authkeys"]->nasa->clientSecret;
+					$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 
-						// now we make the actual call to retrieve the most recent images
-						$call = file_get_contents("$baseUrl" . "?sol=" . "$maxSol" . "&api_key=" . "$apiKey");
-						$callResult = json_decode($call, true);
+					// to get most recent items, we need the highest sol value available
+					// initial API call is only for this purpose
+					// please, let there be a better way to do this...
+					$query = file_get_contents($baseUrl . "?sol=0" . "&api_key=" . $apiKey);
+					$queryResult = json_decode($query, true);
+					$maxSol = $queryResult["photos"][0]->rover->max_sol;
 
-						foreach($callResult->photos->item as $item) {
-							$imageUrl = $item["img_src"];
-							// check if image already exists locally
-							$duplicate = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
-							if($duplicate === null) {
-								// grab data fields
-								$imageSol = $item["sol"];
-								$camera = $item["camera"]["name"];
-								if(strpos($camera, ("MAHLI" || "FHAZ" || "RHAZ" || "NAVCAM"))) {
-									$imageCamera = $camera;
-									$imageEarthDate = $item["earth_date"];
-									$imageEarthDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($imageEarthDate));
-									$pattern = '/_(F\w+)_\./';
-									$str = preg_match($pattern, $item["img_src"]);
-									$ext = substr($item["img_src"], -4);
-									if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg") {
-										$imageType = "image/jpeg";
+					// now we make the actual call to retrieve the most recent images
+					$call = file_get_contents("$baseUrl" . "?sol=" . "$maxSol" . "&api_key=" . "$apiKey");
+					$callResult = json_decode($call, true);
+
+					foreach($callResult->photos->item as $item) {
+						$imageUrl = $item["img_src"];
+						// check if image already exists locally
+						$duplicate = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
+						if($duplicate === null) {
+							// grab data fields
+							$imageSol = $item["sol"];
+							$camera = $item["camera"]["name"];
+							if(strpos($camera, ("MAHLI" || "FHAZ" || "RHAZ" || "NAVCAM"))) {
+								$imageCamera = $camera;
+								$imageEarthDate = $item["earth_date"];
+								$imageEarthDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($imageEarthDate));
+								$pattern = '/_(F\w+)_\./';
+								$str = preg_match($pattern, $item["img_src"]);
+								$ext = substr($item["img_src"], -4);
+								if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg") {
+									$imageType = "image/jpeg";
+								} else continue;
+								$titleStr = print_r($str);
+								$imageTitle = substr($titleStr, 0, -1);
+								if($imageTitle !== null) {
+									// resample image @ width: 800px & quality: 90%
+									$w = 800;
+									header('Content-type: image/jpeg');
+									list($width, $height) = getimagesize($imageUrl);
+									$prop = $w / $width;
+									$newWidth = $width * $prop;
+									$newHeight = $height * $prop;
+									$image_p = imagecreatetruecolor($newWidth, $newHeight);
+									$image = imagecreatefromjpeg($imageUrl);
+									imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+									imagejpeg($image_p, null, 90);
+
+									if($_FILES['image']['name']) {
+										// store file on disk
+										$savePath = "/var/www/html/media";
+										move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
+										// add to database
+										$imagePath = $savePath . "/" . $imageTitle . "jpg";
+										$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
+										$entry = $this->insert($entry);
+										return $entry;
+
 									} else continue;
-									$titleStr = print_r($str);
-									$imageTitle = substr($titleStr, 0, -1);
-									if($imageTitle !== null) {
-										// resample image @ width: 800px & quality: 90%
-										$w = 800;
-										header('Content-type: image/jpeg');
-										list($width, $height) = getimagesize($imageUrl);
-										$prop = $w / $width;
-										$newWidth = $width * $prop;
-										$newHeight = $height * $prop;
-										$image_p = imagecreatetruecolor($newWidth, $newHeight);
-										$image = imagecreatefromjpeg($imageUrl);
-										imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-										imagejpeg($image_p, null, 90);
-
-										if($_FILES['image']['name']) {
-											// store file on disk
-											$savePath = "/var/www/html/media";
-											move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
-											// add to database
-											$imagePath = $savePath . "/" . $imageTitle . "jpg";
-											$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
-											$entry = $this->insert($entry);
-											return $entry;
-
-										} else continue;
-
-
-									} else continue;
 
 								} else continue;
-							} else continue;
-						}
-					}
 
+							} else continue;
+						} else continue;
+					}
 				}
+
+				NasaCall();
 			}
-			$image = Image::getImages($pdo);
-			if($image !== null) {
-				$reply->data = $image;
+			//}
+			$images = Image::getImages($pdo);
+			if($images !== null) {
+				$reply->data = $images;
 			}
 		} //get a specific image and update reply
 		else if(empty($imageId) === false) {
