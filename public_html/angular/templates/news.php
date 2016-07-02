@@ -12,7 +12,7 @@
 	
 	<div ng-controller="newsController">
 		<div style="height: 300px">
-			<uib-carousel interval="myInterval" no-wrap="noWrapSlides">
+			<uib-carousel interval="myInterval" active="active" no-wrap="noWrapSlides">
 				<uib-slide ng-repeat="news in news" index="active">
 					<div class="carousel-header">
 						<h3 class="news-header">{{ news.newsArticleTitle }}</h3>

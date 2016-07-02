@@ -2,7 +2,7 @@ app.controller("newsController", ["$scope", "NewsService", function($scope, News
 	$scope.myInterval = 5000;
 	$scope.noWrapSlides = false;
 	$scope.active = 0;
-	var news = $scope.news = [];
+	$scope.news = [];
 	var currIndex = 0;
 
 	$scope.getNews = function() {

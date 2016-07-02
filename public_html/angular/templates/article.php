@@ -196,8 +196,24 @@
 				<h4 class="modal-title" id="instagramModalLabel">Log in with Instagram</h4>
 			</div>
 			<div class="modal-body">
-				...
-			</div>
+				<div class="container">
+					<header class="clearfix">
+						<h1>Instagram <span>display your photo stream</span></h1>
+					</header>
+				<div class="main">
+					<ul class="grid">
+						<li><img src="img/instagram-big.png" alt="Instagram logo"></li>
+						<li>
+							<a class="login" href="<?php echo $loginUrl ?>">» Login with Instagram</a>
+								<h4>Use your Instagram account to login.</h4>
+						</li>
+						<li><img src="img/instagram-big.png" alt="Instagram logo"></li>
+						<li>
+							<a class="login" href="<?php echo $loginUrl ?>">» Login with Instagram</a>
+								<h4>Use your Instagram account to login.</h4>
+						</li>
+					</ul>
+				</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary">Log in</button>
