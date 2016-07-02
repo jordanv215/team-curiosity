@@ -55,22 +55,21 @@ try {
 		// if the parameter exists, proceed
 		if(isset($_GET["top25"]) === true) {
 
-
 			// check when NASA api was last called
-			function getLastRan() {
-				$fh = fopen('/etc/apache2/redrovr-conf/last-ran.txt', 'r+');
+			$lf = "/etc/apache2/redrovr-conf/last-ran.txt";
+			function getLastRan($lf) {
+				$fh = fopen($lf, "r+");
 				$time = fgets($fh);
 				fclose($fh);
 
-
 				// proceed only if API not called within last hour (to avoid unnecessary calls & optimize retrieval speed)
-				if(time() - ($time) > 3600) {
+				if((empty($time === true)) || (time() - ($time) > 3600)) {
 
 
 					// mark the time that the API call is being run
-					function setTimeRan() {
+					function setTimeRan($lf) {
 						$timeRan = time();
-						$fh = fopen('/etc/apache2/redrovr-conf/last-ran.txt', 'w+');
+						$fh = fopen($lf, "w+");
 						fwrite($fh, $timeRan);
 						fclose($fh);
 					}
