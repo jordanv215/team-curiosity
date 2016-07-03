@@ -1,9 +1,5 @@
 {
   "require": {
-    "league/oauth2-client": "1.4.1",
-    "league/oauth2-facebook": "1.4.",
-    "league/oauth2-google": "1.0.*",
-    "league/oauth2-instagram": "0.2.*",
-    "dg/rss-php": "1.2"
+
   }
 }
