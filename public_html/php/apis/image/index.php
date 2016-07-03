@@ -99,10 +99,9 @@ try {
 					);
 					$suffix = http_build_query($pars, '', '&');
 					$qUrl = $baseUrl . $suffix;
-					echo $qUrl;
 					$query = file_get_contents($qUrl);
-					$queryResult = json_decode($query["photos"]);
-					$maxSol = $queryResult[0]->rover->max_sol;
+					$queryResult = json_decode($query, true);
+					$maxSol = $queryResult["photos"][0]["rover"]["max_sol"];
 
 					// now we make the actual call to retrieve the most recent images
 					$pars = array(
@@ -113,7 +112,8 @@ try {
 					$call = file_get_contents($baseUrl . $suffix);
 					$callResult = json_decode($call, true);
 
-					foreach($callResult->photos->item as $item) {
+					// iterate through json to inspect items
+					foreach($callResult["photos"] as $item) {
 						$imageUrl = $item["img_src"];
 						// check if image already exists locally
 						$duplicate = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
@@ -121,6 +121,7 @@ try {
 							// grab data fields
 							$imageSol = $item["sol"];
 							$camera = $item["camera"]["name"];
+
 							if(strpos($camera, ("MAHLI" || "FHAZ" || "RHAZ" || "NAVCAM"))) {
 								$imageCamera = $camera;
 								$imageEarthDate = $item["earth_date"];
@@ -128,12 +129,16 @@ try {
 								$pattern = '/_(F\w+)_\./';
 								$str = preg_match($pattern, $item["img_src"]);
 								$ext = substr($item["img_src"], -4);
+
 								if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg") {
 									$imageType = "image/jpeg";
+
 								} else continue;
 								$titleStr = print_r($str);
 								$imageTitle = substr($titleStr, 0, -1);
+
 								if($imageTitle !== null) {
+									
 									// resample image @ width: 800px & quality: 90%
 									$w = 800;
 									header('Content-type: image/jpeg');
