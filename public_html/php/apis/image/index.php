@@ -57,19 +57,19 @@ try {
 
 			// check when NASA api was last called
 			$lf = "/var/www/html/conf/last-ran.txt";
-			$time = "";
 
 			function getLastRan($lf) {
+				global $time;
 				$fh = fopen($lf, "r+");
 				$time = fgets($fh);
 				fclose($fh);
 				return $time;
 			}
-
 			getLastRan($lf);
-
+			$now = time();
+			global $time;
 			// proceed only if API not called within last hour (to avoid unnecessary calls & optimize retrieval speed)
-			if((empty($time === true)) || (time() - ($time) > 3600)) {
+			if(($now - $time) > 10) {
 
 
 				// mark the time that the API call is being run
@@ -86,8 +86,8 @@ try {
 				function NasaCall() {
 					$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?";
 					$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
-					$apiKey = $config["authkeys"]->nasa->clientSecret;
-					print_r($apiKey);
+					$json = json_decode($config['authkeys']);
+					$apiKey = $json->nasa->clientSecret;
 					$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 
 					// to get most recent items, we need the highest sol value available
@@ -101,11 +101,16 @@ try {
 					$qUrl = $baseUrl . $suffix;
 					echo $qUrl;
 					$query = file_get_contents($qUrl);
-					$queryResult = json_decode($query, true);
-					$maxSol = $queryResult["photos"][0]->rover->max_sol;
+					$queryResult = json_decode($query["photos"]);
+					$maxSol = $queryResult[0]->rover->max_sol;
 
 					// now we make the actual call to retrieve the most recent images
-					$call = file_get_contents("$baseUrl" . "?sol=" . "$maxSol" . "&api_key=" . "$apiKey");
+					$pars = array(
+						'sol' => $maxSol,
+						'api_key' => $apiKey
+					);
+					$suffix = http_build_query($pars, '', '&');
+					$call = file_get_contents($baseUrl . $suffix);
 					$callResult = json_decode($call, true);
 
 					foreach($callResult->photos->item as $item) {
