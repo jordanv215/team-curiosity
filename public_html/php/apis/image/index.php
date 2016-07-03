@@ -84,15 +84,23 @@ try {
 
 				// grab json with last 25 items (NASA default/maximum per page)
 				function NasaCall() {
-					$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
+					$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?";
 					$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
 					$apiKey = $config["authkeys"]->nasa->clientSecret;
+					print_r($apiKey);
 					$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 
 					// to get most recent items, we need the highest sol value available
 					// initial API call is only for this purpose
 					// please, let there be a better way to do this...
-					$query = file_get_contents($baseUrl . "?sol=0" . "&api_key=" . $apiKey);
+					$pars = array(
+						'sol' => '0',
+						'api_key' => $apiKey
+					);
+					$suffix = http_build_query($pars, '', '&');
+					$qUrl = $baseUrl . $suffix;
+					echo $qUrl;
+					$query = file_get_contents($qUrl);
 					$queryResult = json_decode($query, true);
 					$maxSol = $queryResult["photos"][0]->rover->max_sol;
 
