@@ -115,15 +115,19 @@ try {
 					// iterate through json to inspect items
 					foreach($callResult["photos"] as $item) {
 						$imageUrl = $item["img_src"];
+
 						// check if image already exists locally
 						$duplicate = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
 						if($duplicate === null) {
+							global $camera;
+							global $imageSol;
 							// grab data fields
 							$imageSol = $item["sol"];
 							$camera = $item["camera"]["name"];
-
-							if(strpos($camera, ("MAHLI" || "FHAZ" || "RHAZ" || "NAVCAM"))) {
+							if(strpos($camera, ("MAHLI" || "FHAZ" || "RHAZ" || "NAVCAM" || "MAST")) !== false) {
+								global $imageEarthDate;
 								$imageCamera = $camera;
+								echo $camera;
 								$imageEarthDate = $item["earth_date"];
 								$imageEarthDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($imageEarthDate));
 								$pattern = '/_(F\w+)_\./';
@@ -138,7 +142,7 @@ try {
 								$imageTitle = substr($titleStr, 0, -1);
 
 								if($imageTitle !== null) {
-									
+
 									// resample image @ width: 800px & quality: 90%
 									$w = 800;
 									header('Content-type: image/jpeg');

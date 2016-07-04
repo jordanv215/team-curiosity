@@ -712,7 +712,7 @@ class Image implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $imageUrl image URL to search for
-	 * @return \SplFixedArray SplFixedArray of Images found
+	 * @return Image found or null if none
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
@@ -727,20 +727,19 @@ class Image implements \JsonSerializable {
 		$parameters = array("imageUrl" => $imageUrl);
 		$statement->execute($parameters);
 
-		// build an array of Images
-		$images = new \SplFixedArray(($statement->rowCount()));
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
+		// grab the Image from mySQL
+		try {
+			$image = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
 				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
-				$images[$images->key()] = $image;
-				$images->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($images);
+		return ($image);
 	}
 
 	/**
