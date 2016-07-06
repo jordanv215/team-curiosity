@@ -3,6 +3,7 @@ require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 use Edu\Cnm\TeamCuriosity;
+
 /**
  * api for the NewsArticle class
  *
@@ -63,18 +64,18 @@ try {
 				$thUrl = $item->children("media", "http://search.yahoo.com/mrss/");
 				foreach($thUrl->thumbnail as $thumb) {
 					$image = $thumb->attributes()->url;
-					$images_container[] = (string) $image;
+					$images_container[] = (string)$image;
 				}
-				echo '<pre>' , print_r($newsArticleTitle, true), '<pre>';
-				echo '<pre>' , print_r($newsArticleDate, true), '<pre>';
-				echo '<pre>' , print_r($newsArticleSynopsis, true), '<pre>';
-				echo '<pre>' , print_r($newsArticleUrl, true), '<pre>';
-				echo '<pre>' , print_r($images_container, true), '<pre>';
+				echo '<pre>', print_r($newsArticleTitle, true), '<pre>';
+				echo '<pre>', print_r($newsArticleDate, true), '<pre>';
+				echo '<pre>', print_r($newsArticleSynopsis, true), '<pre>';
+				echo '<pre>', print_r($newsArticleUrl, true), '<pre>';
+				echo '<pre>', print_r($images_container, true), '<pre>';
 
 				//$thumbUrl = ;
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
-					$pattern = '/-(PIA\w+)-/';
+					$pattern = '/-(PIA\w+)-/'; // TODO fix this & generate filenames
 					$str = preg_match($pattern, $thUrl);
 					$ext = substr($thUrl, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
@@ -108,10 +109,10 @@ try {
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagepng($thumb_p, null, 90);
 								break;
-							default:
-								continue;
 						}
+
 						if($_FILES['image']['name']) {
+
 							// store file on disk
 							$savePath = "/var/www/html/media/news-thumbs";
 							$addr = $savePath . "/" . $thumbTitle . $e;
