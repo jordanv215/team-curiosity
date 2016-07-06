@@ -65,6 +65,7 @@ try {
 				fclose($fh);
 				return $time;
 			}
+
 			getLastRan($lf);
 			$now = time();
 			global $time;
@@ -84,6 +85,7 @@ try {
 
 				// grab json with last 25 items (NASA default/maximum per page)
 				function NasaCall() {
+					global $entry;
 					$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?";
 					$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
 					$json = json_decode($config['authkeys']);
@@ -119,13 +121,15 @@ try {
 						// check if image already exists locally
 						$duplicate = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
 						if($duplicate === null) {
-							global $camera;
+							//global $camera;
 							global $imageSol;
 							// grab data fields
 							$imageSol = $item["sol"];
 							$camera = $item["camera"]["name"];
-							if(strpos($camera, ("MAHLI" || "FHAZ" || "RHAZ" || "NAVCAM" || "MAST")) !== false) {
+							$res = strpos("MAHLI FHAZ RHAZ NAVCAM MAST", $camera);
+							if(is_numeric($res)) {
 								global $imageEarthDate;
+								global $camera;
 								$imageCamera = $camera;
 								echo $camera;
 								$imageEarthDate = $item["earth_date"];
@@ -157,6 +161,7 @@ try {
 									imagejpeg($image_p, null, 90);
 
 									if($_FILES['image']['name']) {
+										global $entry;
 										// store file on disk
 										$savePath = "/var/www/html/media";
 										move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
@@ -166,14 +171,23 @@ try {
 										$entry = $this->insert($entry);
 										return $entry;
 
-									} else continue;
+									} else {
+										continue;
+									}
 
+								} else {
+									continue;
+								}
 
-								} else continue;
+							} else {
+								continue;
+							}
+						} else {
+							continue;
+						}
 
-							} else continue;
-						} else continue;
 					}
+					return $entry;
 				}
 
 				NasaCall();
