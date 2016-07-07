@@ -1,8 +1,6 @@
 <?php
 namespace Edu\Cnm\TeamCuriosity;
-
 require_once("Autoload.php");
-
 /**
  * News Article
  *
@@ -101,12 +99,10 @@ class NewsArticle implements \JsonSerializable {
 			$this->newsArticleId = null;
 			return;
 		}
-
 		//verify the newsArticleId is positive
 		if($newNewsArticleId <= 0) {
 			throw(new \RangeException("newsArticleId is not positive"));
 		}
-
 		//convert and store the newsArticleId
 		$this->newsArticleId = $newNewsArticleId;
 	}
@@ -138,7 +134,6 @@ class NewsArticle implements \JsonSerializable {
 		if(strlen($newNewsArticleTitle) > 128) {
 			throw(new \RangeException("newsArticleTitle is too large"));
 		}
-
 		// store the newsArticleTitle;
 		$this->newsArticleTitle = $newNewsArticleTitle;
 	}
@@ -191,7 +186,6 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \RangeException if $newNewsArticleSynopsis is > 256 characters
 	 * @throws \TypeError if $newNewsArticleSynopsis is not a string
 	 **/
-
 	public function setNewsArticleSynopsis(string $newNewsArticleSynopsis) {
 		// verify the newsArticleSynopsis is secure
 		$newNewsArticleSynopsis = trim($newNewsArticleSynopsis);
@@ -203,11 +197,9 @@ class NewsArticle implements \JsonSerializable {
 		if(strlen($newNewsArticleSynopsis) > 256) {
 			throw(new \RangeException("newsArticleSynopsis too large"));
 		}
-
 		// store the newsArticleSynopsis;
 		$this->newsArticleSynopsis = $newNewsArticleSynopsis;
 	}
-
 
 	/**
 	 * accessor method for newsArticleUrl
@@ -226,7 +218,6 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \RangeException if $newNewsArticleUrl is > 256 characters
 	 * @throws \TypeError if $newNewsArticleUrl is not a string
 	 **/
-
 	public
 	function setNewsArticleUrl(string $newNewsArticleUrl) {
 		// verify the newsArticleUrl is secure
@@ -239,10 +230,8 @@ class NewsArticle implements \JsonSerializable {
 		if(strlen($newNewsArticleUrl) > 256) {
 			throw(new \RangeException("newsArticleUrl too large"));
 		}
-
 		// store the newsArticleUrl;
 		$this->newsArticleUrl = $newNewsArticleUrl;
-
 	}
 
 	/**
@@ -262,7 +251,6 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \RangeException if $newNewsArticleThumbPath is > 256 characters
 	 * @throws \TypeError if $newNewsArticleThumbPath is not a string
 	 **/
-
 	public
 	function setNewsArticleThumbPath(string $newNewsArticleThumbPath = null) {
 		// verify the newsArticleThumbPath is secure
@@ -275,12 +263,10 @@ class NewsArticle implements \JsonSerializable {
 		if(strlen($newNewsArticleThumbPath) > 256) {
 			throw(new \RangeException("newsArticleThumbPath too large"));
 		}
-
 		// store the newsArticleUrl;
 		$this->newsArticleUrl = $newNewsArticleThumbPath;
-
 	}
-	
+
 	/**
 	 * inserts this Article into mySQL
 	 *
@@ -293,7 +279,6 @@ class NewsArticle implements \JsonSerializable {
 		if($this->newsArticleId !== null) {
 			throw(new \PDOException("not a new newsArticle"));
 		}
-
 		// create query template
 		$query = "INSERT INTO NewsArticle(newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath) VALUES(:newsArticleTitle, :newsArticleDate, :newsArticleSynopsis, :newsArticleUrl, :newsArticleThumbPath)";
 		$statement = $pdo->prepare($query);
@@ -301,10 +286,8 @@ class NewsArticle implements \JsonSerializable {
 		$formattedDate = $this->newsArticleDate->format("Y-m-d H:i:s");
 		$parameters = ["newsArticleTitle" => $this->newsArticleTitle, "newsArticleDate" => $formattedDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleThumbPath" => $this->newsArticleThumbPath];
 		$statement->execute($parameters);
-
 		// update the null articleId with what mySQL just gave us
 		$this->newsArticleId = intval($pdo->lastInsertId());
-
 	}
 
 	/**
@@ -372,7 +355,6 @@ class NewsArticle implements \JsonSerializable {
 		// create query template
 		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleSynopsis LIKE :newsArticleSynopsis";
 		$statement = $pdo->prepare($query);
-
 		// bind the newsArticleSynopsis to the place holder in the template
 		$newsArticleSynopsis = "%$newsArticleSynopsis%";
 		$parameters = array("newsArticleSynopsis" => $newsArticleSynopsis);
@@ -390,9 +372,7 @@ class NewsArticle implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-
 		return ($newsArticles);
-
 	}
 
 	/**
@@ -409,15 +389,12 @@ class NewsArticle implements \JsonSerializable {
 		if($newsArticleId <= 0) {
 			throw(new \PDOException("Article id is not positive"));
 		}
-
 		// create query template
 		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleId = :newsArticleId";
 		$statement = $pdo->prepare($query);
-
 		// bind the tweet id to the place holder in the template
 		$parameters = array("newsArticleId" => $newsArticleId);
 		$statement->execute($parameters);
-
 		// grab the NewsArticle from mySQL
 		try {
 			$newsArticle = null;
@@ -454,7 +431,6 @@ class NewsArticle implements \JsonSerializable {
 		// create query template
 		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleTitle LIKE :newsArticleTitle";
 		$statement = $pdo->prepare($query);
-
 		// bind the newsArticleTitle to the place holder in the template
 		$newsArticleTitle = "%$newsArticleTitle%";
 		$parameters = array("newsArticleTitle" => $newsArticleTitle);
@@ -472,11 +448,8 @@ class NewsArticle implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-
 		return ($newsArticles);
-
 	}
-
 
 	/**
 	 * gets the newsArticle by newsArticleDate
@@ -496,15 +469,12 @@ class NewsArticle implements \JsonSerializable {
 		} catch(\RangeException $range) {
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
-
 		// create query template
 		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleDate = :newsArticleDate";
 		$statement = $pdo->prepare($query);
-
 		// bind the tweet id to the place holder in the template
 		$parameters = array("newsArticleDate" => $newsArticleDate->format("Y-m-d H:i:s"));
 		$statement->execute($parameters);
-
 		// grab the NewsArticle from mySQL
 		$newsArticles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -518,7 +488,6 @@ class NewsArticle implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-
 		return ($newsArticles);
 	}
 
@@ -533,7 +502,6 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getNewsArticleByNewsArticleUrl(\PDO $pdo, string $newsArticleUrl) {
-
 		// create query template
 		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle WHERE newsArticleUrl = :newsArticleUrl";
 		$statement = $pdo->prepare($query);
@@ -541,7 +509,6 @@ class NewsArticle implements \JsonSerializable {
 		// bind the newsArticleUrl to the place holder in the template
 		$parameters = array("newsArticleUrl" => $newsArticleUrl);
 		$statement->execute($parameters);
-
 		try {
 			$newsArticle = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -553,11 +520,8 @@ class NewsArticle implements \JsonSerializable {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-
 		return ($newsArticle);
-
 	}
-	
 
 	/**
 	 * gets all NewsArticles
@@ -572,7 +536,6 @@ class NewsArticle implements \JsonSerializable {
 		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
-
 		// build an array of NewsArticles
 		$newsArticles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -620,4 +583,3 @@ class NewsArticle implements \JsonSerializable {
 		return ($fields);
 	}
 }
-

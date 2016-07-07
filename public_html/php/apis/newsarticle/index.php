@@ -3,7 +3,6 @@ require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 use Edu\Cnm\TeamCuriosity;
-
 /**
  * api for the NewsArticle class
  *
@@ -52,7 +51,6 @@ try {
 			$data = curl_exec($curl);
 			curl_close($curl);
 			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
-
 			$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 			$images_container = array();
 			foreach($xml->channel->item as $item) {
@@ -66,11 +64,7 @@ try {
 					$image = $thumb->attributes()->url;
 					$images_container[] = (string)$image;
 				}
-				echo '<pre>', print_r($newsArticleTitle, true), '<pre>';
-				echo '<pre>', print_r($newsArticleDate, true), '<pre>';
-				echo '<pre>', print_r($newsArticleSynopsis, true), '<pre>';
-				echo '<pre>', print_r($newsArticleUrl, true), '<pre>';
-				echo '<pre>', print_r($images_container, true), '<pre>';
+				echo '<pre>', print_r($item, true), '<pre>';
 
 				//$thumbUrl = ;
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
@@ -110,9 +104,7 @@ try {
 								imagepng($thumb_p, null, 90);
 								break;
 						}
-
 						if($_FILES['image']['name']) {
-
 							// store file on disk
 							$savePath = "/var/www/html/media/news-thumbs";
 							$addr = $savePath . "/" . $thumbTitle . $e;
@@ -217,10 +209,8 @@ try {
 	$reply->status = $typeError->getCode();
 	$reply->message = $typeError->getMessage();
 }
-
 if($reply->data === null) {
 	unset($reply->data);
 }
 // encode and return reply to front end caller
 echo json_encode($reply);
-
