@@ -57,19 +57,15 @@ try {
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = (string)$item->title;
 				$newsArticleDate = (string)$item->pubDate;
-				$newsArticleSynopsis = (string)$item->children("media", "http://search.yahoo.com/mrss/")->description;
+				$newsArticleSynopsis = (string)$item->children("media", true)->description;
 				$newsArticleUrl = (string)$item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
-				$wat = $item->children("media", "http://search.yahoo.com/mrss/");
+				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url[0];
 
-				$thUrl = (string)$wat->thumbnail->attributes()->url[0];
+				echo '<pre>', print_r($newsArticleSynopsis, true), '</pre>';
+				echo '<pre>', print_r($urlString, true), '</pre>';
 
-				//echo '<pre>', print_r($newsArticleTitle, true), '<pre>';
-				//echo '<pre>', print_r($newsArticleDate, true), '<pre>';
-				//echo '<pre>', print_r($newsArticleSynopsis, true), '<pre>';
-				//echo '<pre>', print_r($newsArticleUrl, true), '<pre>';
-				echo '<pre>', print_r($thUrl, true), '<pre>';
-				
+
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
 					$ext = substr($thUrl, -4);
