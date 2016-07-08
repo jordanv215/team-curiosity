@@ -57,9 +57,9 @@ try {
 				$newsArticleTitle = (string) $item->title;
 				$newsArticleDate = (string) $item->pubDate;
 				$newsArticleSynopsis = (string) $item->children("media", "http://search.yahoo.com/mrss/")->description;
-				$thUrl = $item->children("media", "http://search.yahoo.com/mrss/");
 				$newsArticleUrl = (string) $item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
+				$thUrl = $item->children("media", "http://search.yahoo.com/mrss/");
 				foreach($thUrl->thumbnail as $thumb) {
 					$image = $thumb->attributes()->url;
 					$images_container[] = (string)$image;
