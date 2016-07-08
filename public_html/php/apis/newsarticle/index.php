@@ -60,14 +60,16 @@ try {
 				$newsArticleSynopsis = (string)$item->children("media", "http://search.yahoo.com/mrss/")->description;
 				$newsArticleUrl = (string)$item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
-				$thUrl = $item->children("media", "http://search.yahoo.com/mrss/");
-				foreach($thUrl->thumbnail as $thumb) {
-					$image = $thumb->attributes()->url;
-					$images_container[] = (string)$image;
-				}
-				echo '<pre>', print_r($item, true), '<pre>';
+				$wat = $item->children("media", "http://search.yahoo.com/mrss/");
 
-				//$thumbUrl = ;
+				$thUrl = (string)$wat->thumbnail->attributes()->url[0];
+
+				//echo '<pre>', print_r($newsArticleTitle, true), '<pre>';
+				//echo '<pre>', print_r($newsArticleDate, true), '<pre>';
+				//echo '<pre>', print_r($newsArticleSynopsis, true), '<pre>';
+				//echo '<pre>', print_r($newsArticleUrl, true), '<pre>';
+				echo '<pre>', print_r($thUrl, true), '<pre>';
+				
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
 					$ext = substr($thUrl, -4);
