@@ -3,6 +3,7 @@ require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 use Edu\Cnm\TeamCuriosity;
+
 /**
  * api for the NewsArticle class
  *
@@ -54,10 +55,10 @@ try {
 			$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 			$images_container = array();
 			foreach($xml->channel->item as $item) {
-				$newsArticleTitle = $item->title;
-				$newsArticleDate = $item->pubDate;
-				$newsArticleSynopsis = $item->children("media", "http://search.yahoo.com/mrss/")->description;
-				$newsArticleUrl = $item->link;
+				$newsArticleTitle = (string)$item->title;
+				$newsArticleDate = (string)$item->pubDate;
+				$newsArticleSynopsis = (string)$item->children("media", "http://search.yahoo.com/mrss/")->description;
+				$newsArticleUrl = (string)$item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
 				$thUrl = $item->children("media", "http://search.yahoo.com/mrss/");
 				foreach($thUrl->thumbnail as $thumb) {
@@ -69,12 +70,9 @@ try {
 				//$thumbUrl = ;
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
-					$pattern = '/-(PIA\w+)-/'; // TODO fix this & generate filenames
-					$str = preg_match($pattern, $thUrl);
 					$ext = substr($thUrl, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
-						$thumbStr = print_r($str[0]);
-						$thumbTitle = substr($thumbStr, 1, -1);
+						$thumbTitle = md5($thUrl);
 						$w = 400;
 						header('Content-type: image/jpeg');
 						list($width, $height) = getimagesize($thUrl);
