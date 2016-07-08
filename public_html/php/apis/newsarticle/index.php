@@ -3,7 +3,6 @@ require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 use Edu\Cnm\TeamCuriosity;
-
 /**
  * api for the NewsArticle class
  *
@@ -55,16 +54,17 @@ try {
 			$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 			$images_container = array();
 			foreach($xml->channel->item as $item) {
-				$newsArticleTitle = (string)$item->title;
-				$newsArticleDate = (string)$item->pubDate;
-				$newsArticleSynopsis = (string)$item->children("media", true)->description;
-				$newsArticleUrl = (string)$item->link;
+				$newsArticleTitle = (string) $item->title;
+				$newsArticleDate = (string) $item->pubDate;
+				$newsArticleSynopsis = (string) $item->children("media", "http://search.yahoo.com/mrss/")->description;
+				$thUrl = $item->children("media", "http://search.yahoo.com/mrss/");
+				$newsArticleUrl = (string) $item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
-				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url[0];
-
-				echo '<pre>', print_r($newsArticleSynopsis, true), '</pre>';
-				echo '<pre>', print_r($urlString, true), '</pre>';
-
+				foreach($thUrl->thumbnail as $thumb) {
+					$image = $thumb->attributes()->url;
+					$images_container[] = (string)$image;
+				}
+				echo '<pre>', print_r($item, true), '<pre>';
 
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
