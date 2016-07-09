@@ -3,6 +3,7 @@ require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 use Edu\Cnm\TeamCuriosity;
+
 /**
  * api for the NewsArticle class
  *
@@ -54,26 +55,25 @@ try {
 			$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 			$images_container = array();
 			foreach($xml->channel->item as $item) {
-				$newsArticleTitle = (string) $item->title;
-				$newsArticleDate = (string) $item->pubDate;
-				$newsArticleSynopsis = (string) $item->children("media", "http://search.yahoo.com/mrss/")->description;
-				$newsArticleUrl = (string) $item->link;
+				$newsArticleTitle = (string)$item->title;
+				$newsArticleDate = (string)$item->pubDate;
+				$newsArticleSynopsis = (string)$item->children("media", true)->description;
+				$newsArticleUrl = (string)$item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
-				$thUrl = $item->children("media", "http://search.yahoo.com/mrss/");
-				foreach($thUrl->thumbnail as $thumb) {
-					$image = $thumb->attributes()->url;
-					$images_container[] = (string)$image;
-				}
-				echo '<pre>', print_r($item, true), '<pre>';
+				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url[0];
+
+				echo '<pre>', print_r($newsArticleSynopsis, true), '</pre>';
+				echo '<pre>', print_r($urlString, true), '</pre>';
+
 
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
-					$ext = substr($thUrl, -4);
+					$ext = substr($urlString, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
-						$thumbTitle = md5($thUrl);
+						$thumbTitle = md5($urlString);
 						$w = 400;
 						header('Content-type: image/jpeg');
-						list($width, $height) = getimagesize($thUrl);
+						list($width, $height) = getimagesize($urlString);
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
@@ -81,21 +81,21 @@ try {
 							case (".JPG" || ".jpg" || ".JPEG" || ".jpeg"):
 								$e = ".jpg";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefromjpeg($thUrl);
+								$thumb = imagecreatefromjpeg($urlString);
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagejpeg($thumb_p, null, 90);
 								break;
 							case (".GIF" || ".gif"):
 								$e = ".gif";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefromgif($thUrl);
+								$thumb = imagecreatefromgif($urlString);
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagegif($thumb_p, null);
 								break;
 							case (".PNG" || ".png"):
 								$e = ".png";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefrompng($thUrl);
+								$thumb = imagecreatefrompng($urlString);
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagepng($thumb_p, null, 90);
 								break;
@@ -115,6 +115,7 @@ try {
 			}
 			// grab 25 most recent articles from table
 			$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
+
 		} else if(empty($newsArticleId) === false) {
 			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle !== null) {
@@ -177,7 +178,7 @@ try {
 				throw(new \InvalidArgumentException ("No NewsArticle ID.", 405));
 			}
 			// create new newsArticle and insert into the database
-			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->newsArticleTitle, null, $requestObject->newsArticleSynopsis, $requestObject->newsArticleUrl);
+			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->newsArticleTitle, $requestObject->newsArticleDate, $requestObject->newsArticleSynopsis, $requestObject->newsArticleUrl, $requestObject->newsArticleThumbPath);
 			$newsArticle->insert($pdo);
 			// update reply
 			$reply->message = "NewsArticle created OK";
