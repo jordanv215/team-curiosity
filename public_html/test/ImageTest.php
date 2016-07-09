@@ -1,7 +1,9 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{Image};
+use Redrovr\TeamCuriosity\{
+	Image
+};
 
 // grab the test parameters
 require_once("./TeamCuriosityTest.php");
@@ -232,7 +234,7 @@ class ImageTest extends TeamCuriosityTest {
 		$results = Image::getImageByImageCamera($this->getPDO(), $image->getImageCamera());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
@@ -263,7 +265,7 @@ class ImageTest extends TeamCuriosityTest {
 		$results = Image::getImageByImageDescription($this->getPDO(), $image->getImageDescription());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
@@ -293,7 +295,7 @@ class ImageTest extends TeamCuriosityTest {
 		$results = Image::getImagesByImageEarthDate($this->getPDO(), $image->getImageEarthDate());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
 		$pdoImages = Image::getImagesByImageEarthDate($this->getPDO(), $image->getImageEarthDate());
@@ -327,7 +329,7 @@ class ImageTest extends TeamCuriosityTest {
 		$results = Image::getImagesByImageSol($this->getPDO(), $image->getImageSol());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
@@ -358,7 +360,7 @@ class ImageTest extends TeamCuriosityTest {
 		$results = Image::getImageByImageTitle($this->getPDO(), $image->getImageTitle());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];
@@ -389,7 +391,7 @@ class ImageTest extends TeamCuriosityTest {
 		$results = Image::getAllImages($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("Image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\Image", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\Image", $results);
 
 		// grab the result from the array and validate it
 		$pdoImage = $results[0];

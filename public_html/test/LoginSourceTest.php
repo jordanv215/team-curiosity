@@ -1,7 +1,9 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{LoginSource};
+use Redrovr\TeamCuriosity\{
+	LoginSource
+};
 
 // grab the test parameters
 require_once("./TeamCuriosityTest.php");
@@ -161,7 +163,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$results = LoginSource::getLoginSourceByLoginSourceProvider($this->getPDO(), $loginSource->getLoginSourceProvider());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\LoginSource", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\LoginSource", $results);
 
 		// grab the login source from the array and validate it
 		$pdoLoginSource = $results[0];
@@ -194,7 +196,7 @@ class LoginSourceTest extends TeamCuriosityTest {
 		$results = LoginSource::getAllLoginSources($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("LoginSource"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\LoginSource", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\LoginSource", $results);
 		
 		// grab result from array and validate it
 		$pdoLoginSource = $results [0];

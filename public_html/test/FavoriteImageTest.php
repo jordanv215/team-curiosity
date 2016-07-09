@@ -1,8 +1,8 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{
-	LoginSource, Image, User, FavoriteImage
+use Redrovr\TeamCuriosity\{
+	FavoriteImage, Image, LoginSource, User
 };
 
 
@@ -164,7 +164,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		$results = FavoriteImage::getFavoriteImageByFavoriteImageImageId($this->getPDO(), $favoriteImage->getFavoriteImageImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\FavoriteImage", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\FavoriteImage", $results);
 
 
 		// grab the result from the array and validate it
@@ -193,7 +193,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		$results = FavoriteImage::getFavoriteImageByFavoriteImageUserId($this->getPDO(), $favoriteImage->getFavoriteImageUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\FavoriteImage", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\FavoriteImage", $results);
 
 
 		// grab the result from the array and validate it
@@ -218,7 +218,7 @@ class FavoriteImageTest extends TeamCuriosityTest {
 		$results = FavoriteImage::getAllFavoriteImages($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteImage"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\FavoriteImage", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\FavoriteImage", $results);
 
 		//grab the result from the array and validate it
 		$pdoFavoriteImage = $results[0];

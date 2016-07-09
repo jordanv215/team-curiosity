@@ -4,7 +4,7 @@ require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 
-use Edu\Cnm\TeamCuriosity\Image;
+use Redrovr\TeamCuriosity\Image;
 
 
 /**
@@ -119,7 +119,7 @@ try {
 						$imageUrl = $item["img_src"];
 
 						// check if image already exists locally
-						$duplicate = \Edu\Cnm\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
+						$duplicate = Redrovr\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
 						if($duplicate === null) {
 							//global $camera;
 							global $imageSol;
@@ -167,7 +167,7 @@ try {
 										move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
 										// add to database
 										$imagePath = $savePath . "/" . $imageTitle . "jpg";
-										$entry = new \Edu\Cnm\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
+										$entry = new \Redrovr\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
 										$entry = $this->insert($entry);
 										return $entry;
 
@@ -284,7 +284,7 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the Image to update
-			$image = Edu\Cnm\TeamCuriosity\Image::getImageByImageId($pdo, $imageId);
+			$image = Redrovr\TeamCuriosity\Image::getImageByImageId($pdo, $imageId);
 			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
 			}

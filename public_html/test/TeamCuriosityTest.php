@@ -1,8 +1,8 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
 // grab the encrypted properties file
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 
 /**
  * Abstract class containing universal and project specific mySQL parameters
@@ -87,8 +87,8 @@ abstract class TeamCuriosityTest extends \PHPUnit_Extensions_Database_TestCase {
 		// if the connection hasn't been established, create it
 		if($this->connection === null) {
 			// connect to mySQL and provide the interface to PHPUnit
-			$config = readConfig("/etc/apache2/capstone-mysql/mars.ini");
-			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/mars.ini");
+			$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
+			$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 			$this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 		}
 		return ($this->connection);

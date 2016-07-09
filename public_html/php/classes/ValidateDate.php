@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity;
+namespace Redrovr\TeamCuriosity;
 
 /**
  * Trait to Validate a mySQL Date

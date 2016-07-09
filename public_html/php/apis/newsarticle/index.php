@@ -2,7 +2,7 @@
 require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
-use Edu\Cnm\TeamCuriosity;
+use Redrovr\TeamCuriosity;
 
 /**
  * api for the NewsArticle class
@@ -62,7 +62,7 @@ try {
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
 				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url[0];
 
-				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
+				$news = Redrovr\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
 					$ext = substr($urlString, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
@@ -112,7 +112,7 @@ try {
 				} else continue;
 			}
 			// grab 25 most recent articles from table
-			$reply->data = \Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
+			$reply->data = \Redrovr\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
 
 		} else if(empty($newsArticleId) === false) {
 			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);

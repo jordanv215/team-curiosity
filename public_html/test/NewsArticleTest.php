@@ -1,8 +1,9 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{NewsArticle};
-use MongoDB\BSON\Type;
+use Redrovr\TeamCuriosity\{
+	NewsArticle
+};
 
 // grab the project test parameters
 require_once("TeamCuriosityTest.php");
@@ -195,7 +196,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$results = NewsArticle::getNewsArticleByNewsArticleSynopsis($this->getPDO(), $newsArticle->getNewsArticleSynopsis());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("NewsArticle"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\NewsArticle", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\NewsArticle", $results);
 
 		// grab the result from the array and validate it
 		$pdoNewsArticle = $results[0];
@@ -230,7 +231,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$results = NewsArticle::getNewsArticleByNewsArticleDate($this->getPDO(), $newsArticle->getNewsArticleDate());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("NewsArticle"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\NewsArticle", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\NewsArticle", $results);
 
 		// grab the result from the array and validate it
 		$pdoNewsArticle = $results[0];
@@ -267,7 +268,7 @@ class NewsArticleTest extends TeamCuriosityTest {
 		$results = NewsArticle::getAllNewsArticles($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("NewsArticle"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\NewsArticle", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\NewsArticle", $results);
 
 		// grab the result from the array and validate it
 		$pdoNewsArticle = $results[0];

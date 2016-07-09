@@ -1,7 +1,7 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{
+use Redrovr\TeamCuriosity\{
 	CommentNewsArticle, LoginSource, NewsArticle, User
 };
 
@@ -204,7 +204,7 @@ public function testGetValidCommentNewsArticleByCommentNewsArticleContent() {
 	$results = CommentNewsArticle::getCommentNewsArticleContentByCommentNewsArticleContent($this->getPDO(), $commentNewsArticle->getCommentNewsArticleContent());
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentNewsArticle"));
 	$this->assertCount(1, $results);
-	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentNewsArticle",$results);
+	$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\CommentNewsArticle",$results);
 
 
 	// grab the result from the array and validate it
@@ -242,7 +242,7 @@ public function testGetAllValidCommentNewsArticles() {
 	$results = CommentNewsArticle::getAllCommentNewsArticles($this->getPDO());
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentNewsArticle"));
 	$this->assertCount(1, $results);
-	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentNewsArticle",$results);
+	$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\CommentNewsArticle",$results);
 
 	// grab the result from the array and validate it
 	$pdoCommentNewsArticle = $results[0];

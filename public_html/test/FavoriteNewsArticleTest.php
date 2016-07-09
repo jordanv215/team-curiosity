@@ -1,7 +1,9 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{LoginSource, User, NewsArticle, FavoriteNewsArticle};
+use Redrovr\TeamCuriosity\{
+	FavoriteNewsArticle, LoginSource, NewsArticle, User
+};
 
 // grab the project test parameters
 require_once("TeamCuriosityTest.php");
@@ -153,7 +155,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$results = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleNewsArticleId($this->getPDO(),$favoriteNewsArticle->getFavoriteNewsArticleNewsArticleId(), $favoriteNewsArticle->getFavoriteNewsArticleUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteNewsArticle"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\FavoriteNewsArticle", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\FavoriteNewsArticle", $results);
 
 		// grab the results from the array and validate it
 		$pdoFavoriteNewsArticle = $results[0];
@@ -176,7 +178,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$results = FavoriteNewsArticle::getFavoriteNewsArticleByFavoriteNewsArticleUserId($this->getPDO(), $favoriteNewsArticle->getFavoriteNewsArticleUserId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteNewsArticle"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\FavoriteNewsArticle", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\FavoriteNewsArticle", $results);
 
 		// grab the results from the array and validate it
 		$pdoFavoriteNewsArticle = $results[0];
@@ -200,7 +202,7 @@ class FavoriteNewsArticleTest extends TeamCuriosityTest {
 		$results = FavoriteNewsArticle::getAllFavoriteNewsArticles($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("FavoriteNewsArticle"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\FavoriteNewsArticle", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\FavoriteNewsArticle", $results);
 
 		//grab the result from the array and validate it
 		$pdoFavoriteNewsArticle = $results[0];

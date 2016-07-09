@@ -5,7 +5,7 @@ require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 
 
-use Edu\Cnm\TeamCuriosity\CommentImage;
+use Redrovr\TeamCuriosity\CommentImage;
 
 
 /**
@@ -90,7 +90,7 @@ try {
 		if($method === "PUT") {
 
 			// retrieve the commentImage to update
-			$commentImage = Edu\Cnm\TeamCuriosity\CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
+			$commentImage = Redrovr\TeamCuriosity\CommentImage::getCommentImageByCommentImageId($pdo, $commentImageId);
 			if($commentImage === null) {
 				throw(new RuntimeException("Image comment does not exist", 404));
 			}
@@ -113,7 +113,7 @@ try {
 			}
 
 			//create new image comment and insert into the database
-			$commentImage = new Edu\Cnm\TeamCuriosity\CommentImage(null, $requestObject->commentImageContent, null, $requestObject->commentImageImageId, $requestObject->commentImageUserId);
+			$commentImage = new Redrovr\TeamCuriosity\CommentImage(null, $requestObject->commentImageContent, null, $requestObject->commentImageImageId, $requestObject->commentImageUserId);
 			$commentImage->insert($pdo);
 
 			//update reply

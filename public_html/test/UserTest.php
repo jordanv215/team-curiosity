@@ -1,7 +1,9 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{User, LoginSource};
+use Redrovr\TeamCuriosity\{
+	LoginSource, User
+};
 
 // grab test parameters
 require_once("TeamCuriosityTest.php");
@@ -194,7 +196,7 @@ class UserTest extends TeamCuriosityTest {
 		$results = User::getAllUsers($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("User"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\User", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\User", $results);
 
 		// grab the result from the array and validate it
 		$pdoUser = $results[0];

@@ -1,8 +1,8 @@
 <?php
-namespace Edu\Cnm\TeamCuriosity\Test;
+namespace Redrovr\TeamCuriosity\Test;
 
-use Edu\Cnm\TeamCuriosity\{
-	LoginSource, User, Image, CommentImage
+use Redrovr\TeamCuriosity\{
+	CommentImage, Image, LoginSource, User
 };
 
 // grab the test parameters
@@ -245,7 +245,7 @@ class CommentImageTest extends TeamCuriosityTest {
 		$results = CommentImage::getCommentImageByCommentImageContent($this->getPDO(), $commentImage->getCommentImageContent());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentImage"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentImage", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\CommentImage", $results);
 
 		// grab the result from the array and validate it
 		$pdoCommentImage = $results[0];
@@ -320,7 +320,7 @@ class CommentImageTest extends TeamCuriosityTest {
 		$results = CommentImage::getAllCommentImage($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("CommentImage"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\TeamCuriosity\\CommentImage", $results);
+		$this->assertContainsOnlyInstancesOf("Redrovr\\TeamCuriosity\\CommentImage", $results);
 
 		// grab the result from the array and validate it
 		$pdoCommentImage = $results[0];
