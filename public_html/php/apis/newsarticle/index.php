@@ -52,8 +52,8 @@ try {
 			$data = curl_exec($curl);
 			curl_close($curl);
 			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
+			$xml->channel->item->children("http://search.yahoo.com/mrss/");
 			$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
-			$images_container = array();
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = (string)$item->title;
 				$newsArticleDate = (string)$item->pubDate;
