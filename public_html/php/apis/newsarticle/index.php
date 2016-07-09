@@ -41,12 +41,12 @@ try {
 		//get a specific NewsArticle, multiple NewsArticles, or all NewsArticles, and update reply
 		if(isset($_GET["top25"]) === true) {
 			$curl = curl_init();
-			curl_setopt_array($curl, Array(
+			curl_setopt_array($curl, array(
 				CURLOPT_URL => 'http://mars.nasa.gov/rss/news.cfm?s=msl',
 				CURLOPT_USERAGENT => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
 				CURLOPT_TIMEOUT => 120,
 				CURLOPT_CONNECTTIMEOUT => 30,
-				CURLOPT_RETURNTRANSFER => TRUE,
+				CURLOPT_RETURNTRANSFER => true,
 				CURLOPT_ENCODING => 'UTF-8'
 			));
 			$data = curl_exec($curl);
@@ -62,23 +62,19 @@ try {
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
 				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url[0];
 
-				echo '<pre>', print_r($newsArticleSynopsis, true), '</pre>';
-				echo '<pre>', print_r($urlString, true), '</pre>';
-
-
 				$news = Edu\Cnm\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
 					$ext = substr($urlString, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
 						$thumbTitle = md5($urlString);
 						$w = 400;
-						header('Content-type: image/jpeg');
 						list($width, $height) = getimagesize($urlString);
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
 						switch($ext) {
-							case (".JPG" || ".jpg" || ".JPEG" || ".jpeg"):
+							case (".JPG" || ".jpg" || "JPEG" || "jpeg"):
+								header('Content-type: image/jpeg');
 								$e = ".jpg";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 								$thumb = imagecreatefromjpeg($urlString);
@@ -86,6 +82,7 @@ try {
 								imagejpeg($thumb_p, null, 90);
 								break;
 							case (".GIF" || ".gif"):
+								header('Content-type: image/gif');
 								$e = ".gif";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 								$thumb = imagecreatefromgif($urlString);
@@ -93,6 +90,7 @@ try {
 								imagegif($thumb_p, null);
 								break;
 							case (".PNG" || ".png"):
+								header('Content-type: image/png');
 								$e = ".png";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 								$thumb = imagecreatefrompng($urlString);
