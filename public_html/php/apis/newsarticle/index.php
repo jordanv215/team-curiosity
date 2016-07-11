@@ -2,7 +2,7 @@
 require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
-use Redrovr\TeamCuriosity;
+use Redrovr\TeamCuriosity\NewsArticle;
 
 /**
  * api for the NewsArticle class
@@ -97,7 +97,9 @@ try {
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagepng($thumb_p, null, 90);
 								break;
+							default: continue;
 						}
+						print_r($_FILES['image']['name']);
 						if($_FILES['image']['name']) {
 							// store file on disk
 							$savePath = "/var/www/html/media/news-thumbs";
@@ -105,43 +107,43 @@ try {
 							move_uploaded_file($_FILES['image']['tmp_name'], $addr);
 							// add to database
 							$newsArticleThumbPath = $addr;
-							$newsArticle = new TeamCuriosity\NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
+							$newsArticle = new NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
 							$newsArticle->insert($pdo);
 						} else continue;
 					} else continue;
 				} else continue;
 			}
 			// grab 25 most recent articles from table
-			$reply->data = \Redrovr\TeamCuriosity\NewsArticle::getNewsArticles($pdo);
+			$reply->data = NewsArticle::getNewsArticles($pdo);
 
 		} else if(empty($newsArticleId) === false) {
-			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
+			$newsArticle = NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle !== null) {
 				$reply->data = $newsArticle;
 			}
 		} else if(empty($newsArticleTitle) === false) {
-			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleTitle($pdo, $newsArticleTitle);
+			$newsArticles = NewsArticle::getNewsArticleByNewsArticleTitle($pdo, $newsArticleTitle);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
 		} else if(empty($newsArticleDate) === false) {
 			$actualDate = DateTime::createFromFormat("U", $newsArticleDate / 1000);
-			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleDate($pdo, $actualDate);
+			$newsArticles = NewsArticle::getNewsArticleByNewsArticleDate($pdo, $actualDate);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
 		} else if(empty($newsArticleSynopsis) === false) {
-			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleSynopsis($pdo, $newsArticleSynopsis);
+			$newsArticles = NewsArticle::getNewsArticleByNewsArticleSynopsis($pdo, $newsArticleSynopsis);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
 		} else if(empty($newsArticleUrl) === false) {
-			$newsArticles = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
+			$newsArticles = NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
 		} else {
-			$newsArticles = TeamCuriosity\NewsArticle::getAllNewsArticles($pdo);
+			$newsArticles = NewsArticle::getAllNewsArticles($pdo);
 			if($newsArticles !== null) {
 				$reply->data = $newsArticles;
 			}
@@ -157,7 +159,7 @@ try {
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the newsArticle to update
-			$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
+			$newsArticle = NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle === null) {
 				throw(new RuntimeException("NewsArticle does not exist", 404));
 			}
@@ -176,7 +178,7 @@ try {
 				throw(new \InvalidArgumentException ("No NewsArticle ID.", 405));
 			}
 			// create new newsArticle and insert into the database
-			$newsArticle = new TeamCuriosity\NewsArticle(null, $requestObject->newsArticleTitle, $requestObject->newsArticleDate, $requestObject->newsArticleSynopsis, $requestObject->newsArticleUrl, $requestObject->newsArticleThumbPath);
+			$newsArticle = new NewsArticle(null, $requestObject->newsArticleTitle, $requestObject->newsArticleDate, $requestObject->newsArticleSynopsis, $requestObject->newsArticleUrl, $requestObject->newsArticleThumbPath);
 			$newsArticle->insert($pdo);
 			// update reply
 			$reply->message = "NewsArticle created OK";
@@ -184,7 +186,7 @@ try {
 	} else if($method === "DELETE") {
 		verifyXsrf();
 		// retrieve the newsArticle to be deleted
-		$newsArticle = TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
+		$newsArticle = NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 		if($newsArticle === null) {
 			throw(new RuntimeException("NewsArticle does not exist", 404));
 		}
