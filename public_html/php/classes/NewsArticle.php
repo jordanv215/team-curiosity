@@ -40,7 +40,6 @@ class NewsArticle implements \JsonSerializable {
 	 * @var string $newsArticleThumbPath
 	 **/
 	private $newsArticleThumbPath;
-
 	/**
 	 * constructor for this NewsArticle
 	 * @param int|null $newNewsArticleId id of this NewsArticle or Null if a new NewsArticle
@@ -76,7 +75,6 @@ class NewsArticle implements \JsonSerializable {
 			throw(new \Exception($exception->getMessage(), 0, $exception));
 		}
 	}
-
 	/**
 	 * accessor method for newsArticleId
 	 *
@@ -85,7 +83,6 @@ class NewsArticle implements \JsonSerializable {
 	public function getNewsArticleId() {
 		return ($this->newsArticleId);
 	}
-
 	/**
 	 * mutator method for newsArticleId
 	 *
@@ -106,7 +103,6 @@ class NewsArticle implements \JsonSerializable {
 		//convert and store the newsArticleId
 		$this->newsArticleId = $newNewsArticleId;
 	}
-
 	/**
 	 * accessor method for newsArticleTitle
 	 *
@@ -115,7 +111,6 @@ class NewsArticle implements \JsonSerializable {
 	public function getNewsArticleTitle() {
 		return ($this->newsArticleTitle);
 	}
-
 	/**
 	 * mutator method for newsArticleTitle
 	 * @param string $newNewsArticleTitle
@@ -137,7 +132,6 @@ class NewsArticle implements \JsonSerializable {
 		// store the newsArticleTitle;
 		$this->newsArticleTitle = $newNewsArticleTitle;
 	}
-
 	/**
 	 * accessor method for newsArticleDate
 	 *
@@ -146,7 +140,6 @@ class NewsArticle implements \JsonSerializable {
 	public function getNewsArticleDate() {
 		return ($this->newsArticleDate);
 	}
-
 	/**
 	 * mutator method for newsArticleDate
 	 * @param \DateTime|string|null $newNewsArticleDate newsArticleDate as a DateTime object or string (or null to load the current time)
@@ -169,7 +162,6 @@ class NewsArticle implements \JsonSerializable {
 		}
 		$this->newsArticleDate = $newNewsArticleDate;
 	}
-
 	/**
 	 * accessor method for newsArticleSynopsis
 	 *
@@ -178,7 +170,6 @@ class NewsArticle implements \JsonSerializable {
 	public function getNewsArticleSynopsis() {
 		return ($this->newsArticleSynopsis);
 	}
-
 	/**
 	 * mutator method for newsArticleSynopsis
 	 * @param string $newNewsArticleSynopsis new value of News Article Synopsis
@@ -200,7 +191,6 @@ class NewsArticle implements \JsonSerializable {
 		// store the newsArticleSynopsis;
 		$this->newsArticleSynopsis = $newNewsArticleSynopsis;
 	}
-
 	/**
 	 * accessor method for newsArticleUrl
 	 *
@@ -210,7 +200,6 @@ class NewsArticle implements \JsonSerializable {
 	function getNewsArticleUrl() {
 		return ($this->newsArticleUrl);
 	}
-
 	/**
 	 * mutator method for newsArticleUrl
 	 * @param string $newNewsArticleUrl new value of newsArticleUrl
@@ -233,7 +222,6 @@ class NewsArticle implements \JsonSerializable {
 		// store the newsArticleUrl;
 		$this->newsArticleUrl = $newNewsArticleUrl;
 	}
-
 	/**
 	 * accessor method for newsArticleThumbPath
 	 *
@@ -243,7 +231,6 @@ class NewsArticle implements \JsonSerializable {
 	function getNewsArticleThumbPath() {
 		return ($this->newsArticleThumbPath);
 	}
-
 	/**
 	 * mutator method for newsArticleThumbPath
 	 * @param string $newNewsArticleThumbPath new value of newsArticleThumbPath
@@ -266,7 +253,6 @@ class NewsArticle implements \JsonSerializable {
 		// store the newsArticleUrl;
 		$this->newsArticleUrl = $newNewsArticleThumbPath;
 	}
-
 	/**
 	 * inserts this Article into mySQL
 	 *
@@ -289,7 +275,6 @@ class NewsArticle implements \JsonSerializable {
 		// update the null articleId with what mySQL just gave us
 		$this->newsArticleId = intval($pdo->lastInsertId());
 	}
-
 	/**
 	 * deletes this Article from mySQL
 	 *
@@ -310,7 +295,6 @@ class NewsArticle implements \JsonSerializable {
 		$parameters = ["newsArticleId" => $this->newsArticleId];
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * updates this NewsArticle in mySQL
 	 *
@@ -333,7 +317,6 @@ class NewsArticle implements \JsonSerializable {
 		$parameters = ["newsArticleTitle" => $this->newsArticleTitle, "newsArticleDate" => $formattedDate, "newsArticleSynopsis" => $this->newsArticleSynopsis, "newsArticleUrl" => $this->newsArticleUrl, "newsArticleThumbPath" => $this->newsArticleThumbPath];
 		$statement->execute($parameters);
 	}
-
 	/**
 	 * gets the NewsArticle by Synopsis
 	 *
@@ -374,7 +357,6 @@ class NewsArticle implements \JsonSerializable {
 		}
 		return ($newsArticles);
 	}
-
 	/**
 	 * gets the newsArticle by newsArticleId
 	 *
@@ -409,7 +391,6 @@ class NewsArticle implements \JsonSerializable {
 		}
 		return ($newsArticle);
 	}
-
 	/**
 	 * gets the NewsArticle by Title
 	 *
@@ -450,7 +431,6 @@ class NewsArticle implements \JsonSerializable {
 		}
 		return ($newsArticles);
 	}
-
 	/**
 	 * gets the newsArticle by newsArticleDate
 	 *
@@ -490,7 +470,6 @@ class NewsArticle implements \JsonSerializable {
 		}
 		return ($newsArticles);
 	}
-
 	/**
 	 * gets the NewsArticle by URL
 	 * sanitization unnecessary because this method is strictly internal
@@ -522,7 +501,6 @@ class NewsArticle implements \JsonSerializable {
 		}
 		return ($newsArticle);
 	}
-
 	/**
 	 * gets all NewsArticles
 	 *
@@ -551,7 +529,6 @@ class NewsArticle implements \JsonSerializable {
 		}
 		return ($newsArticles);
 	}
-
 	public static function getNewsArticles(\PDO $pdo) {
 		$query = "SELECT newsArticleId, newsArticleTitle, newsArticleDate, newsArticleSynopsis, newsArticleUrl, newsArticleThumbPath FROM NewsArticle ORDER BY newsArticleDate DESC LIMIT 25";
 		$statement = $pdo->prepare($query);
@@ -571,7 +548,6 @@ class NewsArticle implements \JsonSerializable {
 		}
 		return ($newsArticles);
 	}
-
 	/**
 	 * formats the state variables for JSON serialization
 	 *

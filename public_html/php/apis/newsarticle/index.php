@@ -61,7 +61,6 @@ try {
 				$newsArticleUrl = (string)$item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
 				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url[0];
-
 				$news = Redrovr\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
 					$ext = substr($urlString, -4);
