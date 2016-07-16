@@ -67,27 +67,33 @@ try {
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
 						$thumbTitle = md5($urlString);
 						$w = 400;
-						$imgOrig = file_get_contents($urlString);
+						$h = fopen($urlString, 'r');
+						if($h) {
+							while(!feof($h)) {
+								$imgOrig .= fgets($h);
+							}
+							fclose($h);
+						}
+						global $imgOrig;
 						list($width, $height) = getimagesize($imgOrig);
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
-						var_dump($_POST);
+
 						switch($ext) {
-							/*case (".JPG" || ".jpg" || "JPEG" || "jpeg"):
+							case (".JPG" || ".jpg" || "JPEG" || "jpeg"):
 								header('Content-type: image/jpeg');
 								$e = ".jpg";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefromjpeg($_FILES['image']['tmp_name']);
+								$thumb = imagecreatefromjpeg($imgOrig);
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagejpeg($thumb_p, null, 90);
-								var_dump($_FILES);
 								break;
 							case (".GIF" || ".gif"):
 								//header('Content-type: image/gif');
 								$e = ".gif";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefromgif($urlString);
+								$thumb = imagecreatefromgif($imgOrig);
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagegif($thumb_p, null);
 								break;
@@ -95,18 +101,22 @@ try {
 								//header('Content-type: image/png');
 								$e = ".png";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefrompng($urlString);
+								$thumb = imagecreatefrompng($imgOrig);
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagepng($thumb_p, null, 90);
-								break;*/
-							default: continue;
+								break;
+							default:
+								continue;
 						}
-						//var_dump($_FILES);
-						if($_FILES['image']['name']) {
+						global $thumb_p;
+						global $e;
+						if($thumb_p) {
 							// store file on disk
 							$savePath = "/var/www/html/media/news-thumbs";
 							$addr = $savePath . "/" . $thumbTitle . $e;
-							move_uploaded_file($_FILES['image']['tmp_name'], $addr);
+							$f = fopen($addr, 'w');
+							fwrite($f, $thumb_p);
+							fclose($f);
 							// add to database
 							$newsArticleThumbPath = $addr;
 							$newsArticle = new NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
