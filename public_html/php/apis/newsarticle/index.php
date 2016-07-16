@@ -67,21 +67,24 @@ try {
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
 						$thumbTitle = md5($urlString);
 						$w = 400;
-						list($width, $height) = getimagesize($urlString);
+						$imgOrig = file_get_contents($urlString);
+						list($width, $height) = getimagesize($imgOrig);
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
+						var_dump($_FILES);
 						switch($ext) {
-							case (".JPG" || ".jpg" || "JPEG" || "jpeg"):
+							/*case (".JPG" || ".jpg" || "JPEG" || "jpeg"):
 								header('Content-type: image/jpeg');
 								$e = ".jpg";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefromjpeg($urlString);
+								$thumb = imagecreatefromjpeg($_FILES['image']['tmp_name']);
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagejpeg($thumb_p, null, 90);
+								var_dump($_FILES);
 								break;
 							case (".GIF" || ".gif"):
-								header('Content-type: image/gif');
+								//header('Content-type: image/gif');
 								$e = ".gif";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 								$thumb = imagecreatefromgif($urlString);
@@ -89,16 +92,16 @@ try {
 								imagegif($thumb_p, null);
 								break;
 							case (".PNG" || ".png"):
-								header('Content-type: image/png');
+								//header('Content-type: image/png');
 								$e = ".png";
 								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 								$thumb = imagecreatefrompng($urlString);
 								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 								imagepng($thumb_p, null, 90);
-								break;
+								break;*/
 							default: continue;
 						}
-						print_r($_FILES['image']['name']);
+						//var_dump($_FILES);
 						if($_FILES['image']['name']) {
 							// store file on disk
 							$savePath = "/var/www/html/media/news-thumbs";
@@ -108,9 +111,15 @@ try {
 							$newsArticleThumbPath = $addr;
 							$newsArticle = new NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
 							$newsArticle->insert($pdo);
-						} else continue;
-					} else continue;
-				} else continue;
+						} else {
+							continue;
+						}
+					} else {
+						continue;
+					}
+				} else {
+					continue;
+				}
 			}
 			// grab 25 most recent articles from table
 			$reply->data = NewsArticle::getNewsArticles($pdo);
