@@ -61,7 +61,7 @@ try {
 				$newsArticleUrl = (string)$item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
 				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url[0];
-				$news = Redrovr\TeamCuriosity\NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
+				$news = NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
 					$ext = substr($urlString, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
@@ -72,7 +72,7 @@ try {
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
-						var_dump($_FILES);
+						var_dump($_POST);
 						switch($ext) {
 							/*case (".JPG" || ".jpg" || "JPEG" || "jpeg"):
 								header('Content-type: image/jpeg');
@@ -160,13 +160,31 @@ try {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
-		//make sure newsArticle is available
-		if(empty($requestObject->newsArticleId) === true) {
-			throw(new \InvalidArgumentException ("No NewsArticle to update", 405));
+
+		if(empty($requestObject->newsArticleTitle) === true) {
+			throw(new \InvalidArgumentException ("No title for this news article", 405));
 		}
+
+		if(empty($requestObject->newsArticleDate) === true) {
+			throw(new \InvalidArgumentException ("No date for this news article", 405));
+		}
+
+		if(empty($requestObject->newsArticleSynopsis) === true) {
+			throw(new \InvalidArgumentException ("No synopsis for this news article", 405));
+		}
+
+		if(empty($requestObject->newsArticleUrl) === true) {
+			throw(new \InvalidArgumentException ("No URL for this news article", 405));
+		}
+
+		if(empty($requestObject->newsArticleThumbPath) === true) {
+			throw(new \InvalidArgumentException ("No thumbnail filepath for this news article", 405));
+		}
+
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the newsArticle to update
+			// make sure newsArticle is available
 			$newsArticle = NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle === null) {
 				throw(new RuntimeException("NewsArticle does not exist", 404));
