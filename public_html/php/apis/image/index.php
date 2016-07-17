@@ -119,10 +119,9 @@ try {
 						$imageUrl = $item["img_src"];
 
 						// check if image already exists locally
-						$duplicate = Redrovr\TeamCuriosity\Image::getImageByImageUrl($pdo, $imageUrl);
+						$duplicate = Image::getImageByImageUrl($pdo, $imageUrl);
 						if($duplicate === null) {
-							//global $camera;
-							global $imageSol;
+
 							// grab data fields
 							$imageSol = $item["sol"];
 							$camera = $item["camera"]["name"];
@@ -167,7 +166,7 @@ try {
 										move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
 										// add to database
 										$imagePath = $savePath . "/" . $imageTitle . "jpg";
-										$entry = new \Redrovr\TeamCuriosity\Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
+										$entry = new Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
 										$entry = $this->insert($entry);
 										return $entry;
 

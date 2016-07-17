@@ -65,8 +65,9 @@ try {
 				if($news === null) {
 					$ext = substr($urlString, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
-
+						// for uniform filenames
 						$thumbTitle = md5($urlString);
+						// we're calling this a thumbnail
 						$w = 400;
 
 						list($width, $height) = getimagesize($urlString);
@@ -74,45 +75,48 @@ try {
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
 
+						// yeah, this should be a switch statement
+						// but, for some reason, that breaks it
+						// so here we are
 						if($ext === '.JPG' || $ext === '.jpg' || $ext === 'JPEG' || $ext === 'jpeg') {
 							header('Content-type: image/jpeg');
-							$e = ".jpg";
+							$e = '.jpg';
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefromjpeg($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagejpeg($thumb_p, null, 90);
-						} elseif($ext === ".GIF" || $ext === ".gif") {
+
+						} elseif($ext === '.GIF' || $ext === '.gif') {
 							header('Content-type: image/gif');
-							$e = ".gif";
+							$e = '.gif';
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefromgif($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagegif($thumb_p, null);
-						} elseif($ext === ".PNG" || $ext === ".png") {
+
+						} elseif($ext === '.PNG' || $ext === '.png') {
 							header('Content-type: image/png');
-							$e = ".png";
+							$e = '.png';
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefrompng($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagepng($thumb_p, null, 90);
+
 						} else {
 							continue;
 						}
-						var_dump($_FILES);
-						global $e;
-						if($thumb_p) {
-							// store file on disk
-							$savePath = "/var/www/html/media/news-thumbs";
-							$addr = $savePath . "/" . $thumbTitle . $e;
-							//$f = fopen($addr, 'w');
-							file_put_contents($addr, $thumb_p);
-							// add to database
-							$newsArticleThumbPath = $addr;
-							$newsArticle = new NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
-							$newsArticle->insert($pdo);
-						} else {
-							continue;
-						}
+
+						// store file on disk
+						$savePath = "/var/www/html/media/news-thumbs";
+						$addr = $savePath . "/" . $thumbTitle . $e;
+						file_put_contents($addr, $thumb_p);
+						imagedestroy($thumb_p);
+						imagedestroy($thumb);
+						// add to database
+						$newsArticleThumbPath = $addr;
+						$newsArticle = new NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
+						$newsArticle->insert($pdo);
+
 					} else {
 						continue;
 					}
