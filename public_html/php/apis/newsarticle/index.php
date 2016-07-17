@@ -65,48 +65,38 @@ try {
 				if($news === null) {
 					$ext = substr($urlString, -4);
 					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
+
 						$thumbTitle = md5($urlString);
 						$w = 400;
-						$h = fopen($urlString, 'r');
-						if($h) {
-							while(!feof($h)) {
-								$imgOrig .= fgets($h);
-							}
-							fclose($h);
-						}
-						global $imgOrig;
-						list($width, $height) = getimagesize($imgOrig);
+
+						list($width, $height) = getimagesize($urlString);
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
 
-						switch($ext) {
-							case (".JPG" || ".jpg" || "JPEG" || "jpeg"):
-								header('Content-type: image/jpeg');
-								$e = ".jpg";
-								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefromjpeg($imgOrig);
-								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-								imagejpeg($thumb_p, null, 90);
-								break;
-							case (".GIF" || ".gif"):
-								//header('Content-type: image/gif');
-								$e = ".gif";
-								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefromgif($imgOrig);
-								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-								imagegif($thumb_p, null);
-								break;
-							case (".PNG" || ".png"):
-								//header('Content-type: image/png');
-								$e = ".png";
-								$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
-								$thumb = imagecreatefrompng($imgOrig);
-								imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-								imagepng($thumb_p, null, 90);
-								break;
-							default:
-								continue;
+						if($ext === '.JPG' || $ext === '.jpg' || $ext === 'JPEG' || $ext === 'jpeg') {
+							//header('Content-type: image/jpeg');
+							$e = ".jpg";
+							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
+							$thumb = imagecreatefromjpeg($urlString);
+							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+							imagejpeg($thumb_p, null, 90);
+						} elseif($ext === ".GIF" || $ext === ".gif") {
+							//header('Content-type: image/gif');
+							$e = ".gif";
+							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
+							$thumb = imagecreatefromgif($urlString);
+							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+							imagegif($thumb_p, null);
+						} elseif($ext === ".PNG" || $ext === ".png") {
+							//header('Content-type: image/png');
+							$e = ".png";
+							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
+							$thumb = imagecreatefrompng($urlString);
+							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+							imagepng($thumb_p, null, 90);
+						} else {
+							continue;
 						}
 						global $thumb_p;
 						global $e;
