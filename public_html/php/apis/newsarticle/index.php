@@ -75,21 +75,21 @@ try {
 						$newHeight = $height * $prop;
 
 						if($ext === '.JPG' || $ext === '.jpg' || $ext === 'JPEG' || $ext === 'jpeg') {
-							//header('Content-type: image/jpeg');
+							header('Content-type: image/jpeg');
 							$e = ".jpg";
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefromjpeg($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagejpeg($thumb_p, null, 90);
 						} elseif($ext === ".GIF" || $ext === ".gif") {
-							//header('Content-type: image/gif');
+							header('Content-type: image/gif');
 							$e = ".gif";
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefromgif($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagegif($thumb_p, null);
 						} elseif($ext === ".PNG" || $ext === ".png") {
-							//header('Content-type: image/png');
+							header('Content-type: image/png');
 							$e = ".png";
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefrompng($urlString);
@@ -98,15 +98,14 @@ try {
 						} else {
 							continue;
 						}
-						global $thumb_p;
+						var_dump($_FILES);
 						global $e;
 						if($thumb_p) {
 							// store file on disk
 							$savePath = "/var/www/html/media/news-thumbs";
 							$addr = $savePath . "/" . $thumbTitle . $e;
-							$f = fopen($addr, 'w');
-							fwrite($f, $thumb_p);
-							fclose($f);
+							//$f = fopen($addr, 'w');
+							file_put_contents($addr, $thumb_p);
 							// add to database
 							$newsArticleThumbPath = $addr;
 							$newsArticle = new NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
