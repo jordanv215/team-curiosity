@@ -60,7 +60,7 @@ try {
 				$newsArticleSynopsis = (string)$item->children("media", true)->description;
 				$newsArticleUrl = (string)$item->link;
 				$newsArticleDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($newsArticleDate));
-				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url[0];
+				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url;
 				$news = NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
 					$ext = substr($urlString, -4);
@@ -69,7 +69,6 @@ try {
 						$thumbTitle = md5($urlString);
 						// we're calling this a thumbnail
 						$w = 400;
-
 						list($width, $height) = getimagesize($urlString);
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
@@ -109,6 +108,7 @@ try {
 						// store file on disk
 						$savePath = "/var/www/html/media/news-thumbs";
 						$addr = $savePath . "/" . $thumbTitle . $e;
+						var_dump($addr);
 						file_put_contents($addr, $thumb_p);
 						imagedestroy($thumb_p);
 						imagedestroy($thumb);

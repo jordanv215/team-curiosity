@@ -11,7 +11,7 @@ use Redrovr\TeamCuriosity\Image;
  * REST api for the Image class
  *
  * @author Jordan Vinson <jvinson3@cnm.edu>
- * @author Kai Garrott <kai@kaigarrott.com>
+ * @author Kai Garrott <kai@kaigarrott.com>rm
  **/
 
 //verify the session, start if not active
