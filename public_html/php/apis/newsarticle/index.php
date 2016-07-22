@@ -104,7 +104,9 @@ try {
 						} else {
 							continue;
 						}
-
+						global $thumb_p;
+						global $thumb;
+						global $e;
 						// store file on disk
 						$savePath = "/var/www/html/media/news-thumbs";
 						$addr = $savePath . "/" . $thumbTitle . $e;
