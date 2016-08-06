@@ -3,7 +3,6 @@ require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 use Redrovr\TeamCuriosity\NewsArticle;
-
 /**
  * api for the NewsArticle class
  *
@@ -73,7 +72,6 @@ try {
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
-
 						// yeah, this should be a switch statement
 						// but, for some reason, that breaks it
 						// so here we are
@@ -84,7 +82,6 @@ try {
 							$thumb = imagecreatefromjpeg($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagejpeg($thumb_p, null, 90);
-
 						} elseif($ext === '.GIF' || $ext === '.gif') {
 							header('Content-type: image/gif');
 							$e = '.gif';
@@ -92,7 +89,6 @@ try {
 							$thumb = imagecreatefromgif($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagegif($thumb_p, null);
-
 						} elseif($ext === '.PNG' || $ext === '.png') {
 							header('Content-type: image/png');
 							$e = '.png';
@@ -100,7 +96,6 @@ try {
 							$thumb = imagecreatefrompng($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagepng($thumb_p, null, 90);
-
 						} else {
 							continue;
 						}
@@ -118,7 +113,6 @@ try {
 						$newsArticleThumbPath = $addr;
 						$newsArticle = new NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
 						$newsArticle->insert($pdo);
-
 					} else {
 						continue;
 					}
@@ -128,7 +122,6 @@ try {
 			}
 			// grab 25 most recent articles from table
 			$reply->data = NewsArticle::getNewsArticles($pdo);
-
 		} else if(empty($newsArticleId) === false) {
 			$newsArticle = NewsArticle::getNewsArticleByNewsArticleId($pdo, $newsArticleId);
 			if($newsArticle !== null) {
@@ -165,27 +158,21 @@ try {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
-
 		if(empty($requestObject->newsArticleTitle) === true) {
 			throw(new \InvalidArgumentException ("No title for this news article", 405));
 		}
-
 		if(empty($requestObject->newsArticleDate) === true) {
 			throw(new \InvalidArgumentException ("No date for this news article", 405));
 		}
-
 		if(empty($requestObject->newsArticleSynopsis) === true) {
 			throw(new \InvalidArgumentException ("No synopsis for this news article", 405));
 		}
-
 		if(empty($requestObject->newsArticleUrl) === true) {
 			throw(new \InvalidArgumentException ("No URL for this news article", 405));
 		}
-
 		if(empty($requestObject->newsArticleThumbPath) === true) {
 			throw(new \InvalidArgumentException ("No thumbnail filepath for this news article", 405));
 		}
-
 		//perform the actual put or post
 		if($method === "PUT") {
 			// retrieve the newsArticle to update
