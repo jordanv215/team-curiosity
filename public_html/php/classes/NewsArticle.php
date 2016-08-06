@@ -436,7 +436,7 @@ class NewsArticle implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param \DateTime $newsArticleDate newsArticleDate to search for
-	 * @return NewsArticle|null newsArticle found or null if not found
+	 * @return \SplFixedArray of NewsArticles found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/

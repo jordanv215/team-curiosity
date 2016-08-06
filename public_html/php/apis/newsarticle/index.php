@@ -3,6 +3,7 @@ require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
 require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
 use Redrovr\TeamCuriosity\NewsArticle;
+
 /**
  * api for the NewsArticle class
  *
@@ -62,8 +63,9 @@ try {
 				$urlString = (string)$item->children("media", true)->thumbnail->attributes()->url;
 				$news = NewsArticle::getNewsArticleByNewsArticleUrl($pdo, $newsArticleUrl);
 				if($news === null) {
-					$ext = substr($urlString, -4);
-					if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg" || $ext === ".GIF" || $ext === ".gif" || $ext === ".PNG" || $ext === ".png") {
+					$chunk = explode('-br2', $urlString);
+					$ext = strtolower($chunk[1]);
+					if($ext === ".jpg" || $ext === ".jpeg" || $ext === ".gif" || $ext === ".png") {
 						// for uniform filenames
 						$thumbTitle = md5($urlString);
 						// we're calling this a thumbnail
@@ -75,23 +77,20 @@ try {
 						// yeah, this should be a switch statement
 						// but, for some reason, that breaks it
 						// so here we are
-						if($ext === '.JPG' || $ext === '.jpg' || $ext === 'JPEG' || $ext === 'jpeg') {
+						if($ext === '.jpg' || $ext === 'jpeg') {
 							header('Content-type: image/jpeg');
-							$e = '.jpg';
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefromjpeg($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagejpeg($thumb_p, null, 90);
-						} elseif($ext === '.GIF' || $ext === '.gif') {
+						} elseif($ext === '.gif') {
 							header('Content-type: image/gif');
-							$e = '.gif';
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefromgif($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 							imagegif($thumb_p, null);
-						} elseif($ext === '.PNG' || $ext === '.png') {
+						} elseif($ext === '.png') {
 							header('Content-type: image/png');
-							$e = '.png';
 							$thumb_p = imagecreatetruecolor($newWidth, $newHeight);
 							$thumb = imagecreatefrompng($urlString);
 							imagecopyresampled($thumb_p, $thumb, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
@@ -101,10 +100,10 @@ try {
 						}
 						global $thumb_p;
 						global $thumb;
-						global $e;
+						global $ext;
 						// store file on disk
 						$savePath = "/var/www/html/media/news-thumbs";
-						$addr = $savePath . "/" . $thumbTitle . $e;
+						$addr = $savePath . "/" . $thumbTitle . $ext;
 						var_dump($addr);
 						file_put_contents($addr, $thumb_p);
 						imagedestroy($thumb_p);
