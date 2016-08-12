@@ -124,14 +124,12 @@ try {
 
 							// grab data fields
 							$imageSol = $item["sol"];
-							$camera = $item["camera"]["name"];
-							$res = strpos("MAHLI FHAZ RHAZ NAVCAM MAST", $camera);
+							$imageCamera = $item["camera"]["name"];
+							$res = strpos("MAHLI FHAZ RHAZ NAVCAM MAST", $imageCamera);
 							if(is_numeric($res)) {
 								global $imageEarthDate;
-								global $camera;
+								global $imageCamera;
 								global $imageDescription;
-								$imageCamera = $camera;
-								echo $camera;
 								$imageEarthDate = $item["earth_date"];
 								$imageEarthDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($imageEarthDate));
 								$url = $item["img_src"];
@@ -142,7 +140,7 @@ try {
 								$ext = explode('.', $chunkSuffix);
 								$ext = strtolower($ext[1]);
 
-								if($ext === "JPG" || $ext === "jpg" || $ext === "JPEG" || $ext === "jpeg") {
+								if($ext === "jpg" || $ext === "jpeg") {
 									$imageType = "image/jpeg";
 
 								} else continue;
