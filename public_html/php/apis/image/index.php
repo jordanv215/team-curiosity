@@ -129,20 +129,24 @@ try {
 							if(is_numeric($res)) {
 								global $imageEarthDate;
 								global $camera;
+								global $imageDescription;
 								$imageCamera = $camera;
 								echo $camera;
 								$imageEarthDate = $item["earth_date"];
 								$imageEarthDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($imageEarthDate));
-								$pattern = '/_(F\w+)_\./';
-								$str = preg_match($pattern, $item["img_src"]);
-								$ext = substr($item["img_src"], -4);
+								$url = $item["img_src"];
+								// extract filepath to facilitate grabbing the extension
+								$chunk = explode('.gov', $url);
+								$chunkSuffix = $chunk[1];
+								// split at extension
+								$ext = explode('.', $chunkSuffix);
+								$ext = strtolower($ext[1]);
 
-								if($ext === ".JPG" || $ext === ".jpg" || $ext === "JPEG" || $ext === "jpeg") {
+								if($ext === "JPG" || $ext === "jpg" || $ext === "JPEG" || $ext === "jpeg") {
 									$imageType = "image/jpeg";
 
 								} else continue;
-								$titleStr = print_r($str);
-								$imageTitle = substr($titleStr, 0, -1);
+								$imageTitle = md5($chunkSuffix);
 
 								if($imageTitle !== null) {
 
@@ -159,20 +163,14 @@ try {
 
 									imagejpeg($image_p, null, 90);
 
-									if($_FILES['image']['name']) {
-										global $entry;
-										// store file on disk
-										$savePath = "/var/www/html/media";
-										move_uploaded_file($_FILES['image']['tmp_name'], $savePath . "/" . $imageTitle . ".jpg");
-										// add to database
-										$imagePath = $savePath . "/" . $imageTitle . "jpg";
-										$entry = new Image(null, $imageCamera, null, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
-										$entry = $this->insert($entry);
-										return $entry;
-
-									} else {
-										continue;
-									}
+									$savePath = "/var/www/html/media";
+									$imagePath = $savePath . "/" . $imageTitle . $ext;
+									file_put_contents($imagePath, $image_p);
+									imagedestroy($image_p);
+									imagedestroy($image);
+									// add to database
+									$image = new Image(null, $imageCamera, $imageDescription, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
+									$image->insert($pdo);
 
 								} else {
 									continue;

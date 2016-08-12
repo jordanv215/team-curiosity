@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__DIR__, 2) . "/classes/Autoload.php");
 require_once(dirname(__DIR__, 2) . "/lib/xsrf.php");
-require_once("/etc/apache2/redrovr-conf/encrypted-config.php");
+require_once(dirname(__DIR__, 4) . "/encrypted-config.php");
 use Redrovr\TeamCuriosity\NewsArticle;
 
 /**
@@ -20,7 +20,7 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
+	$pdo = connectToEncryptedMySQL((dirname(__DIR__, 4)) . "/etc/apache2/redrovr-conf/mars.ini");
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
@@ -53,7 +53,7 @@ try {
 			curl_close($curl);
 			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$xml->channel->item->children("http://search.yahoo.com/mrss/");
-			$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
+			$pdo = connectToEncryptedMySQL((dirname(__DIR__, 4)) . "/etc/apache2/redrovr-conf/mars.ini");
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = (string)$item->title;
 				$newsArticleDate = (string)$item->pubDate;
@@ -101,6 +101,7 @@ try {
 						global $thumb_p;
 						global $thumb;
 						global $ext;
+						global $pdo;
 						// store file on disk
 						$savePath = "/var/www/html/media/news-thumbs";
 						$addr = $savePath . "/" . $thumbTitle . $ext;
