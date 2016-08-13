@@ -20,7 +20,8 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL((dirname(__DIR__, 4)) . "/etc/apache2/redrovr-conf/mars.ini");
+	global $pdo;
+	$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	//sanitize input
@@ -53,7 +54,6 @@ try {
 			curl_close($curl);
 			$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$xml->channel->item->children("http://search.yahoo.com/mrss/");
-			$pdo = connectToEncryptedMySQL((dirname(__DIR__, 4)) . "/etc/apache2/redrovr-conf/mars.ini");
 			foreach($xml->channel->item as $item) {
 				$newsArticleTitle = (string)$item->title;
 				$newsArticleDate = (string)$item->pubDate;
@@ -101,16 +101,17 @@ try {
 						global $thumb_p;
 						global $thumb;
 						global $ext;
-						global $pdo;
 						// store file on disk
-						$savePath = "/var/www/html/media/news-thumbs";
-						$addr = $savePath . "/" . $thumbTitle . $ext;
-						file_put_contents($addr, $thumb_p);
+						$savePath = "/var/www/html/media/news-thumbs/";
+						$newsArticleThumbPath = ($savePath  . $thumbTitle . $ext);
+						$f = fopen($newsArticleThumbPath, 'w');
+						fwrite($f, $thumb_p);
+						fclose($f);
 						imagedestroy($thumb_p);
 						imagedestroy($thumb);
 						// add to database
-						$newsArticleThumbPath = $addr;
 						$newsArticle = new NewsArticle(null, $newsArticleTitle, $newsArticleDate, $newsArticleSynopsis, $newsArticleUrl, $newsArticleThumbPath);
+						$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 						$newsArticle->insert($pdo);
 					} else {
 						continue;

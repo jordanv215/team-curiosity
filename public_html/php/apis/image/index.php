@@ -11,7 +11,7 @@ use Redrovr\TeamCuriosity\Image;
  * REST api for the Image class
  *
  * @author Jordan Vinson <jvinson3@cnm.edu>
- * @author Kai Garrott <kai@kaigarrott.com>rm
+ * @author Kai Garrott <kai@kaigarrott.com>
  **/
 
 //verify the session, start if not active
@@ -85,7 +85,7 @@ try {
 
 				// grab json with last 25 items (NASA default/maximum per page)
 				function NasaCall() {
-					global $entry;
+					global $pdo;
 					$baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?";
 					$config = readConfig("/etc/apache2/redrovr-conf/mars.ini");
 					$json = json_decode($config['authkeys']);
@@ -143,7 +143,9 @@ try {
 								if($ext === "jpg" || $ext === "jpeg") {
 									$imageType = "image/jpeg";
 
-								} else continue;
+								} else {
+									continue;
+								}
 								$imageTitle = md5($chunkSuffix);
 
 								if($imageTitle !== null) {
@@ -182,7 +184,7 @@ try {
 						}
 
 					}
-					return $entry;
+					return $image;
 				}
 
 				NasaCall();
