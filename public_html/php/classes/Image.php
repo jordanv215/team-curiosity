@@ -732,7 +732,7 @@ class Image implements \JsonSerializable {
 			$image = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
-			if($row !== false) {
+			if($row === false) {
 				$image = new Image($row["imageId"], $row["imageCamera"], $row["imageDescription"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["imageEarthDate"]), $row["imagePath"], $row["imageSol"], $row["imageTitle"], $row["imageType"], $row["imageUrl"]);
 			}
 		} catch(\Exception $exception) {

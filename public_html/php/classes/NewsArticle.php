@@ -239,7 +239,7 @@ class NewsArticle implements \JsonSerializable {
 	 * @throws \TypeError if $newNewsArticleThumbPath is not a string
 	 **/
 	public
-	function setNewsArticleThumbPath(string $newNewsArticleThumbPath = null) {
+	function setNewsArticleThumbPath(string $newNewsArticleThumbPath) {
 		// verify the newsArticleThumbPath is secure
 		$newNewsArticleThumbPath = trim($newNewsArticleThumbPath);
 		$newNewsArticleThumbPath = filter_var($newNewsArticleThumbPath, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -251,7 +251,7 @@ class NewsArticle implements \JsonSerializable {
 			throw(new \RangeException("newsArticleThumbPath too large"));
 		}
 		// store the newsArticleUrl;
-		$this->newsArticleUrl = $newNewsArticleThumbPath;
+		$this->newsArticleThumbPath = $newNewsArticleThumbPath;
 	}
 	/**
 	 * inserts this Article into mySQL
