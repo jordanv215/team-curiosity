@@ -404,12 +404,12 @@ class Image implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO Image(imageId, imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl) VALUES (:imageId, :imageCamera, :imageDescription, :imageEarthDate, :imagePath, :imageSol,:imageTitle, :imageType, :imageUrl)";
+		$query = "INSERT INTO Image(imageCamera, imageDescription, imageEarthDate, imagePath, imageSol, imageTitle, imageType, imageUrl) VALUES (:imageCamera, :imageDescription, :imageEarthDate, :imagePath, :imageSol,:imageTitle, :imageType, :imageUrl)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->imageEarthDate->format("Y-m-d H:i:s");
-		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
+		$parameters = ["imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
 		$statement->execute($parameters);
 
 		// update the null Image Id with what mySQL just gave us
@@ -452,12 +452,12 @@ class Image implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "UPDATE Image SET imageId = :imageId, imageCamera = :imageCamera, imageDescription = :imageDescription, imageEarthDate = :imageEarthDate, imagePath = :imagePath, imageSol = :imageSol, imageTitle = :imageTitle, imageType = :imageType, imageUrl = :imageUrl";
+		$query = "UPDATE Image SET imageCamera = :imageCamera, imageDescription = :imageDescription, imageEarthDate = :imageEarthDate, imagePath = :imagePath, imageSol = :imageSol, imageTitle = :imageTitle, imageType = :imageType, imageUrl = :imageUrl";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->imageEarthDate->format("Y-m-d H:i:s");
-		$parameters = ["imageId" => $this->imageId, "imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
+		$parameters = ["imageCamera" => $this->imageCamera, "imageDescription" => $this->imageDescription, "imageEarthDate" => $formattedDate, "imagePath" => $this->imagePath, "imageSol" => $this->imageSol, "imageTitle" => $this->imageTitle, "imageType" => $this->imageType, "imageUrl" => $this->imageUrl];
 		$statement->execute($parameters);
 	}
 
