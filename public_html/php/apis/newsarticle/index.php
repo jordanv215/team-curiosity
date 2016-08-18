@@ -20,7 +20,6 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
-	global $pdo;
 	$pdo = connectToEncryptedMySQL("/etc/apache2/redrovr-conf/mars.ini");
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -101,6 +100,7 @@ try {
 						global $thumb_p;
 						global $thumb;
 						global $ext;
+						global $newsArticleThumbPath;
 						// store file on disk
 						$savePath = "/var/www/html/media/news-thumbs/";
 						$newsArticleThumbPath = ($savePath  . $thumbTitle . $ext);
