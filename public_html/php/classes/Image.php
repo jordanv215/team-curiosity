@@ -77,7 +77,7 @@ class Image implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws  \Exception if some other exception occurs
 	 **/
-	public function __construct(int $newImageId = null, string $newImageCamera, string $newImageDescription =null, \DateTime $newImageEarthDate, string $newImagePath, int $newImageSol, string $newImageTitle, string $newImageType, string $newImageUrl) {
+	public function __construct(int $newImageId = null, string $newImageCamera, string $newImageDescription = null, \DateTime $newImageEarthDate, string $newImagePath, int $newImageSol, string $newImageTitle, string $newImageType, string $newImageUrl) {
 		try {
 			$this->setImageId($newImageId);
 			$this->setImageCamera($newImageCamera);
@@ -177,18 +177,15 @@ class Image implements \JsonSerializable {
 	/**
 	 * mutator method for image description
 	 *
-	 * @param string $newImageDescription new value of image description
+	 * @param string|null $newImageDescription new value of image description
 	 * @throws \InvalidArgumentException if $newImageDescription is not a string or insecure
 	 * @throws \RangeException if $newImageDescription is > 5000 characters
 	 * @throws \TypeError if $newImageDescription is not a string
 	 **/
-	public function setImageDescription(string $newImageDescription) {
+	public function setImageDescription(string $newImageDescription = null) {
 		// verify the image description is secure
 		$newImageDescription = trim($newImageDescription);
 		$newImageDescription = filter_var($newImageDescription, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newImageDescription) === true) {
-			throw(new \InvalidArgumentException("image description is empty or insecure"));
-		}
 
 		// verify the image description will fit in the database
 		if(strlen($newImageDescription) > 5000) {
