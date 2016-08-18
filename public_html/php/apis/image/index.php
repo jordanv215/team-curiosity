@@ -127,11 +127,11 @@ try {
 							$imageCamera = $item["camera"]["name"];
 							$res = strpos("MAHLI FHAZ RHAZ NAVCAM MAST", $imageCamera);
 							if(is_numeric($res)) {
-								global $imageEarthDate;
-								global $imageCamera;
+								/*global $imageEarthDate;
+								global $imageCamera;*/
 								global $imageDescription;
 								$imageEarthDate = $item["earth_date"];
-								$imageEarthDate = \DateTime::createFromFormat("D, d M Y H:i:s T", (string)trim($imageEarthDate));
+								$imageEarthDate = \DateTime::createFromFormat("Y-m-d", (string)trim($imageEarthDate));
 								$url = $item["img_src"];
 								// extract filepath to facilitate grabbing the extension
 								$chunk = explode('.gov', $url);
@@ -164,13 +164,13 @@ try {
 									imagejpeg($image_p, null, 90);
 
 									$savePath = "/var/www/html/media";
-									$imagePath = $savePath . "/" . $imageTitle . $ext;
+									$imagePath = $savePath . "/" . $imageTitle . "." . $ext;
 									file_put_contents($imagePath, $image_p);
 									imagedestroy($image_p);
 									imagedestroy($image);
 									// add to database
-									$image = new Image(null, $imageCamera, $imageDescription, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
-									$image->insert($pdo);
+									$imageRow = new Image(null, $imageCamera, $imageDescription, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
+									$imageRow->insert($pdo);
 
 								} else {
 									continue;
