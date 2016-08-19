@@ -163,9 +163,21 @@ try {
 
 									imagejpeg($image_p, null, 90);
 
-									$savePath = "/var/www/html/media";
-									$imagePath = $savePath . "/" . $imageTitle . "." . $ext;
-									file_put_contents($imagePath, $image_p);
+									// place image into nested directories based on first 3 characters of hashed name
+									// this is to optimize file system access time
+									$baseDir = "/var/www/html/media/";
+									$dir0 = (substr($imageTitle, 0, 1) . "/");
+									$dir1 = (substr($imageTitle, 1, 1) . "/");
+									$dir2 = (substr($imageTitle, 2, 1) . "/");
+									$filePath = $baseDir . $dir0 . $dir1 . $dir2;
+									if(!file_exists($filePath)) {
+										mkdir(($filePath), 777, true);
+									}
+									// save image to filesystem
+									$imagePath = $filePath . $imageTitle . "." . $ext;
+									$f = fopen($imagePath, 'w');
+									fwrite($f, $image_p);
+									fclose($f);
 									imagedestroy($image_p);
 									imagedestroy($image);
 									// add to database
