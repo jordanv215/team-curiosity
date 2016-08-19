@@ -12,8 +12,7 @@
 	<hr style="clear:both;" id="heading-hr"/>
 </div>
 
-
-	<div ng-controller="CarouselDemoCtrl">
+	<div ng-controller="imagesController">
 		<div style="height: 305px">
 			<uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
 				<uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
@@ -39,24 +38,3 @@
 		</div>
 	</div>
 
-	<!-- ui.bootstrap.modal -->
-	<div ng-controller="ModalDemoCtrl">
-		<script type="text/ng-template" id="myModalContent.html">
-			<div class="modal-header">
-				<h3 class="modal-title">Comment or Favorite</h3>
-				<a href="https://www.reddit.com/" target="_blank"><i class="fa fa-reddit-alien fa-2x"></i></a>
-				<a href="#" target="_blank"><i class="fa fa-heart fa-2x"></i></a>
-				<a href="#" target="_blank"><i class="fa fa-commenting fa-2x"></i></a>
-				<a href="#" target="_blank"><i class="fa fa-commenting fa-2x"></i></a>
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			</div>
-			<div class="modal-body">
-
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-warning" type="button" ng-click="cancel()">Close</button>
-			</div>
-		</script>
-
-	</div>
-</div>
