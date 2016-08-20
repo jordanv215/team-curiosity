@@ -103,8 +103,9 @@ try {
 						$file = ob_get_contents();
 						ob_end_clean();
 						$savePath = "/var/www/html/media/news-thumbs/";
-						$newsArticleThumbPath = ($savePath  . $thumbTitle . $ext);
-						$f = fopen($newsArticleThumbPath, 'w');
+						$filePath = ($savePath  . $thumbTitle . $ext);
+						$newsArticleThumbPath = ("../media/news-thumbs/" . $thumbTitle . $ext);
+						$f = fopen($filePath, 'w');
 						fwrite($f, $file);
 						fclose($f);
 						imagedestroy($thumb_p);

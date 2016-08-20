@@ -113,7 +113,7 @@
 							<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 						</div>
 						<div class="news-thumb">
-							<img class="img-responsive" ng-src="{{ news.newsArticleThumbPath }}"/>
+							<img class="img-responsive" ng-src="{{ news.newsArticleThumbPath }}" />
 						</div>
 					</div>
 
