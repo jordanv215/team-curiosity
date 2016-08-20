@@ -73,6 +73,7 @@ try {
 						$prop = $w / $width;
 						$newWidth = $width * $prop;
 						$newHeight = $height * $prop;
+						ob_start();
 						// yeah, this should be a switch statement
 						// but, for some reason, that breaks it
 						// so here we are
@@ -97,15 +98,17 @@ try {
 						} else {
 							continue;
 						}
-						global $thumb_p;
+						/*global $thumb_p;
 						global $thumb;
 						global $ext;
-						global $newsArticleThumbPath;
+						global $newsArticleThumbPath;*/
 						// store file on disk
+						$file = ob_get_contents();
+						ob_end_clean();
 						$savePath = "/var/www/html/media/news-thumbs/";
 						$newsArticleThumbPath = ($savePath  . $thumbTitle . $ext);
 						$f = fopen($newsArticleThumbPath, 'w');
-						fwrite($f, $thumb_p);
+						fwrite($f, $file);
 						fclose($f);
 						imagedestroy($thumb_p);
 						imagedestroy($thumb);

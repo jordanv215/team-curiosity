@@ -132,9 +132,8 @@ try {
 								global $imageDescription;
 								$imageEarthDate = $item["earth_date"];
 								$imageEarthDate = \DateTime::createFromFormat("Y-m-d", (string)trim($imageEarthDate));
-								$url = $item["img_src"];
 								// extract filepath to facilitate grabbing the extension
-								$chunk = explode('.gov', $url);
+								$chunk = explode('.gov', $imageUrl);
 								$chunkSuffix = $chunk[1];
 								// split at extension
 								$ext = explode('.', $chunkSuffix);
@@ -169,12 +168,12 @@ try {
 									$dir0 = (substr($imageTitle, 0, 1) . "/");
 									$dir1 = (substr($imageTitle, 1, 1) . "/");
 									$dir2 = (substr($imageTitle, 2, 1) . "/");
-									$filePath = $baseDir . $dir0 . $dir1 . $dir2;
-									if(!file_exists($filePath)) {
-										mkdir(($filePath), 777, true);
+									$dirPath = $baseDir . $dir0 . $dir1 . $dir2;
+									if(!file_exists($dirPath)) {
+										mkdir(($dirPath), 777, true);
 									}
 									// save image to filesystem
-									$imagePath = $filePath . $imageTitle . "." . $ext;
+									$imagePath = $dirPath . $imageTitle . "." . $ext;
 									$f = fopen($imagePath, 'w');
 									fwrite($f, $image_p);
 									fclose($f);
