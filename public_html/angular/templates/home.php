@@ -104,6 +104,8 @@
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
 				<div class="item" ng-class="{active: $index == 0}" ng-repeat="news in news">
+					<div style="background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ news. newsArticleThumbPath }}) center center;
+          background-size:cover;" class="slider-size">
 					<div class="carousel-header">
 						<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 						</div>
@@ -112,9 +114,7 @@
 						<div class="news-content">
 							<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
 						</div>
-						<div class="news-thumb">
-							<img class="img-responsive" ng-src="{{ news.newsArticleThumbPath }}" />
-						</div>
+					</div>
 					</div>
 
 			</div>

@@ -333,6 +333,9 @@ footer {
 	#imageCarousel > .carousel-inner > .item > .slider-size  {
 		height: 50rem;
 	}
+	#newsCarouselSplash > .carousel-inner > .item > .slider-size  {
+		height: 35rem;
+	}
 }
 
 @media(max-width: 992px) {
@@ -345,6 +348,9 @@ footer {
 	#imageCarousel > .carousel-inner > .item > .slider-size {
 		height: 35rem;
 	}
+	#newsCarouselSplash > .carousel-inner > .item > .slider-size  {
+		height: 25rem;
+	}
 }
 
 @media(max-width: 768px) {
@@ -356,6 +362,9 @@ footer {
 	}
 	#imageCarousel > .carousel-inner > .item > .slider-size {
 		height: 25rem;
+	}
+	#newsCarouselSplash > .carousel-inner > .item > .slider-size  {
+		height: 20rem;
 	}
 }
 /*----------------------------------*/
