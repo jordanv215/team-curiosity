@@ -98,10 +98,7 @@ try {
 						} else {
 							continue;
 						}
-						/*global $thumb_p;
-						global $thumb;
-						global $ext;
-						global $newsArticleThumbPath;*/
+
 						// store file on disk
 						$file = ob_get_contents();
 						ob_end_clean();

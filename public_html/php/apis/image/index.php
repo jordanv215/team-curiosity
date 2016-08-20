@@ -156,6 +156,7 @@ try {
 									$prop = $w / $width;
 									$newWidth = $width * $prop;
 									$newHeight = $height * $prop;
+									ob_start();
 									$image_p = imagecreatetruecolor($newWidth, $newHeight);
 									$image = imagecreatefromjpeg($imageUrl);
 									imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
@@ -164,6 +165,8 @@ try {
 
 									// place image into nested directories based on first 3 characters of hashed name
 									// this is to optimize file system access time
+									$file = ob_get_contents();
+									ob_end_clean();
 									$baseDir = "/var/www/html/media/";
 									$dir0 = (substr($imageTitle, 0, 1) . "/");
 									$dir1 = (substr($imageTitle, 1, 1) . "/");
@@ -175,7 +178,7 @@ try {
 									// save image to filesystem
 									$imagePath = $dirPath . $imageTitle . "." . $ext;
 									$f = fopen($imagePath, 'w');
-									fwrite($f, $image_p);
+									fwrite($f, $file);
 									fclose($f);
 									imagedestroy($image_p);
 									imagedestroy($image);
