@@ -4,7 +4,7 @@ app.controller("newsController", ["$scope", "NewsService", function($scope, News
 	var news = $scope.news = [];
 	var currIndex = 0;
 
-	$scope.getNews = function() {
+	$scope.getSlides = function() {
 		NewsService.top25()
 			.then(function(result) {
 				if(result.status === 200) {
@@ -21,14 +21,7 @@ app.controller("newsController", ["$scope", "NewsService", function($scope, News
 		$scope.news = $scope.getSlides();
 	}
 
-	$scope.addNews = function() {
-		var newWidth = 900 + news.length + 1;
 
-
-		for(var i = 0; i < 25; i++) {
-			$scope.addNews();
-		}
-	}
 
 		}]);
 

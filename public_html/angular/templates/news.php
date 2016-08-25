@@ -12,8 +12,8 @@
 	
 	<div ng-controller="newsController">
 		<div style="height: 300px">
-			<uib-carousel interval="myInterval" active="active">
-				<uib-slide ng-repeat="news in news" index="active">
+			<div uib-carousel interval="0" active="active">
+				<div uib-slide ng-repeat="news in news" index="active">
 					<div class="carousel-header">
 						<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
 					</div>
@@ -24,7 +24,7 @@
 					</div>
 					<div class="text-center"><a href="article">Click to comment or favorite</a></div>
 
-				</uib-slide>
-			</uib-carousel>
+				</div>
+			</div>
 	</div>
 </div>

@@ -173,7 +173,7 @@ try {
 									$dir2 = (substr($imageTitle, 2, 1) . "/");
 									$dirPath = $baseDir . $dir0 . $dir1 . $dir2;
 									if(!file_exists($dirPath)) {
-										mkdir(($dirPath), 777, true);
+										mkdir(($dirPath), 0777, true);
 									}
 									// save image to filesystem
 									$imagePath = $dirPath . $imageTitle . "." . $ext;
