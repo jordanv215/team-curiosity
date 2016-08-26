@@ -198,7 +198,11 @@ try {
 						}
 
 					}
-					return $image;
+					global $reply;
+					$images = Image::getImages($pdo);
+					if($images !== null) {
+						$reply->data = $images;
+					}
 				}
 
 				NasaCall();
