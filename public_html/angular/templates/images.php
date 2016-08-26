@@ -16,7 +16,8 @@
 		<div style="height: 305px">
 			<div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
 				<div uib-slide ng-repeat="image in images" index="active">
-					<img ng-src="{{image.imagePath}}" style="margin:auto;">
+					<div style="background:url({{image.imagePath}}) center center;
+          background-size:cover;" class="slider-size">
 				</div>
 			</div>
 		</div>
