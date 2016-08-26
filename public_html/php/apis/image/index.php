@@ -176,12 +176,13 @@ try {
 										mkdir(($dirPath), 0777, true);
 									}
 									// save image to filesystem
-									$imagePath = $dirPath . $imageTitle . "." . $ext;
-									$f = fopen($imagePath, 'w');
+									$filePath = $dirPath . $imageTitle . "." . $ext;
+									$f = fopen($filePath, 'w');
 									fwrite($f, $file);
 									fclose($f);
 									imagedestroy($image_p);
 									imagedestroy($image);
+									$imagePath = ("../../../../media/" . $dir0 . $dir1 . $dir2 . $imageTitle . "." . $ext);
 									// add to database
 									$imageRow = new Image(null, $imageCamera, $imageDescription, $imageEarthDate, $imagePath, $imageSol, $imageTitle, $imageType, $imageUrl);
 									$imageRow->insert($pdo);

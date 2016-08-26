@@ -20,7 +20,6 @@ app.controller("homeController", ["$scope", "WeatherService", "NewsService", fun
 			.then(function(result) {
 				if(result.status === 200) {
 					$scope.news = result.data.data;
-					console.log($scope.news);
 				} else {
 					console.log("couldn't load news articles: " + result.data.message);
 				}

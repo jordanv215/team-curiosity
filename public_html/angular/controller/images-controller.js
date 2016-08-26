@@ -2,13 +2,13 @@ app.controller("imagesController", ["$scope", "ImagesService", function($scope, 
 	$scope.myInterval = 5000;
 	$scope.noWrapSlides = false;
 	$scope.active = 0;
-	var slides = $scope.slides = [];
+	var images = $scope.images = [];
 	var currIndex = 0;
 	$scope.getImages = function() {
-		ImagesService.fetchImage()
+		ImagesService.top25()
 			.then(function(result) {
 				if(result.status === 200) {
-					$scope.images = result.data;
+					$scope.images = result.data.data;
 				} else {
 					console.log("couldn't load images: " + result.data.message);
 				}
@@ -19,8 +19,8 @@ app.controller("imagesController", ["$scope", "ImagesService", function($scope, 
 		$scope.images = $scope.getImages();
 	}
 	$scope.addSlide = function() {
-		var newWidth = 600 + slides.length + 1;
-		slides.push({
+		var newWidth = 600 + images.length + 1;
+		images.push({
 			id: currIndex++
 		});
 	};
@@ -37,8 +37,8 @@ app.controller("imagesController", ["$scope", "ImagesService", function($scope, 
 	// Randomize logic below
 
 	function assignNewIndexesToSlides(indexes) {
-		for (var i = 0, l = slides.length; i < l; i++) {
-			slides[i].id = indexes.pop();
+		for (var i = 0, l = images.length; i < l; i++) {
+			images[i].id = indexes.pop();
 		}
 	}
 
