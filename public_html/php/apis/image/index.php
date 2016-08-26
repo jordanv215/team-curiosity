@@ -207,11 +207,6 @@ try {
 
 				NasaCall();
 			}
-			//}
-			$images = Image::getImages($pdo);
-			if($images !== null) {
-				$reply->data = $images;
-			}
 		} //get a specific image and update reply
 		else if(empty($imageId) === false) {
 			$image = Image::getImageByImageId($pdo, $imageId);
