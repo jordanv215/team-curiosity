@@ -399,11 +399,10 @@ footer {
 }
 
 
-
-
 .news-header {
 	text-align: center;
 	font-size: 3rem;
+	color: whitesmoke;
 }
 
 .news-content {
@@ -412,9 +411,12 @@ footer {
 	color: whitesmoke;
 }
 
-/*.news-thumb {
-	height: 100px;
-}*/
+.news-link, .news-link > a {
+	margin-bottom: 1rem;
+	text-align: center;
+	font-size: 1.5rem;
+	color: #983434;
+}
 
 .slide {
 	border-radius: 10px;
