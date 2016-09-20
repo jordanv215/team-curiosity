@@ -1,30 +1,27 @@
-<?php require_once("header.php");?>
+<?php require_once("header.php"); ?>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-6">
-	<h1 class="txt-2">redrovr</h1>
-			</div>
-			<div class="col-sm-6">
-	<h2 class="txt-3">News</h2>
-				</div>
-	<hr style="clear:both;" id="heading-hr"/>
+			<h1 class="txt-2">redrovr</h1>
+		</div>
+		<div class="col-sm-6">
+			<h2 class="txt-3">News</h2>
+		</div>
+		<hr style="clear:both;" id="heading-hr"/>
 	</div>
-	
-	<div ng-controller="newsController">
-		<div style="height: 300px">
-			<div uib-carousel interval="0" active="active">
-				<div uib-slide ng-repeat="news in news" index="active">
-					<div class="carousel-header">
-						<h3 class="news-header">{{ news.newsArticleTitle }}</h3>
-					</div>
-					<p class="news-content">{{ news.newsArticleDate | date }}</p>
-					<p class="news-content">{{ news.newsArticleSynopsis }}</p>
-					<div class="news-content">
-						<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
-					</div>
-					<div class="text-center"><a href="article">Click to comment or favorite</a></div>
 
-				</div>
+	<div>
+
+		<div class="row">
+			<div class="col-xs-12" ng-repeat="news in news">
+				<h2>{{ news.newsArticleTitle }}</h2>
+				<p>{{ news.newsArticleDate | date }}</p>
+				<p>{{ news.newsArticleSynopsis }}</p>
+				<a href="{{ news.newsArticleUrl }}" target="_blank">Read more&hellip;</a>
+				<a href="article">Comment or favorite</a>
 			</div>
+		</div>
 	</div>
+
+
 </div>

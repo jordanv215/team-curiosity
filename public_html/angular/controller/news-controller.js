@@ -8,7 +8,7 @@ app.controller("newsController", ["$scope", "NewsService", function($scope, News
 		NewsService.top25()
 			.then(function(result) {
 				if(result.status === 200) {
-					$scope.news = result.data;
+					$scope.news = result.data.data;
 				} else {
 					console.log("couldn't load news articles: " + result.data.message);
 				}

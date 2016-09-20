@@ -104,7 +104,7 @@ try {
 						ob_end_clean();
 						$savePath = "/var/www/html/media/news-thumbs/";
 						$filePath = ($savePath  . $thumbTitle . $ext);
-						$newsArticleThumbPath = ("../media/news-thumbs/" . $thumbTitle . $ext);
+						$newsArticleThumbPath = ("../../../../../../media/news-thumbs/" . $thumbTitle . $ext);
 						$f = fopen($filePath, 'w');
 						fwrite($f, $file);
 						fclose($f);
